@@ -171,12 +171,8 @@ export const nodemon = (callback, called = false) => (
 
 export const watch = () => {
   gulp.watch(PATHS.styles.src, styles)
-  gulp.watch(path.resolve(
-    __dirname, 'app', 'src', '**', '*.js'
-  ), gulp.parallel(
-    bundleApp,
-    lint
-  ))
+  gulp.watch(path.resolve(__dirname, 'app', 'src', '**', '*.js'),
+    gulp.parallel(bundleApp, lint))
   gulp.watch(PATHS.images.src, images)
 }
 
