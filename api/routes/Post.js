@@ -6,8 +6,8 @@ const { titleSlugger } = require('../helpers')
 const Router = new require('express').Router() //  eslint-disable-line
 
 Router.get('/', (req, res) => {
-  Post.find({}, (err, posts) => {
-    if (err) return res.send(err)
+  Post.find({}, (postErr, posts) => {
+    if (postErr) return res.send(postErr)
     if (posts.length < 1) {
       return res.send({
         status: {
@@ -22,7 +22,7 @@ Router.get('/', (req, res) => {
 
 Router.get('/:slug', ({ params: { slug } }, res) => {
   Post.findOne({ slug }, (err, post) => {
-    if (!post) {
+    if (err) {
       return res.status(404).send({
         status: {
           success: false,
@@ -77,10 +77,15 @@ Router.post('/', passport.authenticate('jwt', {
 Router.put('/:slug', passport.authenticate('jwt', {
   session: false,
 }), ({ body: { title, subtitle, body }, params, user }, res) => {
-  Post.findOne({ slug: params.slug }, (PostErr, post) => {
-    if (PostErr) {
-      console.log(PostErr.toJSON())
-      throw PostErr
+  Post.findOne({ slug: params.slug }, (postErr, post) => {
+    if (postErr) {
+      console.log(postErr.toJSON())
+      return res.json({
+        status: {
+          success: false,
+          message: 'something went wrong. could\'t edit post'
+        }
+      })
     }
     if (post.author.toString() !== user._id.toString()) {
       return res.json({
@@ -110,8 +115,16 @@ Router.put('/:slug', passport.authenticate('jwt', {
 Router.delete('/:slug', passport.authenticate('jwt', {
   session: false
 }), ({ params, user }, res) => {
-  Post.findOneAndRemove({ slug: params.slug }, (err, post) => {
-    if (err) return res.send(err)
+  Post.findOneAndRemove({ slug: params.slug }, (postErr, post) => {
+    if (postErr) {
+      console.log(postErr.toJSON())
+      return res.json({
+        status: {
+          success: false,
+          message: 'something went wrong. could\'t edit post'
+        }
+      })
+    }
     if (post.author.toString() !== user._id.toString()) {
       return res.json({
         status: {

@@ -51,10 +51,10 @@ Router.post('/register', (req, res) => {
 
 Router.post('/authenticate', (req, res) => {
   const { email, password } = req.body
-  User.findOne({ email }, (foErr, user) => {
-    if (foErr) {
-      console.log(foErr.toJSON())
-      throw foErr
+  User.findOne({ email }, (userErr, user) => {
+    if (userErr) {
+      console.log(userErr.toJSON())
+      throw userErr
     }
     if (!user) {
       return res.status(400).json({
@@ -64,10 +64,10 @@ Router.post('/authenticate', (req, res) => {
         }
       })
     }
-    return user.comparePassword(password, (pwErr, isMatch) => {
-      if (foErr) {
-        console.log(foErr.toJSON())
-        throw foErr
+    return user.comparePassword(password, (passwordErr, isMatch) => {
+      if (passwordErr) {
+        console.log(passwordErr.toJSON())
+        throw passwordErr
       }
       if (isMatch) {
         const token = sign(user, config.secret, {
