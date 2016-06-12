@@ -9,9 +9,7 @@ function formatUrl(path) {
   const adjustedPath = path[0] !== '/' ? `${path}` : path
 
   if (isServer) {
-    return `
-      http://${config.apiHost}:${config.apiPort + adjustedPath}
-    `
+    return `http://${config.apiHost}:${config.apiPort + adjustedPath}`
   }
 
   return `/api/${adjustedPath}`

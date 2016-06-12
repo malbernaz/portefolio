@@ -3,19 +3,23 @@ import { IndexRoute, Route } from 'react-router'
 
 import {
   isLoaded as isAuthLoaded,
-  load as loadAuth
+  loadAuth
 } from './actions/auth'
 
 import {
   AppView,
-  Home
+  Home,
+  About,
+  Contact,
+  SignIn,
+  Admin
 } from './components'
 
 export default store => {
-  const mustBeLogged = (nextState, replace, callback) => { // eslint-disable-line
+  const mustBeLogged = (nextState, replace, callback) => {
     function checkAuth() {
       const { auth: { user } } = store.getState()
-      if (!user) replace('/')
+      if (!user) replace('/admin/signin')
       callback()
     }
 
@@ -30,6 +34,15 @@ export default store => {
   return (
     <Route name="app" component={AppView} path="/">
       <IndexRoute component={Home} />
+      <Route component={About} path="about" />
+      <Route component={Contact} path="contact" />
+
+      <Route name="admin" path="admin">
+        <Route component={SignIn} path="signin" />
+        <Route onEnter={mustBeLogged}>
+          <IndexRoute component={Admin} />
+        </Route>
+      </Route>
     </Route>
   )
 }

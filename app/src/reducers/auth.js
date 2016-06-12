@@ -1,13 +1,10 @@
 import {
-  LOAD,
-  LOAD_SUCCESS,
-  LOAD_FAIL,
+  LOAD_AUTH,
+  LOAD_AUTH_SUCCESS,
+  LOAD_AUTH_FAIL,
   SIGNIN,
   SIGNIN_SUCCESS,
   SIGNIN_FAIL,
-  SIGNUP,
-  SIGNUP_SUCCESS,
-  SIGNUP_FAIL,
   LOGOUT,
   LOGOUT_SUCCESS,
   LOGOUT_FAIL
@@ -15,12 +12,12 @@ import {
 
 const reducer = (state = { loaded: false }, action = {}) => {
   switch (action.type) {
-    case LOAD:
+    case LOAD_AUTH:
       return {
         ...state,
         loading: true
       }
-    case LOAD_SUCCESS:
+    case LOAD_AUTH_SUCCESS:
       return {
         ...state,
         loading: false,
@@ -28,15 +25,12 @@ const reducer = (state = { loaded: false }, action = {}) => {
         status: action.result.status,
         user: action.result.user
       }
-    case LOAD_FAIL:
+    case LOAD_AUTH_FAIL:
       return {
         ...state,
         loading: false,
         loaded: false,
-        status:
-          Object.keys(action.error) !== 0 ?
-            action.error :
-            'unathorized'
+        status: 'unathorized'
       }
 
     case SIGNIN:
@@ -56,25 +50,6 @@ const reducer = (state = { loaded: false }, action = {}) => {
         ...state,
         signingIn: false,
         user: null,
-        status: action.error.status
-      }
-
-    case SIGNUP:
-      return {
-        ...state,
-        signingUp: true
-      }
-    case SIGNUP_SUCCESS:
-      return {
-        ...state,
-        signingUp: false,
-        status: action.result.status,
-        user: action.result.user
-      }
-    case SIGNUP_FAIL:
-      return {
-        ...state,
-        signingUp: false,
         status: action.error.status
       }
 

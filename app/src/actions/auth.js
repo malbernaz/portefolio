@@ -1,13 +1,10 @@
 import {
-  LOAD,
-  LOAD_SUCCESS,
-  LOAD_FAIL,
+  LOAD_AUTH,
+  LOAD_AUTH_SUCCESS,
+  LOAD_AUTH_FAIL,
   SIGNIN,
   SIGNIN_SUCCESS,
   SIGNIN_FAIL,
-  SIGNUP,
-  SIGNUP_SUCCESS,
-  SIGNUP_FAIL,
   LOGOUT,
   LOGOUT_SUCCESS,
   LOGOUT_FAIL
@@ -16,27 +13,15 @@ import {
 export const isLoaded = (state) =>
   state.auth && state.auth.loaded
 
-export const load = () => ({
-  types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
+export const loadAuth = () => ({
+  types: [LOAD_AUTH, LOAD_AUTH_SUCCESS, LOAD_AUTH_FAIL],
   promise: client => client.get('/user/loadauth')
 })
 
-export const signin = ({ email, password }) => ({
+export const signIn = ({ email, password }) => ({
   types: [SIGNIN, SIGNIN_SUCCESS, SIGNIN_FAIL],
   promise: client => client.post('/user/authenticate', {
     data: { email, password }
-  })
-})
-
-export const signup = ({
-  completeName,
-  email,
-  password,
-  passwordConfirmation
-}) => ({
-  types: [SIGNUP, SIGNUP_SUCCESS, SIGNUP_FAIL],
-  promise: client => client.post('/user/register', {
-    data: { completeName, email, password, passwordConfirmation }
   })
 })
 

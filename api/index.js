@@ -30,7 +30,7 @@ api.get('/', (req, res) => {
 })
 
 api.use('/user', User)
-api.use('/post', Post)
+api.use('/posts', Post)
 
 api.listen(port, err => {
   if (err) {

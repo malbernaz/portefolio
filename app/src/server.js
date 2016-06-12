@@ -19,7 +19,10 @@ import configureStore from './store'
 import getRouter from './router'
 import Html from './helpers/Html'
 import ApiClient from './helpers/ApiClient'
-import { load as loadAuth } from './actions'
+import { auth, posts } from './actions' // eslint-disable-line
+
+const { loadAuth } = auth
+const { loadPosts } = posts
 
 // Server configuration
 const app = new Express()
@@ -65,7 +68,7 @@ proxy.on('error', (error, req, res, json = null) => {
 
 app.use((req, res) => {
   const client = new ApiClient(req)
-  const memoryHistory = createMemoryHistory(req.originalUrl)
+  const memoryHistory = createMemoryHistory(req.url)
   const store = configureStore(client, memoryHistory)
   const history = syncHistoryWithStore(memoryHistory, store)
 
@@ -78,7 +81,7 @@ app.use((req, res) => {
   match({
     history,
     routes: getRouter(store),
-    location: req.originalUrl
+    location: req.url
   }, (
     err,
     redirectLocation,
@@ -87,7 +90,8 @@ app.use((req, res) => {
     if (redirectLocation) {
       res.redirect(
         redirectLocation.pathname +
-        redirectLocation.search)
+        redirectLocation.search
+      )
     }
 
     if (err) {
@@ -96,9 +100,9 @@ app.use((req, res) => {
       hydrateOnClient()
     }
 
-    if (!renderProps) return res.status(404).end('Not Found')
-
-    if (!renderProps) return res.status(404).end('Not Found')
+    if (!renderProps) {
+      return res.status(404).end('Not Found')
+    }
 
     function renderPage() {
       const component = (
@@ -121,7 +125,10 @@ app.use((req, res) => {
       global.navigator = { userAgent: req.headers['user-agent'] }
     }
 
-    return store.dispatch(loadAuth())
+    return Promise.resolve(store.dispatch(loadPosts()))
+      .then(
+        () => store.dispatch(loadAuth()),
+        () => store.dispatch(loadAuth()))
       .then(renderPage)
       .catch(renderPage)
   })

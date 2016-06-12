@@ -16,7 +16,12 @@ Router.get('/', (req, res) => {
         }
       })
     }
-    return res.json(posts)
+    return res.json({
+      status: {
+        success: 'Successfully loaded posts',
+        posts
+      }
+    })
   })
 })
 
@@ -30,7 +35,12 @@ Router.get('/:slug', ({ params: { slug } }, res) => {
         }
       })
     }
-    return res.json(post)
+    return res.json({
+      status: {
+        success: 'Successfully loaded posts',
+        post
+      }
+    })
   })
 })
 

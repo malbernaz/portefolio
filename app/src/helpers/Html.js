@@ -32,7 +32,7 @@ const Html = ({ component, store }) => {
                   maximum-scale=1,
                   user-scalable=no"
         />
-        {/* <link rel="stylesheet" href="css/main.css" /> */}
+        <link rel="stylesheet" href="/css/main.css" />
       </head>
       <body>
         <div
@@ -49,8 +49,8 @@ const Html = ({ component, store }) => {
           }}
           charSet="UTF-8"
         />
-        <script src="scripts/vendor.bundle.js" charSet="UTF-8" />
-        <script src="scripts/bundle.js" charSet="UTF-8" />
+        <script src="/scripts/vendor.bundle.js" charSet="UTF-8" />
+        <script src="/scripts/bundle.js" charSet="UTF-8" />
       </body>
     </html>
   )

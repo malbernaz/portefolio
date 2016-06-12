@@ -33,19 +33,20 @@ const THIRD_PARTY_MODULES = [
 ]
 
 const BUILD_DIR = './app/dist/public'
+const SRC_DIR = './app/src'
 
 const PATHS = {
   styles: {
-    src: './static/styles/**/*.scss',
+    src: `${SRC_DIR}/static/scss/**/*.scss`,
     dest: `${BUILD_DIR}/css`
   },
   images: {
-    src: './static/images/**/*.{jpg,png,svg,ico}',
+    src: `${SRC_DIR}/static/img/**/*.{jpg,png,svg,ico}`,
     dest: `${BUILD_DIR}/img`
   },
   scripts: {
     src: {
-      entry: './app/src/client.js',
+      entry: `${SRC_DIR}/client.js`,
     },
     dest: `${BUILD_DIR}/scripts`
   }
