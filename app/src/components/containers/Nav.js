@@ -1,17 +1,36 @@
-import React from 'react'
-import { IndexLink } from 'react-router'
+import React, { PropTypes } from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { IndexLink, Link } from 'react-router'
 
-const Nav = () => (
-  <div>
-    this is a nav
+import { auth as authActions } from '../../actions'
+
+const Nav = ({ auth, logout }) => (
+  <nav>
     <ul>
-      <li><IndexLink to="/">home </IndexLink></li>
-      <li><IndexLink to="/about">about </IndexLink></li>
-      <li><IndexLink to="/contact">contact </IndexLink></li>
-      <li><IndexLink to="/admin/signin">signin </IndexLink></li>
-      <li><IndexLink to="/admin">admin </IndexLink></li>
+      <li><IndexLink to="/">home</IndexLink></li>
+      <li><IndexLink to="/about">about</IndexLink></li>
+      <li><IndexLink to="/contact">contact</IndexLink></li>
+      {
+        auth.user ?
+          <li><Link to="/admin">admin</Link></li> :
+          ''
+      } {
+        auth.user ?
+          <li><Link to="/" onClick={logout}>logout</Link></li> :
+          ''
+      }
     </ul>
-  </div>
+  </nav>
 )
 
-export default Nav
+Nav.propTypes = {
+  auth: PropTypes.object,
+  logout: PropTypes.func
+}
+
+export default connect(state => ({
+  ...state
+}), dispatch => bindActionCreators({
+  ...authActions
+}, dispatch))(Nav)

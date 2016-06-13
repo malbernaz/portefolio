@@ -10,11 +10,15 @@ import { auth } from '../../actions'
 import { Nav, Footer } from '../'
 
 const AppView = ({ children }) => (
-  <div id="app-view">
+  <div id="app-view" className="app-view">
     <Helmet { ...config.head } />
     <Nav />
-    {children}
-    <Footer />
+    <div className="container">
+      <section>
+        {children}
+      </section>
+      <Footer />
+    </div>
   </div>
 )
 

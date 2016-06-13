@@ -6,7 +6,6 @@ import { SignInForm } from '../'
 const SignIn = () => (
   <div>
     <Helmet title="sign in" />
-    signin
     <SignInForm />
   </div>
 )

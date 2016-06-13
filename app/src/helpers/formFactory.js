@@ -13,7 +13,7 @@ const formFactory = ({
     const renderInput = (field, type, label) => (
       <div className="field" key={field.name}>
         <label htmlFor={field.name}>
-          <span className={field.dirty ? 'hasvalue' : ''}>
+          <span className={field.dirty ? 'input-label hasvalue' : 'input-label'}>
             {label}
           </span>
           <input
@@ -23,15 +23,15 @@ const formFactory = ({
             className={field.invalid && field.touched ? 'invalid' : ''}
             {...field}
           />
+          <span className="errors">
+            {field.touched ? field.error : ''}
+          </span>
         </label>
-        <span className="errors">
-          {field.touched ? field.error : ''}
-        </span>
       </div>
     )
 
     return (
-      <form className={styleClass} onSubmit={handleSubmit}>
+      <form className={styleClass} onSubmit={handleSubmit} action="/admim">
         {
           _.map(fields, (field, key) => {
             const { type, label } = inputFields.filter(f => f.name === key)[0]

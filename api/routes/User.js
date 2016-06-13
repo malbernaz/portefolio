@@ -44,7 +44,10 @@ Router.post('/register', (req, res) => {
         success: true,
         message: 'successfully created new user'
       },
-      user
+      user: {
+        username: user.username,
+        email: user.email
+      }
     })
   })
 })
@@ -83,7 +86,10 @@ Router.post('/authenticate', (req, res) => {
             success: true,
             message: 'successfully authenticated user'
           },
-          user
+          user: {
+            username: user.username,
+            email: user.email
+          }
         })
       }
       return res.status(400).json({
@@ -104,7 +110,10 @@ Router.get('/loadauth', passport.authenticate('jwt', {
       success: true,
       message: 'successfully authenticated user'
     },
-    user
+    user: {
+      username: user.username,
+      email: user.email
+    }
   })
 })
 

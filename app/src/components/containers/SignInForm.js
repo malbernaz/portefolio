@@ -31,18 +31,21 @@ const Form = createForm({
 
 const SignInForm = ({ auth, signIn, logout, loadAuth, }) => {
   function handleSubmit(data) {
-    if (!auth.user) {
-      return signIn(data)
-        .catch(err => console.log(err))
-        .then(browserHistory.push('/admin'))
-        .then(loadAuth)
-    }
-
-    return logout()
-      .then(() => signIn(data))
-      .catch(err => console.log(err))
-      .then(browserHistory.push('/admin'))
+    const submitChain = () => signIn(data)
+      .then(result => {
+        browserHistory.push('/admin')
+        return result
+      })
+      .catch(err => {
+        browserHistory.push('/admin')
+        console.log(err)
+        return err
+      })
       .then(loadAuth)
+
+    return auth.user ?
+      logout().then(() => submitChain()) :
+      submitChain()
   }
 
   return <Form onSubmit={handleSubmit} />

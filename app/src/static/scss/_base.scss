@@ -1,0 +1,87 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  color: $mono-1;
+  font-family: $text;
+}
+
+.app-view {
+  display: flex;
+  height: 100vh;
+}
+
+.container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+}
+
+form {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+
+  label {
+    display: flex;
+    margin: 1.5rem;
+    position: relative;
+
+    span {
+      pointer-events: none;
+      position: absolute;
+
+      &.input-label {
+        left: 0;
+        opacity: .5;
+        transform: scale(1) translateY(0) translateX(0);
+        transition: opacity .3s ease, transform .3s ease;
+
+        &.hasvalue {
+          opacity: 1;
+          transform: scale(.7) translateY(-140%) translateX(-20%);
+        }
+      }
+
+      &.errors {
+        color: $hue-5-2;
+        font-size: .7rem;
+        left: 0;
+        top: 100%;
+      }
+    }
+  }
+
+  input {
+    appearance: none;
+    border: 0;
+    border-bottom: 1px solid $mono-1;
+    min-width: 18rem;
+    outline: 0;
+
+    &::placeholder {
+      color: transparent;
+    }
+  }
+
+  button {
+    appearance: none;
+    background: transparent;
+    border: 1px solid $mono-1;
+    font-size: .8rem;
+    font-weight: 600;
+    margin: 1rem;
+    outline: 0;
+    padding: .5rem 1rem;
+    text-transform: uppercase;
+    transition: opacity .3s ease;
+
+    &:focus,
+    &:hover {
+      opacity: .7;
+    }
+  }
+}
