@@ -19,7 +19,7 @@ import configureStore from './store'
 import getRouter from './router'
 import Html from './helpers/Html'
 import ApiClient from './helpers/ApiClient'
-import { auth, posts } from './actions' // eslint-disable-line
+import { auth, posts } from './actions'
 
 const { loadAuth } = auth
 const { loadPosts } = posts
@@ -125,7 +125,7 @@ app.use((req, res) => {
       global.navigator = { userAgent: req.headers['user-agent'] }
     }
 
-    return Promise.resolve(store.dispatch(loadPosts()))
+    return store.dispatch(loadPosts())
       .then(
         () => store.dispatch(loadAuth()),
         () => store.dispatch(loadAuth()))
