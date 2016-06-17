@@ -8,5 +8,5 @@ node_modules
 .v8flags*
 tmp
 .config
-app/dist
+app/dist/**
 icons/dist
