@@ -14,47 +14,30 @@ marked.setOptions({
 const options = {
   gfm: true,
   lineWrapping: true,
-  theme: 'one-light'
+  theme: 'one-light',
+  extraKeys: {
+    Tab: cm => {
+      const spaces = Array(cm.getOption('indentUnit') + 1).join(' ')
+      cm.replaceSelection(spaces)
+    }
+  }
 }
 
 class MyEditor extends Component {
 
   static propTypes = {
     posts: PropTypes.object,
-    createDraft: PropTypes.func,
     updateDraft: PropTypes.func
-  }
-
-  componentDidMount = () => {
-    const { createDraft, posts: { raw } } = this.props
-
-    if (typeof window !== undefined) {
-      require('codemirror/mode/markdown/markdown') // eslint-disable-line global-require
-      options.mode = 'markdown'
-    }
-
-    const text = [
-      '---',
-      'title: my post title',
-      'subtitle: a subtle subtitle',
-      'tags:',
-      '\t- a tag',
-      '---\n',
-      '## my post title'
-    ].join('\n')
-
-    const { meta: { title }, html } = marked(text)
-    if (!raw) createDraft(text, title, html)
   }
 
   handleChange = (text) => {
     const { updateDraft } = this.props
-    const { meta: { title }, html } = marked(text)
-    updateDraft(text, title, html)
+    const { meta, html } = marked(text)
+    updateDraft(text, meta, html)
   }
 
   render() {
-    const { posts: { raw } } = this.props
+    const { posts: { draft: { raw } } } = this.props
 
     return (
       <Codemirror

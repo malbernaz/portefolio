@@ -8,6 +8,20 @@ const Router = new require('express').Router() //  eslint-disable-line new-cap
 
 Router.post('/register', (req, res) => {
   const { username, email, password } = req.body
+  const { authorization } = req.headers
+
+  console.log(req.headers)
+  console.log(authorization)
+
+  if (authorization !== config.registrationSecret) {
+    return res.status(401).json({
+      status: {
+        success: false,
+        message: 'You do not own permission to register to this site'
+      }
+    })
+  }
+
   if (!email || !password) {
     return res.status(400).json({
       status: {
@@ -16,14 +30,17 @@ Router.post('/register', (req, res) => {
       }
     })
   }
+
   const user = new User({
     username,
     email,
     password
   })
+
   return user.save(err => {
     if (err) {
       console.log(err.toJSON())
+
       return res.status(400).json({
         status: {
           success: false,
@@ -31,9 +48,11 @@ Router.post('/register', (req, res) => {
         }
       })
     }
+
     const token = sign(user, config.secret, {
       expiresIn: 604800
     })
+
     return res.cookie('access_token', token, {
       maxAge: 604800 * 1000,
       secure: req.protocol === 'https',
@@ -54,9 +73,11 @@ Router.post('/register', (req, res) => {
 
 Router.post('/authenticate', (req, res) => {
   const { email, password } = req.body
+
   User.findOne({ email }, (userErr, user) => {
     if (userErr) {
       console.log(userErr.toJSON())
+
       throw userErr
     }
     if (!user) {
@@ -67,15 +88,19 @@ Router.post('/authenticate', (req, res) => {
         }
       })
     }
+
     return user.comparePassword(password, (passwordErr, isMatch) => {
       if (passwordErr) {
         console.log(passwordErr.toJSON())
+
         throw passwordErr
       }
+
       if (isMatch) {
         const token = sign(user, config.secret, {
           expiresIn: 604800
         })
+
         return res.cookie('access_token', token, {
           maxAge: 604800 * 1000,
           secure: req.protocol === 'https',
@@ -92,6 +117,7 @@ Router.post('/authenticate', (req, res) => {
           }
         })
       }
+
       return res.status(400).json({
         status: {
           success: false,
@@ -112,7 +138,8 @@ Router.get('/loadauth', passport.authenticate('jwt', {
     },
     user: {
       username: user.username,
-      email: user.email
+      email: user.email,
+      posts: user.posts
     }
   })
 })

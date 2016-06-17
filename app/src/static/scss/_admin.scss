@@ -119,8 +119,8 @@ $half-posts-list-width: $posts-list-width / 2;
         margin-left: .8rem;
       }
 
-      .post-actions:last-child {
-        @include dark-link($hue-5-2);
+      .delete {
+        @include dark-link($hue-5-2, 10);
       }
 
       svg {
@@ -145,7 +145,7 @@ $half-posts-list-width: $posts-list-width / 2;
     }
   }
 
-  .post-item:nth-child(n+2) {
+  .post-item:nth-child(even) {
     background: $syntax-bg-alternate;
 
     &::after {
@@ -169,6 +169,7 @@ $half-posts-list-width: $posts-list-width / 2;
     border-right: 1px lighten($mono-3, 20) dashed;
     bottom: 0;
     font-family: $monospace;
+    font-size: .75rem;
     left: 0;
     position: absolute;
     right: 0;

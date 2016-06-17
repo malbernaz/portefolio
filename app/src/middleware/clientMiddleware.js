@@ -1,4 +1,4 @@
-export default function promiseMiddleware(client) {
+export default function clientMiddleware(client) {
   return ({ getState, dispatch }) => next => action => {
     if (typeof action === 'function') {
       return action(dispatch, getState)

@@ -14,23 +14,25 @@ export const loadPosts = () => ({
   promise: client => client.get('/posts')
 })
 
-export const createDraft = (raw, title, html) => ({
+export const createDraft = (raw, meta, html) => ({
   type: CREATE_DRAFT,
-  raw,
-  title,
-  html,
+  draft: {
+    raw,
+    meta,
+    html
+  }
 })
 
-export const updateDraft = (raw, title, html) => ({
+export const updateDraft = (raw, meta, html) => ({
   type: UPDATE_DRAFT,
-  raw,
-  title,
-  html,
+  draft: {
+    raw,
+    meta,
+    html
+  }
 })
 
-export const publishDraft = ({ title, subtitle, body }) => ({
+export const publishDraft = ({ raw, meta: { title, subtitle, tags } }) => ({
   types: [PUBLISH_DRAFT, PUBLISH_DRAFT_SUCCESS, PUBLISH_DRAFT_FAIL],
-  promise: client => client.post('/posts', {
-    data: { title, subtitle, body }
-  })
+  promise: client => client.post('/posts', { data: { raw, title, subtitle, tags } })
 })

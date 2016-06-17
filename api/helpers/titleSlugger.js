@@ -268,6 +268,7 @@ function removeDiacritics(str) {
 module.exports = function titleSlugger(slug) {
   const self = removeDiacritics(slug)
   return self
+    .trim()
     .toLowerCase()
     .replace(/[^\w\s]/g, '')
     .replace(/\s/g, '-')

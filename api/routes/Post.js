@@ -16,6 +16,7 @@ Router.get('/', (req, res) => {
         }
       })
     }
+
     return res.json({
       status: {
         success: 'Successfully loaded posts',
@@ -27,17 +28,18 @@ Router.get('/', (req, res) => {
 
 Router.get('/:slug', ({ params: { slug } }, res) => {
   Post.findOne({ slug }, (err, post) => {
-    if (err) {
+    if (err || !post) {
       return res.status(404).send({
         status: {
           success: false,
-          message: 'page not found'
+          message: 'this post does not exist'
         }
       })
     }
+
     return res.json({
       status: {
-        success: 'Successfully loaded posts',
+        success: 'Successfully loaded post',
         post
       }
     })
@@ -46,15 +48,16 @@ Router.get('/:slug', ({ params: { slug } }, res) => {
 
 Router.post('/', passport.authenticate('jwt', {
   session: false
-}), ({ body: { title, subtitle, body }, user }, res) => {
+}), ({ body: { raw, title, subtitle, tags }, user }, res) => {
+  const slug = titleSlugger(title)
   const newPost = new Post({
     title,
     subtitle,
-    body,
-    author: user._id,
-    slug: title
+    raw,
+    tags,
+    slug,
+    author: user._id
   })
-  const slug = titleSlugger(newPost.title)
   Post.findOne({ slug }, (postErr, post) => {
     if (post) {
       return res.json({
@@ -64,14 +67,20 @@ Router.post('/', passport.authenticate('jwt', {
         }
       })
     }
-    return User.findOne({ _id: user._id }, (userErr, newUser) => {
+
+    return User.findOne({ _id: user._id }, (userErr, postUser) => {
       if (userErr) return res.send(userErr)
-      const self = newUser
+
+      const self = postUser
+
       self.posts.push(newPost._id)
-      return self.save(newUserErr => {
-        if (newUserErr) return res.send(newUserErr)
+
+      return self.save(postUserErr => {
+        if (postUserErr) return res.send(postUserErr)
+
         return newPost.save(newPostErr => {
           if (newPostErr) return res.send(newPostErr)
+
           return res.json({
             status: {
               success: true,
@@ -86,10 +95,11 @@ Router.post('/', passport.authenticate('jwt', {
 
 Router.put('/:slug', passport.authenticate('jwt', {
   session: false,
-}), ({ body: { title, subtitle, body }, params, user }, res) => {
+}), ({ body: { raw, title, subtitle, tags }, params, user }, res) => {
   Post.findOne({ slug: params.slug }, (postErr, post) => {
     if (postErr) {
       console.log(postErr.toJSON())
+
       return res.json({
         status: {
           success: false,
@@ -97,6 +107,7 @@ Router.put('/:slug', passport.authenticate('jwt', {
         }
       })
     }
+
     if (post.author.toString() !== user._id.toString()) {
       return res.json({
         status: {
@@ -105,13 +116,18 @@ Router.put('/:slug', passport.authenticate('jwt', {
         }
       })
     }
+
     const self = post
+
     self.title = title !== '' ? title : post.title
     self.subtitle = subtitle !== '' ? subtitle : post.subtitle
-    self.body = body !== '' ? body : post.body
+    self.raw = raw !== '' ? raw : post.raw
     self.slug = title !== '' ? title : post.title
+    tags.forEach(tag => self.tags.push(tag))
+
     return self.save(saveErr => {
       if (saveErr) return res.send(saveErr)
+
       return res.json({
         status: {
           success: true,
@@ -128,13 +144,24 @@ Router.delete('/:slug', passport.authenticate('jwt', {
   Post.findOneAndRemove({ slug: params.slug }, (postErr, post) => {
     if (postErr) {
       console.log(postErr.toJSON())
+
       return res.json({
         status: {
           success: false,
-          message: 'something went wrong. could\'t edit post'
+          message: 'something went wrong. could\'t delete post'
         }
       })
     }
+
+    if (!post) {
+      return res.json({
+        status: {
+          success: false,
+          message: 'could\'t delete post. inexsistent'
+        }
+      })
+    }
+
     if (post.author.toString() !== user._id.toString()) {
       return res.json({
         status: {
@@ -143,11 +170,30 @@ Router.delete('/:slug', passport.authenticate('jwt', {
         }
       })
     }
-    return res.json({
-      status: {
-        success: true,
-        message: 'successfully deleted post'
+
+    return User.findOne({ _id: user._id }, (postUserErr, postUser) => {
+      if (postUserErr) {
+        console.log(postUserErr.toJSON())
       }
+
+      const self = postUser
+
+      console.log(self.posts.indexOf(post._id), 1)
+
+      self.posts.splice(self.posts.indexOf(post._id), 1)
+
+      console.log(self.posts, 2)
+
+      return self.save(saveErr => {
+        if (saveErr) return res.send(saveErr)
+
+        return res.json({
+          status: {
+            success: true,
+            message: 'successfully deleted post'
+          }
+        })
+      })
     })
   })
 })

@@ -3,7 +3,10 @@ import {
   LOAD_POSTS_SUCCESS,
   LOAD_POSTS_FAIL,
   CREATE_DRAFT,
-  UPDATE_DRAFT
+  UPDATE_DRAFT,
+  PUBLISH_DRAFT,
+  PUBLISH_DRAFT_SUCCESS,
+  PUBLISH_DRAFT_FAIL
 } from '../constants'
 
 const reducer = (state = { loaded: false }, action = {}) => {
@@ -35,9 +38,30 @@ const reducer = (state = { loaded: false }, action = {}) => {
     case UPDATE_DRAFT:
       return {
         ...state,
-        raw: action.raw,
-        title: action.title,
-        html: action.html
+        draft: {
+          raw: action.draft.raw,
+          meta: action.draft.meta,
+          html: action.draft.html
+        }
+      }
+    case PUBLISH_DRAFT:
+      return {
+        ...state,
+        publishing: true
+      }
+    case PUBLISH_DRAFT_SUCCESS:
+      return {
+        ...state,
+        publishing: false,
+        published: true,
+        status: action.result.status.message
+      }
+    case PUBLISH_DRAFT_FAIL:
+      return {
+        ...state,
+        publishing: false,
+        published: false,
+        status: action.result.status.message
       }
     default:
       return state

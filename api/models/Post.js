@@ -18,7 +18,7 @@ const PostSchema = new mongoose.Schema({
     type: String,
     lowercase: true
   }],
-  body: {
+  raw: {
     type: String,
     required: true
   },
@@ -37,7 +37,10 @@ const PostSchema = new mongoose.Schema({
 PostSchema.pre('save', function slugTitle(next) {
   const post = this
 
-  post.slug = titleSlugger(this.slug)
+  post.slug = titleSlugger(post.title)
+
+  post.tags = post.tags.filter(
+    (tag, i, array) => array.indexOf(tag) === i)
 
   return next()
 })

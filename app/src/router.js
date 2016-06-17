@@ -1,13 +1,11 @@
 import React from 'react'
 import { IndexRoute, Route } from 'react-router'
 import { reduce } from 'underscore'
+import marked from 'meta-marked'
 
-import {
-  isLoaded as isAuthLoaded,
-  loadAuth
-} from './actions/auth'
+import { isLoaded as isAuthLoaded, loadAuth } from './actions/auth'
 
-import { loadPosts } from './actions/posts'
+import { loadPosts, createDraft } from './actions/posts'
 
 import {
   AppView,
@@ -65,6 +63,28 @@ export default store => {
     return checkIfExists()
   }
 
+  const loadDraft = (nextState, replace, callback) => {
+    const { posts: { draft } } = store.getState()
+
+    const raw = [
+      '---',
+      'title: my post title',
+      'subtitle: a subtle subtitle',
+      'tags:',
+      '  - a tag',
+      '  - open source',
+      '---\n'
+    ].join('\n')
+
+    const { meta, html } = marked(raw)
+
+    if (!draft) {
+      store.dispatch(createDraft(raw, meta, html))
+    }
+
+    return callback()
+  }
+
   return (
     <Route name="app" component={AppView} path="/">
       <IndexRoute component={Home} />
@@ -73,15 +93,13 @@ export default store => {
 
       <Route name="posts" path="/posts">
         <IndexRoute component={Posts} />
-        <Route onEnter={postMustExist}>
-          <Route path=":slug" component="post" component={Post} />
-        </Route>
+        <Route path=":slug" onEnter={postMustExist} component={Post} />
       </Route>
 
       <Route name="admin" path="admin">
         <Route component={SignIn} path="signin" />
         <Route onEnter={mustBeLogged}>
-          <IndexRoute component={Admin} />
+          <IndexRoute onEnter={loadDraft} component={Admin} />
         </Route>
       </Route>
     </Route>
