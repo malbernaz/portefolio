@@ -6,12 +6,18 @@ const PostSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
+    lowercase: true,
     unique: true
   },
   subtitle: {
     type: String,
+    lowercase: true,
     required: true
   },
+  tags: [{
+    type: String,
+    lowercase: true
+  }],
   body: {
     type: String,
     required: true

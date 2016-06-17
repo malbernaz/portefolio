@@ -2,6 +2,8 @@ import {
   LOAD_POSTS,
   LOAD_POSTS_SUCCESS,
   LOAD_POSTS_FAIL,
+  CREATE_DRAFT,
+  UPDATE_DRAFT
 } from '../constants'
 
 const reducer = (state = { loaded: false }, action = {}) => {
@@ -28,6 +30,14 @@ const reducer = (state = { loaded: false }, action = {}) => {
           Object.keys(action.error) !== 0 ?
             action.error :
             'unathorized'
+      }
+    case CREATE_DRAFT:
+    case UPDATE_DRAFT:
+      return {
+        ...state,
+        raw: action.raw,
+        title: action.title,
+        html: action.html
       }
     default:
       return state

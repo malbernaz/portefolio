@@ -29,5 +29,26 @@ $syntax-gutter: darken($syntax-bg, 36%);
 $syntax-guide:  fade($syntax-fg, 20%);
 $syntax-accent: hsl($syntax-hue, 100%, 66%);
 
+$syntax-bg-alternate: darken($syntax-bg, 2);
+$selection: #ededed;
+
+
 // Fonts -----------------------------------
-$text: 'Source Code Pro for Powerline';
+$sans-serif: 'Source Sans Pro', helvetica, arial, sans-serif;
+$monospace: 'Source Code Pro', monospace;
+
+
+// z-index -----------------------------------
+$zi-nav: 1000;
+$zi-editor: 998;
+$zi-editor-posts-list: 999;
+
+
+// Media queries -----------------------------------
+
+$nav-collapse: 58rem;
+
+$tablet: 48rem;
+$mobile-l: 26.5625rem;
+$mobile-m: 23.4375rem;
+$mobile-s: 20rem;

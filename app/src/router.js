@@ -43,9 +43,11 @@ export default store => {
     function checkIfExists() {
       const { posts: { posts } } = store.getState() // eslint-disable-line no-shadow
       const existent = reduce(posts, (p, n) => {
-        if (p === true) return p
-        return n.slug === p
-      }, slug)
+        if (slug === n.slug || p === true) {
+          return true
+        }
+        return false
+      }, false)
 
       if (!existent) {
         replace('/')

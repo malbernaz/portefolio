@@ -1,11 +1,15 @@
-.home {
-  article {
-    margin: 4rem 0;
-  }
-}
+$article-start-width: 40rem;
 
-.posts {
-  article {
-    margin: 4rem 0;
+article {
+  max-width: $article-start-width;
+  padding: 2rem 0;
+  width: $article-start-width;
+
+  h2 {
+    color: $mono-1;
+  }
+
+  h3 {
+    color: $mono-2;
   }
 }

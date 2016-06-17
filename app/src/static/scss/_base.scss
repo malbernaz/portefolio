@@ -3,8 +3,32 @@
 }
 
 body {
-  color: $mono-1;
-  font-family: $text;
+  background: $syntax-bg;
+  color: $syntax-fg;
+  font-family: $sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: $selection;
+}
+
+p {
+  word-break: break-all;
+}
+
+a {
+  @include dark-link($syntax-accent, 15);
+}
+
+svg {
+  height: 4.375rem;
+
+  path {
+    fill: $syntax-accent;
+  }
 }
 
 .app-view {
@@ -17,7 +41,7 @@ body {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  justify-content: center;
+  min-height: 100vh;
 }
 
 form {
@@ -31,36 +55,41 @@ form {
     position: relative;
 
     span {
+      left: 50%;
       pointer-events: none;
       position: absolute;
+      transform: translateX(-50%);
+    }
 
-      &.input-label {
-        left: 0;
-        opacity: .5;
-        transform: scale(1) translateY(0) translateX(0);
-        transition: opacity .3s ease, transform .3s ease;
+    .input-label {
+      bottom: 1rem;
+      left: 50%;
+      opacity: .5;
+      transform: scale(1) translateY(0) translateX(-50%);
+      transition: opacity .3s ease, transform .3s ease;
+    }
 
-        &.hasvalue {
-          opacity: 1;
-          transform: scale(.7) translateY(-140%) translateX(-20%);
-        }
-      }
+    .hasvalue {
+      opacity: .8;
+      transform: translateY(-140%) translateX(-50%);
+    }
 
-      &.errors {
-        color: $hue-5-2;
-        font-size: .7rem;
-        left: 0;
-        top: 100%;
-      }
+    .errors {
+      color: $hue-5-2;
+      font-size: .7rem;
+      top: 110%;
     }
   }
 
   input {
     appearance: none;
+    background: transparent;
     border: 0;
-    border-bottom: 1px solid $mono-1;
-    min-width: 18rem;
+    border-bottom: 1px solid $syntax-accent;
+    height: 3rem;
+    min-width: 15rem;
     outline: 0;
+    text-align: center;
 
     &::placeholder {
       color: transparent;
@@ -68,20 +97,7 @@ form {
   }
 
   button {
-    appearance: none;
-    background: transparent;
-    border: 1px solid $mono-1;
-    font-size: .8rem;
-    font-weight: 600;
+    @include button($syntax-accent);
     margin: 1rem;
-    outline: 0;
-    padding: .5rem 1rem;
-    text-transform: uppercase;
-    transition: opacity .3s ease;
-
-    &:focus,
-    &:hover {
-      opacity: .7;
-    }
   }
 }

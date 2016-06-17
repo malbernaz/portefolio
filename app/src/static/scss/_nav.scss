@@ -1,18 +1,73 @@
-nav {
-  align-content: flex-end;
+$nav-width: 10rem;
+
+@mixin flex-nav {
+  align-items: center;
   display: flex;
-  flex-direction: column;
+  height: 100vh;
   justify-content: center;
-  width: 12.5rem;
+  width: $nav-width;
+}
+
+.nav-wrapper {
+  transform: translateX(0);
+  width: $nav-width;
+  will-change: transform;
+  z-index: $zi-nav;
+}
+
+.toggle-menu {
+  @include icon-link(3.5rem);
+
+  height: 3.5rem;
+  left: $nav-width;
+  pointer-events: none;
+  position: absolute;
+  visibility: hidden;
+}
+
+nav {
+  background: darken($syntax-bg, 3);
+  display: flex;
+  width: $nav-width;
 
   ul {
     margin: 0;
     padding: 0;
-    text-align: right;
+    text-align: center;
 
     li {
       list-style: none;
-      margin: 1rem;
+      padding: 1rem;
     }
+  }
+
+  .logo {
+    left: 50%;
+    position: absolute;
+    top: 2rem;
+    transform: translateX(-50%);
+
+    svg {
+      height: 4rem;
+    }
+  }
+}
+
+.main-nav {
+  @include flex-nav;
+
+  border-right: 1px lighten($mono-3, 20) dashed;
+}
+
+@media (max-width: $nav-collapse) {
+  .nav-wrapper {
+    left: -$nav-width;
+    position: absolute;
+    top: 0;
+  }
+
+  .toggle-menu {
+    pointer-events: all;
+    visibility: visible;
   }
 }

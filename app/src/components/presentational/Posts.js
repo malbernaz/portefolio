@@ -4,7 +4,7 @@ import Helmet from 'react-helmet'
 import moment from 'moment'
 
 const Posts = ({ posts: { posts } }) => (
-  <div className="posts">
+  <section className="posts">
     <Helmet title="posts" />
     {posts.map((post, index) => (
       <article key={index}>
@@ -13,7 +13,7 @@ const Posts = ({ posts: { posts } }) => (
         <h3>{post.subtitle}</h3>
       </article>
     ))}
-  </div>
+  </section>
 )
 
 Posts.propTypes = {
@@ -21,5 +21,5 @@ Posts.propTypes = {
 }
 
 export default connect(
-  state => ({ ...state })
+  state => ({ posts: state.posts })
 )(Posts)

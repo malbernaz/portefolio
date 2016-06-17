@@ -2,10 +2,10 @@ import React from 'react'
 import Helmet from 'react-helmet'
 
 const About = () => (
-  <div>
+  <section className="about">
     <Helmet title="about" />
     about
-  </div>
+  </section>
 )
 
 export default About

@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router'
 import Helmet from 'react-helmet'
 import moment from 'moment'
 
@@ -11,6 +12,7 @@ const Home = ({ posts: { posts } }) => (
         <small>{moment(post.createdAt, 'YYYYMMDD').fromNow()}</small>
         <h2>{post.title}</h2>
         <h3>{post.subtitle}</h3>
+        <Link to={`/posts/${post.slug}`}>see more ...</Link>
       </article>
     ))}
   </div>

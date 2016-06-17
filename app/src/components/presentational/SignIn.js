@@ -4,10 +4,10 @@ import Helmet from 'react-helmet'
 import { SignInForm } from '../'
 
 const SignIn = () => (
-  <div>
+  <section className="signin">
     <Helmet title="sign in" />
     <SignInForm />
-  </div>
+  </section>
 )
 
 export default SignIn

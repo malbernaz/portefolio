@@ -31,7 +31,7 @@ const formFactory = ({
     )
 
     return (
-      <form className={styleClass} onSubmit={handleSubmit} action="/admim">
+      <form className={styleClass} onSubmit={handleSubmit}>
         {
           _.map(fields, (field, key) => {
             const { type, label } = inputFields.filter(f => f.name === key)[0]

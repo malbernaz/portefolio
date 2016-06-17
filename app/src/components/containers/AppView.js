@@ -7,17 +7,14 @@ import config from '../../config'
 
 import { auth } from '../../actions'
 
-import { Nav, Footer } from '../'
+import { Nav } from '../'
 
 const AppView = ({ children }) => (
   <div id="app-view" className="app-view">
     <Helmet { ...config.head } />
     <Nav />
     <div className="container">
-      <section>
-        {children}
-      </section>
-      <Footer />
+      {children}
     </div>
   </div>
 )

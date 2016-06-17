@@ -19,10 +19,8 @@ import configureStore from './store'
 import getRouter from './router'
 import Html from './helpers/Html'
 import ApiClient from './helpers/ApiClient'
-import { auth, posts } from './actions'
-
-const { loadAuth } = auth
-const { loadPosts } = posts
+import { loadAuth } from './actions/auth'
+import { loadPosts } from './actions/posts'
 
 // Server configuration
 const app = new Express()

@@ -6,7 +6,7 @@ import moment from 'moment'
 const Post = ({ posts, slug }) => {
   const post = posts.filter(p => p.slug === slug)[0]
   return (
-    <div className="post">
+    <section className="post">
       <Helmet title={post.title} />
       <article>
         <small>{moment(post.createdAt, 'YYYYMMDD').fromNow()}</small>
@@ -14,7 +14,7 @@ const Post = ({ posts, slug }) => {
         <h3>{post.subtitle}</h3>
         <p>{post.body}</p>
       </article>
-    </div>
+    </section>
   )
 }
 

@@ -4,6 +4,7 @@ import prefixer from 'gulp-autoprefixer'
 import plumber from 'gulp-plumber'
 import sass from 'gulp-sass'
 import eslint from 'gulp-eslint'
+import svgo from 'gulp-svgo'
 import gutil from 'gulp-util'
 import _nodemon from 'gulp-nodemon'
 import uglify from 'gulp-uglify'
@@ -102,6 +103,13 @@ export const images = () => (
     .pipe(gulp.dest(PATHS.images.dest))
     .pipe(_browserSync.stream())
 )
+
+
+export const icons = () => {
+  gulp.src('./icons/src/*.svg')
+    .pipe(svgo())
+    .pipe(gulp.dest('./icons/dist'))
+}
 
 
 export const styles = () => (
