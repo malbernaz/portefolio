@@ -29,8 +29,7 @@ const PostSchema = new mongoose.Schema({
     required: true
   },
   html: {
-    type: String,
-    required: true,
+    type: String
   },
   slug: {
     type: String,

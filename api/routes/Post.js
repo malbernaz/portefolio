@@ -49,7 +49,6 @@ Router.get('/:slug', ({ params: { slug } }, res) => {
 Router.post('/', passport.authenticate('jwt', {
   session: false
 }), ({ body: { raw, meta, html }, user }, res) => {
-  console.log(meta.title)
   const slug = titleSlugger(meta.title)
   const newPost = new Post({
     raw,
@@ -57,6 +56,7 @@ Router.post('/', passport.authenticate('jwt', {
     slug,
     meta: Object.assign(meta, { author: user._id })
   })
+
   Post.findOne({ slug }, (postErr, post) => {
     if (post) {
       return res.json({
@@ -118,7 +118,8 @@ Router.put('/:slug', passport.authenticate('jwt', {
 
     const self = post
 
-    self.meta = meta || post.meta
+    self.meta = Object.assign(meta, { author: user._id }) || post.meta
+    self.html = html || post.html
     self.raw = raw || post.raw
     self.slug = titleSlugger(meta.title)
 

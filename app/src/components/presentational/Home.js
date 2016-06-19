@@ -11,8 +11,8 @@ const Home = ({ posts: { posts } }) => (
       posts.map((post, index) => (
         <article key={index}>
           <small>{moment(post.createdAt, 'YYYYMMDD').fromNow()}</small>
-          <h2>{post.title}</h2>
-          <h3>{post.subtitle}</h3>
+          <h2>{post.meta.title}</h2>
+          <h3>{post.meta.subtitle}</h3>
           <Link to={`/posts/${post.slug}`}>see more ...</Link>
         </article>
       )).reverse() :

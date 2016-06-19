@@ -12,7 +12,6 @@ const AdminView = ({ posts, draft, handleSubmit, handleEdit, handleDelete }) => 
           <Icon name="list" />
           <span>posts</span>
         </a>
-        {console.log(draft.meta)}
         <div className="post-title">
           <div className="title">
             <b>{draft.meta.title}</b>
@@ -39,7 +38,7 @@ const AdminView = ({ posts, draft, handleSubmit, handleEdit, handleDelete }) => 
             posts ?
               posts.map((p, i) =>
                 <div className="post-item" key={i}>
-                  <small>{p.title}</small>
+                  <small>{p.meta.title}</small>
                   <div className="post-actions">
                     <a onClick={e => handleEdit(e, p)} className="post-action edit" href="#">
                       <Icon name="edit" />

@@ -4,15 +4,15 @@ import Helmet from 'react-helmet'
 import moment from 'moment'
 
 const Post = ({ posts, slug }) => {
-  const post = posts.filter(p => p.slug === slug)[0]
+  const { meta, html, createdAt } = posts.filter(p => p.slug === slug)[0]
   return (
     <section className="post">
-      <Helmet title={post.title} />
+      <Helmet title={meta.title} />
       <article>
-        <small>{moment(post.createdAt, 'YYYYMMDD').fromNow()}</small>
-        <h2>{post.title}</h2>
-        <h3>{post.subtitle}</h3>
-        <p>{post.body}</p>
+        <small>{moment(createdAt, 'YYYYMMDD').fromNow()}</small>
+        <h2>{meta.title}</h2>
+        <h3>{meta.subtitle}</h3>
+        <div dangerouslySetInnerHTML={{ __html: html }}></div>
       </article>
     </section>
   )

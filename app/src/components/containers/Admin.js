@@ -4,38 +4,43 @@ import { bindActionCreators } from 'redux'
 import { browserHistory } from 'react-router'
 import Helmet from 'react-helmet'
 
-import defaultDraft from '../../helpers/defaultDraft'
-
 import { AdminView } from '../'
 
 import { posts as postsActions } from '../../actions'
 
 class Admin extends Component {
   static propTypes = {
-    posts: PropTypes.object,
-    publishDraft: PropTypes.func,
-    loadPosts: PropTypes.func,
     createDraft: PropTypes.func,
-    deletePost: PropTypes.func
+    publishDraft: PropTypes.func,
+    deletePost: PropTypes.func,
+    editPost: PropTypes.func,
+    loadPosts: PropTypes.func,
+    posts: PropTypes.object
   }
 
   handleSubmit = e => {
     e.preventDefault()
 
-    const { publishDraft, loadPosts, posts: { draft } } = this.props
+    const { editPost, publishDraft, loadPosts, posts: { draft } } = this.props
 
-    return publishDraft(draft)
-      .then(loadPosts)
-      .catch(loadPosts)
-      .then(() => browserHistory.push('/'))
-      .catch(() => browserHistory.push('/'))
+    const submitPromise = promise =>
+      promise(draft)
+        .then(loadPosts)
+        .catch(loadPosts)
+        .then(() => browserHistory.push('/'))
+        .catch(() => browserHistory.push('/'))
+
+    if (draft.slug !== null) return submitPromise(editPost)
+
+    return submitPromise(publishDraft)
   }
 
-  handleEdit = (e, { raw, title, subtitle, tags, slug, html }) => {
+  handleEdit = (e, { raw, meta, html, slug }) => {
     e.preventDefault()
 
+    console.log(meta)
+
     const { createDraft } = this.props
-    const meta = { title, subtitle, tags }
 
     return createDraft({ raw, meta, html, slug })
   }
@@ -43,11 +48,9 @@ class Admin extends Component {
   handleDelete = (e, slug) => {
     e.preventDefault()
 
-    const { deletePost, loadPosts, createDraft } = this.props
+    const { deletePost, loadPosts } = this.props
 
     return deletePost(slug)
-      .then(createDraft(defaultDraft))
-      .catch(createDraft(defaultDraft))
       .then(loadPosts)
       .catch(loadPosts)
       .then(() => browserHistory.push('/'))
