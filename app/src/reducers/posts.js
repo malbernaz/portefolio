@@ -35,6 +35,15 @@ const reducer = (state = { loaded: false }, action = {}) => {
             'unathorized'
       }
     case CREATE_DRAFT:
+      return {
+        ...state,
+        draft: {
+          raw: action.draft.raw,
+          meta: action.draft.meta,
+          html: action.draft.html,
+          slug: action.draft.slug || null
+        }
+      }
     case UPDATE_DRAFT:
       return {
         ...state,

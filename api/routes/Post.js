@@ -48,15 +48,14 @@ Router.get('/:slug', ({ params: { slug } }, res) => {
 
 Router.post('/', passport.authenticate('jwt', {
   session: false
-}), ({ body: { raw, title, subtitle, tags }, user }, res) => {
-  const slug = titleSlugger(title)
+}), ({ body: { raw, meta, html }, user }, res) => {
+  console.log(meta.title)
+  const slug = titleSlugger(meta.title)
   const newPost = new Post({
-    title,
-    subtitle,
     raw,
-    tags,
+    html,
     slug,
-    author: user._id
+    meta: Object.assign(meta, { author: user._id })
   })
   Post.findOne({ slug }, (postErr, post) => {
     if (post) {
@@ -95,7 +94,7 @@ Router.post('/', passport.authenticate('jwt', {
 
 Router.put('/:slug', passport.authenticate('jwt', {
   session: false,
-}), ({ body: { raw, title, subtitle, tags }, params, user }, res) => {
+}), ({ body: { raw, meta, html }, params, user }, res) => {
   Post.findOne({ slug: params.slug }, (postErr, post) => {
     if (postErr) {
       console.log(postErr.toJSON())
@@ -108,7 +107,7 @@ Router.put('/:slug', passport.authenticate('jwt', {
       })
     }
 
-    if (post.author.toString() !== user._id.toString()) {
+    if (post.meta.author.toString() !== user._id.toString()) {
       return res.json({
         status: {
           success: false,
@@ -119,11 +118,9 @@ Router.put('/:slug', passport.authenticate('jwt', {
 
     const self = post
 
-    self.title = title !== '' ? title : post.title
-    self.subtitle = subtitle !== '' ? subtitle : post.subtitle
-    self.raw = raw !== '' ? raw : post.raw
-    self.slug = title !== '' ? title : post.title
-    tags.forEach(tag => self.tags.push(tag))
+    self.meta = meta || post.meta
+    self.raw = raw || post.raw
+    self.slug = titleSlugger(meta.title)
 
     return self.save(saveErr => {
       if (saveErr) return res.send(saveErr)
@@ -162,7 +159,7 @@ Router.delete('/:slug', passport.authenticate('jwt', {
       })
     }
 
-    if (post.author.toString() !== user._id.toString()) {
+    if (post.meta.author.toString() !== user._id.toString()) {
       return res.json({
         status: {
           success: false,
@@ -178,11 +175,7 @@ Router.delete('/:slug', passport.authenticate('jwt', {
 
       const self = postUser
 
-      console.log(self.posts.indexOf(post._id), 1)
-
-      self.posts.splice(self.posts.indexOf(post._id), 1)
-
-      console.log(self.posts, 2)
+      self.posts = user.posts.splice(self.posts.indexOf(post._id), 1)
 
       return self.save(saveErr => {
         if (saveErr) return res.send(saveErr)

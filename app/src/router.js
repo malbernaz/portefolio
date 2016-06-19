@@ -1,21 +1,22 @@
 import React from 'react'
 import { IndexRoute, Route } from 'react-router'
 import { reduce } from 'underscore'
-import marked from 'meta-marked'
 
 import { isLoaded as isAuthLoaded, loadAuth } from './actions/auth'
 
 import { loadPosts, createDraft } from './actions/posts'
 
+import defaultDraft from './helpers/defaultDraft'
+
 import {
-  AppView,
-  Home,
   About,
-  Contact,
-  SignIn,
   Admin,
+  AppView,
+  Contact,
+  Home,
+  Post,
   Posts,
-  Post
+  SignIn
 } from './components'
 
 export default store => {
@@ -36,11 +37,14 @@ export default store => {
 
   const postMustExist = (nextState, replace, callback) => {
     const slug = nextState.params.slug
-    const { posts: { posts } } = store.getState()
+
+    const getPosts = () => {
+      const { posts: { posts } } = store.getState()
+      return posts || false
+    }
 
     function checkIfExists() {
-      const { posts: { posts } } = store.getState() // eslint-disable-line no-shadow
-      const existent = reduce(posts, (p, n) => {
+      const existent = reduce(getPosts(), (p, n) => {
         if (slug === n.slug || p === true) {
           return true
         }
@@ -55,32 +59,19 @@ export default store => {
       return callback()
     }
 
-    if (!posts) {
+    if (getPosts() === false) {
       return store.dispatch(loadPosts())
-          .then(checkIfExists)
-          .catch(checkIfExists)
+        .then(checkIfExists)
+        .catch(checkIfExists)
     }
+
     return checkIfExists()
   }
 
   const loadDraft = (nextState, replace, callback) => {
     const { posts: { draft } } = store.getState()
 
-    const raw = [
-      '---',
-      'title: my post title',
-      'subtitle: a subtle subtitle',
-      'tags:',
-      '  - a tag',
-      '  - open source',
-      '---\n'
-    ].join('\n')
-
-    const { meta, html } = marked(raw)
-
-    if (!draft) {
-      store.dispatch(createDraft(raw, meta, html))
-    }
+    if (!draft) store.dispatch(createDraft(defaultDraft))
 
     return callback()
   }
