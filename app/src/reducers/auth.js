@@ -30,7 +30,10 @@ const reducer = (state = { loaded: false }, action = {}) => {
         ...state,
         loading: false,
         loaded: false,
-        status: 'unathorized'
+        status:
+          typeof state.status === 'undefined' ?
+            'unauthorized' :
+            state.status
       }
 
     case SIGNIN:

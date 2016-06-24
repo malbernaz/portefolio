@@ -11,7 +11,7 @@ import { posts as postsActions } from '../../actions'
 class Admin extends Component {
   static propTypes = {
     createDraft: PropTypes.func,
-    publishDraft: PropTypes.func,
+    publish: PropTypes.func,
     deletePost: PropTypes.func,
     editPost: PropTypes.func,
     loadPosts: PropTypes.func,
@@ -21,28 +21,26 @@ class Admin extends Component {
   handleSubmit = e => {
     e.preventDefault()
 
-    const { editPost, publishDraft, loadPosts, posts: { draft } } = this.props
+    const { editPost, publish, loadPosts, posts: { activeDraft } } = this.props
 
     const submitPromise = promise =>
-      promise(draft)
+      promise(activeDraft)
         .then(loadPosts)
         .catch(loadPosts)
         .then(() => browserHistory.push('/'))
         .catch(() => browserHistory.push('/'))
 
-    if (draft.slug !== null) return submitPromise(editPost)
+    if (activeDraft.slug !== null) return submitPromise(editPost)
 
-    return submitPromise(publishDraft)
+    return submitPromise(publish)
   }
 
-  handleEdit = (e, { raw, meta, html, slug }) => {
+  handleEdit = (e, newActiveDraft) => {
     e.preventDefault()
-
-    console.log(meta)
 
     const { createDraft } = this.props
 
-    return createDraft({ raw, meta, html, slug })
+    return createDraft(newActiveDraft)
   }
 
   handleDelete = (e, slug) => {
@@ -58,14 +56,14 @@ class Admin extends Component {
   }
 
   render() {
-    const { posts: { posts, draft } } = this.props
+    const { posts: { posts, activeDraft } } = this.props
 
     return (
       <div>
         <Helmet title="admin" />
         <AdminView
           posts={posts}
-          draft={draft}
+          activeDraft={activeDraft}
           handleSubmit={this.handleSubmit}
           handleEdit={this.handleEdit}
           handleDelete={this.handleDelete}

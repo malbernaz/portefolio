@@ -84,7 +84,7 @@ Router.post('/authenticate', (req, res) => {
       return res.status(400).json({
         status: {
           success: false,
-          message: 'authentication failed. User not found'
+          message: 'email and password didn\'t match'
         }
       })
     }
@@ -121,7 +121,7 @@ Router.post('/authenticate', (req, res) => {
       return res.status(400).json({
         status: {
           success: false,
-          message: 'authentication failed. Passwords did not match'
+          message: 'email and password didn\'t match'
         }
       })
     })

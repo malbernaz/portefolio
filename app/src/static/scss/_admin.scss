@@ -22,6 +22,16 @@ $half-posts-list-width: $posts-list-width / 2;
 
   .top-bar-button {
     @include icon-link(3.5rem);
+
+    &.publish {
+      svg {
+        margin-left: .5rem;
+      }
+
+      span {
+        margin: 0;
+      }
+    }
   }
 
   .show-posts-list {

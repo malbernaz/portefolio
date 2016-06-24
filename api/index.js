@@ -8,7 +8,7 @@ const passport = require('passport')
 const config = require('./config/main')
 const passportConfig = require('./config/passport')
 
-const { User, Post } = require('./routes')
+const { User, Post, Draft } = require('./routes')
 
 const api = new Express()
 const port = 5000
@@ -31,6 +31,7 @@ api.get('/', (req, res) => {
 
 api.use('/user', User)
 api.use('/posts', Post)
+api.use('/drafts', Draft)
 
 api.listen(port, err => {
   if (err) {

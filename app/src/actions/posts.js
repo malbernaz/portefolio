@@ -10,9 +10,9 @@ import {
   DELETE_POST_FAIL,
   CREATE_DRAFT,
   UPDATE_DRAFT,
-  PUBLISH_DRAFT,
-  PUBLISH_DRAFT_SUCCESS,
-  PUBLISH_DRAFT_FAIL
+  PUBLISH,
+  PUBLISH_SUCCESS,
+  PUBLISH_FAIL
 } from '../constants'
 
 export const loadPosts = () => ({
@@ -20,9 +20,9 @@ export const loadPosts = () => ({
   promise: client => client.get('/posts')
 })
 
-export const editPost = ({ raw, meta, html, slug }) => ({
+export const editPost = post => ({
   types: [EDIT_POST, EDIT_POST_SUCCESS, EDIT_POST_FAIL],
-  promise: client => client.put(`/posts/${slug}`, { data: { raw, meta, html } })
+  promise: client => client.put(`/posts/${post.slug}`, { data: { ...post } })
 })
 
 export const deletePost = slug => ({
@@ -30,17 +30,17 @@ export const deletePost = slug => ({
   promise: client => client.del(`/posts/${slug}`)
 })
 
-export const createDraft = ({ raw, meta, html, slug }) => ({
+export const createDraft = newActiveDraft => ({
   type: CREATE_DRAFT,
-  draft: { raw, meta, html, slug }
+  activeDraft: { ...newActiveDraft }
 })
 
-export const updateDraft = ({ raw, meta, html }) => ({
+export const updateDraft = data => ({
   type: UPDATE_DRAFT,
-  draft: { raw, meta, html }
+  activeDraft: { ...data }
 })
 
-export const publishDraft = ({ raw, meta, html }) => ({
-  types: [PUBLISH_DRAFT, PUBLISH_DRAFT_SUCCESS, PUBLISH_DRAFT_FAIL],
-  promise: client => client.post('/posts', { data: { raw, meta, html } })
+export const publish = post => ({
+  types: [PUBLISH, PUBLISH_SUCCESS, PUBLISH_FAIL],
+  promise: client => client.post('/posts', { data: { ...post } })
 })

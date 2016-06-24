@@ -1,6 +1,6 @@
 const passport = require('passport')
 
-const { User, Post } = require('../models')
+const { User, Post, Draft } = require('../models')
 const { titleSlugger } = require('../helpers')
 
 const Router = new require('express').Router() //  eslint-disable-line
@@ -48,7 +48,7 @@ Router.get('/:slug', ({ params: { slug } }, res) => {
 
 Router.post('/', passport.authenticate('jwt', {
   session: false
-}), ({ body: { raw, meta, html }, user }, res) => {
+}), ({ body: { raw, meta, html, _id }, user }, res) => {
   const slug = titleSlugger(meta.title)
   const newPost = new Post({
     raw,
@@ -59,7 +59,7 @@ Router.post('/', passport.authenticate('jwt', {
 
   Post.findOne({ slug }, (postErr, post) => {
     if (post) {
-      return res.json({
+      return res.status(400).json({
         status: {
           success: false,
           message: 'The title produces an existent slug'
@@ -67,24 +67,28 @@ Router.post('/', passport.authenticate('jwt', {
       })
     }
 
-    return User.findOne({ _id: user._id }, (userErr, postUser) => {
-      if (userErr) return res.send(userErr)
+    return Draft.findOneAndRemove({ _id }, (draftErr) => {
+      if (draftErr) return res.send(draftErr)
 
-      const self = postUser
+      return User.findOne({ _id: user._id }, (userErr, postUser) => {
+        if (userErr) return res.send(userErr)
 
-      self.posts.push(newPost._id)
+        const self = postUser
 
-      return self.save(postUserErr => {
-        if (postUserErr) return res.send(postUserErr)
+        self.posts.push(newPost._id)
 
-        return newPost.save(newPostErr => {
-          if (newPostErr) return res.send(newPostErr)
+        return self.save(postUserErr => {
+          if (postUserErr) return res.send(postUserErr)
 
-          return res.json({
-            status: {
-              success: true,
-              message: 'successfully created post'
-            }
+          return newPost.save(newPostErr => {
+            if (newPostErr) return res.send(newPostErr)
+
+            return res.json({
+              status: {
+                success: true,
+                message: 'successfully created post'
+              }
+            })
           })
         })
       })
@@ -99,7 +103,7 @@ Router.put('/:slug', passport.authenticate('jwt', {
     if (postErr) {
       console.log(postErr.toJSON())
 
-      return res.json({
+      return res.status(400).json({
         status: {
           success: false,
           message: 'something went wrong. could\'t edit post'
@@ -108,7 +112,7 @@ Router.put('/:slug', passport.authenticate('jwt', {
     }
 
     if (post.meta.author.toString() !== user._id.toString()) {
-      return res.json({
+      return res.status(400).json({
         status: {
           success: false,
           message: 'You do not own this post'
@@ -143,7 +147,7 @@ Router.delete('/:slug', passport.authenticate('jwt', {
     if (postErr) {
       console.log(postErr.toJSON())
 
-      return res.json({
+      return res.status(400).json({
         status: {
           success: false,
           message: 'something went wrong. could\'t delete post'
@@ -152,7 +156,7 @@ Router.delete('/:slug', passport.authenticate('jwt', {
     }
 
     if (!post) {
-      return res.json({
+      return res.status(400).json({
         status: {
           success: false,
           message: 'could\'t delete post. inexsistent'
@@ -161,7 +165,7 @@ Router.delete('/:slug', passport.authenticate('jwt', {
     }
 
     if (post.meta.author.toString() !== user._id.toString()) {
-      return res.json({
+      return res.status(400).json({
         status: {
           success: false,
           message: 'You do not own this post'
@@ -186,6 +190,74 @@ Router.delete('/:slug', passport.authenticate('jwt', {
             success: true,
             message: 'successfully deleted post'
           }
+        })
+      })
+    })
+  })
+})
+
+Router.put('unpublish/:slug', passport.authenticate('jwt', {
+  session: false,
+}), ({ body: { raw, meta, html }, params, user }, res) => {
+  const slug = titleSlugger(meta.title)
+  const newDraft = new Draft({
+    raw,
+    html,
+    slug,
+    meta: Object.assign(meta, { author: user._id })
+  })
+
+  Post.findOneAndRemove({ slug: params.slug }, (postErr, post) => {
+    if (postErr) {
+      console.log(postErr.toJSON())
+
+      return res.status(400).json({
+        status: {
+          success: false,
+          message: 'something went wrong. could\'t delete post'
+        }
+      })
+    }
+
+    if (!post) {
+      return res.status(400).json({
+        status: {
+          success: false,
+          message: 'could\'t delete post. inexsistent'
+        }
+      })
+    }
+
+    if (post.meta.author.toString() !== user._id.toString()) {
+      return res.status(400).json({
+        status: {
+          success: false,
+          message: 'You do not own this post'
+        }
+      })
+    }
+
+    return User.findOne({ _id: user._id }, (postUserErr, postUser) => {
+      if (postUserErr) {
+        console.log(postUserErr.toJSON())
+      }
+
+      const self = postUser
+
+      self.posts = user.posts.splice(self.posts.indexOf(post._id), 1)
+
+      return self.save(saveErr => {
+        if (saveErr) return res.send(saveErr)
+
+        return newDraft.save(draftSaveErr => {
+          if (draftSaveErr) return res.send(draftSaveErr)
+
+          return res.json({
+            status: {
+              success: true,
+              message: 'successfully unpublished post'
+            }
+          })
         })
       })
     })

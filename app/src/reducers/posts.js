@@ -10,39 +10,50 @@ import {
   DELETE_POST_FAIL,
   CREATE_DRAFT,
   UPDATE_DRAFT,
-  PUBLISH_DRAFT,
-  PUBLISH_DRAFT_SUCCESS,
-  PUBLISH_DRAFT_FAIL
+  PUBLISH,
+  PUBLISH_SUCCESS,
+  PUBLISH_FAIL,
+  LOAD_DRAFTS,
+  LOAD_DRAFTS_SUCCESS,
+  LOAD_DRAFTS_FAIL,
+  SAVE_DRAFTS,
+  SAVE_DRAFTS_SUCCESS,
+  SAVE_DRAFTS_FAIL,
+  DELETE_DRAFTS,
+  DELETE_DRAFTS_SUCCESS,
+  DELETE_DRAFTS_FAIL,
 } from '../constants'
 
 import defaultDraft from '../helpers/defaultDraft'
 
-const reducer = (state = { loaded: false }, action = {}) => {
+const reducer = (state = { loadedPosts: false }, action = {}) => {
+  // load Posts
   switch (action.type) {
     case LOAD_POSTS:
       return {
         ...state,
-        loading: true
+        loadingPosts: true
       }
     case LOAD_POSTS_SUCCESS:
       return {
         ...state,
-        loading: false,
-        loaded: true,
+        loadingPosts: false,
+        loadedPosts: true,
         status: action.result.status.message,
         posts: action.result.status.posts
       }
     case LOAD_POSTS_FAIL:
       return {
         ...state,
-        loading: false,
-        loaded: false,
+        loadingPosts: false,
+        loadedPosts: false,
         status:
           Object.keys(action.error) !== 0 ?
             action.error :
             'unathorized'
       }
 
+    // edit post
     case EDIT_POST:
       return {
         ...state,
@@ -54,7 +65,7 @@ const reducer = (state = { loaded: false }, action = {}) => {
         editingPost: false,
         editedPost: true,
         status: action.result.status.message,
-        draft: defaultDraft
+        activeDraft: defaultDraft
       }
     case EDIT_POST_FAIL:
       return {
@@ -64,6 +75,7 @@ const reducer = (state = { loaded: false }, action = {}) => {
         status: action.result.status.message
       }
 
+    // delete post
     case DELETE_POST:
       return {
         ...state,
@@ -74,7 +86,7 @@ const reducer = (state = { loaded: false }, action = {}) => {
         ...state,
         deletingPost: false,
         deletedPost: true,
-        draft: defaultDraft
+        activeDraft: defaultDraft
       }
     case DELETE_POST_FAIL:
       return {
@@ -83,46 +95,109 @@ const reducer = (state = { loaded: false }, action = {}) => {
         deletedPost: true,
       }
 
+    // create or update local activeDraft
     case CREATE_DRAFT:
       return {
         ...state,
-        draft: {
-          raw: action.draft.raw,
-          meta: action.draft.meta,
-          html: action.draft.html,
-          slug: action.draft.slug || null
+        activeDraft: {
+          ...action.activeDraft,
+          slug: action.activeDraft.slug || null
         }
       }
     case UPDATE_DRAFT:
       return {
         ...state,
-        draft: {
-          raw: action.draft.raw,
-          meta: action.draft.meta,
-          html: action.draft.html,
-          slug: state.draft.slug
+        activeDraft: {
+          ...action.activeDraft,
+          slug: state.activeDraft.slug
         }
       }
 
-    case PUBLISH_DRAFT:
+    // publish activeDraft or post
+    case PUBLISH:
       return {
         ...state,
         publishing: true
       }
-    case PUBLISH_DRAFT_SUCCESS:
-      console.log(action)
+    case PUBLISH_SUCCESS:
       return {
         ...state,
         publishing: false,
         published: true,
         status: action.result.status.message,
-        draft: defaultDraft
+        activeDraft: defaultDraft
       }
-    case PUBLISH_DRAFT_FAIL:
+    case PUBLISH_FAIL:
       return {
         ...state,
         publishing: false,
         published: false,
+        status: action.result.status.message
+      }
+
+    // load drafts
+    case LOAD_DRAFTS:
+      return {
+        ...state,
+        loadingDrafts: true
+      }
+    case LOAD_DRAFTS_SUCCESS:
+      return {
+        ...state,
+        loadingDrafts: false,
+        loadedDrafts: true,
+        status: action.result.status.message,
+        drafts: action.result.status.drafts
+      }
+    case LOAD_DRAFTS_FAIL:
+      return {
+        ...state,
+        loadingDrafts: false,
+        loadedDrafts: true,
+        status: action.result.status.message
+      }
+
+    // save activeDraft remotely
+    case SAVE_DRAFTS:
+      return {
+        ...state,
+        savingDraft: true
+      }
+    case SAVE_DRAFTS_SUCCESS:
+      return {
+        ...state,
+        savingDraft: false,
+        savedDraft: true,
+        status: action.result.status.message,
+        drafts: action.result.status.drafts
+      }
+    case SAVE_DRAFTS_FAIL:
+      return {
+        ...state,
+        savingDraft: false,
+        savedDraft: true,
+        status: action.result.status.message
+      }
+
+    // delete activeDraft
+    case DELETE_DRAFTS:
+      return {
+        ...state,
+        deletingDraft: true
+      }
+    case DELETE_DRAFTS_SUCCESS:
+      return {
+        ...state,
+        deletingDraft: false,
+        deletedDraft: true,
+        status: action.result.status.message,
+        drafts: action.result.status.drafts
+      }
+    case DELETE_DRAFTS_FAIL:
+      return {
+        ...state,
+        deletingDraft: false,
+        deletedDraft: true,
         status: action.result.status.message
       }
 

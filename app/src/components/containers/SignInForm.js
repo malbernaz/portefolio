@@ -38,7 +38,6 @@ const SignInForm = ({ auth, signIn, logout, loadAuth, }) => {
       })
       .catch(err => {
         browserHistory.push('/admin')
-        console.log(err)
         return err
       })
       .then(loadAuth)
@@ -48,7 +47,15 @@ const SignInForm = ({ auth, signIn, logout, loadAuth, }) => {
       submitChain()
   }
 
-  return <Form onSubmit={handleSubmit} />
+  return (
+    <div className="signin-wrapper">
+      <Form onSubmit={handleSubmit} />
+      {
+        !auth.status.success ?
+          <span className="error-message">{auth.status.message}</span> : ''
+      }
+    </div>
+  )
 }
 
 SignInForm.propTypes = {

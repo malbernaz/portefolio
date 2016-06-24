@@ -4,7 +4,7 @@ import moment from 'moment'
 
 import { Icon, MyEditor } from '../'
 
-const AdminView = ({ posts, draft, handleSubmit, handleEdit, handleDelete }) => (
+const AdminView = ({ posts, activeDraft, handleSubmit, handleEdit, handleDelete }) => (
   <section className="admin">
     <div className="editor">
       <div className="top-admin-bar">
@@ -14,23 +14,16 @@ const AdminView = ({ posts, draft, handleSubmit, handleEdit, handleDelete }) => 
         </a>
         <div className="post-title">
           <div className="title">
-            <b>{draft.meta.title}</b>
+            <b>{activeDraft.meta.title}</b>
           </div>
           <small>
             updated {moment().subtract(new Date(), 'days').calendar()}
           </small>
         </div>
-        {
-          draft.slug === null ?
-            <a href="#" onClick={e => handleSubmit(e)} className="top-bar-button">
-              <Icon name="rocket" />
-              <span>publish</span>
-            </a> :
-            <a href="#" onClick={e => handleSubmit(e)} className="top-bar-button">
-              <Icon name="rocket" />
-              <span>update</span>
-            </a>
-        }
+        <a href="#" onClick={e => handleSubmit(e)} className="top-bar-button publish">
+          <span>{activeDraft.slug === null ? 'publish' : 'update'}</span>
+          <Icon name="rocket" />
+        </a>
       </div>
       <div className="panes">
         <div className="posts-list">
@@ -63,12 +56,12 @@ const AdminView = ({ posts, draft, handleSubmit, handleEdit, handleDelete }) => 
           dangerouslySetInnerHTML={{
             __html: `
               <h2>
-                ${draft.meta.title}
+                ${activeDraft.meta.title}
               </h2>
               <h3>
-                ${draft.meta.subtitle}
+                ${activeDraft.meta.subtitle}
               </h3>
-              ${draft.html}
+              ${activeDraft.html}
             `
           }}
         >
@@ -94,7 +87,7 @@ const AdminView = ({ posts, draft, handleSubmit, handleEdit, handleDelete }) => 
 
 AdminView.propTypes = {
   posts: PropTypes.array,
-  draft: PropTypes.object.isRequired,
+  activeDraft: PropTypes.object.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   handleEdit: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired

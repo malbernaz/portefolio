@@ -6,10 +6,11 @@ Portefolio is a project of my own, but if you wish don't hesitate to make it you
 
 I'm open to commits.
 
-## todos in an unordered list:
+## TODOS:
 
-- finish posts actions and reducers
+- ~~finish posts actions and reducers~~
+- find a more efficient way to handle drafts (on its way)
+- create tests (important)
 - finish stylesheets
 - implement ui animations
 - implement service worker
-- implement push notifications

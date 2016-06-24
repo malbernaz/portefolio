@@ -37,7 +37,7 @@ class MyEditor extends Component {
   }
 
   render() {
-    const { posts: { draft: { raw } } } = this.props
+    const { posts: { activeDraft: { raw } } } = this.props
 
     return (
       <Codemirror

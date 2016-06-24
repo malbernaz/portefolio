@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const { titleSlugger } = require('../helpers')
 
-const PostSchema = new mongoose.Schema({
+const DraftSchema = new mongoose.Schema({
   raw: {
     type: String,
     required: true
@@ -40,15 +40,15 @@ const PostSchema = new mongoose.Schema({
   timestamps: true
 })
 
-PostSchema.pre('save', function slugTitle(next) {
-  const post = this
+DraftSchema.pre('save', function slugTitle(next) {
+  const draft = this
 
-  post.slug = titleSlugger(post.meta.title)
+  draft.slug = titleSlugger(draft.meta.title)
 
-  post.meta.tags = post.meta.tags
+  draft.meta.tags = draft.meta.tags
     .filter((tag, i, array) => array.indexOf(tag) === i)
 
   return next()
 })
 
-module.exports = mongoose.model('Post', PostSchema)
+module.exports = mongoose.model('Draft', DraftSchema)

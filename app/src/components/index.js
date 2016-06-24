@@ -2,6 +2,7 @@
 export Admin from './containers/Admin'
 export AppView from './containers/AppView'
 export Footer from './containers/Footer'
+export MessageNotifier from './containers/MessageNotifier'
 export MyEditor from './containers/MyEditor'
 export Nav from './containers/Nav'
 export SignInForm from './containers/SignInForm'
