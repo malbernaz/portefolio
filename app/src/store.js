@@ -18,9 +18,8 @@ const configureStore = (client, history, initialState = {}) => {
     initialState,
     compose(
       applyMiddleware(...middleware),
-      typeof window === 'object' ?
-        DevTools.instrument() :
-        f => f
+      typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ?
+        window.devToolsExtension() : f => f
     )
   )
   return store

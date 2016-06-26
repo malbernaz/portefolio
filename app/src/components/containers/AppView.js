@@ -7,7 +7,7 @@ import config from '../../config'
 
 import { auth } from '../../actions'
 
-import { Nav, DevTools } from '../'
+import { Nav } from '../'
 
 const AppView = ({ children }) => (
   <div id="app-view" className="app-view">
@@ -16,7 +16,6 @@ const AppView = ({ children }) => (
     <div className="container">
       {children}
     </div>
-    {typeof window === 'object' ? <DevTools /> : null}
   </div>
 )
 
