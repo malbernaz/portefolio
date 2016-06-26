@@ -57,6 +57,15 @@ const Icon = ({ name }) => {
           />
         </svg>
       )
+    case 'more':
+      return (
+        <svg viewBox="0 0 16 70" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M15.547 7.774A7.774 7.774 0 1 0 0 7.774a7.774 7.774 0 0 0 15.547 0zM7.774 70a7.774 7.774 0 1 0 0-15.547 7.774 7.774 0 0 0 0 15.547zm0-27.226a7.774 7.774 0 1 0 0-15.548 7.774 7.774 0 0 0 0 15.548z"
+            fillRule="evenodd"
+          />
+        </svg>
+      )
     case 'github':
       return (
         <svg viewBox="0 0 72 70" xmlns="http://www.w3.org/2000/svg">

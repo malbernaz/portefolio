@@ -1,33 +1,43 @@
-import path from 'path'
-import gulp from 'gulp'
-import prefixer from 'gulp-autoprefixer'
-import plumber from 'gulp-plumber'
-import sass from 'gulp-sass'
-import eslint from 'gulp-eslint'
-import svgo from 'gulp-svgo'
-import gutil from 'gulp-util'
 import _nodemon from 'gulp-nodemon'
-import uglify from 'gulp-uglify'
+import eslint from 'gulp-eslint'
+import gulp from 'gulp'
+import gutil from 'gulp-util'
+import path from 'path'
+import plumber from 'gulp-plumber'
+import prefixer from 'gulp-autoprefixer'
+import sass from 'gulp-sass'
 import sourcemaps from 'gulp-sourcemaps'
+import svgo from 'gulp-svgo'
+import uglify from 'gulp-uglify'
 
-import del from 'del'
-import bs from 'browser-sync'
 import babelify from 'babelify'
 import browserify from 'browserify'
+import bs from 'browser-sync'
 import buffer from 'vinyl-buffer'
-import source from 'vinyl-source-stream'
+import del from 'del'
 import normalize from 'node-normalize-scss'
+import source from 'vinyl-source-stream'
 
 const _browserSync = bs.create()
 const reload = _browserSync.reload
 
 const THIRD_PARTY_MODULES = [
-  'react',
+  'codemirror',
+  'lru-memoize',
+  'marked',
+  'meta-marked',
+  'moment',
+  'react-codemirror',
   'react-dom',
-  'react-router',
-  'react-router-scroll',
-  'react-redux',
   'react-helmet',
+  'react-redux',
+  'react-router-scroll',
+  'react-router',
+  'react',
+  'redux-devtools-dock-monitor',
+  'redux-devtools-inspector',
+  'redux-devtools',
+  'redux-form',
   'redux',
   'superagent',
   'underscore'

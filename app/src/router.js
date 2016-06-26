@@ -69,9 +69,9 @@ export default store => {
   }
 
   const loadDraft = (nextState, replace, callback) => {
-    const { posts: { draft } } = store.getState()
+    const { posts: { activeDraft } } = store.getState()
 
-    if (!draft) store.dispatch(createDraft(defaultDraft))
+    if (!activeDraft) store.dispatch(createDraft(defaultDraft))
 
     return callback()
   }

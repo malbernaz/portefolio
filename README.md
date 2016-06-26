@@ -14,3 +14,4 @@ I'm open to commits.
 - finish stylesheets
 - implement ui animations
 - implement service worker
+- use webpack instead of browserify

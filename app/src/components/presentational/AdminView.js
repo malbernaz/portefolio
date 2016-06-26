@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 
 import moment from 'moment'
 
-import { Icon, MyEditor } from '../'
+import { Icon, MyEditor, DropdownButton } from '../'
 
 const AdminView = ({ posts, activeDraft, handleSubmit, handleEdit, handleDelete }) => (
   <section className="admin">
@@ -20,10 +20,19 @@ const AdminView = ({ posts, activeDraft, handleSubmit, handleEdit, handleDelete 
             updated {moment().subtract(new Date(), 'days').calendar()}
           </small>
         </div>
-        <a href="#" onClick={e => handleSubmit(e)} className="top-bar-button publish">
-          <span>{activeDraft.slug === null ? 'publish' : 'update'}</span>
-          <Icon name="rocket" />
-        </a>
+        <DropdownButton
+          options={activeDraft.slug === null ? [
+            { label: 'publish', action: handleSubmit },
+            { label: 'save draft', action: handleSubmit }
+          ] : [
+            { label: 'update', action: handleEdit },
+            { label: 'unpublish', action: handleSubmit }
+          ]}
+          fixedOptions={[
+            { label: 'new post', action: handleSubmit },
+            { label: 'delete', action: handleDelete }
+          ]}
+        />
       </div>
       <div className="panes">
         <div className="posts-list">

@@ -1,6 +1,6 @@
 import { SHOW_MESSAGE, DISSMISS_MESSAGE } from '../constants'
 
-export default (state = {}, action = {}) => {
+const reducer = (state = {}, action = {}) => {
   switch (action.type) {
     case SHOW_MESSAGE:
       return {
@@ -18,3 +18,5 @@ export default (state = {}, action = {}) => {
       return state
   }
 }
+
+export default reducer

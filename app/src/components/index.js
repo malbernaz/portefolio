@@ -1,7 +1,8 @@
 // Containers
 export Admin from './containers/Admin'
 export AppView from './containers/AppView'
-export Footer from './containers/Footer'
+export DevTools from './containers/DevTools'
+export DropdownButton from './containers/DropdownButton'
 export MessageNotifier from './containers/MessageNotifier'
 export MyEditor from './containers/MyEditor'
 export Nav from './containers/Nav'
