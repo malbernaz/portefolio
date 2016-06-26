@@ -104,8 +104,8 @@ app.use((req, res) => {
 
     function renderPage() {
       const component = (
-        <Provider store={store} key="provider">
-          <RouterContext {...renderProps} />
+        <Provider store={ store } key="provider">
+          <RouterContext { ...renderProps } />
         </Provider>
       )
 
@@ -114,8 +114,8 @@ app.use((req, res) => {
       res.send(`<!doctype html>\n${
         renderToString(
           <Html
-            component={component}
-            store={store}
+            component={ component }
+            store={ store }
           />
         )
       }`)

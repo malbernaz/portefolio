@@ -62,11 +62,11 @@ class Admin extends Component {
       <div>
         <Helmet title="admin" />
         <AdminView
-          posts={posts}
-          activeDraft={activeDraft}
-          handleSubmit={this.handleSubmit}
-          handleEdit={this.handleEdit}
-          handleDelete={this.handleDelete}
+          posts={ posts }
+          activeDraft={ activeDraft }
+          handleSubmit={ this.handleSubmit }
+          handleEdit={ this.handleEdit }
+          handleDelete={ this.handleDelete }
         />
       </div>
     )

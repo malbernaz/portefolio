@@ -14,7 +14,7 @@ const AppView = ({ children }) => (
     <Helmet { ...config.head } />
     <Nav />
     <div className="container">
-      {children}
+      { children }
     </div>
   </div>
 )

@@ -13,11 +13,11 @@ const Html = ({ component, store }) => {
   return (
     <html lang="pt-br">
       <head>
-        {head.base.toComponent()}
-        {head.title.toComponent()}
-        {head.meta.toComponent()}
-        {head.link.toComponent()}
-        {head.script.toComponent()}
+        { head.base.toComponent() }
+        { head.title.toComponent() }
+        { head.meta.toComponent() }
+        { head.link.toComponent() }
+        { head.script.toComponent() }
 
         <meta charSet="UTF-8" />
         <title>!PRONTO</title>

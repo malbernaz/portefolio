@@ -17,11 +17,11 @@ const store = configureStore(client, browserHistory, initialState)
 const history = syncHistoryWithStore(browserHistory, store)
 
 render(
-  <Provider store={store}>
+  <Provider store={ store }>
     <Router
-      children={getRouter(store)}
-      history={history}
-      render={applyRouterMiddleware(useScroll())}
+      children={ getRouter(store) }
+      history={ history }
+      render={ applyRouterMiddleware(useScroll()) }
     />
   </Provider>, document.getElementById('react-view')
 )

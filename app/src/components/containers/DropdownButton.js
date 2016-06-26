@@ -28,20 +28,20 @@ class DropdownButton extends Component {
 
     return (
       <div className="dropdown-button">
-        <a href="#" onClick={e => this.toggleDropdown(e)} className="dropdown-toggle">
+        <a href="#" onClick={ e => this.toggleDropdown(e) } className="dropdown-toggle">
           <Icon name="more" />
         </a>
-        <div className={dropdownHidden ? 'dropdown-options hidden' : 'dropdown-options'}>
-          {options.map((o, i) =>
-            <a href="#" key={i} onClick={e => o.action(e)}>
-              {o.label}
+        <div className={ dropdownHidden ? 'dropdown-options hidden' : 'dropdown-options' }>
+          { options.map((o, i) =>
+            <a href="#" key={ i } onClick={ e => o.action(e) }>
+              { o.label }
             </a>
-          )}
-          {fixedOptions.map((o, i) =>
-            <a href="#" key={i} onClick={e => o.action(e)}>
-              {o.label}
+          ) }
+          { fixedOptions.map((o, i) =>
+            <a href="#" key={ i } onClick={ e => o.action(e) }>
+              { o.label }
             </a>
-          )}
+          ) }
         </div>
       </div>
     )

@@ -41,9 +41,9 @@ class MyEditor extends Component {
 
     return (
       <Codemirror
-        options={options}
-        onChange={this.handleChange}
-        value={raw}
+        options={ options }
+        onChange={ this.handleChange }
+        value={ raw }
       />
     )
   }

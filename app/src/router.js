@@ -77,20 +77,20 @@ export default store => {
   }
 
   return (
-    <Route name="app" component={AppView} path="/">
-      <IndexRoute component={Home} />
-      <Route component={About} path="about" />
-      <Route component={Contact} path="contact" />
+    <Route name="app" component={ AppView } path="/">
+      <IndexRoute component={ Home } />
+      <Route component={ About } path="about" />
+      <Route component={ Contact } path="contact" />
 
       <Route name="posts" path="/posts">
-        <IndexRoute component={Posts} />
-        <Route path=":slug" onEnter={postMustExist} component={Post} />
+        <IndexRoute component={ Posts } />
+        <Route path=":slug" onEnter={ postMustExist } component={ Post } />
       </Route>
 
       <Route name="admin" path="admin">
-        <Route component={SignIn} path="signin" />
-        <Route onEnter={mustBeLogged}>
-          <IndexRoute onEnter={loadDraft} component={Admin} />
+        <Route component={ SignIn } path="signin" />
+        <Route onEnter={ mustBeLogged }>
+          <IndexRoute onEnter={ loadDraft } component={ Admin } />
         </Route>
       </Route>
     </Route>

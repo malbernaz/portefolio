@@ -49,11 +49,12 @@ const SignInForm = ({ auth, signIn, logout, loadAuth, }) => {
 
   return (
     <div className="signin-wrapper">
-      <Form onSubmit={handleSubmit} />
-      {
-        !auth.status.success ?
-          <span className="error-message">{auth.status.message}</span> : ''
-      }
+      <Form onSubmit={ handleSubmit } />
+      { !auth.status.success ?
+        <span className="error-message">
+          { auth.status.message }
+        </span> :
+      '' }
     </div>
   )
 }

@@ -1,8 +1,6 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import { routerMiddleware } from 'react-router-redux'
 
-import { DevTools } from './components'
-
 import createMiddleware from './middleware/clientMiddleware'
 import rootReducer from './reducers'
 

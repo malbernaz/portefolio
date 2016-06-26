@@ -7,11 +7,11 @@ const Post = ({ posts, slug }) => {
   const { meta, html, createdAt } = posts.filter(p => p.slug === slug)[0]
   return (
     <section className="post">
-      <Helmet title={meta.title} />
+      <Helmet title={ meta.title } />
       <article>
-        <small>{moment(createdAt, 'YYYYMMDD').fromNow()}</small>
-        <h2>{meta.title}</h2>
-        <h3>{meta.subtitle}</h3>
+        <small>{ moment(createdAt, 'YYYYMMDD').fromNow() }</small>
+        <h2>{ meta.title }</h2>
+        <h3>{ meta.subtitle }</h3>
         <div dangerouslySetInnerHTML={{ __html: html }}></div>
       </article>
     </section>

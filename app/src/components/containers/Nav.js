@@ -8,7 +8,7 @@ import { Icon } from '../'
 import { auth as authActions } from '../../actions'
 
 const Nav = ({ auth, logout }) => (
-  <div className={auth.user ? 'nav-wrapper logged-in' : 'nav-wrapper'}>
+  <div className={ auth.user ? 'nav-wrapper logged-in' : 'nav-wrapper' }>
     <a herf="#" className="toggle-menu">
       <Icon name="menu" />
       <span>menu</span>
@@ -22,10 +22,10 @@ const Nav = ({ auth, logout }) => (
           <li><IndexLink to="/">home</IndexLink></li>
           <li><IndexLink to="/about">about</IndexLink></li>
           <li><IndexLink to="/contact">contact</IndexLink></li>
-          {auth.user ?
-            <li><Link to="/admin">editor</Link></li> : ''}
-          {auth.user ?
-            <li><Link to="/" onClick={logout}>← logout</Link></li> : ''}
+          { auth.user ?
+            <li><Link to="/admin">editor</Link></li> : '' }
+          { auth.user ?
+            <li><Link to="/" onClick={ logout }>← logout</Link></li> : '' }
         </ul>
       </div>
     </nav>
