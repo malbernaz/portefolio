@@ -1,4 +1,4 @@
-# portefolio
+# Portefolio
 
 A blog scaffold featuring react, redux, server-side rendering and a markdown editor.
 
