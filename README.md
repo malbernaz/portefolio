@@ -10,7 +10,7 @@ I'm open to commits.
 
 - ~~finish posts actions and reducers~~
 - find a more efficient way to handle drafts (on its way)
-- create tests (important)
+- create tests **important**
 - finish stylesheets
 - implement ui animations
 - implement service worker
