@@ -11,7 +11,7 @@ Portefolio is a project of my own, but if you wish don't hesitate to make it you
 
 ## Todos in an unordered list:
 
-- API endpoins refactoring (use promises instead of callbacks for mongoose queries)
+- ~~API endpoins refactoring (use promises instead of callbacks for mongoose queries)~~
 - Find a more efficient way to handle drafts (on its way)
 - Create tests (**important**)
 - Implement ui animations

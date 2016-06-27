@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt-as-promised')
 
 const UserSchema = new mongoose.Schema({
   username: {
@@ -21,29 +21,33 @@ const UserSchema = new mongoose.Schema({
   posts: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Post'
+  }],
+  drafts: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Draft'
   }]
 })
 
 UserSchema.pre('save', function hashPassword(next) {
   const user = this
+
   if (this.isModified('password') || this.isNew) {
-    return bcrypt.genSalt(10, (saltErr, salt) => {
-      if (saltErr) return next(saltErr)
-      return bcrypt.hash(this.password, salt, (hashErr, hash) => {
-        if (hashErr) return next(hashErr)
+    return bcrypt.genSalt(10)
+      .then(salt => bcrypt.hash(this.password, salt))
+      .then(hash => {
         user.password = hash
         return next()
       })
-    })
+      .catch(err => next(err))
   }
+
   return next()
 })
 
-UserSchema.methods.comparePassword = function comparePassword(password, callback) {
-  bcrypt.compare(password, this.password, (err, isMatch) => {
-    if (err) return callback(err)
-    return callback(null, isMatch)
-  })
+UserSchema.methods.comparePassword = function comparePassword(password) {
+  return bcrypt.compare(password, this.password)
+    .then(() => this)
+    .catch(err => err)
 }
 
 module.exports = mongoose.model('User', UserSchema)

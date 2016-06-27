@@ -25,9 +25,9 @@ export const editPost = post => ({
   promise: client => client.put(`/posts/${post.slug}`, { data: { ...post } })
 })
 
-export const deletePost = slug => ({
+export const deletePost = _id => ({
   types: [DELETE_POST, DELETE_POST_SUCCESS, DELETE_POST_FAIL],
-  promise: client => client.del(`/posts/${slug}`)
+  promise: client => client.del(`/posts/${_id}`)
 })
 
 export const createDraft = newActiveDraft => ({

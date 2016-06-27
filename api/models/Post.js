@@ -51,4 +51,10 @@ PostSchema.pre('save', function slugTitle(next) {
   return next()
 })
 
+PostSchema.pre('remove', function updatePosts(next) {
+  this.model('User').update({
+    $pull: { posts: this._id }
+  }, next)
+})
+
 module.exports = mongoose.model('Post', PostSchema)

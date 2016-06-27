@@ -43,12 +43,12 @@ class Admin extends Component {
     return createDraft(newActiveDraft)
   }
 
-  handleDelete = (e, slug) => {
+  handleDelete = (e, _id) => {
     e.preventDefault()
 
     const { deletePost, loadPosts } = this.props
 
-    return deletePost(slug)
+    return deletePost(_id)
       .then(loadPosts)
       .catch(loadPosts)
       .then(() => browserHistory.push('/'))

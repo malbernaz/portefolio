@@ -51,4 +51,10 @@ DraftSchema.pre('save', function slugTitle(next) {
   return next()
 })
 
+DraftSchema.pre('remove', function updatePosts(next) {
+  this.model('User').update({
+    $pull: { drafts: this._id }
+  }, next)
+})
+
 module.exports = mongoose.model('Draft', DraftSchema)

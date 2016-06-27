@@ -25,7 +25,7 @@ const AdminView = ({ posts, activeDraft, handleSubmit, handleEdit, handleDelete 
             { label: 'publish', action: handleSubmit },
             { label: 'save draft', action: handleSubmit }
           ] : [
-            { label: 'update', action: handleEdit },
+            { label: 'update', action: handleSubmit },
             { label: 'unpublish', action: handleSubmit }
           ] }
           fixedOptions={ [
@@ -45,7 +45,7 @@ const AdminView = ({ posts, activeDraft, handleSubmit, handleEdit, handleDelete 
                       <Icon name="edit" />
                     </a>
                     <a
-                      onClick={ e => handleDelete(e, p.slug) }
+                      onClick={ e => handleDelete(e, p._id) }
                       className="post-action delete"
                       href="#"
                     >

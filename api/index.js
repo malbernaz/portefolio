@@ -13,6 +13,9 @@ const { User, Post, Draft } = require('./routes')
 const api = new Express()
 const port = 5000
 
+// Use native promises with mongoose
+mongoose.Promise = global.Promise
+
 api.use(bodyParser.urlencoded({ extended: false }))
 api.use(bodyParser.json())
 api.use(cookie(config.secret))

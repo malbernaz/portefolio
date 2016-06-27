@@ -22,7 +22,7 @@ const reducer = (state = { loaded: false }, action = {}) => {
         ...state,
         loading: false,
         loaded: true,
-        status: action.result.status,
+        status: action.result.message,
         user: action.result.user
       }
     case LOAD_AUTH_FAIL:
@@ -45,7 +45,7 @@ const reducer = (state = { loaded: false }, action = {}) => {
       return {
         ...state,
         signingIn: false,
-        status: action.result.status,
+        status: action.result.message,
         user: action.result.user
       }
     case SIGNIN_FAIL:
@@ -53,7 +53,7 @@ const reducer = (state = { loaded: false }, action = {}) => {
         ...state,
         signingIn: false,
         user: null,
-        status: action.error.status
+        status: action.error.message
       }
 
     case LOGOUT:
@@ -66,13 +66,13 @@ const reducer = (state = { loaded: false }, action = {}) => {
         ...state,
         loggingOut: false,
         user: null,
-        status: action.result.status
+        status: action.result.message
       }
     case LOGOUT_FAIL:
       return {
         ...state,
         loggingOut: false,
-        status: action.error.status
+        status: action.error.message
       }
 
     default:

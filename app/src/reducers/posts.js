@@ -39,8 +39,8 @@ const reducer = (state = { loadedPosts: false }, action = {}) => {
         ...state,
         loadingPosts: false,
         loadedPosts: true,
-        status: action.result.status.message,
-        posts: action.result.status.posts
+        status: action.result.message,
+        posts: action.result.posts
       }
     case LOAD_POSTS_FAIL:
       return {
@@ -64,7 +64,7 @@ const reducer = (state = { loadedPosts: false }, action = {}) => {
         ...state,
         editingPost: false,
         editedPost: true,
-        status: action.result.status.message,
+        status: action.result.message,
         activeDraft: defaultDraft
       }
     case EDIT_POST_FAIL:
@@ -72,7 +72,7 @@ const reducer = (state = { loadedPosts: false }, action = {}) => {
         ...state,
         editingPost: false,
         editedPost: false,
-        status: action.result.status.message
+        status: action.error.message
       }
 
     // delete post
@@ -124,7 +124,7 @@ const reducer = (state = { loadedPosts: false }, action = {}) => {
         ...state,
         publishing: false,
         published: true,
-        status: action.result.status.message,
+        status: action.result.message,
         activeDraft: defaultDraft
       }
     case PUBLISH_FAIL:
@@ -132,7 +132,7 @@ const reducer = (state = { loadedPosts: false }, action = {}) => {
         ...state,
         publishing: false,
         published: false,
-        status: action.result.status.message
+        status: action.error.message
       }
 
     // load drafts
@@ -146,15 +146,15 @@ const reducer = (state = { loadedPosts: false }, action = {}) => {
         ...state,
         loadingDrafts: false,
         loadedDrafts: true,
-        status: action.result.status.message,
-        drafts: action.result.status.drafts
+        status: action.result.message,
+        drafts: action.result.drafts
       }
     case LOAD_DRAFTS_FAIL:
       return {
         ...state,
         loadingDrafts: false,
         loadedDrafts: true,
-        status: action.result.status.message
+        status: action.error.message
       }
 
     // save activeDraft remotely
@@ -168,15 +168,15 @@ const reducer = (state = { loadedPosts: false }, action = {}) => {
         ...state,
         savingDraft: false,
         savedDraft: true,
-        status: action.result.status.message,
-        drafts: action.result.status.drafts
+        status: action.result.message,
+        drafts: action.result.drafts
       }
     case SAVE_DRAFTS_FAIL:
       return {
         ...state,
         savingDraft: false,
         savedDraft: true,
-        status: action.result.status.message
+        status: action.error.message
       }
 
     // delete activeDraft
@@ -190,15 +190,15 @@ const reducer = (state = { loadedPosts: false }, action = {}) => {
         ...state,
         deletingDraft: false,
         deletedDraft: true,
-        status: action.result.status.message,
-        drafts: action.result.status.drafts
+        status: action.result.message,
+        drafts: action.result.drafts
       }
     case DELETE_DRAFTS_FAIL:
       return {
         ...state,
         deletingDraft: false,
         deletedDraft: true,
-        status: action.result.status.message
+        status: action.error.message
       }
 
     default:
