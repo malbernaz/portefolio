@@ -7,6 +7,7 @@ const Router = new require('express').Router() // eslint-disable-line new-cap
 
 const genericErrorMessage = 'Something went wrong :(. Consider contacting albernazmiguel@gmail.com'
 
+
 Router.get('/', (req, res) => {
   Draft.find().exec()
 
@@ -15,13 +16,13 @@ Router.get('/', (req, res) => {
     if (drafts.length < 1) {
       return res.send({
         success: false,
-        message: 'There are no drafts yet'
+        message: 'there are no drafts yet'
       })
     }
 
     return res.json({
       success: true,
-      message: 'Successfully loaded drafts',
+      message: 'successfully loaded drafts',
       drafts
     })
   })
@@ -42,7 +43,7 @@ Router.get('/:slug', passport.authenticate('jwt', {
   // search draft by slug
   .then(draft => res.json({
     success: true,
-    message: 'Successfully loaded draft',
+    message: 'successfully loaded draft',
     draft
   }))
 
@@ -124,7 +125,7 @@ Router.put('/:slug', passport.authenticate('jwt', {
   .catch(err => res.status(400).json({
     success: false,
     message: err.why === 'unathorized' ?
-      'You do not own this draft' :
+      'you do not own this draft' :
       'something went wrong. could\'t edit draft'
   }))
 })

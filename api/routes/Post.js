@@ -16,13 +16,13 @@ Router.get('/', (req, res) => {
     if (posts.length < 1) {
       return res.send({
         success: false,
-        message: 'There are no posts yet'
+        message: 'there are no posts yet'
       })
     }
 
     return res.json({
       success: true,
-      message: 'Successfully loaded posts',
+      message: 'successfully loaded posts',
       posts
     })
   })
@@ -40,7 +40,7 @@ Router.get('/:slug', ({ params: { slug } }, res) => {
   // search post by slug
   .then(post => res.json({
     success: true,
-    message: 'Successfully loaded post',
+    message: 'successfully loaded post',
     post
   }))
 

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const bcrypt = require('bcrypt-as-promised')
+const bcrypt = require('bcrypt-then')
 
 const UserSchema = new mongoose.Schema({
   username: {

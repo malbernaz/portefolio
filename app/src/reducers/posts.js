@@ -13,15 +13,18 @@ import {
   PUBLISH,
   PUBLISH_SUCCESS,
   PUBLISH_FAIL,
+  UNPUBLISH,
+  UNPUBLISH_SUCCESS,
+  UNPUBLISH_FAIL,
   LOAD_DRAFTS,
   LOAD_DRAFTS_SUCCESS,
   LOAD_DRAFTS_FAIL,
-  SAVE_DRAFTS,
-  SAVE_DRAFTS_SUCCESS,
-  SAVE_DRAFTS_FAIL,
-  DELETE_DRAFTS,
-  DELETE_DRAFTS_SUCCESS,
-  DELETE_DRAFTS_FAIL,
+  SAVE_DRAFT,
+  SAVE_DRAFT_SUCCESS,
+  SAVE_DRAFT_FAIL,
+  DELETE_DRAFT,
+  DELETE_DRAFT_SUCCESS,
+  DELETE_DRAFT_FAIL,
 } from '../constants'
 
 import defaultDraft from '../helpers/defaultDraft'
@@ -113,7 +116,7 @@ const reducer = (state = { loadedPosts: false }, action = {}) => {
         }
       }
 
-    // publish activeDraft or post
+    // publish active draft
     case PUBLISH:
       return {
         ...state,
@@ -135,6 +138,27 @@ const reducer = (state = { loadedPosts: false }, action = {}) => {
         status: action.error.message
       }
 
+    // unpublish post (becomes draft)
+    case UNPUBLISH:
+      return {
+        ...state,
+        unpublishing: true
+      }
+    case UNPUBLISH_SUCCESS:
+      return {
+        ...state,
+        unpublishing: false,
+        unpublished: true,
+        status: action.result.message,
+      }
+    case UNPUBLISH_FAIL:
+      return {
+        ...state,
+        unpublishing: false,
+        unpublished: false,
+        status: action.error.message
+      }
+
     // load drafts
     case LOAD_DRAFTS:
       return {
@@ -153,17 +177,17 @@ const reducer = (state = { loadedPosts: false }, action = {}) => {
       return {
         ...state,
         loadingDrafts: false,
-        loadedDrafts: true,
+        loadedDrafts: false,
         status: action.error.message
       }
 
     // save activeDraft remotely
-    case SAVE_DRAFTS:
+    case SAVE_DRAFT:
       return {
         ...state,
         savingDraft: true
       }
-    case SAVE_DRAFTS_SUCCESS:
+    case SAVE_DRAFT_SUCCESS:
       return {
         ...state,
         savingDraft: false,
@@ -171,33 +195,32 @@ const reducer = (state = { loadedPosts: false }, action = {}) => {
         status: action.result.message,
         drafts: action.result.drafts
       }
-    case SAVE_DRAFTS_FAIL:
+    case SAVE_DRAFT_FAIL:
       return {
         ...state,
         savingDraft: false,
-        savedDraft: true,
+        savedDraft: false,
         status: action.error.message
       }
 
     // delete activeDraft
-    case DELETE_DRAFTS:
+    case DELETE_DRAFT:
       return {
         ...state,
         deletingDraft: true
       }
-    case DELETE_DRAFTS_SUCCESS:
+    case DELETE_DRAFT_SUCCESS:
       return {
         ...state,
         deletingDraft: false,
         deletedDraft: true,
         status: action.result.message,
-        drafts: action.result.drafts
       }
-    case DELETE_DRAFTS_FAIL:
+    case DELETE_DRAFT_FAIL:
       return {
         ...state,
         deletingDraft: false,
-        deletedDraft: true,
+        deletedDraft: false,
         status: action.error.message
       }
 

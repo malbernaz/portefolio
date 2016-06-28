@@ -13,14 +13,14 @@ Router.post('/register', (req, res) => {
   if (authorization !== config.registrationSecret) {
     return res.status(401).json({
       success: false,
-      message: 'You do not own permission to register to this site'
+      message: 'you do not own permission to register to this site'
     })
   }
 
   if (!email || !password) {
     return res.status(400).json({
       success: false,
-      message: 'Please enter email and password'
+      message: 'please enter email and password'
     })
   }
 
