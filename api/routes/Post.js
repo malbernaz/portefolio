@@ -63,11 +63,16 @@ Router.post('/', passport.authenticate('jwt', {
     meta: Object.assign(meta, { author: user._id })
   })
 
+  console.log(_id)
+
   // check if theres a corespondent draft saved
   Draft.findOneAndRemove({ _id }).exec()
 
   // find post owner
-  .then(() => User.findOne({ _id: user._id }).exec())
+  .then(draft => {
+    console.log(draft)
+    return User.findOne({ _id: user._id }).exec()
+  })
 
   // update user with new post
   .then(postOwner => {
@@ -203,28 +208,20 @@ Router.put('/unpublish/:slug', passport.authenticate('jwt', {
   // if the user is not the owner of the post reject,
   // else update user with new drafts
   .then(postOwner => {
-    const self = postOwner
-
-    if (self.posts.indexOf(_id) < 0) {
+    if (postOwner.posts.indexOf(_id) < 0) {
       return Promise.reject({ why: 'unauthorized' })
     }
 
-    self.drafts.push(_id)
+    postOwner.drafts.push(newDraft._id)
 
-    return self.save()
+    return postOwner.save()
   })
 
   // query on posts
   .then(() => Post.findOne({ _id }).exec())
 
-  // If unexistent reject, else delete
-  .then(post => {
-    if (!post) {
-      return Promise.reject({ why: 'inexsistent' })
-    }
-
-    return post.remove()
-  })
+  // delete post
+  .then(post => post.remove())
 
   // save unpublished post as draft
   .then(() => newDraft.save())
@@ -241,13 +238,6 @@ Router.put('/unpublish/:slug', passport.authenticate('jwt', {
       return res.status(401).json({
         success: false,
         message: 'you do not own this post'
-      })
-    }
-
-    if (err.why === 'inexistent') {
-      return res.status(400).json({
-        success: false,
-        message: 'could\'t unpublish post. inexsistent'
       })
     }
 

@@ -1,18 +1,18 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { bindActionCreator } from 'redux'
+import { bindActionCreators } from 'redux'
 
 import { message as messageActions } from '../../actions'
 
 const MessageNotifier = ({ message, dissmissMessage }) => {
-  const dissmissOnTimeout = (time) => setTimeout(dissmissMessage(), time)
+  const dissmissOnTimeout = () => setTimeout(dissmissMessage, 4000)
 
   const render = () => {
-    if (message.isShown) dissmissOnTimeout(4000)
+    if (message.isShown) dissmissOnTimeout()
 
     return (
       <div className={ message.isShown ? 'message-notifier isShown' : 'message-notifier' }>
-        { message }
+        <span>{ message.content }</span>
       </div>
     )
   }
@@ -21,16 +21,14 @@ const MessageNotifier = ({ message, dissmissMessage }) => {
 }
 
 MessageNotifier.propTypes = {
-  message: PropTypes.string.isRequired,
+  message: PropTypes.object,
   dissmissMessage: PropTypes.func
 }
 
-export default connect(({
+export default connect(({ message }) => ({
   message
-}) => ({
-  message
-}),
-  dispatch => bindActionCreator({
-    ...messageActions
-  }, dispatch)
-)(MessageNotifier)
+}), dispatch => bindActionCreators({
+  ...messageActions
+}, dispatch))(MessageNotifier)
+
+// export default MessageNotifier

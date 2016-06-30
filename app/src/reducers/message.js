@@ -1,18 +1,17 @@
 import { SHOW_MESSAGE, DISSMISS_MESSAGE } from '../constants'
 
-const reducer = (state = {}, action = {}) => {
+const reducer = (state = { isShown: false, content: '' }, action = {}) => {
   switch (action.type) {
     case SHOW_MESSAGE:
       return {
         ...state,
-        messageIsShown: true,
-        message: action.message
+        isShown: true,
+        content: action.message
       }
     case DISSMISS_MESSAGE:
       return {
         ...state,
-        messageIsShown: false,
-        message: action.message
+        isShown: false
       }
     default:
       return state

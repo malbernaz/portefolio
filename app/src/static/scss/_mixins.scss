@@ -100,6 +100,26 @@
   }
 }
 
+@mixin light-link ($color, $amount) {
+  color: $color;
+  text-decoration: none;
+  transition: color .3s ease, fill .3s ease;
+
+  path {
+    fill: $color;
+    transition: fill .3s ease;
+  }
+
+  &:focus,
+  &:hover {
+    color: lighten($color, $amount);
+
+    path {
+      fill: lighten($color, $amount);
+    }
+  }
+}
+
 @mixin tag($color) {
   background: $color;
   display: flex;

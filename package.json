@@ -41,7 +41,7 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
-    "bcrypt-then": "^1.1.0",
+    "bcrypt-as-promised": "^1.1.0",
     "body-parser": "^1.15.1",
     "codemirror": "^5.15.2",
     "compression": "^1.6.2",

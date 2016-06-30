@@ -7,7 +7,8 @@ import config from '../../config'
 
 import { auth } from '../../actions'
 
-import { Nav } from '../'
+import { Nav, MessageNotifier } from '../'
+
 
 const AppView = ({ children }) => (
   <div id="app-view" className="app-view">
@@ -16,6 +17,7 @@ const AppView = ({ children }) => (
     <div className="container">
       { children }
     </div>
+    <MessageNotifier />
   </div>
 )
 

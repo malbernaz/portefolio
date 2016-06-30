@@ -8,7 +8,9 @@ const Router = new require('express').Router() // eslint-disable-line new-cap
 const genericErrorMessage = 'Something went wrong :(. Consider contacting albernazmiguel@gmail.com'
 
 
-Router.get('/', (req, res) => {
+Router.get('/', passport.authenticate('jwt', {
+  session: false
+}), (req, res) => {
   Draft.find().exec()
 
   // return drafts or a message saying there ain't any

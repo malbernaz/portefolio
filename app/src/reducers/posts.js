@@ -90,7 +90,7 @@ const reducer = (state = { loadedPosts: false }, action = {}) => {
         ...state,
         deletingPost: false,
         deletedPost: true,
-        activeDraft: defaultDraft
+        activeDraft: state.drafts[0] || defaultDraft
       }
     case DELETE_POST_FAIL:
       return {
@@ -127,7 +127,7 @@ const reducer = (state = { loadedPosts: false }, action = {}) => {
         publishing: false,
         published: true,
         status: action.result.message,
-        activeDraft: defaultDraft
+        activeDraft: state.drafts[0] || defaultDraft
       }
     case PUBLISH_FAIL:
       return {
@@ -149,7 +149,7 @@ const reducer = (state = { loadedPosts: false }, action = {}) => {
         unpublishing: false,
         unpublished: true,
         status: action.result.message,
-        activeDraft: defaultDraft
+        activeDraft: state.drafts[0] || defaultDraft
       }
     case UNPUBLISH_FAIL:
       return {
@@ -217,6 +217,7 @@ const reducer = (state = { loadedPosts: false }, action = {}) => {
         deletingDraft: false,
         deletedDraft: true,
         status: action.result.message,
+        activeDraft: state.drafts[0] || defaultDraft
       }
     case DELETE_DRAFT_FAIL:
       return {

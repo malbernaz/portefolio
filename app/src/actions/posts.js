@@ -24,7 +24,7 @@ import {
   SAVE_DRAFT_FAIL,
   DELETE_DRAFT,
   DELETE_DRAFT_SUCCESS,
-  DELETE_DRAFT_FAIL,
+  DELETE_DRAFT_FAIL
 } from '../constants'
 
 // async
