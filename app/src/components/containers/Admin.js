@@ -11,28 +11,44 @@ import { posts as postsActions } from '../../actions'
 class Admin extends Component {
   static propTypes = {
     createDraft: PropTypes.func,
+    loadDrafts: PropTypes.func,
     publish: PropTypes.func,
+    unpublish: PropTypes.func,
+    deleteDraft: PropTypes.func,
     deletePost: PropTypes.func,
     editPost: PropTypes.func,
     loadPosts: PropTypes.func,
     posts: PropTypes.object
   }
 
+  submitPromise = (promise, data) => {
+    const { loadDrafts, loadPosts } = this.props
+
+    return promise(data)
+      .then(loadDrafts)
+      .then(loadPosts)
+      .catch(loadDrafts)
+      .catch(loadPosts)
+      .then(() => browserHistory.push('/'))
+      .catch(() => browserHistory.push('/'))
+  }
+
   handleSubmit = e => {
     e.preventDefault()
 
-    const { editPost, publish, loadPosts, posts: { activeDraft } } = this.props
+    const { editPost, publish, posts: { activeDraft } } = this.props
 
-    const submitPromise = promise =>
-      promise(activeDraft)
-        .then(loadPosts)
-        .catch(loadPosts)
-        .then(() => browserHistory.push('/'))
-        .catch(() => browserHistory.push('/'))
+    return !activeDraft.isPublished ?
+      this.submitPromise(publish, activeDraft) :
+      this.submitPromise(editPost, activeDraft)
+  }
 
-    if (activeDraft.slug !== null) return submitPromise(editPost)
+  handleUnpublish = e => {
+    e.preventDefault()
 
-    return submitPromise(publish)
+    const { unpublish, posts: { activeDraft } } = this.props
+
+    return this.submitPromise(unpublish, activeDraft)
   }
 
   handleEdit = (e, newActiveDraft) => {
@@ -46,25 +62,25 @@ class Admin extends Component {
   handleDelete = (e, _id) => {
     e.preventDefault()
 
-    const { deletePost, loadPosts } = this.props
+    const { deletePost, deleteDraft, posts: { activeDraft } } = this.props
 
-    return deletePost(_id)
-      .then(loadPosts)
-      .catch(loadPosts)
-      .then(() => browserHistory.push('/'))
-      .catch(() => browserHistory.push('/'))
+    return !activeDraft.isPublished && activeDraft.isSaved ?
+      this.submitPromise(deleteDraft, _id) :
+      this.submitPromise(deletePost, _id)
   }
 
   render() {
-    const { posts: { posts, activeDraft } } = this.props
+    const { posts: { posts, activeDraft, drafts } } = this.props
 
     return (
       <div>
         <Helmet title="admin" />
         <AdminView
+          drafts={ drafts }
           posts={ posts }
           activeDraft={ activeDraft }
           handleSubmit={ this.handleSubmit }
+          handleUnpublish={ this.handleUnpublish }
           handleEdit={ this.handleEdit }
           handleDelete={ this.handleDelete }
         />
@@ -73,6 +89,12 @@ class Admin extends Component {
   }
 }
 
-export default connect(
-  ({ posts }) => ({ posts }),
-  dispatch => bindActionCreators({ ...postsActions }, dispatch))(Admin)
+export default connect(({
+  posts
+}) => ({
+  posts
+}),
+  dispatch => bindActionCreators({
+    ...postsActions
+  }, dispatch)
+)(Admin)

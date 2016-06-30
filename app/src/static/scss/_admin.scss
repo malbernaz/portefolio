@@ -114,6 +114,16 @@ $half-posts-list-width: $posts-list-width / 2;
     padding: 1rem;
     position: relative;
 
+    .isDraft {
+      border-bottom: 1px solid $hue-2;
+
+      span {
+        padding: 0 .2rem;
+        color: $hue-2;
+        font-size: .625rem;
+      }
+    }
+
     .post-actions {
       position: absolute;
       opacity: 0;

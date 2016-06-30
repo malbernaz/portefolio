@@ -14,5 +14,6 @@ export default {
     tags: ['a tag', 'open source']
   },
   html: '',
-  slug: null
+  isPublished: false,
+  isSaved: false
 }

@@ -2,9 +2,17 @@ import React, { PropTypes } from 'react'
 
 import moment from 'moment'
 
-import { Icon, MyEditor, DropdownButton } from '../'
+import { Icon, MyEditor, EditorSidebar, DropdownButton } from '../'
 
-const AdminView = ({ posts, activeDraft, handleSubmit, handleEdit, handleDelete }) => (
+const AdminView = ({
+  activeDraft,
+  drafts,
+  handleDelete,
+  handleEdit,
+  handleSubmit,
+  handleUnpublish,
+  posts
+}) => (
   <section className="admin">
     <div className="editor">
       <div className="top-admin-bar">
@@ -21,43 +29,26 @@ const AdminView = ({ posts, activeDraft, handleSubmit, handleEdit, handleDelete 
           </small>
         </div>
         <DropdownButton
-          options={ activeDraft.slug === null ? [
+          options={ activeDraft.isPublished ? [
+            { label: 'update', action: handleSubmit },
+            { label: 'unpublish', action: handleUnpublish }
+          ] : [
             { label: 'publish', action: handleSubmit },
             { label: 'save draft', action: handleSubmit }
-          ] : [
-            { label: 'update', action: handleSubmit },
-            { label: 'unpublish', action: handleSubmit }
           ] }
-          fixedOptions={ [
+          fixedOptions={ activeDraft.isSaved ? [
             { label: 'new post', action: handleSubmit },
             { label: 'delete', action: handleDelete }
-          ] }
+          ] : [] }
         />
       </div>
       <div className="panes">
-        <div className="posts-list">
-          { posts ?
-              posts.map((p, i) =>
-                <div className="post-item" key={ i }>
-                  <small>{ p.meta.title }</small>
-                  <div className="post-actions">
-                    <a onClick={ e => handleEdit(e, p) } className="post-action edit" href="#">
-                      <Icon name="edit" />
-                    </a>
-                    <a
-                      onClick={ e => handleDelete(e, p._id) }
-                      className="post-action delete"
-                      href="#"
-                    >
-                      <Icon name="close" />
-                    </a>
-                  </div>
-                </div>
-              ).reverse() :
-            <div className="post-item">
-              no posts yet :(
-            </div> }
-        </div>
+        <EditorSidebar
+          drafts={ drafts }
+          posts={ posts }
+          handleEdit={ handleEdit }
+          handleDelete={ handleDelete }
+        />
         <div className="code">
           <MyEditor />
         </div>
@@ -96,11 +87,13 @@ const AdminView = ({ posts, activeDraft, handleSubmit, handleEdit, handleDelete 
 )
 
 AdminView.propTypes = {
-  posts: PropTypes.array,
   activeDraft: PropTypes.object.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  drafts: PropTypes.array,
+  handleDelete: PropTypes.func.isRequired,
   handleEdit: PropTypes.func.isRequired,
-  handleDelete: PropTypes.func.isRequired
+  handleSubmit: PropTypes.func.isRequired,
+  handleUnpublish: PropTypes.func.isRequired,
+  posts: PropTypes.array
 }
 
 export default AdminView

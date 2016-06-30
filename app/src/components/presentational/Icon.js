@@ -48,6 +48,15 @@ const Icon = ({ name }) => {
           />
         </svg>
       )
+    case 'trashcan':
+      return (
+        <svg viewBox="0 0 55 70" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M50 5H40c0-2.75-2.25-5-5-5H20c-2.75 0-5 2.25-5 5H5c-2.75 0-5 2.25-5 5v5c0 2.75 2.25 5 5 5v45c0 2.75 2.25 5 5 5h35c2.75 0 5-2.25 5-5V20c2.75 0 5-2.25 5-5v-5c0-2.75-2.25-5-5-5zm-5 60H10V20h5v40h5V20h5v40h5V20h5v40h5V20h5v45zm5-50H5v-5h45v5z"
+            fillRule="evenodd"
+          />
+        </svg>
+      )
     case 'add':
       return (
         <svg viewBox="0 0 70 70" xmlns="http://www.w3.org/2000/svg">

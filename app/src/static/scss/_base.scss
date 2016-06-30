@@ -152,7 +152,7 @@ form {
       line-height: 1rem;
       padding: .5rem 1rem;
 
-      &:last-child {
+      &.danger {
         @include dark-link($hue-5-2, 10);
       }
     }

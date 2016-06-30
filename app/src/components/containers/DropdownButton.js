@@ -38,7 +38,12 @@ class DropdownButton extends Component {
             </a>
           ) }
           { fixedOptions.map((o, i) =>
-            <a href="#" key={ i } onClick={ e => o.action(e) }>
+            <a
+              href="#"
+              className={ o.label === 'delete' ? 'danger' : '' }
+              key={ i }
+              onClick={ e => o.action(e) }
+            >
               { o.label }
             </a>
           ) }

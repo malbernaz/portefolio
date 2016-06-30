@@ -4,7 +4,7 @@ import { reduce } from 'underscore'
 
 import { isLoaded as isAuthLoaded, loadAuth } from './actions/auth'
 
-import { loadPosts, createDraft } from './actions/posts'
+import { loadPosts, createDraft, loadDrafts } from './actions/posts'
 
 import defaultDraft from './helpers/defaultDraft'
 
@@ -59,7 +59,7 @@ export default store => {
       return callback()
     }
 
-    if (getPosts() === false) {
+    if (!getPosts()) {
       return store.dispatch(loadPosts())
         .then(checkIfExists)
         .catch(checkIfExists)
@@ -68,10 +68,23 @@ export default store => {
     return checkIfExists()
   }
 
-  const loadDraft = (nextState, replace, callback) => {
-    const { posts: { activeDraft } } = store.getState()
+  const getDrafts = (nextState, replace, callback) => {
+    const findDrafts = () => {
+      const { posts: { drafts } } = store.getState()
+      return drafts || false
+    }
 
-    if (!activeDraft) store.dispatch(createDraft(defaultDraft))
+    const loadActiveDraft = () => {
+      store.dispatch(createDraft(findDrafts()[0] || defaultDraft))
+
+      return callback()
+    }
+
+    if (!findDrafts()) {
+      return store.dispatch(loadDrafts())
+          .then(loadActiveDraft)
+          .catch(loadActiveDraft)
+    }
 
     return callback()
   }
@@ -90,7 +103,7 @@ export default store => {
       <Route name="admin" path="admin">
         <Route component={ SignIn } path="signin" />
         <Route onEnter={ mustBeLogged }>
-          <IndexRoute onEnter={ loadDraft } component={ Admin } />
+          <IndexRoute onEnter={ getDrafts } component={ Admin } />
         </Route>
       </Route>
     </Route>

@@ -14,7 +14,7 @@ Router.get('/', (req, res) => {
   // return drafts or a message saying there ain't any
   .then(drafts => {
     if (drafts.length < 1) {
-      return res.send({
+      return res.status(400).send({
         success: false,
         message: 'there are no drafts yet'
       })

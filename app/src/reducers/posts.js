@@ -44,6 +44,7 @@ const reducer = (state = { loadedPosts: false }, action = {}) => {
         loadedPosts: true,
         status: action.result.message,
         posts: action.result.posts
+          .map(p => ({ ...p, isPublished: true, isSaved: true }))
       }
     case LOAD_POSTS_FAIL:
       return {
@@ -104,16 +105,14 @@ const reducer = (state = { loadedPosts: false }, action = {}) => {
         ...state,
         activeDraft: {
           ...action.activeDraft,
-          slug: action.activeDraft.slug || null
+          isPublished: action.activeDraft.isPublished || false,
+          isSaved: action.activeDraft.isSaved || false
         }
       }
     case UPDATE_DRAFT:
       return {
         ...state,
-        activeDraft: {
-          ...action.activeDraft,
-          slug: state.activeDraft.slug
-        }
+        activeDraft: action.activeDraft
       }
 
     // publish active draft
@@ -150,6 +149,7 @@ const reducer = (state = { loadedPosts: false }, action = {}) => {
         unpublishing: false,
         unpublished: true,
         status: action.result.message,
+        activeDraft: defaultDraft
       }
     case UNPUBLISH_FAIL:
       return {
@@ -172,13 +172,15 @@ const reducer = (state = { loadedPosts: false }, action = {}) => {
         loadedDrafts: true,
         status: action.result.message,
         drafts: action.result.drafts
+          .map(p => ({ ...p, isPublished: false, isSaved: true }))
       }
     case LOAD_DRAFTS_FAIL:
       return {
         ...state,
         loadingDrafts: false,
         loadedDrafts: false,
-        status: action.error.message
+        status: action.error.message,
+        drafts: []
       }
 
     // save activeDraft remotely

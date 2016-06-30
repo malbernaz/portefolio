@@ -25,7 +25,12 @@ MessageNotifier.propTypes = {
   dissmissMessage: PropTypes.func
 }
 
-export default connect(
-  ({ message }) => ({ message }),
-  dispatch => bindActionCreator({ ...messageActions }, dispatch)
+export default connect(({
+  message
+}) => ({
+  message
+}),
+  dispatch => bindActionCreator({
+    ...messageActions
+  }, dispatch)
 )(MessageNotifier)

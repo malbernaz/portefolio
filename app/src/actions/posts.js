@@ -65,7 +65,7 @@ export const saveDraft = post => ({
 
 export const deleteDraft = _id => ({
   types: [DELETE_DRAFT, DELETE_DRAFT_SUCCESS, DELETE_DRAFT_FAIL],
-  promise: client => client.del(`/draft/${_id}`)
+  promise: client => client.del(`/drafts/${_id}`)
 })
 
 

@@ -200,7 +200,8 @@ Router.put('/unpublish/:slug', passport.authenticate('jwt', {
 
   User.findOne({ _id: user._id }).exec()
 
-  // If the user is not the owner of the post reject, else query on posts
+  // if the user is not the owner of the post reject,
+  // else update user with new drafts
   .then(postOwner => {
     const self = postOwner
 
@@ -208,8 +209,13 @@ Router.put('/unpublish/:slug', passport.authenticate('jwt', {
       return Promise.reject({ why: 'unauthorized' })
     }
 
-    return Post.findOne({ _id }).exec()
+    self.drafts.push(_id)
+
+    return self.save()
   })
+
+  // query on posts
+  .then(() => Post.findOne({ _id }).exec())
 
   // If unexistent reject, else delete
   .then(post => {
