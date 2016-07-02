@@ -26,14 +26,14 @@ const options = {
 class MyEditor extends Component {
   static propTypes = {
     posts: PropTypes.object,
-    updateDraft: PropTypes.func
+    updateActiveDraft: PropTypes.func
   }
 
   handleChange = (raw) => {
-    const { updateDraft } = this.props
+    const { updateActiveDraft } = this.props
     const { meta, html } = marked(raw)
 
-    updateDraft({ raw, meta, html })
+    updateActiveDraft({ raw, meta, html })
   }
 
   render() {

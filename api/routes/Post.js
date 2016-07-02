@@ -55,12 +55,13 @@ Router.get('/:slug', ({ params: { slug } }, res) => {
 
 Router.post('/', passport.authenticate('jwt', {
   session: false
-}), ({ body: { raw, meta, html, _id }, user }, res) => {
+}), ({ body: { raw, meta, html, _id, createdAt }, user }, res) => {
   const slug = titleSlugger(meta.title)
   const newPost = new Post({
     raw,
     html,
     slug,
+    createdAt,
     meta: Object.assign(meta, { author: user._id })
   })
 
@@ -102,7 +103,7 @@ Router.post('/', passport.authenticate('jwt', {
 })
 
 
-Router.put('/:slug', passport.authenticate('jwt', {
+Router.patch('/:slug', passport.authenticate('jwt', {
   session: false,
 }), ({ body: { raw, meta, html }, params: { slug }, user }, res) => {
   Post.findOne({ slug }).exec()
@@ -197,12 +198,13 @@ Router.delete('/:_id', passport.authenticate('jwt', {
 
 Router.put('/unpublish/:slug', passport.authenticate('jwt', {
   session: false,
-}), ({ body: { raw, meta, html, _id }, params, user }, res) => {
+}), ({ body: { raw, meta, html, _id, createdAt }, params, user }, res) => {
   const slug = titleSlugger(meta.title)
   const newDraft = new Draft({
     raw,
     html,
     slug,
+    createdAt,
     meta: Object.assign(meta, { author: user._id })
   })
 

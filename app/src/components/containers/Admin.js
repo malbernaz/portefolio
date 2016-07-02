@@ -12,18 +12,20 @@ import {
 
 class Admin extends Component {
   static propTypes = {
-    createDraft: PropTypes.func,
+    createActiveDraft: PropTypes.func,
     deleteDraft: PropTypes.func,
     deletePost: PropTypes.func,
-    editPost: PropTypes.func,
     loadDrafts: PropTypes.func,
     loadPosts: PropTypes.func,
     loadPostsAndDrafts: PropTypes.func,
     message: PropTypes.object,
     posts: PropTypes.object,
     publish: PropTypes.func,
+    saveDraft: PropTypes.func,
     showMessage: PropTypes.func,
-    unpublish: PropTypes.func
+    unpublish: PropTypes.func,
+    updateDraft: PropTypes.func,
+    updatePost: PropTypes.func
   }
 
   submitPromise = (promise, data) => {
@@ -36,14 +38,22 @@ class Admin extends Component {
       .catch(loadPostsAndDrafts)
   }
 
-  handleSubmit = e => {
+  handleNewPost = e => {
     e.preventDefault()
 
-    const { editPost, publish, posts: { activeDraft } } = this.props
+    const { createActiveDraft } = this.props
+
+    return createActiveDraft()
+  }
+
+  handlePublish = e => {
+    e.preventDefault()
+
+    const { updatePost, publish, posts: { activeDraft } } = this.props
 
     return !activeDraft.isPublished ?
       this.submitPromise(publish, activeDraft) :
-      this.submitPromise(editPost, activeDraft)
+      this.submitPromise(updatePost, activeDraft)
   }
 
   handleUnpublish = e => {
@@ -54,12 +64,22 @@ class Admin extends Component {
     return this.submitPromise(unpublish, activeDraft)
   }
 
-  handleEdit = (e, newActiveDraft) => {
+  handleEditPost = (e, newActiveDraft) => {
     e.preventDefault()
 
-    const { createDraft } = this.props
+    const { createActiveDraft } = this.props
 
-    return createDraft(newActiveDraft)
+    return createActiveDraft(newActiveDraft)
+  }
+
+  handleSaveDraft = e => {
+    e.preventDefault()
+
+    const { saveDraft, updateDraft, posts: { activeDraft } } = this.props
+
+    return !activeDraft.isSaved ?
+      this.submitPromise(saveDraft, activeDraft) :
+      this.submitPromise(updateDraft, activeDraft)
   }
 
   handleDelete = (e, _id) => {
@@ -79,13 +99,15 @@ class Admin extends Component {
       <div>
         <Helmet title="admin" />
         <AdminView
-          drafts={ drafts }
-          posts={ posts }
           activeDraft={ activeDraft }
-          handleSubmit={ this.handleSubmit }
-          handleUnpublish={ this.handleUnpublish }
-          handleEdit={ this.handleEdit }
+          drafts={ drafts }
           handleDelete={ this.handleDelete }
+          handleEditPost={ this.handleEditPost }
+          handleNewPost={ this.handleNewPost }
+          handlePublish={ this.handlePublish }
+          handleSaveDraft={ this.handleSaveDraft }
+          handleUnpublish={ this.handleUnpublish }
+          posts={ posts }
         />
       </div>
     )

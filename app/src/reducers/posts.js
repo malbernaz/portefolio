@@ -1,33 +1,36 @@
 import {
-  LOAD_POSTS_AND_DRAFTS,
-  LOAD_POSTS_AND_DRAFTS_SUCCESS,
-  LOAD_POSTS_AND_DRAFTS_FAIL,
-  LOAD_POSTS,
-  LOAD_POSTS_SUCCESS,
-  LOAD_POSTS_FAIL,
-  EDIT_POST,
-  EDIT_POST_SUCCESS,
-  EDIT_POST_FAIL,
-  DELETE_POST,
-  DELETE_POST_SUCCESS,
-  DELETE_POST_FAIL,
-  CREATE_DRAFT,
-  UPDATE_DRAFT,
-  PUBLISH,
-  PUBLISH_SUCCESS,
-  PUBLISH_FAIL,
-  UNPUBLISH,
-  UNPUBLISH_SUCCESS,
-  UNPUBLISH_FAIL,
-  LOAD_DRAFTS,
-  LOAD_DRAFTS_SUCCESS,
-  LOAD_DRAFTS_FAIL,
-  SAVE_DRAFT,
-  SAVE_DRAFT_SUCCESS,
-  SAVE_DRAFT_FAIL,
-  DELETE_DRAFT,
-  DELETE_DRAFT_SUCCESS,
+  CREATE_ACTIVE_DRAFT,
   DELETE_DRAFT_FAIL,
+  DELETE_DRAFT_SUCCESS,
+  DELETE_DRAFT,
+  DELETE_POST_FAIL,
+  DELETE_POST_SUCCESS,
+  DELETE_POST,
+  LOAD_DRAFTS_FAIL,
+  LOAD_DRAFTS_SUCCESS,
+  LOAD_DRAFTS,
+  LOAD_POSTS_AND_DRAFTS_FAIL,
+  LOAD_POSTS_AND_DRAFTS_SUCCESS,
+  LOAD_POSTS_AND_DRAFTS,
+  LOAD_POSTS_FAIL,
+  LOAD_POSTS_SUCCESS,
+  LOAD_POSTS,
+  PUBLISH_FAIL,
+  PUBLISH_SUCCESS,
+  PUBLISH,
+  SAVE_DRAFT_FAIL,
+  SAVE_DRAFT_SUCCESS,
+  SAVE_DRAFT,
+  UNPUBLISH_FAIL,
+  UNPUBLISH_SUCCESS,
+  UNPUBLISH,
+  UPDATE_ACTIVE_DRAFT,
+  UPDATE_DRAFT_FAIL,
+  UPDATE_DRAFT_SUCCESS,
+  UPDATE_DRAFT,
+  UPDATE_POST_FAIL,
+  UPDATE_POST_SUCCESS,
+  UPDATE_POST
 } from '../constants'
 
 import defaultDraft from '../helpers/defaultDraft'
@@ -46,9 +49,9 @@ const reducer = (state = {}, action = {}) => {
         loadingPostsAndDrafts: false,
         loadedPostsAndDrafts: true,
         status: action.result.message,
-        posts: action.result.posts ? action.result.posts
+        posts: action.result.posts.length > 0 ? action.result.posts
           .map(p => ({ ...p, isPublished: true, isSaved: true })) : [],
-        drafts: action.result.drafts ? action.result.drafts
+        drafts: action.result.drafts.length > 0 ? action.result.drafts
           .map(p => ({ ...p, isPublished: false, isSaved: true })) : [],
         activeDraft: action.result.drafts.length > 0 ?
           { ...action.result.drafts[0], isPublished: false, isSaved: true } :
@@ -91,25 +94,25 @@ const reducer = (state = {}, action = {}) => {
         posts: state.posts || []
       }
 
-    // edit post
-    case EDIT_POST:
+    // update post
+    case UPDATE_POST:
       return {
         ...state,
-        editingPost: true
+        updatingPost: true
       }
-    case EDIT_POST_SUCCESS:
+    case UPDATE_POST_SUCCESS:
       return {
         ...state,
-        editingPost: false,
-        editedPost: true,
+        updatingPost: false,
+        updatedPost: true,
         status: action.result.message,
         activeDraft: defaultDraft
       }
-    case EDIT_POST_FAIL:
+    case UPDATE_POST_FAIL:
       return {
         ...state,
-        editingPost: false,
-        editedPost: false,
+        updatingPost: false,
+        updatedPost: false,
         status: action.error.message
       }
 
@@ -134,19 +137,22 @@ const reducer = (state = {}, action = {}) => {
       }
 
     // create or update local activeDraft
-    case CREATE_DRAFT:
+    case CREATE_ACTIVE_DRAFT:
       return {
         ...state,
-        activeDraft: {
+        activeDraft: Object.keys(action.activeDraft).length > 0 ? {
           ...action.activeDraft,
           isPublished: action.activeDraft.isPublished || false,
           isSaved: action.activeDraft.isSaved || false
-        }
+        } : defaultDraft
       }
-    case UPDATE_DRAFT:
+    case UPDATE_ACTIVE_DRAFT:
       return {
         ...state,
-        activeDraft: action.activeDraft
+        activeDraft: {
+          ...state.activeDraft,
+          ...action.activeDraft
+        }
       }
 
     // publish active draft
@@ -217,7 +223,7 @@ const reducer = (state = {}, action = {}) => {
         loadingDrafts: false,
         loadedDrafts: false,
         status: action.error.message,
-        drafts: state.drafts || []
+        drafts: state.drafts.length > 0 ? state.drafts : []
       }
 
     // save activeDraft remotely
@@ -232,13 +238,34 @@ const reducer = (state = {}, action = {}) => {
         savingDraft: false,
         savedDraft: true,
         status: action.result.message,
-        drafts: action.result.drafts
+        drafts: state.drafts.length > 0 ? state.drafts : []
       }
     case SAVE_DRAFT_FAIL:
       return {
         ...state,
         savingDraft: false,
         savedDraft: false,
+        status: action.error.message
+      }
+
+    // update post
+    case UPDATE_DRAFT:
+      return {
+        ...state,
+        updatingDraft: true
+      }
+    case UPDATE_DRAFT_SUCCESS:
+      return {
+        ...state,
+        updatingDraft: false,
+        updatedDraft: true,
+        status: action.result.message
+      }
+    case UPDATE_DRAFT_FAIL:
+      return {
+        ...state,
+        updatingDraft: false,
+        updatedDraft: false,
         status: action.error.message
       }
 
@@ -254,6 +281,7 @@ const reducer = (state = {}, action = {}) => {
         deletingDraft: false,
         deletedDraft: true,
         status: action.result.message,
+        drafts: state.drafts.length > 0 ? state.drafts : [],
         activeDraft: state.drafts[0] || defaultDraft
       }
     case DELETE_DRAFT_FAIL:

@@ -8,8 +8,10 @@ const AdminView = ({
   activeDraft,
   drafts,
   handleDelete,
-  handleEdit,
-  handleSubmit,
+  handleEditPost,
+  handleNewPost,
+  handlePublish,
+  handleSaveDraft,
   handleUnpublish,
   posts
 }) => (
@@ -25,19 +27,20 @@ const AdminView = ({
             <b>{ activeDraft.meta.title }</b>
           </div>
           <small>
-            updated { moment().subtract(new Date(), 'days').calendar() }
+            updated { moment().subtract(
+               activeDraft.updatedAt ? activeDraft.updatedAt : new Date(), 'days').calendar() }
           </small>
         </div>
         <DropdownButton
           options={ activeDraft.isPublished ? [
-            { label: 'update', action: handleSubmit },
+            { label: 'update', action: handlePublish },
             { label: 'unpublish', action: handleUnpublish }
           ] : [
-            { label: 'publish', action: handleSubmit },
-            { label: 'save draft', action: handleSubmit }
+            { label: 'publish', action: handlePublish },
+            { label: 'save draft', action: handleSaveDraft }
           ] }
           fixedOptions={ activeDraft.isSaved ? [
-            { label: 'new post', action: handleSubmit },
+            { label: 'new post', action: handleNewPost },
             { label: 'delete', action: handleDelete }
           ] : [] }
         />
@@ -46,7 +49,7 @@ const AdminView = ({
         <EditorSidebar
           drafts={ drafts }
           posts={ posts }
-          handleEdit={ handleEdit }
+          handleEditPost={ handleEditPost }
           handleDelete={ handleDelete }
         />
         <div className="code">
@@ -90,8 +93,10 @@ AdminView.propTypes = {
   activeDraft: PropTypes.object.isRequired,
   drafts: PropTypes.array,
   handleDelete: PropTypes.func.isRequired,
-  handleEdit: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  handleEditPost: PropTypes.func.isRequired,
+  handleNewPost: PropTypes.func.isRequired,
+  handlePublish: PropTypes.func.isRequired,
+  handleSaveDraft: PropTypes.func.isRequired,
   handleUnpublish: PropTypes.func.isRequired,
   posts: PropTypes.array
 }

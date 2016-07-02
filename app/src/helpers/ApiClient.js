@@ -1,7 +1,7 @@
 import superagent from 'superagent'
 import config from '../config'
 
-const methods = ['get', 'post', 'put', 'del']
+const methods = ['del', 'get', 'patch', 'post', 'put']
 
 const isServer = typeof window !== 'object'
 

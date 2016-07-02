@@ -58,21 +58,22 @@ Router.get('/:slug', passport.authenticate('jwt', {
 
 Router.post('/', passport.authenticate('jwt', {
   session: false
-}), ({ body: { raw, meta, html, _id }, user }, res) => {
+}), ({ body: { raw, meta, html, createdAt }, user }, res) => {
   const slug = titleSlugger(meta.title)
   const newDraft = new Draft({
     raw,
     html,
     slug,
+    createdAt,
     meta: Object.assign(meta, { author: user._id })
   })
 
   // find draft owner
   User.findOne({ _id: user._id }).exec()
 
-  // update user with new post
+  // update user with new draft
   .then(draftOwner => {
-    draftOwner.push(newDraft._id)
+    draftOwner.drafts.push(newDraft._id)
     return draftOwner.save()
   })
 
@@ -95,7 +96,7 @@ Router.post('/', passport.authenticate('jwt', {
 })
 
 
-Router.put('/:slug', passport.authenticate('jwt', {
+Router.patch('/:slug', passport.authenticate('jwt', {
   session: false,
 }), ({ body: { raw, meta, html }, params: { slug }, user }, res) => {
   Draft.findOne({ slug }).exec()

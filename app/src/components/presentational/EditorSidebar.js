@@ -2,7 +2,8 @@ import React, { PropTypes } from 'react'
 
 import { Icon } from '../'
 
-const EditorSidebar = ({ posts, drafts, handleEdit, handleDelete }) => {
+const EditorSidebar = ({ posts, drafts, handleEditPost, handleDelete }) => {
+  console.log(drafts)
   const iterablePosts = () => drafts
     .concat(posts)
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
@@ -17,7 +18,7 @@ const EditorSidebar = ({ posts, drafts, handleEdit, handleDelete }) => {
                 <small>{ p.meta.title }</small> :
                 <small className="isDraft">{ p.meta.title }<span>draft</span></small> }
               <div className="post-actions">
-                <a onClick={ e => handleEdit(e, p) } className="post-action edit" href="#">
+                <a onClick={ e => handleEditPost(e, p) } className="post-action edit" href="#">
                   <Icon name="edit" />
                 </a>
                 <a
@@ -39,9 +40,9 @@ const EditorSidebar = ({ posts, drafts, handleEdit, handleDelete }) => {
 
 EditorSidebar.propTypes = {
   drafts: PropTypes.array,
-  posts: PropTypes.array,
-  handleEdit: PropTypes.func.isRequired,
-  handleDelete: PropTypes.func.isRequired
+  handleDelete: PropTypes.func.isRequired,
+  handleEditPost: PropTypes.func.isRequired,
+  posts: PropTypes.array
 }
 
 export default EditorSidebar
