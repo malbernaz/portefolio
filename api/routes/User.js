@@ -28,7 +28,7 @@ Router.post('/register', (req, res) => {
 
   return user.save(err => {
     if (err) {
-      console.log(err.toJSON())
+      console.log(err.toJSON()) // eslint-disable-line no-console
 
       return res.status(400).json({
         success: false,
@@ -85,7 +85,7 @@ Router.post('/authenticate', (req, res) => {
 
   // catch any error
   .catch(err => {
-    console.log(err)
+    console.log(err) // eslint-disable-line no-console
 
     return res.status(400).json({
       success: false,

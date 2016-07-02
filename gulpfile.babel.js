@@ -2,7 +2,7 @@ import _nodemon from 'gulp-nodemon'
 import eslint from 'gulp-eslint'
 import gulp from 'gulp'
 import gutil from 'gulp-util'
-import path from 'path'
+import { resolve } from 'path'
 import plumber from 'gulp-plumber'
 import prefixer from 'gulp-autoprefixer'
 import sass from 'gulp-sass'
@@ -105,21 +105,25 @@ export function bundleThirdParty() {
 export const clean = () => del(BUILD_DIR)
 
 
-export const images = () => (
+export const copyStatic = () =>
+  gulp.src(`${SRC_DIR}/static/**/*`)
+    .pipe(gulp.dest(BUILD_DIR))
+    .pipe(_browserSync.stream())
+
+
+export const images = () =>
   gulp.src(PATHS.images.src)
     .pipe(gulp.dest(PATHS.images.dest))
     .pipe(_browserSync.stream())
-)
 
 
-export const icons = () => {
+export const icons = () =>
   gulp.src('./icons/src/*.svg')
     .pipe(svgo())
     .pipe(gulp.dest('./icons/dist'))
-}
 
 
-export const styles = () => (
+export const styles = () =>
   gulp.src(PATHS.styles.src)
     .pipe(plumber())
     .pipe(sass({
@@ -130,39 +134,32 @@ export const styles = () => (
     }))
     .pipe(gulp.dest(PATHS.styles.dest))
     .pipe(_browserSync.stream())
-)
 
 
-export const uglifyJs = () => (
+export const uglifyJs = () =>
   gulp.src(`${PATHS.scripts.dest}/**/*`)
     .pipe(uglify())
     .pipe(gulp.dest(PATHS.scripts.dest))
-)
 
 
-export const lint = () => (
+export const lint = () =>
   gulp.src([
-    path.resolve(
-      __dirname, 'app', 'src', '**', '*.js'
-    ), path.resolve(
-      __dirname, 'api', 'src', '**', '*.js'
-    )])
-    .pipe(eslint())
+    resolve(__dirname, 'app', 'src', '**', '*.js'),
+    resolve(__dirname, 'api', '**', '*.js')
+  ]).pipe(eslint())
     .pipe(eslint.format())
-)
 
 
-export const browserSync = () => (
+export const browserSync = () =>
   _browserSync.init(null, {
     proxy: 'http://localhost:3000',
     port: 8080,
     open: false,
     notify: false
   })
-)
 
 
-export const nodemon = (callback, called = false) => (
+export const nodemon = (callback, called = false) =>
   _nodemon({
     script: './bin',
     ignore: [
@@ -182,13 +179,11 @@ export const nodemon = (callback, called = false) => (
       })
     }, 500)
   })
-)
 
 
 export const watch = () => {
   gulp.watch(PATHS.styles.src, styles)
-  gulp.watch(path.resolve(__dirname, 'app', 'src', '**', '*.js'),
-    gulp.parallel(bundleApp, lint))
+  gulp.watch(resolve(__dirname, 'app', 'src', '**', '*.js'), gulp.parallel(bundleApp, lint))
   gulp.watch(PATHS.images.src, images)
 }
 

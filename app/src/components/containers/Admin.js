@@ -1,36 +1,39 @@
 import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { browserHistory } from 'react-router'
 import Helmet from 'react-helmet'
 
 import { AdminView } from '../'
 
-import { posts as postsActions } from '../../actions'
+import {
+  posts as postsActions,
+  message as messageActions
+} from '../../actions'
 
 class Admin extends Component {
   static propTypes = {
     createDraft: PropTypes.func,
-    loadDrafts: PropTypes.func,
-    publish: PropTypes.func,
-    unpublish: PropTypes.func,
     deleteDraft: PropTypes.func,
     deletePost: PropTypes.func,
     editPost: PropTypes.func,
+    loadDrafts: PropTypes.func,
     loadPosts: PropTypes.func,
-    posts: PropTypes.object
+    loadPostsAndDrafts: PropTypes.func,
+    message: PropTypes.object,
+    posts: PropTypes.object,
+    publish: PropTypes.func,
+    showMessage: PropTypes.func,
+    unpublish: PropTypes.func
   }
 
   submitPromise = (promise, data) => {
-    const { loadDrafts, loadPosts } = this.props
+    const { loadPostsAndDrafts, showMessage } = this.props
 
     return promise(data)
-      .then(loadDrafts)
-      .then(loadPosts)
-      .catch(loadDrafts)
-      .catch(loadPosts)
-      .then(() => browserHistory.push('/'))
-      .catch(() => browserHistory.push('/'))
+      .then(({ message }) => showMessage(message))
+      .catch(({ message }) => showMessage(message))
+      .then(loadPostsAndDrafts)
+      .catch(loadPostsAndDrafts)
   }
 
   handleSubmit = e => {
@@ -90,11 +93,12 @@ class Admin extends Component {
 }
 
 export default connect(({
-  posts
+  posts, message
 }) => ({
-  posts
+  posts, message
 }),
   dispatch => bindActionCreators({
-    ...postsActions
+    ...postsActions,
+    ...messageActions
   }, dispatch)
 )(Admin)

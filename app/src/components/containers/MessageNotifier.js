@@ -30,5 +30,3 @@ export default connect(({ message }) => ({
 }), dispatch => bindActionCreators({
   ...messageActions
 }, dispatch))(MessageNotifier)
-
-// export default MessageNotifier

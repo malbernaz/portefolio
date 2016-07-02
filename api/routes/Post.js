@@ -34,6 +34,7 @@ Router.get('/', (req, res) => {
   }))
 })
 
+
 Router.get('/:slug', ({ params: { slug } }, res) => {
   Post.findOne({ slug }).exec()
 
@@ -63,16 +64,18 @@ Router.post('/', passport.authenticate('jwt', {
     meta: Object.assign(meta, { author: user._id })
   })
 
-  console.log(_id)
-
   // check if theres a corespondent draft saved
-  Draft.findOneAndRemove({ _id }).exec()
+  Draft.findOne({ _id }).exec()
+
+  // remove if existent
+  .then(draft => {
+    if (draft) return draft.remove()
+
+    return true
+  })
 
   // find post owner
-  .then(draft => {
-    console.log(draft)
-    return User.findOne({ _id: user._id }).exec()
-  })
+  .then(() => User.findOne({ _id: user._id }).exec())
 
   // update user with new post
   .then(postOwner => {
@@ -90,7 +93,7 @@ Router.post('/', passport.authenticate('jwt', {
   }))
 
   // catch any error
-  .catch(err => res.status(404).json({
+  .catch(err => res.status(400).json({
     success: false,
     message: err.code === 11000 ?
       'could not create post. existent title' :
@@ -142,7 +145,7 @@ Router.delete('/:_id', passport.authenticate('jwt', {
 }), ({ params, user }, res) => {
   User.findOne({ _id: user._id }).exec()
 
-  // If the user is not the owner of the post reject, else query on posts
+  // if the user is not the owner of the post reject, else query on posts
   .then(postOwner => {
     const self = postOwner
 
@@ -153,7 +156,7 @@ Router.delete('/:_id', passport.authenticate('jwt', {
     return Post.findOne({ _id: params._id }).exec()
   })
 
-  // If unexistent reject, else delete
+  // if unexistent reject, else delete
   .then(post => {
     if (!post) {
       return Promise.reject({ why: 'inexsistent' })

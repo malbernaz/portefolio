@@ -4,9 +4,7 @@ import { reduce } from 'underscore'
 
 import { isLoaded as isAuthLoaded, loadAuth } from './actions/auth'
 
-import { loadPosts, createDraft, loadDrafts } from './actions/posts'
-
-import defaultDraft from './helpers/defaultDraft'
+import { loadPosts, loadPostsAndDrafts } from './actions/posts'
 
 import {
   About,
@@ -74,16 +72,10 @@ export default store => {
       return drafts || false
     }
 
-    const loadActiveDraft = () => {
-      store.dispatch(createDraft(findDrafts()[0] || defaultDraft))
-
-      return callback()
-    }
-
     if (!findDrafts()) {
-      return store.dispatch(loadDrafts())
-          .then(loadActiveDraft)
-          .catch(loadActiveDraft)
+      return store.dispatch(loadPostsAndDrafts())
+        .then(() => callback())
+        .catch(() => callback())
     }
 
     return callback()

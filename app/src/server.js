@@ -54,7 +54,7 @@ server.on('upgrade', (req, socket, head) => {
 
 proxy.on('error', (error, req, res, json = null) => {
   if (error.code !== 'ECONNRESET') {
-    console.log('proxy error', error)
+    console.log('proxy error', error) // eslint-disable-line no-console
   }
   if (!res.headersSent) {
     res.writeHead(500, { 'content-type': 'application/json' })
@@ -93,7 +93,7 @@ app.use((req, res) => {
     }
 
     if (err) {
-      console.error(err)
+      console.error(err) // eslint-disable-line no-console
       res.status(500).end('Internal Server Error')
       hydrateOnClient()
     }
@@ -133,6 +133,6 @@ app.use((req, res) => {
 })
 
 server.listen(port, err => {
-  if (err) console.error(err)
-  console.log(`==>  Server listening on port ${port}`)
+  if (err) console.error(err) // eslint-disable-line no-console
+  console.log(`==>  Server listening on port ${port}`) // eslint-disable-line no-console
 })

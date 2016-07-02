@@ -138,7 +138,7 @@ Router.delete('/:_id', passport.authenticate('jwt', {
 }), ({ params, user }, res) => {
   User.findOne({ _id: user._id }).exec()
 
-  // If the user is not the owner of the draft reject, else query on drafts
+  // if the user is not the owner of the draft reject, else query on drafts
   .then(draftOwner => {
     const self = draftOwner
 
@@ -149,7 +149,7 @@ Router.delete('/:_id', passport.authenticate('jwt', {
     return Draft.findOne({ _id: params._id }).exec()
   })
 
-  // If unexistent reject, else delete
+  // if unexistent reject, else delete
   .then(draft => {
     if (!draft) {
       return Promise.reject({ why: 'inexsistent' })

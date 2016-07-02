@@ -1,4 +1,7 @@
 import {
+  LOAD_POSTS_AND_DRAFTS,
+  LOAD_POSTS_AND_DRAFTS_SUCCESS,
+  LOAD_POSTS_AND_DRAFTS_FAIL,
   LOAD_POSTS,
   LOAD_POSTS_SUCCESS,
   LOAD_POSTS_FAIL,
@@ -29,9 +32,42 @@ import {
 
 import defaultDraft from '../helpers/defaultDraft'
 
-const reducer = (state = { loadedPosts: false }, action = {}) => {
-  // load Posts
+const reducer = (state = {}, action = {}) => {
+  // load posts and drafts
   switch (action.type) {
+    case LOAD_POSTS_AND_DRAFTS:
+      return {
+        ...state,
+        loadingPostsAndDrafts: true
+      }
+    case LOAD_POSTS_AND_DRAFTS_SUCCESS:
+      return {
+        ...state,
+        loadingPostsAndDrafts: false,
+        loadedPostsAndDrafts: true,
+        status: action.result.message,
+        posts: action.result.posts ? action.result.posts
+          .map(p => ({ ...p, isPublished: true, isSaved: true })) : [],
+        drafts: action.result.drafts ? action.result.drafts
+          .map(p => ({ ...p, isPublished: false, isSaved: true })) : [],
+        activeDraft: action.result.drafts.length > 0 ?
+          { ...action.result.drafts[0], isPublished: false, isSaved: true } :
+          defaultDraft
+      }
+    case LOAD_POSTS_AND_DRAFTS_FAIL:
+      return {
+        ...state,
+        loadingPostsAndDrafts: false,
+        loadedPostsAndDrafts: false,
+        status:
+          Object.keys(action.error) !== 0 ?
+            action.error :
+            'unathorized',
+        posts: state.posts || [],
+        drafts: state.drafts || []
+      }
+
+    // load posts
     case LOAD_POSTS:
       return {
         ...state,
@@ -43,18 +79,16 @@ const reducer = (state = { loadedPosts: false }, action = {}) => {
         loadingPosts: false,
         loadedPosts: true,
         status: action.result.message,
-        posts: action.result.posts
-          .map(p => ({ ...p, isPublished: true, isSaved: true }))
+        posts: action.result.posts ? action.result.posts
+          .map(p => ({ ...p, isPublished: true, isSaved: true })) : [],
       }
     case LOAD_POSTS_FAIL:
       return {
         ...state,
         loadingPosts: false,
         loadedPosts: false,
-        status:
-          Object.keys(action.error) !== 0 ?
-            action.error :
-            'unathorized'
+        status: Object.keys(action.error) !== 0 ? action.error : 'unathorized',
+        posts: state.posts || []
       }
 
     // edit post
@@ -171,8 +205,11 @@ const reducer = (state = { loadedPosts: false }, action = {}) => {
         loadingDrafts: false,
         loadedDrafts: true,
         status: action.result.message,
-        drafts: action.result.drafts
-          .map(p => ({ ...p, isPublished: false, isSaved: true }))
+        drafts: action.result.drafts ? action.result.drafts
+          .map(p => ({ ...p, isPublished: false, isSaved: true })) : [],
+        activeDraft: action.result.drafts.length > 0 ?
+          { ...action.result.drafts[0], isPublished: false, isSaved: true } :
+          defaultDraft
       }
     case LOAD_DRAFTS_FAIL:
       return {
@@ -180,7 +217,7 @@ const reducer = (state = { loadedPosts: false }, action = {}) => {
         loadingDrafts: false,
         loadedDrafts: false,
         status: action.error.message,
-        drafts: []
+        drafts: state.drafts || []
       }
 
     // save activeDraft remotely

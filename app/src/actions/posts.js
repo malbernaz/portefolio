@@ -1,4 +1,7 @@
 import {
+  LOAD_POSTS_AND_DRAFTS,
+  LOAD_POSTS_AND_DRAFTS_SUCCESS,
+  LOAD_POSTS_AND_DRAFTS_FAIL,
   LOAD_POSTS,
   LOAD_POSTS_SUCCESS,
   LOAD_POSTS_FAIL,
@@ -28,6 +31,11 @@ import {
 } from '../constants'
 
 // async
+export const loadPostsAndDrafts = () => ({
+  types: [LOAD_POSTS_AND_DRAFTS, LOAD_POSTS_AND_DRAFTS_SUCCESS, LOAD_POSTS_AND_DRAFTS_FAIL],
+  promise: client => client.get('/postsanddrafts')
+})
+
 export const loadPosts = () => ({
   types: [LOAD_POSTS, LOAD_POSTS_SUCCESS, LOAD_POSTS_FAIL],
   promise: client => client.get('/posts')

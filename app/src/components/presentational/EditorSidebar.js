@@ -3,24 +3,14 @@ import React, { PropTypes } from 'react'
 import { Icon } from '../'
 
 const EditorSidebar = ({ posts, drafts, handleEdit, handleDelete }) => {
-  const iterablePosts = () => {
-    if (posts && drafts) {
-      return drafts
-        .concat(posts)
-        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-        .reverse()
-    }
-
-    if (posts) return posts
-
-    if (drafts) return drafts
-
-    return false
-  }
+  const iterablePosts = () => drafts
+    .concat(posts)
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    .reverse()
 
   return (
     <div className="posts-list">
-      { iterablePosts() ?
+      { iterablePosts().length > 0 ?
           iterablePosts().map((p, i) =>
             <div className="post-item" key={ i }>
               { p.isPublished ?

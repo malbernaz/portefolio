@@ -18,7 +18,7 @@ export default function clientMiddleware(client) {
       result => next({ ...rest, result, type: SUCCESS }),
       error => next({ ...rest, error, type: FAILURE })
     ).catch(err => {
-      console.error('MIDDLEWARE ERROR:', err)
+      console.error('MIDDLEWARE ERROR:', err) // eslint-disable-line no-console
       next({ ...rest, err, type: FAILURE })
     })
 
