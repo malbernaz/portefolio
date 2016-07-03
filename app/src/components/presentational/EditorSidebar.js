@@ -3,7 +3,6 @@ import React, { PropTypes } from 'react'
 import { Icon } from '../'
 
 const EditorSidebar = ({ posts, drafts, handleEditPost, handleDelete }) => {
-  console.log(drafts)
   const iterablePosts = () => drafts
     .concat(posts)
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))

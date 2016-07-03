@@ -5,30 +5,22 @@ const { titleSlugger } = require('../helpers')
 
 const Router = new require('express').Router() // eslint-disable-line new-cap
 
-const genericErrorMessage = 'Something went wrong :(. Consider contacting albernazmiguel@gmail.com'
+const genericErrorMessage =
+  'something went wrong. consider sending an email to albernazmiguel@gmail.com'
 
 
 Router.get('/', (req, res) => {
   Post.find().exec()
 
   // return posts or a message saying there ain't any
-  .then(posts => {
-    if (posts.length < 1) {
-      return res.send({
-        success: false,
-        message: 'there are no posts yet'
-      })
-    }
-
-    return res.json({
-      success: true,
-      message: 'successfully loaded posts',
-      posts
-    })
-  })
+  .then(posts => res.json({
+    success: true,
+    message: 'successfully loaded posts',
+    posts
+  }))
 
   // catch any error
-  .catch(() => res.send({
+  .catch(() => res.status(400).send({
     success: false,
     message: genericErrorMessage
   }))
@@ -75,31 +67,30 @@ Router.post('/', passport.authenticate('jwt', {
     return true
   })
 
-  // find post owner
-  .then(() => User.findOne({ _id: user._id }).exec())
-
-  // update user with new post
-  .then(postOwner => {
-    postOwner.posts.push(newPost._id)
-    return postOwner.save()
-  })
-
   // save post
   .then(() => newPost.save())
 
   // send ok response
-  .then(() => res.json({
+  .then(post => res.json({
     success: true,
-    message: 'successfully created post'
+    message: 'successfully created post',
+    post
   }))
 
   // catch any error
-  .catch(err => res.status(400).json({
-    success: false,
-    message: err.code === 11000 ?
-      'could not create post. existent title' :
-      genericErrorMessage
-  }))
+  .catch(err => {
+    if (err.code) {
+      return res.status(400).json({
+        success: false,
+        message: 'could not create post. existent title'
+      })
+    }
+
+    return res.status(400).json({
+      success: false,
+      message: genericErrorMessage
+    })
+  })
 })
 
 
@@ -108,36 +99,59 @@ Router.patch('/:slug', passport.authenticate('jwt', {
 }), ({ body: { raw, meta, html }, params: { slug }, user }, res) => {
   Post.findOne({ slug }).exec()
 
-  // save new post data,
-  // or reject if the user is not the owner of the post
+  // reject if the user is not the owner of the post or if it does'nt exist,
+  // or update post data
   .then(post => {
+    if (!post) {
+      return Promise.reject({ why: 'inexsistent' })
+    }
+
     if (post.meta.author.toString() !== user._id.toString()) {
       return Promise.reject({ why: 'unauthorized' })
     }
 
-    const self = post
-
-    self.meta = Object.assign(meta, { author: user._id }) || post.meta
-    self.html = html || post.html
-    self.raw = raw || post.raw
-    self.slug = titleSlugger(meta.title)
-
-    return self.save()
+    return post.update({
+      $set: {
+        html,
+        raw,
+        slug: titleSlugger(meta.title),
+        meta: {
+          title: meta.title,
+          subtitle: meta.subtitle,
+          tags: meta.tags
+        }
+      }
+    })
   })
 
   // send ok response
-  .then(() => res.json({
+  .then(post => res.json({
     success: true,
-    message: 'successfully edited post'
+    message: 'successfully updated post',
+    post
   }))
 
   // catch any error
-  .catch(err => res.status(400).json({
-    success: false,
-    message: err.why === 'unathorized' ?
-      'You do not own this post' :
-      'something went wrong. could\'t edit post'
-  }))
+  .catch(err => {
+    if (err.why === 'unauthorized') {
+      return res.status(401).json({
+        success: false,
+        message: 'you do not own this draft'
+      })
+    }
+
+    if (err.why === 'inexistent') {
+      return res.status(404).json({
+        success: false,
+        message: 'could\'t update draft. inexsistent'
+      })
+    }
+
+    return res.status(400).json({
+      success: false,
+      message: genericErrorMessage
+    })
+  })
 })
 
 
@@ -148,9 +162,7 @@ Router.delete('/:_id', passport.authenticate('jwt', {
 
   // if the user is not the owner of the post reject, else query on posts
   .then(postOwner => {
-    const self = postOwner
-
-    if (self.posts.indexOf(params._id) < 0) {
+    if (postOwner.posts.indexOf(params._id) < 0) {
       return Promise.reject({ why: 'unauthorized' })
     }
 
@@ -167,9 +179,10 @@ Router.delete('/:_id', passport.authenticate('jwt', {
   })
 
   // send ok response
-  .then(() => res.json({
+  .then(post => res.json({
     success: true,
-    message: 'successfully deleted post'
+    message: 'successfully deleted post',
+    post
   }))
 
   // catch any error
@@ -208,33 +221,40 @@ Router.put('/unpublish/:slug', passport.authenticate('jwt', {
     meta: Object.assign(meta, { author: user._id })
   })
 
-  User.findOne({ _id: user._id }).exec()
+  Promise.all([
+    User.findOne({ _id: user._id }).exec()
+      .then(result => ({ postOwner: result }))
+      .catch(err => err),
+    Post.findOne({ _id }).exec()
+      .then(result => ({ post: result }))
+      .catch(err => err)
+  ])
 
-  // if the user is not the owner of the post reject,
-  // else update user with new drafts
-  .then(postOwner => {
+  // check if post exists and if the user owns that post,
+  // if yes remove post and update users drafts
+  .then(result => {
+    const { post } = result.filter(r => r.hasOwnProperty('post'))[0]
+    const { postOwner } = result.filter(r => r.hasOwnProperty('postOwner'))[0]
+
+    if (!post) {
+      return Promise.reject({ why: 'inexsistent' })
+    }
+
     if (postOwner.posts.indexOf(_id) < 0) {
       return Promise.reject({ why: 'unauthorized' })
     }
 
-    postOwner.drafts.push(newDraft._id)
-
-    return postOwner.save()
+    return post.remove()
   })
-
-  // query on posts
-  .then(() => Post.findOne({ _id }).exec())
-
-  // delete post
-  .then(post => post.remove())
 
   // save unpublished post as draft
   .then(() => newDraft.save())
 
   // send ok response
-  .then(() => res.json({
+  .then(draft => res.json({
     success: true,
-    message: 'successfully unpublished post'
+    message: 'successfully unpublished post',
+    draft
   }))
 
   // catch any error
@@ -243,6 +263,13 @@ Router.put('/unpublish/:slug', passport.authenticate('jwt', {
       return res.status(401).json({
         success: false,
         message: 'you do not own this post'
+      })
+    }
+
+    if (err.why === 'inexistent') {
+      return res.status(400).json({
+        success: false,
+        message: 'could\'t delete post. inexsistent'
       })
     }
 

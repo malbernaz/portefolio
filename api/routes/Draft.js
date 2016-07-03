@@ -5,7 +5,8 @@ const { titleSlugger } = require('../helpers')
 
 const Router = new require('express').Router() // eslint-disable-line new-cap
 
-const genericErrorMessage = 'Something went wrong :(. Consider contacting albernazmiguel@gmail.com'
+const genericErrorMessage =
+  'something went wrong. consider sending an email to albernazmiguel@gmail.com'
 
 
 Router.get('/', passport.authenticate('jwt', {
@@ -14,20 +15,11 @@ Router.get('/', passport.authenticate('jwt', {
   Draft.find().exec()
 
   // return drafts or a message saying there ain't any
-  .then(drafts => {
-    if (drafts.length < 1) {
-      return res.status(400).send({
-        success: false,
-        message: 'there are no drafts yet'
-      })
-    }
-
-    return res.json({
-      success: true,
-      message: 'successfully loaded drafts',
-      drafts
-    })
-  })
+  .then(drafts => res.json({
+    success: true,
+    message: 'successfully loaded drafts',
+    drafts
+  }))
 
   // catch any error
   .catch(() => res.send({
@@ -68,31 +60,30 @@ Router.post('/', passport.authenticate('jwt', {
     meta: Object.assign(meta, { author: user._id })
   })
 
-  // find draft owner
-  User.findOne({ _id: user._id }).exec()
-
-  // update user with new draft
-  .then(draftOwner => {
-    draftOwner.drafts.push(newDraft._id)
-    return draftOwner.save()
-  })
-
-  // save post
-  .then(() => newDraft.save())
+  // save draft
+  Promise.resolve(newDraft.save())
 
   // send ok response
-  .then(() => res.json({
+  .then(draft => res.json({
     success: true,
-    message: 'successfully created draft'
+    message: 'successfully created draft',
+    draft
   }))
 
   // catch any error
-  .catch(err => res.status(404).json({
-    success: false,
-    message: err.code === 11000 ?
-      'could not create draft. existent title' :
-      genericErrorMessage
-  }))
+  .catch(err => {
+    if (err.code) {
+      return res.status(400).json({
+        success: false,
+        message: 'could not create draft. existent title'
+      })
+    }
+
+    return res.status(400).json({
+      success: false,
+      message: genericErrorMessage
+    })
+  })
 })
 
 
@@ -104,33 +95,56 @@ Router.patch('/:slug', passport.authenticate('jwt', {
   // save new draft data,
   // or reject if the user is not the owner of the draft
   .then(draft => {
+    if (!draft) {
+      return Promise.reject({ why: 'inexsistent' })
+    }
+
     if (draft.meta.author.toString() !== user._id.toString()) {
       return Promise.reject({ why: 'unauthorized' })
     }
 
-    const self = draft
-
-    self.meta = Object.assign(meta, { author: user._id }) || draft.meta
-    self.html = html || draft.html
-    self.raw = raw || draft.raw
-    self.slug = titleSlugger(meta.title)
-
-    return self.save()
+    return draft.update({
+      $set: {
+        html,
+        raw,
+        slug: titleSlugger(meta.title),
+        meta: {
+          title: meta.title,
+          subtitle: meta.subtitle,
+          tags: meta.tags
+        }
+      }
+    })
   })
 
   // send ok response
-  .then(() => res.json({
+  .then(draft => res.json({
     success: true,
-    message: 'successfully edited draft'
+    message: 'successfully updated draft',
+    draft
   }))
 
   // catch any error
-  .catch(err => res.status(400).json({
-    success: false,
-    message: err.why === 'unathorized' ?
-      'you do not own this draft' :
-      'something went wrong. could\'t edit draft'
-  }))
+  .catch(err => {
+    if (err.why === 'unauthorized') {
+      return res.status(401).json({
+        success: false,
+        message: 'you do not own this draft'
+      })
+    }
+
+    if (err.why === 'inexistent') {
+      return res.status(404).json({
+        success: false,
+        message: 'could\'t update draft. inexsistent'
+      })
+    }
+
+    return res.status(400).json({
+      success: false,
+      message: genericErrorMessage
+    })
+  })
 })
 
 
@@ -160,9 +174,10 @@ Router.delete('/:_id', passport.authenticate('jwt', {
   })
 
   // send ok response
-  .then(() => res.json({
+  .then(draft => res.json({
     success: true,
-    message: 'successfully deleted draft'
+    message: 'successfully deleted draft',
+    draft
   }))
 
   // catch any error
@@ -175,7 +190,7 @@ Router.delete('/:_id', passport.authenticate('jwt', {
     }
 
     if (err.why === 'inexistent') {
-      return res.status(400).json({
+      return res.status(404).json({
         success: false,
         message: 'could\'t delete draft. inexsistent'
       })

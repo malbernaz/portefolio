@@ -88,8 +88,8 @@ class Admin extends Component {
     const { deletePost, deleteDraft, posts: { activeDraft } } = this.props
 
     return !activeDraft.isPublished && activeDraft.isSaved ?
-      this.submitPromise(deleteDraft, _id) :
-      this.submitPromise(deletePost, _id)
+      this.submitPromise(deleteDraft, _id || activeDraft._id) :
+      this.submitPromise(deletePost, _id || activeDraft._id)
   }
 
   render() {

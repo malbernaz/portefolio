@@ -18,8 +18,7 @@ const DraftSchema = new mongoose.Schema({
     title: {
       type: String,
       required: true,
-      lowercase: true,
-      unique: true
+      lowercase: true
     },
     subtitle: {
       type: String,
@@ -40,21 +39,22 @@ const DraftSchema = new mongoose.Schema({
   timestamps: true
 })
 
-DraftSchema.pre('save', function slugTitle(next) {
+DraftSchema.pre('save', function (next) {
   const draft = this
 
-  draft.slug = titleSlugger(draft.meta.title)
+  return this.model('User').update({
+    $push: { drafts: this._id }
+  }, () => {
+    draft.slug = titleSlugger(draft.meta.title)
 
-  draft.meta.tags = draft.meta.tags
-    .filter((tag, i, array) => array.indexOf(tag) === i)
+    draft.meta.tags = draft.meta.tags.filter((tag, i, array) => array.indexOf(tag) === i)
 
-  return next()
+    return next()
+  })
 })
 
-DraftSchema.pre('remove', function updatePosts(next) {
-  this.model('User').update({
-    $pull: { drafts: this._id }
-  }, next)
+DraftSchema.pre('remove', function (next) {
+  return this.model('User').update({ $pull: { drafts: this._id } }, next)
 })
 
 module.exports = mongoose.model('Draft', DraftSchema)

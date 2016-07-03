@@ -12,6 +12,7 @@ const PostSchema = new mongoose.Schema({
   },
   slug: {
     type: String,
+    lowercase: true,
     required: true
   },
   meta: {
@@ -40,21 +41,22 @@ const PostSchema = new mongoose.Schema({
   timestamps: true
 })
 
-PostSchema.pre('save', function slugTitle(next) {
+PostSchema.pre('save', function (next) {
   const post = this
 
-  post.slug = titleSlugger(post.meta.title)
+  return this.model('User').update({
+    $push: { posts: this._id }
+  }, () => {
+    post.slug = titleSlugger(post.meta.title)
 
-  post.meta.tags = post.meta.tags
-    .filter((tag, i, array) => array.indexOf(tag) === i)
+    post.meta.tags = post.meta.tags.filter((tag, i, array) => array.indexOf(tag) === i)
 
-  return next()
+    return next()
+  })
 })
 
-PostSchema.pre('remove', function updatePosts(next) {
-  this.model('User').update({
-    $pull: { posts: this._id }
-  }, next)
+PostSchema.pre('remove', function (next) {
+  return this.model('User').update({ $pull: { posts: this._id } }, next)
 })
 
 module.exports = mongoose.model('Post', PostSchema)
