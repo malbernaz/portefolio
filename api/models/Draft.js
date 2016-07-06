@@ -14,6 +14,14 @@ const DraftSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  createdAt: {
+    type: Date,
+    default: new Date()
+  },
+  updatedAt: {
+    type: Date,
+    default: new Date()
+  },
   meta: {
     title: {
       type: String,
@@ -35,8 +43,6 @@ const DraftSchema = new mongoose.Schema({
       required: true
     }
   }
-}, {
-  timestamps: true
 })
 
 DraftSchema.pre('save', function (next) {

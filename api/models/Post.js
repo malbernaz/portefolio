@@ -15,6 +15,14 @@ const PostSchema = new mongoose.Schema({
     lowercase: true,
     required: true
   },
+  createdAt: {
+    type: Date,
+    default: new Date()
+  },
+  updatedAt: {
+    type: Date,
+    default: new Date()
+  },
   meta: {
     title: {
       type: String,
@@ -37,8 +45,6 @@ const PostSchema = new mongoose.Schema({
       required: true
     }
   }
-}, {
-  timestamps: true
 })
 
 PostSchema.pre('save', function (next) {

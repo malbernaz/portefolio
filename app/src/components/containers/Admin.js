@@ -15,6 +15,7 @@ class Admin extends Component {
     createActiveDraft: PropTypes.func,
     deleteDraft: PropTypes.func,
     deletePost: PropTypes.func,
+    drafts: PropTypes.object,
     loadDrafts: PropTypes.func,
     loadPosts: PropTypes.func,
     loadPostsAndDrafts: PropTypes.func,
@@ -29,13 +30,11 @@ class Admin extends Component {
   }
 
   submitPromise = (promise, data) => {
-    const { loadPostsAndDrafts, showMessage } = this.props
+    const { showMessage } = this.props
 
     return promise(data)
       .then(({ message }) => showMessage(message))
       .catch(({ message }) => showMessage(message))
-      .then(loadPostsAndDrafts)
-      .catch(loadPostsAndDrafts)
   }
 
   handleNewPost = e => {
@@ -85,11 +84,21 @@ class Admin extends Component {
   handleDelete = (e, _id) => {
     e.preventDefault()
 
-    const { deletePost, deleteDraft, posts: { activeDraft } } = this.props
+    const { deletePost, deleteDraft, posts: { activeDraft, drafts, posts } } = this.props
+
+    if (_id) {
+      const toDelete =
+        drafts.filter(d => d._id === _id).pop() ||
+        posts.filter(d => d._id === _id).pop()
+
+      return !toDelete.isPublished && toDelete.isSaved ?
+        this.submitPromise(deleteDraft, _id) :
+        this.submitPromise(deletePost, _id)
+    }
 
     return !activeDraft.isPublished && activeDraft.isSaved ?
-      this.submitPromise(deleteDraft, _id || activeDraft._id) :
-      this.submitPromise(deletePost, _id || activeDraft._id)
+      this.submitPromise(deleteDraft, activeDraft._id) :
+      this.submitPromise(deletePost, activeDraft._id)
   }
 
   render() {

@@ -1,4 +1,5 @@
 const passport = require('passport')
+const mongoose = require('mongoose')
 
 const { User, Draft } = require('../models')
 const { titleSlugger } = require('../helpers')
@@ -50,15 +51,19 @@ Router.get('/:slug', passport.authenticate('jwt', {
 
 Router.post('/', passport.authenticate('jwt', {
   session: false
-}), ({ body: { raw, meta, html, createdAt }, user }, res) => {
+}), ({ body: { raw, meta, html, _id, createdAt }, user }, res) => {
   const slug = titleSlugger(meta.title)
   const newDraft = new Draft({
     raw,
     html,
     slug,
-    createdAt,
+    updatedAt: new Date(),
     meta: Object.assign(meta, { author: user._id })
   })
+
+  if (_id) newDraft._id = new mongoose.Types.ObjectId(_id)
+
+  if (createdAt) newDraft.createdAt = createdAt
 
   // save draft
   Promise.resolve(newDraft.save())
@@ -108,10 +113,12 @@ Router.patch('/:slug', passport.authenticate('jwt', {
         html,
         raw,
         slug: titleSlugger(meta.title),
+        updatedAt: new Date(),
         meta: {
           title: meta.title,
           subtitle: meta.subtitle,
-          tags: meta.tags
+          tags: meta.tags,
+          author: user._id
         }
       }
     })

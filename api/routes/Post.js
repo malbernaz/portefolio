@@ -1,4 +1,5 @@
 const passport = require('passport')
+const mongoose = require('mongoose')
 
 const { User, Post, Draft } = require('../models')
 const { titleSlugger } = require('../helpers')
@@ -53,12 +54,20 @@ Router.post('/', passport.authenticate('jwt', {
     raw,
     html,
     slug,
-    createdAt,
+    updatedAt: new Date(),
     meta: Object.assign(meta, { author: user._id })
   })
 
+  if (_id) newPost._id = new mongoose.Types.ObjectId(_id)
+
+  if (createdAt) newPost.createdAt = createdAt
+
+  Post.findOne({ slug }).exec()
+
   // check if theres a corespondent draft saved
-  Draft.findOne({ _id }).exec()
+  .then(post => post ?
+    Promise.reject({ why: 'existent title' }) :
+    Draft.findOne({ _id }).exec())
 
   // remove if existent
   .then(draft => {
@@ -79,7 +88,7 @@ Router.post('/', passport.authenticate('jwt', {
 
   // catch any error
   .catch(err => {
-    if (err.code) {
+    if (err.why === 'existent title') {
       return res.status(400).json({
         success: false,
         message: 'could not create post. existent title'
@@ -115,10 +124,12 @@ Router.patch('/:slug', passport.authenticate('jwt', {
         html,
         raw,
         slug: titleSlugger(meta.title),
+        updatedAt: new Date(),
         meta: {
           title: meta.title,
           subtitle: meta.subtitle,
-          tags: meta.tags
+          tags: meta.tags,
+          author: user._id
         }
       }
     })
@@ -217,9 +228,13 @@ Router.put('/unpublish/:slug', passport.authenticate('jwt', {
     raw,
     html,
     slug,
-    createdAt,
+    updatedAt: new Date(),
     meta: Object.assign(meta, { author: user._id })
   })
+
+  if (_id) newDraft._id = new mongoose.Types.ObjectId(_id)
+
+  if (createdAt) newDraft.createdAt = createdAt
 
   Promise.all([
     User.findOne({ _id: user._id }).exec()
@@ -233,8 +248,8 @@ Router.put('/unpublish/:slug', passport.authenticate('jwt', {
   // check if post exists and if the user owns that post,
   // if yes remove post and update users drafts
   .then(result => {
-    const { post } = result.filter(r => r.hasOwnProperty('post'))[0]
-    const { postOwner } = result.filter(r => r.hasOwnProperty('postOwner'))[0]
+    const { post } = result.filter(r => r.hasOwnProperty('post')).pop()
+    const { postOwner } = result.filter(r => r.hasOwnProperty('postOwner')).pop()
 
     if (!post) {
       return Promise.reject({ why: 'inexsistent' })

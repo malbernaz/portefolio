@@ -35,6 +35,10 @@ import {
 
 import defaultDraft from '../helpers/defaultDraft'
 
+const withAditionalFields = (data, isPost = true) => data instanceof Array ?
+  data.map(d => ({ ...d, isPublished: isPost, isSaved: true })) :
+  ({ ...data, isPublished: isPost, isSaved: true })
+
 const reducer = (state = {}, action = {}) => {
   // load posts and drafts
   switch (action.type) {
@@ -49,10 +53,10 @@ const reducer = (state = {}, action = {}) => {
         loadingPostsAndDrafts: false,
         loadedPostsAndDrafts: true,
         status: action.result.message,
-        posts: action.result.posts.map(p => ({ ...p, isPublished: true, isSaved: true })),
-        drafts: action.result.drafts.map(p => ({ ...p, isPublished: false, isSaved: true })),
+        posts: withAditionalFields(action.result.posts),
+        drafts: withAditionalFields(action.result.drafts, false),
         activeDraft: action.result.drafts.length > 0 ?
-          { ...action.result.drafts[0], isPublished: false, isSaved: true } :
+          withAditionalFields(action.result.drafts.pop(), false) :
           defaultDraft
       }
     case LOAD_POSTS_AND_DRAFTS_FAIL:
@@ -60,7 +64,9 @@ const reducer = (state = {}, action = {}) => {
         ...state,
         loadingPostsAndDrafts: false,
         loadedPostsAndDrafts: false,
-        status: Object.keys(action.error) > 0 ? action.error : 'unathorized'
+        status: Object.keys(action.error).length > 0 ?
+          action.error.message :
+          'unathorized'
       }
 
     // load posts
@@ -75,14 +81,16 @@ const reducer = (state = {}, action = {}) => {
         loadingPosts: false,
         loadedPosts: true,
         status: action.result.message,
-        posts: action.result.posts.map(p => ({ ...p, isPublished: true, isSaved: true })),
+        posts: withAditionalFields(action.result.posts),
       }
     case LOAD_POSTS_FAIL:
       return {
         ...state,
         loadingPosts: false,
         loadedPosts: false,
-        status: Object.keys(action.error) > 0 ? action.error : 'unathorized'
+        status: Object.keys(action.error).length > 0 ?
+          action.error.message :
+          'unathorized'
       }
 
     // update post
@@ -96,7 +104,10 @@ const reducer = (state = {}, action = {}) => {
         ...state,
         updatingPost: false,
         updatedPost: true,
-        status: action.result.message
+        status: action.result.message,
+        posts: state.posts.map(
+          p => p._id === action.result.post._id ?
+            withAditionalFields(action.result.post) : p)
       }
     case UPDATE_POST_FAIL:
       return {
@@ -117,7 +128,7 @@ const reducer = (state = {}, action = {}) => {
         ...state,
         deletingPost: false,
         deletedPost: true,
-        activeDraft: state.drafts[0] || defaultDraft
+        posts: state.posts.filter(p => p._id !== action.result.post._id)
       }
     case DELETE_POST_FAIL:
       return {
@@ -126,7 +137,7 @@ const reducer = (state = {}, action = {}) => {
         deletedPost: true,
       }
 
-    // create or update local activeDraft
+    // create or update local active draft
     case CREATE_ACTIVE_DRAFT:
       return {
         ...state,
@@ -152,7 +163,14 @@ const reducer = (state = {}, action = {}) => {
         publishing: false,
         published: true,
         status: action.result.message,
-        activeDraft: state.drafts[0] || defaultDraft
+        posts: [
+          ...state.posts,
+          withAditionalFields(action.result.post)
+        ],
+        drafts: state.drafts.filter(d => d._id !== action.result.post._id),
+        activeDraft:
+          state.drafts.filter(d => d._id !== action.result.post._id)[0] ||
+          defaultDraft
       }
     case PUBLISH_FAIL:
       return {
@@ -174,7 +192,15 @@ const reducer = (state = {}, action = {}) => {
         unpublishing: false,
         unpublished: true,
         status: action.result.message,
-        activeDraft: state.drafts[0] || defaultDraft
+        posts: state.posts.filter(p => p._id !== action.result.draft._id),
+        drafts: [
+          ...state.drafts,
+          withAditionalFields(action.result.draft, false)
+        ],
+        activeDraft:
+          state.drafts[0] ||
+          withAditionalFields(action.result.draft, false) ||
+          defaultDraft
       }
     case UNPUBLISH_FAIL:
       return {
@@ -196,9 +222,9 @@ const reducer = (state = {}, action = {}) => {
         loadingDrafts: false,
         loadedDrafts: true,
         status: action.result.message,
-        drafts: action.result.drafts.map(p => ({ ...p, isPublished: false, isSaved: true })),
+        drafts: withAditionalFields(action.result.drafts, false),
         activeDraft: action.result.drafts.length > 0 ?
-          { ...action.result.drafts[0], isPublished: false, isSaved: true } :
+          withAditionalFields(action.result.drafts[0], false) :
           defaultDraft
       }
     case LOAD_DRAFTS_FAIL:
@@ -206,10 +232,12 @@ const reducer = (state = {}, action = {}) => {
         ...state,
         loadingDrafts: false,
         loadedDrafts: false,
-        status: Object.keys(action.error) > 0 ? action.error : 'unathorized'
+        status: Object.keys(action.error).length > 0 ?
+          action.error.message :
+          'unathorized'
       }
 
-    // save activeDraft remotely
+    // save draft remotely
     case SAVE_DRAFT:
       return {
         ...state,
@@ -220,7 +248,11 @@ const reducer = (state = {}, action = {}) => {
         ...state,
         savingDraft: false,
         savedDraft: true,
-        status: action.result.message
+        status: action.result.message,
+        drafts: [
+          ...state.draft,
+          withAditionalFields(action.result.draft, false)
+        ],
       }
     case SAVE_DRAFT_FAIL:
       return {
@@ -241,7 +273,10 @@ const reducer = (state = {}, action = {}) => {
         ...state,
         updatingDraft: false,
         updatedDraft: true,
-        status: action.result.message
+        status: action.result.message,
+        drafts: state.drafts.map(d =>
+          d._id === action.result.draft._id ?
+            withAditionalFields(action.result.draft, false) : d)
       }
     case UPDATE_DRAFT_FAIL:
       return {
@@ -251,7 +286,7 @@ const reducer = (state = {}, action = {}) => {
         status: action.error.message
       }
 
-    // delete activeDraft
+    // delete draft
     case DELETE_DRAFT:
       return {
         ...state,
@@ -263,7 +298,10 @@ const reducer = (state = {}, action = {}) => {
         deletingDraft: false,
         deletedDraft: true,
         status: action.result.message,
-        activeDraft: state.drafts[0] || defaultDraft
+        drafts: state.drafts.filter(d => d._id !== action.result.draft._id),
+        activeDraft:
+          state.drafts.filter(d => d._id !== action.result.draft._id)[0] ||
+          defaultDraft
       }
     case DELETE_DRAFT_FAIL:
       return {
