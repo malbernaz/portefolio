@@ -27,8 +27,9 @@ const AdminView = ({
             <b>{ activeDraft.meta.title }</b>
           </div>
           <small>
-            updated { moment().subtract(
-               activeDraft.updatedAt ? activeDraft.updatedAt : new Date(), 'days').calendar() }
+            updated { activeDraft.updatedAt ?
+              moment(activeDraft.updatedAt, moment.ISO_8601).subtract('days').calendar() :
+              moment(new Date()).subtract('days').calendar() }
           </small>
         </div>
         <DropdownButton

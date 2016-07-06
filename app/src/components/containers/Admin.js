@@ -30,11 +30,13 @@ class Admin extends Component {
   }
 
   submitPromise = (promise, data) => {
-    const { showMessage } = this.props
+    const { showMessage, loadPostsAndDrafts } = this.props
 
     return promise(data)
       .then(({ message }) => showMessage(message))
       .catch(({ message }) => showMessage(message))
+      .then(loadPostsAndDrafts)
+      .catch(loadPostsAndDrafts)
   }
 
   handleNewPost = e => {

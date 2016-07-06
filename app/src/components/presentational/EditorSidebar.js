@@ -1,17 +1,37 @@
-import React, { PropTypes } from 'react'
+import React, { Component, PropTypes } from 'react'
 
 import { Icon } from '../'
 
-const EditorSidebar = ({ posts, drafts, handleEditPost, handleDelete }) => {
-  const render = () => {
-    const iterablePosts = () => drafts
-      .concat(posts)
-      .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+class EditorSidebar extends Component {
+  static propTypes = {
+    drafts: PropTypes.array,
+    handleDelete: PropTypes.func.isRequired,
+    handleEditPost: PropTypes.func.isRequired,
+    posts: PropTypes.array
+  }
+
+  constructor(props) {
+    super(props)
+
+    this.state = { iterablePosts: this.iterablePosts(props) }
+  }
+
+  componentWillReceiveProps = props =>
+    this.setState({ iterablePosts: this.iterablePosts(props) })
+
+
+  iterablePosts = ({ posts, drafts }) => drafts
+    .concat(posts)
+    .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+
+  render() {
+    const { iterablePosts } = this.state
+    const { handleEditPost, handleDelete } = this.props
 
     return (
       <div className="posts-list">
-        { iterablePosts().length > 0 ?
-            iterablePosts().map((p, i) =>
+        { iterablePosts.length > 0 ?
+            iterablePosts.map((p, i) =>
               <div className="post-item" key={ i }>
                 { p.isPublished ?
                   <small>{ p.meta.title }</small> :
@@ -36,15 +56,6 @@ const EditorSidebar = ({ posts, drafts, handleEditPost, handleDelete }) => {
       </div>
     )
   }
-
-  return render()
-}
-
-EditorSidebar.propTypes = {
-  drafts: PropTypes.array,
-  handleDelete: PropTypes.func.isRequired,
-  handleEditPost: PropTypes.func.isRequired,
-  posts: PropTypes.array
 }
 
 export default EditorSidebar
