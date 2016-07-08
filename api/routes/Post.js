@@ -105,7 +105,7 @@ Router.post('/', passport.authenticate('jwt', {
 
 Router.patch('/:slug', passport.authenticate('jwt', {
   session: false,
-}), ({ body: { raw, meta, html }, params: { slug }, user }, res) => {
+}), ({ body: { raw, meta, html, _id }, params: { slug }, user }, res) => {
   Post.findOne({ slug }).exec()
 
   // reject if the user is not the owner of the post or if it does'nt exist,
@@ -134,6 +134,9 @@ Router.patch('/:slug', passport.authenticate('jwt', {
       }
     })
   })
+
+  // update method does not return updated doc
+  .then(() => Post.findById(_id).exec())
 
   // send ok response
   .then(post => res.json({

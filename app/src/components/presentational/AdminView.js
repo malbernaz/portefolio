@@ -6,14 +6,12 @@ import { Icon, MyEditor, EditorSidebar, DropdownButton } from '../'
 
 const AdminView = ({
   activeDraft,
-  drafts,
   handleDelete,
   handleEditPost,
   handleNewPost,
   handlePublish,
   handleSaveDraft,
   handleUnpublish,
-  posts
 }) => (
   <section className="admin">
     <div className="editor">
@@ -48,8 +46,6 @@ const AdminView = ({
       </div>
       <div className="panes">
         <EditorSidebar
-          drafts={ drafts }
-          posts={ posts }
           handleEditPost={ handleEditPost }
           handleDelete={ handleDelete }
         />
@@ -92,14 +88,12 @@ const AdminView = ({
 
 AdminView.propTypes = {
   activeDraft: PropTypes.object.isRequired,
-  drafts: PropTypes.array,
   handleDelete: PropTypes.func.isRequired,
   handleEditPost: PropTypes.func.isRequired,
   handleNewPost: PropTypes.func.isRequired,
   handlePublish: PropTypes.func.isRequired,
   handleSaveDraft: PropTypes.func.isRequired,
   handleUnpublish: PropTypes.func.isRequired,
-  posts: PropTypes.array
 }
 
 export default AdminView

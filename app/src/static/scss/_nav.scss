@@ -3,12 +3,18 @@ $nav-width: 10rem;
 @mixin flex-nav {
   align-items: center;
   display: flex;
-  height: 100vh;
   justify-content: center;
-  width: $nav-width;
+  flex: 0 0 10rem;
 }
 
 .nav-wrapper {
+  background: darken($syntax-bg, 3);
+  border-right: 1px lighten($mono-3, 20) dashed;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+  padding: 0;
   transform: translateX(0);
   width: $nav-width;
   will-change: transform;
@@ -26,29 +32,73 @@ $nav-width: 10rem;
 }
 
 nav {
-  background: darken($syntax-bg, 3);
   display: flex;
-  width: $nav-width;
+  width: 100%;
 
   ul {
     margin: 0;
     padding: 0;
-    text-align: center;
+    width: 100%;
 
     li {
+      width: 100%;
       list-style: none;
-      padding: 1rem;
+      height: 3.5rem;
+    }
+
+    .main-nav__item {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: background .3s ease, color .3s ease;
+
+      &--active,
+      &:hover {
+        color: $syntax-accent;
+        background: darken($syntax-bg, 7);
+      }
+    }
+
+    .logout {
+      border-top: 1px $mono-3 dashed;
+      margin: 2rem 2rem 0;
+      width: auto;
+
+      .main-nav__item:hover {
+        background: transparent;
+        color: darken($syntax-accent, 10);
+      }
     }
   }
 
   .logo {
-    left: 50%;
     position: absolute;
     top: 2rem;
-    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+
+    color: lighten($syntax-fg, 20%);
 
     svg {
-      height: 4rem;
+      height: 3rem;
+    }
+
+    h4 {
+      margin: 1rem 0 0;
+      text-transform: uppercase;
+      color: $syntax-accent;
+    }
+
+    span {
+      margin-top: .5rem;
+      padding: 0 1rem;
+      line-height: 1.3rem;
+      font-size: .7rem;
+      font-weight: 600;
     }
   }
 }
@@ -56,7 +106,49 @@ nav {
 .main-nav {
   @include flex-nav;
 
-  border-right: 1px lighten($mono-3, 20) dashed;
+  position: relative;
+
+  &--indicator {
+    position: absolute;
+
+    height: 3.5rem;
+    right: 0;
+    display: flex;
+    align-items: center;
+    transform: translateY(0);
+    transition: transform .1s ease;
+
+    svg {
+      height: .5rem;
+
+      path {
+        fill: lighten($syntax-accent, 0);
+      }
+    }
+  }
+}
+
+.nav-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  height: 5rem;
+  align-items: center;
+  padding: 0 2rem;
+
+  a {
+    height: 1rem;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      height: 1rem;
+    }
+  }
 }
 
 @media (max-width: $nav-collapse) {

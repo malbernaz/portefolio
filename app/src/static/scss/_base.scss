@@ -158,3 +158,23 @@ form {
     }
   }
 }
+
+.page-transition {
+  &-enter {
+    opacity: .01;
+
+    &-active {
+      opacity: 1;
+      transition: opacity .3s ease, transform .3s ease;
+    }
+  }
+
+  &-leave {
+    opacity: 1;
+
+    &-active {
+      opacity: .01;
+      transition: opacity .3s ease, transform .3s ease;
+    }
+  }
+}

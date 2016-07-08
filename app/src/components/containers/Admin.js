@@ -18,7 +18,6 @@ class Admin extends Component {
     drafts: PropTypes.object,
     loadDrafts: PropTypes.func,
     loadPosts: PropTypes.func,
-    loadPostsAndDrafts: PropTypes.func,
     message: PropTypes.object,
     posts: PropTypes.object,
     publish: PropTypes.func,
@@ -30,13 +29,11 @@ class Admin extends Component {
   }
 
   submitPromise = (promise, data) => {
-    const { showMessage, loadPostsAndDrafts } = this.props
+    const { showMessage } = this.props
 
     return promise(data)
       .then(({ message }) => showMessage(message))
       .catch(({ message }) => showMessage(message))
-      .then(loadPostsAndDrafts)
-      .catch(loadPostsAndDrafts)
   }
 
   handleNewPost = e => {

@@ -67,7 +67,7 @@ export function bundleApp() {
     transform: [babelify]
   })
 
-  THIRD_PARTY_MODULES.forEach(module => bundler.external(module))
+  // THIRD_PARTY_MODULES.forEach(module => bundler.external(module))
 
   return bundler.bundle()
     .on('error', function bundleError(error) {
@@ -201,7 +201,6 @@ export const build = gulp.series(
 
 export const buildDev = gulp.parallel(
   bundleApp,
-  bundleThirdParty,
   images,
   styles,
   lint

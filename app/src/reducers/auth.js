@@ -33,7 +33,8 @@ const reducer = (state = { loaded: false }, action = {}) => {
         status:
           typeof state.status === 'undefined' ?
             'unauthorized' :
-            state.status
+            state.status,
+        user: null
       }
 
     case SIGNIN:
@@ -53,7 +54,7 @@ const reducer = (state = { loaded: false }, action = {}) => {
         ...state,
         signingIn: false,
         user: null,
-        status: action.error.message
+        status: action.error.message,
       }
 
     case LOGOUT:

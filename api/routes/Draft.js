@@ -94,7 +94,7 @@ Router.post('/', passport.authenticate('jwt', {
 
 Router.patch('/:slug', passport.authenticate('jwt', {
   session: false,
-}), ({ body: { raw, meta, html }, params: { slug }, user }, res) => {
+}), ({ body: { raw, meta, html, _id }, params: { slug }, user }, res) => {
   Draft.findOne({ slug }).exec()
 
   // save new draft data,
@@ -123,6 +123,9 @@ Router.patch('/:slug', passport.authenticate('jwt', {
       }
     })
   })
+
+  // update method does not return updated doc
+  .then(() => Draft.findById(_id).exec())
 
   // send ok response
   .then(draft => res.json({

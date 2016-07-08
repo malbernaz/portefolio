@@ -1,8 +1,11 @@
 import React, { PropTypes } from 'react'
+import { Link } from 'react-router'
 import { connect } from 'react-redux'
 import moment from 'moment'
 
-const Posts = ({ posts: { posts } }) => (
+import { postsOrderedByCreatedAt } from '../../selectors'
+
+const Posts = ({ posts }) => (
   <div>
     { posts.length > 0 ?
       posts.map((post, index) => (
@@ -10,16 +13,20 @@ const Posts = ({ posts: { posts } }) => (
           <small>{ moment(post.createdAt, moment.ISO_8601).fromNow() }</small>
           <h2>{ post.meta.title }</h2>
           <h3>{ post.meta.subtitle }</h3>
+          <div className="post-tags">
+            { post.meta.tags.map((t, i) => <span key={ i } className="tag">{ t }</span>) }
+          </div>
+          <Link to={ `/posts/${post.slug}` }>more...</Link>
         </article>
-      )).reverse() :
+      )) :
       <article>There ain't no posts yet :(</article> }
   </div>
 )
 
 Posts.propTypes = {
-  posts: PropTypes.object
+  posts: PropTypes.array
 }
 
 export default connect(
-  state => ({ posts: state.posts })
+  state => ({ posts: postsOrderedByCreatedAt(state) })
 )(Posts)

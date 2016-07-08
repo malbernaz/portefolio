@@ -13,3 +13,13 @@ article {
     color: $mono-2;
   }
 }
+
+.post-tags {
+  margin: 1rem 0 2rem;
+  display: flex;
+
+  .tag {
+    @include tag($hue-3);
+    margin-right: .7rem;
+  }
+}
