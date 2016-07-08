@@ -49,7 +49,6 @@ const Html = ({ component, store }) => {
           }}
           charSet="UTF-8"
         />
-        <script src="/scripts/vendor.bundle.js" charSet="UTF-8" />
         <script src="/scripts/bundle.js" charSet="UTF-8" />
       </body>
     </html>
