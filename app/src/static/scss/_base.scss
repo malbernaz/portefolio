@@ -112,12 +112,9 @@ form {
   right: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
-  text-align: right;
   z-index: $zi-editor + 1;
 
-  .dropdown-toggle {
-    font-size: .5rem;
+  &__toggle {
     padding-left: 1rem;
 
     svg {
@@ -125,7 +122,7 @@ form {
     }
   }
 
-  .dropdown-options {
+  &__options {
     background: $syntax-bg-alternate;
     border: 1px lighten($mono-3, 20) solid;
     position: absolute;
@@ -135,24 +132,27 @@ form {
     padding: .3rem 0;
     display: flex;
     flex-direction: column;
+    text-align: right;
     transition: opacity .1s ease, transform .1s ease;
     transform: translateY(0);
+    visibility: visible;
     opacity: 1;
     pointer-events: all;
 
-    &.hidden {
+    &--hidden {
+      visibility: hidden;
       opacity: 0;
       pointer-events: none;
       transform: translateY(-1rem);
     }
 
-    a {
+    &__option {
       margin: 0;
       font-size: 1rem;
       line-height: 1rem;
       padding: .5rem 1rem;
 
-      &.danger {
+      &--danger {
         @include dark-link($hue-5-2, 10);
       }
     }

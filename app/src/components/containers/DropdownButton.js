@@ -26,21 +26,34 @@ class DropdownButton extends Component {
     const { dropdownHidden } = this.state
     const { options, fixedOptions } = this.props
 
+    const block = 'dropdown-button'
+
     return (
-      <div className="dropdown-button">
-        <a href="#" onClick={ e => this.toggleDropdown(e) } className="dropdown-toggle">
+      <div className={ block }>
+        <a href="#" onClick={ e => this.toggleDropdown(e) } className={ `${block}__toggle` }>
           <Icon name="more" />
         </a>
-        <div className={ dropdownHidden ? 'dropdown-options hidden' : 'dropdown-options' }>
+        <div
+          className={ dropdownHidden ?
+            `${block}__options ${block}__options--hidden` :
+            `${block}__options` }
+        >
           { options.map((o, i) =>
-            <a href="#" key={ i } onClick={ e => o.action(e) }>
+            <a
+              href="#"
+              className={ `${block}__options__option` }
+              key={ i }
+              onClick={ e => o.action(e) }
+            >
               { o.label }
             </a>
           ) }
           { fixedOptions.map((o, i) =>
             <a
               href="#"
-              className={ o.label === 'delete' ? 'danger' : '' }
+              className={ o.label === 'delete' ?
+                `${block}__options__option ${block}__options__option--danger` :
+                `${block}__options__option` }
               key={ i }
               onClick={ e => o.action(e) }
             >
