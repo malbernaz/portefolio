@@ -46,6 +46,7 @@ const reducer = (state = { loaded: false }, action = {}) => {
       return {
         ...state,
         signingIn: false,
+        signedIn: true,
         status: action.result.message,
         user: action.result.user
       }
@@ -53,6 +54,7 @@ const reducer = (state = { loaded: false }, action = {}) => {
       return {
         ...state,
         signingIn: false,
+        signedIn: false,
         user: null,
         status: action.error.message,
       }
@@ -66,6 +68,7 @@ const reducer = (state = { loaded: false }, action = {}) => {
       return {
         ...state,
         loggingOut: false,
+        loggedOut: true,
         user: null,
         status: action.result.message
       }
@@ -73,6 +76,7 @@ const reducer = (state = { loaded: false }, action = {}) => {
       return {
         ...state,
         loggingOut: false,
+        loggedOut: false,
         status: action.error.message
       }
 

@@ -3,14 +3,14 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Helmet from 'react-helmet'
 
-import { AdminView } from '../'
+import { EditorView } from '../'
 
 import {
   posts as postsActions,
   message as messageActions
 } from '../../actions'
 
-class Admin extends Component {
+class Editor extends Component {
   static propTypes = {
     createActiveDraft: PropTypes.func,
     deleteDraft: PropTypes.func,
@@ -105,8 +105,8 @@ class Admin extends Component {
 
     return (
       <div>
-        <Helmet title="admin" />
-        <AdminView
+        <Helmet title="editor" />
+        <EditorView
           activeDraft={ activeDraft }
           drafts={ drafts }
           handleDelete={ this.handleDelete }
@@ -131,4 +131,4 @@ export default connect(({
     ...postsActions,
     ...messageActions
   }, dispatch)
-)(Admin)
+)(Editor)

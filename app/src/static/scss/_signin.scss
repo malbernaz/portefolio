@@ -1,17 +1,22 @@
 .signin {
   @include centered;
+  position: relative;
 
-  .signin-wrapper {
-    position: relative;
-  }
-
-  .error-message {
-    text-align: center;
-    position: absolute;
-    bottom: -2rem;
-    left: 50%;
-    transform: translateX(-50%);
+  &__error-message {
     color: $hue-5-2;
-    width: 80%;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    opacity: 0;
+    transition: opacity .3s ease;
+
+    &--shown {
+      @extend .signin__error-message;
+      opacity: 1;
+    }
   }
+}
+
+.signin-form {
+  @include default-form;
 }

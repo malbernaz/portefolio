@@ -8,60 +8,61 @@ $half-posts-list-width: $posts-list-width / 2;
   width: calc(100vw - #{$nav-width});
 }
 
-.admin {
+.editor {
   display: flex;
   height: 100vh;
+  flex-direction: column;
+  width: calc(100vw - #{$nav-width});
 }
 
-.top-admin-bar {
+.editor-top-bar {
   @include admin-bar;
-
   border-bottom: 1px lighten($mono-3, 20) solid;
   flex: 0 0 3.5rem;
   justify-content: center;
   position: relative;
 
-  .top-bar-button {
+  &__button {
     @include icon-link(3.5rem);
     position: absolute;
 
     &:first-child {
       left: 0;
     }
-  }
 
-  .show-posts-list {
-    pointer-events: none;
-    visibility: hidden;
-  }
-
-  .post-title {
-    text-align: center;
-  }
-
-  .title {
-    width: 40vw;
-    overflow: hidden;
-    text-transform: capitalize;
-
-    b {
-      display: block;
-      height: 1.3rem;
-      line-height: 1.6rem;
+    &--show-posts {
+      @extend .editor-top-bar__button;
+      pointer-events: none;
+      visibility: hidden;
     }
   }
 
-  small {
-    color: $mono-2;
-    font-size: .7rem;
-    font-weight: 600;
-    line-height: .7rem;
-    text-transform: lowercase;
+  &__info {
+    text-align: center;
+
+    &__title {
+      width: 40vw;
+      overflow: hidden;
+      text-transform: uppercase;
+
+      >* {
+        display: block;
+        height: 1.3rem;
+        line-height: 1.6rem;
+      }
+    }
+
+    &__stamps {
+      color: $mono-2;
+      font-size: .7rem;
+      font-weight: 600;
+      line-height: .7rem;
+      text-transform: lowercase;
+    }
   }
 }
 
-
-.bottom-admin-bar {
+.editor-bottom-bar {
   @include admin-bar;
 
   border-top: 1px lighten($mono-3, 20) solid;
@@ -69,7 +70,7 @@ $half-posts-list-width: $posts-list-width / 2;
   flex: 0 0 4rem;
   justify-content: space-around;
 
-  .bottom-bar-button {
+  &__button {
     @include icon-link(4rem);
     align-items: center;
     flex-direction: column;
@@ -85,13 +86,7 @@ $half-posts-list-width: $posts-list-width / 2;
   }
 }
 
-.editor {
-  display: flex;
-  flex-direction: column;
-  width: calc(100vw - #{$nav-width});
-}
-
-.panes {
+.editor-panes {
   display: flex;
   height: 100vh;
   position: relative;
@@ -99,7 +94,58 @@ $half-posts-list-width: $posts-list-width / 2;
   z-index: $zi-editor;
 }
 
-.posts-list {
+.editor-panes__code {
+  @include strict-width(calc(50% - #{$half-posts-list-width}));
+
+  border-right: 1px lighten($mono-3, 20) dashed;
+  height: 100%;
+  position: relative;
+
+
+  // reset for the first server render
+  textarea {
+    background: $syntax-bg;
+    border: 0;
+    border-right: 1px lighten($mono-3, 20) dashed;
+    bottom: 0;
+    font-family: $monospace;
+    font-size: .75rem;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100%;
+  }
+}
+
+.ReactCodeMirror {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+
+  .CodeMirror {
+    height: 100%;
+  }
+}
+
+.editor-panes__preview {
+  @include strict-width(calc(50% - #{$half-posts-list-width}));
+
+  height: 100%;
+  overflow-y: scroll;
+  padding: 1rem;
+  transform: translateX(0);
+  will-change: transform;
+  z-index: $zi-editor-posts-list;
+
+  *:first-child {
+    margin-top: 0;
+  }
+}
+
+.editor-panes__nav {
   flex: 0 0 $posts-list-width;
   background: $syntax-bg;
   border-right: 1px lighten($mono-3, 20) dashed;
@@ -108,13 +154,13 @@ $half-posts-list-width: $posts-list-width / 2;
   will-change: transform;
   z-index: $zi-editor-posts-list;
 
-  .post-item {
+  &__item {
     display: flex;
     justify-content: space-between;
     padding: 1rem;
     position: relative;
 
-    .isDraft {
+    &__title--draft {
       border-bottom: 1px solid $hue-2;
 
       span {
@@ -124,23 +170,24 @@ $half-posts-list-width: $posts-list-width / 2;
       }
     }
 
-    .post-actions {
+    &__actions {
       position: absolute;
       opacity: 0;
       right: 1rem;
       transition: opacity .1s ease;
       z-index: $zi-editor + 1;
 
-      .post-action {
-        margin-left: .8rem;
-      }
-
-      .delete {
-        @include dark-link($hue-5-2, 10);
-      }
-
       svg {
         height: .9rem;
+      }
+
+      &__action {
+        margin-left: .8rem;
+
+        &--delete {
+          @extend .editor-panes__nav__item__actions__action;
+          @include dark-link($hue-5-2, 10);
+        }
       }
 
       &:hover {
@@ -159,88 +206,37 @@ $half-posts-list-width: $posts-list-width / 2;
       top: 0;
       width: 40%;
     }
-  }
 
-  .post-item:nth-child(even) {
-    background: $syntax-bg-alternate;
+    &:nth-child(even) {
+      background: $syntax-bg-alternate;
 
-    &::after {
-      background: linear-gradient(
-        to right, rgba($syntax-bg-alternate, 0), $syntax-bg-alternate 50%
-      );
+      &::after {
+        background: linear-gradient(
+          to right, rgba($syntax-bg-alternate, 0), $syntax-bg-alternate 50%
+        );
+      }
     }
-  }
-}
-
-.code {
-  @include strict-width(calc(50% - #{$half-posts-list-width}));
-
-  border-right: 1px lighten($mono-3, 20) dashed;
-  height: 100%;
-  position: relative;
-
-  textarea {
-    background: $syntax-bg;
-    border: 0;
-    border-right: 1px lighten($mono-3, 20) dashed;
-    bottom: 0;
-    font-family: $monospace;
-    font-size: .75rem;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 100%;
-  }
-
-  .ReactCodeMirror {
-    bottom: 0;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-
-    .CodeMirror {
-      height: 100%;
-    }
-  }
-}
-
-.preview {
-  @include strict-width(calc(50% - #{$half-posts-list-width}));
-
-  height: 100%;
-  overflow-y: scroll;
-  padding: 1rem;
-  transform: translateX(0);
-  will-change: transform;
-  z-index: $zi-editor-posts-list;
-
-  *:first-child {
-    margin-top: 0;
   }
 }
 
 @media (max-width: 90rem) {
-  .posts-list {
+  .editor-panes__nav {
     left: -$posts-list-width;
     position: absolute;
     top: 0;
     transform: translateX(0);
   }
 
-  .top-admin-bar {
-    .show-posts-list {
-      pointer-events: all;
-      visibility: visible;
-    }
+  .editor-top-bar__button--show-posts {
+    pointer-events: all;
+    visibility: visible;
   }
 
-  .code {
+  .editor-panes__code {
     @include strict-width(calc(50%));
   }
 
-  .preview {
+  .editor-panes__preview {
     @include strict-width(calc(50%));
   }
 }
@@ -250,31 +246,31 @@ $half-posts-list-width: $posts-list-width / 2;
     width: 100vw;
   }
 
-  .top-admin-bar {
+  .editor-top-bar {
     width: 100vw;
-
-    .show-posts-list {
-      pointer-events: none;
-      visibility: hidden;
-    }
   }
 
-  .bottom-admin-bar {
+  .editor-top-bar__button--show-posts {
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  .editor-bottom-bar {
     display: flex;
     width: 100vw;
   }
 
-  .panes {
+  .editor-panes {
     width: 100vw;
   }
 
-  .code {
+  .editor-panes__code {
     @include strict-width(100%);
 
     border-right: 0;
   }
 
-  .preview {
+  .editor-panes__preview {
     @include strict-width(100%);
 
     height: 100%;
@@ -283,19 +279,5 @@ $half-posts-list-width: $posts-list-width / 2;
     top: 0;
     transform: translateX(100%);
     z-index: $zi-editor;
-  }
-}
-
-@media (max-width: $mobile-l){
-  .top-admin-bar {
-    text-align: center;
-
-    .title {
-      small {
-        display: block;
-        margin-left: 0;
-        margin-top: .1rem;
-      }
-    }
   }
 }

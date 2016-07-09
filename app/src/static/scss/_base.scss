@@ -1,6 +1,6 @@
-* {
-  box-sizing: border-box;
-}
+// RESET
+
+* { box-sizing: border-box; }
 
 body {
   background: $syntax-bg;
@@ -11,23 +11,70 @@ body {
   overflow-x: hidden;
 }
 
-::selection {
-  background: $selection;
-}
+::selection { background: $selection; }
 
-p {
-  word-break: break-all;
-}
+a { @include dark-link($syntax-accent, 10); }
 
-a {
-  @include dark-link($syntax-accent, 15);
-}
+h1, h2, h3, h4, h5, h6 { text-transform: uppercase }
+
+p { line-height: 1.5rem; }
+
+li { line-height: 1.5rem; }
+
+h2 { font-size: 2rem; }
+
+h3 { font-size: 1.5rem; }
 
 svg {
   height: 4.375rem;
 
   path {
     fill: $syntax-accent;
+    stroke: transparent;
+    stroke-width: 4.375rem;
+  }
+}
+
+article {
+  padding: 2rem 0;
+  max-width: 600px;
+
+  h2 {
+    text-transform: uppercase;
+    color: $mono-1;
+  }
+
+  h3 {
+    text-transform: uppercase;
+    color: $mono-2;
+  }
+
+  blockquote {
+    border-left: .4rem solid lighten($mono-3, 20%);
+    margin: 0;
+    padding: .2rem 1rem;
+    color: lighten($syntax-fg, 20%);
+
+    p {
+      margin: .5rem 0;
+
+      &:first-child {
+        margin-top: 0;
+      }
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  code {
+    font-size: .8rem;
+    font-family: $monospace;
+    line-height: 1.2rem;
+  }
+
+  img {
+    max-width: 100%;
   }
 }
 
@@ -44,119 +91,6 @@ svg {
   min-height: 100vh;
   overflow-x: hidden;
   overflow-y: scroll;
-}
-
-form {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-
-  label {
-    display: flex;
-    margin: 1.5rem;
-    position: relative;
-
-    span {
-      left: 50%;
-      pointer-events: none;
-      position: absolute;
-      transform: translateX(-50%);
-    }
-
-    .input-label {
-      bottom: 1rem;
-      left: 50%;
-      opacity: .5;
-      transform: scale(1) translateY(0) translateX(-50%);
-      transition: opacity .3s ease, transform .3s ease;
-    }
-
-    .hasvalue {
-      opacity: .8;
-      transform: translateY(-140%) translateX(-50%);
-    }
-
-    .errors {
-      color: $hue-5-2;
-      font-size: .7rem;
-      top: 110%;
-    }
-  }
-
-  input {
-    appearance: none;
-    background: transparent;
-    border: 0;
-    border-bottom: 1px solid $syntax-accent;
-    height: 3rem;
-    min-width: 15rem;
-    outline: 0;
-    text-align: center;
-
-    &::placeholder {
-      color: transparent;
-    }
-  }
-
-  button {
-    @include button($syntax-accent);
-    margin: 1rem;
-  }
-}
-
-
-.dropdown-button {
-  position: absolute;
-  padding: 0 1rem;
-  height: 100%;
-  right: 0;
-  display: flex;
-  align-items: center;
-  z-index: $zi-editor + 1;
-
-  &__toggle {
-    padding-left: 1rem;
-
-    svg {
-      height: 1rem;
-    }
-  }
-
-  &__options {
-    background: $syntax-bg-alternate;
-    border: 1px lighten($mono-3, 20) solid;
-    position: absolute;
-    right: .5rem;
-    top: 110%;
-    white-space: nowrap;
-    padding: .3rem 0;
-    display: flex;
-    flex-direction: column;
-    text-align: right;
-    transition: opacity .1s ease, transform .1s ease;
-    transform: translateY(0);
-    visibility: visible;
-    opacity: 1;
-    pointer-events: all;
-
-    &--hidden {
-      visibility: hidden;
-      opacity: 0;
-      pointer-events: none;
-      transform: translateY(-1rem);
-    }
-
-    &__option {
-      margin: 0;
-      font-size: 1rem;
-      line-height: 1rem;
-      padding: .5rem 1rem;
-
-      &--danger {
-        @include dark-link($hue-5-2, 10);
-      }
-    }
-  }
 }
 
 .page-transition {

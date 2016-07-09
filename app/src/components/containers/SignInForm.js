@@ -29,41 +29,26 @@ const Form = createForm({
   submitText: 'Sign In'
 })
 
-const SignInForm = ({ auth, signIn, logout, loadAuth, }) => {
+const SignInForm = ({ auth, signIn, logout, loadAuth }) => {
   function handleSubmit(data) {
-    const submitChain = () => signIn(data)
-      .then(result => {
-        browserHistory.push('/admin')
-        return result
-      })
-      .catch(err => {
-        browserHistory.push('/admin')
-        return err
-      })
+    const submitPromise = () => signIn(data)
+      .then(() => browserHistory.push('/admin/editor'))
+      .catch(err => err)
       .then(loadAuth)
 
     return auth.user ?
-      logout().then(() => submitChain()) :
-      submitChain()
+      logout().then(() => submitPromise()) :
+      submitPromise()
   }
 
-  return (
-    <div className="signin-wrapper">
-      <Form onSubmit={ handleSubmit } />
-      { !auth.status.success ?
-        <span className="error-message">
-          { auth.status.message }
-        </span> :
-      '' }
-    </div>
-  )
+  return <Form onSubmit={ handleSubmit } />
 }
 
 SignInForm.propTypes = {
   auth: PropTypes.object,
-  signIn: PropTypes.func,
+  loadAuth: PropTypes.func,
   logout: PropTypes.func,
-  loadAuth: PropTypes.func
+  signIn: PropTypes.func
 }
 
 export default connect(state => ({

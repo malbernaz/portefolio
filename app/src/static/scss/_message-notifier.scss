@@ -13,13 +13,8 @@
   will-change: transform, opacity;
   transition: transform .1s ease, opacity .1s ease;
   opacity: 0;
-
+  pointer-events: none;
   transform: translateY(.5rem);
-
-  &.isShown {
-    transform: translateY(0);
-    opacity: 1;
-  }
 
   span {
     color: $syntax-bg;
@@ -31,12 +26,18 @@
     }
   }
 
+  &--shown {
+    @extend .message-notifier;
+    transform: translateY(0);
+    opacity: 1;
+  }
+
   @media (max-width: $tablet) {
     bottom: 5rem;
     left: 50%;
     transform: translateX(-50%) translateY(.5rem);
 
-    &.isShown {
+    &--shown {
       transform: translateX(-50%) translateY(0);
       opacity: 1;
     }

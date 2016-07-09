@@ -10,73 +10,82 @@ import config from '../../config'
 import { auth as authActions } from '../../actions'
 
 const Nav = ({ auth, logout }) => (
-  <div className={ auth.user ? 'nav-wrapper logged-in' : 'nav-wrapper' }>
-    <a herf="#" className="toggle-menu">
+  <div className="nav">
+    <a herf="#" className="nav__toggle">
       <Icon name="menu" />
       <span>menu</span>
     </a>
-    <nav>
-      <div className="logo">
-        <Icon name="logo" />
-        <h4>{ config.head.title }</h4>
-        <span>{ config.description }</span>
-      </div>
-      <div className="main-nav">
-        <ul>
-          <li>
-            <IndexLink
-              className="main-nav__item"
-              activeClassName="main-nav__item--active"
-              to="/"
-            >
-              home
-            </IndexLink>
-          </li>
-          <li>
-            <Link
-              className="main-nav__item"
-              activeClassName="main-nav__item--active"
-              to="/about"
-            >
-              about
-            </Link>
-          </li>
-          <li>
-            <Link
-              className="main-nav__item"
-              activeClassName="main-nav__item--active"
-              to="/contact"
-            >
-            contact
-            </Link>
-          </li>
-          { auth.user ?
-            <li>
-              <Link
-                className="main-nav__item"
-                activeClassName="main-nav__item--active"
-                to="/admin"
-              >
-                editor
-              </Link>
-            </li> : '' }
-          { auth.user ?
-            <li className="logout">
-              <Link className="main-nav__item" to="/" onClick={ logout }>
-                ← logout
-              </Link>
-            </li> : '' }
-        </ul>
-      </div>
-      <div className="nav-footer">
-        <a href={ config.github } target="_blank">
+    <div className="nav__logo">
+      <Icon className="nav__logo__icon" name="logo" />
+      <h4 className="nav__logo__title">{ config.title }</h4>
+      <span className="nav__logo__desc">{ config.description }</span>
+    </div>
+    <div className="nav__main">
+      <IndexLink
+        className="nav__main__item"
+        activeClassName="nav__main__item--active"
+        to="/"
+      >
+        home
+      </IndexLink>
+      <Link
+        className="nav__main__item"
+        activeClassName="nav__main__item--active"
+        to="/about"
+      >
+        about
+      </Link>
+      <Link
+        className="nav__main__item"
+        activeClassName="nav__main__item--active"
+        to="/contact"
+      >
+      contact
+      </Link>
+      { auth.user ?
+        <Link
+          className="nav__main__item"
+          activeClassName="nav__main__item--active"
+          to="/admin/editor"
+        >
+          editor
+        </Link> : '' }
+      { auth.user ?
+        <Link
+          className="nav__main__item--logout"
+          to="/"
+          onClick={ logout }
+        >
+          ← logout
+        </Link> : '' }
+    </div>
+    <div className="nav__footer">
+      <div className="nav__footer__social">
+        <a
+          className="nav__footer__social__link"
+          href={ config.github }
+          target="_blank"
+        >
           <Icon name="github" />
         </a>
-        <a href={ config.github } target="_blank">
+        <a
+          className="nav__footer__social__link"
+          href={ config.twitter }
+          target="_blank"
+        >
           <Icon name="twitter" />
         </a>
       </div>
-    </nav>
+      <div className="nav__footer__copyleft">
+        <span>
+          <span className="nav__footer__copyleft__icon">&copy;</span>
+          <span className="nav__footer__copyleft__year">
+            { ` ${new Date().getFullYear()}` }
+          </span>
+          { ' - copyleft' }
+        </span>
+      </div>
+    </div>
   </div>
 )
 

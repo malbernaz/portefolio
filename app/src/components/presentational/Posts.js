@@ -13,9 +13,6 @@ const Posts = ({ posts }) => (
           <small>{ moment(post.createdAt, moment.ISO_8601).fromNow() }</small>
           <h2>{ post.meta.title }</h2>
           <h3>{ post.meta.subtitle }</h3>
-          <div className="post-tags">
-            { post.meta.tags.map((t, i) => <span key={ i } className="tag">{ t }</span>) }
-          </div>
           <Link to={ `/posts/${post.slug}` }>more...</Link>
         </article>
       )) :

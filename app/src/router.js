@@ -8,12 +8,11 @@ import { loadPosts, loadPostsAndDrafts } from './actions/posts'
 
 import {
   About,
-  Admin,
+  Editor,
   AppView,
   Contact,
   Home,
   Post,
-  Posts,
   SignIn
 } from './components'
 
@@ -21,7 +20,7 @@ export default store => {
   const mustBeLogged = (nextState, replace, callback) => {
     function checkAuth() {
       const { auth: { user } } = store.getState()
-      if (!user) replace('/admin/signin')
+      if (!user) replace('/admin')
       callback()
     }
 
@@ -84,18 +83,18 @@ export default store => {
   return (
     <Route name="app" component={ AppView } path="/">
       <IndexRoute component={ Home } />
-      <Route component={ About } path="about" />
-      <Route component={ Contact } path="contact" />
 
-      <Route name="posts" path="/posts">
-        <IndexRoute component={ Posts } />
+      <Route path="posts">
         <Route path=":slug" onEnter={ postMustExist } component={ Post } />
       </Route>
 
+      <Route component={ About } path="about" />
+      <Route component={ Contact } path="contact" />
+
       <Route name="admin" path="admin">
-        <Route component={ SignIn } path="signin" />
-        <Route onEnter={ mustBeLogged }>
-          <IndexRoute onEnter={ getDrafts } component={ Admin } />
+        <IndexRoute component={ SignIn } />
+        <Route onEnter={ mustBeLogged } path="editor">
+          <IndexRoute onEnter={ getDrafts } component={ Editor } />
         </Route>
       </Route>
     </Route>

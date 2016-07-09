@@ -1,17 +1,9 @@
 $article-start-width: 40rem;
 
-article {
-  max-width: $article-start-width;
-  padding: 2rem 0;
-  width: $article-start-width;
+.home {
+  @include centered;
 
-  h2 {
-    color: $mono-1;
-  }
-
-  h3 {
-    color: $mono-2;
-  }
+  margin: 0 1rem;
 }
 
 .post-tags {

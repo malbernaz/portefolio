@@ -1,14 +1,13 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import Codemirror from 'react-codemirror'
+import { default as ReactCodemirror } from 'react-codemirror'
 import marked from 'meta-marked'
 
 import { posts as postsActions } from '../../actions'
 
 marked.setOptions({
-  gfm: true,
-  sanitize: true
+  gfm: true
 })
 
 const options = {
@@ -23,7 +22,7 @@ const options = {
   }
 }
 
-class MyEditor extends Component {
+class Codemirror extends Component {
   static propTypes = {
     posts: PropTypes.object,
     updateActiveDraft: PropTypes.func
@@ -40,7 +39,7 @@ class MyEditor extends Component {
     const { posts: { activeDraft: { raw } } } = this.props
 
     return (
-      <Codemirror
+      <ReactCodemirror
         options={ options }
         onChange={ this.handleChange }
         value={ raw }
@@ -51,4 +50,4 @@ class MyEditor extends Component {
 
 export default connect(
   state => ({ ...state }),
-  dispatch => bindActionCreators({ ...postsActions }, dispatch))(MyEditor)
+  dispatch => bindActionCreators({ ...postsActions }, dispatch))(Codemirror)

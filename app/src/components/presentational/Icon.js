@@ -21,6 +21,15 @@ const Icon = ({ name, className }) => {
           />
         </svg>
       )
+    case 'mail':
+      return (
+        <svg viewBox="0 0 70 46" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M70 46H0V3.443l35 27.543L70 3.443V46zM0 0h70L35 27.543 0 0z"
+            fillRule="evenodd"
+          />
+        </svg>
+      )
     case 'settings':
       return (
         <svg className={ className } viewBox="0 0 70 70" xmlns="http://www.w3.org/2000/svg">

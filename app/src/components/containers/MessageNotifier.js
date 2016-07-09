@@ -11,7 +11,7 @@ const MessageNotifier = ({ message, dissmissMessage }) => {
     if (message.isShown) dissmissOnTimeout()
 
     return (
-      <div className={ message.isShown ? 'message-notifier isShown' : 'message-notifier' }>
+      <div className={ message.isShown ? 'message-notifier--shown' : 'message-notifier' }>
         <span>{ message.content }</span>
       </div>
     )

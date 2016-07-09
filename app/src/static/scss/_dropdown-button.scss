@@ -1,0 +1,53 @@
+.dropdown-button {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  padding: 0 1rem;
+  position: absolute;
+  right: 0;
+  z-index: $zi-editor + 1;
+
+  &__toggle {
+    padding-left: 1rem;
+
+    svg {
+      height: 1rem;
+    }
+  }
+
+  &__options {
+    background: $syntax-bg-alternate;
+    border: 1px lighten($mono-3, 20) solid;
+    display: flex;
+    flex-direction: column;
+    opacity: 1;
+    padding: .3rem 0;
+    pointer-events: all;
+    position: absolute;
+    right: .5rem;
+    text-align: right;
+    top: 110%;
+    transform: translateY(0);
+    transition: opacity .1s ease, transform .1s ease;
+    visibility: visible;
+    white-space: nowrap;
+
+    &--hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-1rem);
+      visibility: hidden;
+    }
+
+    &__option {
+      font-size: 1rem;
+      line-height: 1rem;
+      margin: 0;
+      padding: .5rem 1rem;
+
+      &--danger {
+        @include dark-link($hue-5-2, 10);
+      }
+    }
+  }
+}
