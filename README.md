@@ -2,7 +2,12 @@
 
 A blog scaffold featuring react, redux, server-side rendering and a markdown editor.
 
-Portefolio is a project of my own, but if you wish don't hesitate to make it your. I'm open to commits.
+## Instructions
+
+```shell
+λ npm install
+λ npm run dev
+```
 
 ## If you do so, acknowledge that:
 
@@ -12,8 +17,11 @@ Portefolio is a project of my own, but if you wish don't hesitate to make it you
 ## Todos in an unordered list:
 
 - ~~API endpoins refactoring (use promises instead of callbacks for mongoose queries)~~
-- Find a more efficient way to handle drafts (on its way)
-- Create tests (**important**)
-- Implement ui animations
-- Implement service worker
+- ~~Find a more efficient way to handle drafts (on its way)~~
+- ~~page animations~~
+- Implement ui interactions
+- Create actions prompt component
+- Use css-modules
+- Use service workers
 - Use webpack instead of browserify
+- Deploy with docker
