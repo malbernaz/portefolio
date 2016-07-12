@@ -13,7 +13,7 @@ const Posts = ({ posts }) => (
           <small>{ moment(post.createdAt, moment.ISO_8601).fromNow() }</small>
           <h2>{ post.meta.title }</h2>
           <h3>{ post.meta.subtitle }</h3>
-          <Link to={ `/posts/${post.slug}` }>more...</Link>
+          <Link to={ `/posts/${post.slug}` }>read more...</Link>
         </article>
       )) :
       <article>There ain't no posts yet :(</article> }

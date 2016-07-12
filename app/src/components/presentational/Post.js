@@ -5,6 +5,7 @@ import moment from 'moment'
 
 const Post = ({ posts, slug }) => {
   const { meta, html, createdAt } = posts.filter(p => p.slug === slug)[0]
+
   return (
     <section className="post">
       <Helmet title={ meta.title } />

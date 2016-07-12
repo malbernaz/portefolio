@@ -36,8 +36,12 @@ svg {
 }
 
 article {
-  padding: 2rem 0;
+  padding-bottom: 5rem;
   max-width: 600px;
+
+  *:first-child {
+    padding-top: 0;
+  }
 
   h2 {
     text-transform: uppercase;
@@ -89,26 +93,41 @@ article {
   flex-direction: column;
   flex-grow: 1;
   min-height: 100vh;
-  overflow-x: hidden;
-  overflow-y: scroll;
+  overflow: hidden;
+  position: relative;
+
+  >div {
+    width: 100%;
+  }
 }
 
 .page-transition {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+
   &-enter {
-    opacity: .01;
+    @extend .page-transition;
+    opacity: 0;
 
     &-active {
+      @extend .page-transition-enter;
       opacity: 1;
-      transition: opacity .3s ease, transform .3s ease;
+      transition: opacity .3s ease;
+      will-change: opacity;
     }
   }
 
   &-leave {
+    @extend .page-transition;
     opacity: 1;
 
     &-active {
-      opacity: .01;
-      transition: opacity .3s ease, transform .3s ease;
+      @extend .page-transition-leave;
+      opacity: 0;
+      transition: opacity .3s ease;
+      will-change: opacity;
     }
   }
 }

@@ -82,7 +82,7 @@ const Nav = ({ auth, logout }) => (
           <span className="nav__footer__copyleft__year">
             { ` ${new Date().getFullYear()}` }
           </span>
-          { ' - copyleft' }
+          { ' - portefólio' }
         </span>
       </div>
     </div>

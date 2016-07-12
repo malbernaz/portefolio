@@ -1,13 +1,25 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { default as ReactCodemirror } from 'react-codemirror'
-import marked from 'meta-marked'
+import ReactCodemirror from 'react-codemirror'
+import marked, { Renderer } from 'meta-marked'
+import hljs from 'highlight.js'
 
 import { posts as postsActions } from '../../actions'
 
+const renderer = new Renderer()
+
+renderer.code = (code, language) => {
+  const validLang = !!(language && hljs.getLanguage(language))
+
+  const highlighted = validLang ? hljs.highlight(language, code).value : code
+
+  return `<pre><code class="hljs ${language}">${highlighted}</code></pre>`
+}
+
 marked.setOptions({
-  gfm: true
+  gfm: true,
+  renderer
 })
 
 const options = {
@@ -28,6 +40,11 @@ class Codemirror extends Component {
     updateActiveDraft: PropTypes.func
   }
 
+  componentDidMount() {
+    require('codemirror/mode/gfm/gfm') // eslint-disable-line
+    options.mode = 'gfm'
+  }
+
   handleChange = (raw) => {
     const { updateActiveDraft } = this.props
     const { meta, html } = marked(raw)
@@ -40,6 +57,7 @@ class Codemirror extends Component {
 
     return (
       <ReactCodemirror
+        ref="editor"
         options={ options }
         onChange={ this.handleChange }
         value={ raw }

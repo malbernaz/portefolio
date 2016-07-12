@@ -46,7 +46,7 @@
       padding: .5rem 1rem;
 
       &--danger {
-        @include dark-link($hue-5-2, 10);
+        @include dark-link($hue-5, 10);
       }
     }
   }

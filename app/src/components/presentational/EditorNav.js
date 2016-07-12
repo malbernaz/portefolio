@@ -17,7 +17,6 @@ const EditorNav = ({ iterablePosts, handleEditPost, handleDelete }) => (
                 className={ `${b}__item__title--draft` }
               >
                 { p.meta.title }
-                <span>draft</span>
               </small> }
             <div className={ `${b}__item__actions` }>
               <a

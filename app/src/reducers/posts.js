@@ -35,9 +35,11 @@ import {
 
 import defaultDraft from '../helpers/defaultDraft'
 
-const withAditionalFields = (data, isPost = true) => data instanceof Array ?
-  data.map(d => ({ ...d, isPublished: isPost, isSaved: true })) :
-  ({ ...data, isPublished: isPost, isSaved: true })
+const format = (data, isPost = true) =>
+  data instanceof Array ?
+    data.map(d => ({ ...d, isPublished: isPost, isSaved: true }))
+      .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)) :
+    ({ ...data, isPublished: isPost, isSaved: true })
 
 const reducer = (state = {}, action = {}) => {
   // load posts and drafts
@@ -48,8 +50,8 @@ const reducer = (state = {}, action = {}) => {
         loadingPostsAndDrafts: true
       }
     case LOAD_POSTS_AND_DRAFTS_SUCCESS: {
-      const posts = withAditionalFields(action.result.posts)
-      const drafts = withAditionalFields(action.result.drafts, false)
+      const posts = format(action.result.posts)
+      const drafts = format(action.result.drafts, false)
 
       return {
         ...state,
@@ -78,7 +80,7 @@ const reducer = (state = {}, action = {}) => {
         loadingPosts: true
       }
     case LOAD_POSTS_SUCCESS: {
-      const posts = withAditionalFields(action.result.posts)
+      const posts = format(action.result.posts)
 
       return {
         ...state,
@@ -105,7 +107,7 @@ const reducer = (state = {}, action = {}) => {
         updatingPost: true
       }
     case UPDATE_POST_SUCCESS: {
-      const post = withAditionalFields(action.result.post)
+      const post = format(action.result.post)
 
       return {
         ...state,
@@ -166,7 +168,7 @@ const reducer = (state = {}, action = {}) => {
         publishing: true
       }
     case PUBLISH_SUCCESS: {
-      const post = withAditionalFields(action.result.post)
+      const post = format(action.result.post)
       const drafts = state.drafts.filter(d => d._id !== post._id)
 
       return {
@@ -194,7 +196,8 @@ const reducer = (state = {}, action = {}) => {
         unpublishing: true
       }
     case UNPUBLISH_SUCCESS: {
-      const draft = withAditionalFields(action.result.draft, false)
+      const draft = format(action.result.draft, false)
+      const drafts = format([...state.drafts, draft], false)
 
       return {
         ...state,
@@ -202,8 +205,8 @@ const reducer = (state = {}, action = {}) => {
         unpublished: true,
         status: action.result.message,
         posts: state.posts.filter(p => p._id !== draft._id),
-        drafts: [...state.drafts, draft],
-        activeDraft: state.drafts[0] || draft || defaultDraft
+        drafts,
+        activeDraft: draft
       }
     }
     case UNPUBLISH_FAIL:
@@ -221,7 +224,7 @@ const reducer = (state = {}, action = {}) => {
         loadingDrafts: true
       }
     case LOAD_DRAFTS_SUCCESS: {
-      const drafts = withAditionalFields(action.result.drafts, false)
+      const drafts = format(action.result.drafts, false)
 
       return {
         ...state,
@@ -249,14 +252,15 @@ const reducer = (state = {}, action = {}) => {
         savingDraft: true
       }
     case SAVE_DRAFT_SUCCESS: {
-      const draft = withAditionalFields(action.result.draft, false)
+      const draft = format(action.result.draft, false)
+      const drafts = format([...state.drafts, draft], false)
 
       return {
         ...state,
         savingDraft: false,
         savedDraft: true,
         status: action.result.message,
-        drafts: [...state.draft, draft],
+        drafts,
         activeDraft: draft
       }
     }
@@ -275,14 +279,15 @@ const reducer = (state = {}, action = {}) => {
         updatingDraft: true
       }
     case UPDATE_DRAFT_SUCCESS: {
-      const draft = withAditionalFields(action.result.draft, false)
+      const draft = format(action.result.draft, false)
+      const drafts = format(state.drafts.map(d => d._id === draft._id ? draft : d), false)
 
       return {
         ...state,
         updatingDraft: false,
         updatedDraft: true,
         status: action.result.message,
-        drafts: state.drafts.map(d => d._id === draft._id ? draft : d),
+        drafts,
         activeDraft: draft
       }
     }

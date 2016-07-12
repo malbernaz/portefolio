@@ -3,15 +3,8 @@ $article-start-width: 40rem;
 .home {
   @include centered;
 
-  margin: 0 1rem;
-}
-
-.post-tags {
-  margin: 1rem 0 2rem;
-  display: flex;
-
-  .tag {
-    @include tag($hue-3);
-    margin-right: .7rem;
-  }
+  justify-content: flex-start;
+  overflow-y: scroll;
+  width: 100%;
+  padding: 3rem 1rem;
 }
