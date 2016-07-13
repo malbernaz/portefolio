@@ -242,6 +242,10 @@ $half-posts-list-width: $posts-list-width / 2;
       }
     }
   }
+
+  &--isShown {
+    @extend .editor-panes__nav;
+  }
 }
 
 @media (max-width: 90rem) {
@@ -250,6 +254,12 @@ $half-posts-list-width: $posts-list-width / 2;
     position: absolute;
     top: 0;
     transform: translateX(0);
+    will-change: transform;
+    transition: transform .1s ease-out;
+
+    &--isShown {
+      transform: translateX($posts-list-width);
+    }
   }
 
   .editor-top-bar__button--show-posts {

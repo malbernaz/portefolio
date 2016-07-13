@@ -7,7 +7,8 @@ import { EditorView } from '../'
 
 import {
   posts as postsActions,
-  message as messageActions
+  message as messageActions,
+  ui as uiActions
 } from '../../actions'
 
 class Editor extends Component {
@@ -16,6 +17,7 @@ class Editor extends Component {
     deleteDraft: PropTypes.func,
     deletePost: PropTypes.func,
     drafts: PropTypes.object,
+    editor: PropTypes.object,
     loadDrafts: PropTypes.func,
     loadPosts: PropTypes.func,
     message: PropTypes.object,
@@ -23,10 +25,13 @@ class Editor extends Component {
     publish: PropTypes.func,
     saveDraft: PropTypes.func,
     showMessage: PropTypes.func,
+    toggleEditorNav: PropTypes.func,
     unpublish: PropTypes.func,
     updateDraft: PropTypes.func,
     updatePost: PropTypes.func
   }
+
+  // POSTS CRUD
 
   submitPromise = (promise, data) => {
     const { showMessage } = this.props
@@ -100,8 +105,18 @@ class Editor extends Component {
       this.submitPromise(deletePost, activeDraft._id)
   }
 
+  // UI INTERACTIONS
+
+  showNav = e => {
+    e.preventDefault()
+
+    const { toggleEditorNav } = this.props
+
+    toggleEditorNav()
+  }
+
   render() {
-    const { posts: { posts, activeDraft, drafts } } = this.props
+    const { editor, posts: { posts, activeDraft, drafts } } = this.props
 
     return (
       <div>
@@ -115,7 +130,9 @@ class Editor extends Component {
           handlePublish={ this.handlePublish }
           handleSaveDraft={ this.handleSaveDraft }
           handleUnpublish={ this.handleUnpublish }
+          showNav={ this.showNav }
           posts={ posts }
+          navIsShown={ editor.editorNavIsVisible }
         />
       </div>
     )
@@ -123,12 +140,17 @@ class Editor extends Component {
 }
 
 export default connect(({
-  posts, message
+  posts,
+  message,
+  ui: { editor }
 }) => ({
-  posts, message
+  posts,
+  message,
+  editor
 }),
   dispatch => bindActionCreators({
     ...postsActions,
-    ...messageActions
+    ...messageActions,
+    ...uiActions.editor
   }, dispatch)
 )(Editor)

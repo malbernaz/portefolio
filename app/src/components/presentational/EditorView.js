@@ -12,10 +12,12 @@ const EditorView = ({
   handlePublish,
   handleSaveDraft,
   handleUnpublish,
+  navIsShown,
+  showNav
 }) => (
   <section className="editor">
     <div className="editor-top-bar">
-      <a href="#" className="editor-top-bar__button--show-posts">
+      <a href="#" onClick={ e => showNav(e) } className="editor-top-bar__button--show-posts">
         <Icon name="list" />
         <span>posts</span>
       </a>
@@ -47,6 +49,7 @@ const EditorView = ({
       <EditorNav
         handleEditPost={ handleEditPost }
         handleDelete={ handleDelete }
+        isShown={ navIsShown }
       />
       <div className="editor-panes__code">
         <Codemirror />
@@ -69,7 +72,7 @@ const EditorView = ({
       </div>
     </div>
     <div className="editor-bottom-bar">
-      <a href="#" className="editor-bottom-bar__button">
+      <a href="#" onClick={ e => showNav(e) } className="editor-bottom-bar__button">
         <Icon name="list" />
         <span>posts</span>
       </a>
@@ -93,6 +96,8 @@ EditorView.propTypes = {
   handlePublish: PropTypes.func.isRequired,
   handleSaveDraft: PropTypes.func.isRequired,
   handleUnpublish: PropTypes.func.isRequired,
+  navIsShown: PropTypes.bool.isRequired,
+  showNav: PropTypes.func.isRequired
 }
 
 export default EditorView

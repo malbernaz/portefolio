@@ -252,8 +252,7 @@ const reducer = (state = {}, action = {}) => {
         savingDraft: true
       }
     case SAVE_DRAFT_SUCCESS: {
-      const draft = format(action.result.draft, false)
-      const drafts = format([...state.drafts, draft], false)
+      const drafts = format([...state.drafts, action.result.draft], false)
 
       return {
         ...state,
@@ -261,7 +260,7 @@ const reducer = (state = {}, action = {}) => {
         savedDraft: true,
         status: action.result.message,
         drafts,
-        activeDraft: draft
+        activeDraft: drafts.filter(d => d._id === action.result.draft._id).pop()
       }
     }
     case SAVE_DRAFT_FAIL:

@@ -6,8 +6,8 @@ import { Icon } from '../'
 
 const b = 'editor-panes__nav'
 
-const EditorNav = ({ iterablePosts, handleEditPost, handleDelete }) => (
-  <div className={ b }>
+const EditorNav = ({ iterablePosts, handleEditPost, handleDelete, isShown }) => (
+  <div className={ isShown ? `${b}--isShown` : b }>
     { iterablePosts.length > 0 ?
         iterablePosts.map((p, i) =>
           <div className={ `${b}__item` } key={ i }>
@@ -47,7 +47,8 @@ const EditorNav = ({ iterablePosts, handleEditPost, handleDelete }) => (
 EditorNav.propTypes = {
   handleDelete: PropTypes.func.isRequired,
   handleEditPost: PropTypes.func.isRequired,
-  iterablePosts: PropTypes.array
+  iterablePosts: PropTypes.array,
+  isShown: PropTypes.bool
 }
 
 export default connect(
