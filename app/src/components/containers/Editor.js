@@ -25,6 +25,8 @@ class Editor extends Component {
     publish: PropTypes.func,
     saveDraft: PropTypes.func,
     showMessage: PropTypes.func,
+    switchView: PropTypes.func,
+    toggleEditorDropdown: PropTypes.func,
     toggleEditorNav: PropTypes.func,
     unpublish: PropTypes.func,
     updateDraft: PropTypes.func,
@@ -67,14 +69,6 @@ class Editor extends Component {
     return this.submitPromise(unpublish, activeDraft)
   }
 
-  handleEditPost = (e, newActiveDraft) => {
-    e.preventDefault()
-
-    const { createActiveDraft } = this.props
-
-    return createActiveDraft(newActiveDraft)
-  }
-
   handleSaveDraft = e => {
     e.preventDefault()
 
@@ -107,7 +101,15 @@ class Editor extends Component {
 
   // UI INTERACTIONS
 
-  showNav = e => {
+  handleEditPost = (e, newActiveDraft) => {
+    e.preventDefault()
+
+    const { createActiveDraft } = this.props
+
+    createActiveDraft(newActiveDraft)
+  }
+
+  toggleNav = e => {
     e.preventDefault()
 
     const { toggleEditorNav } = this.props
@@ -115,8 +117,35 @@ class Editor extends Component {
     toggleEditorNav()
   }
 
+  toggleDropdown = e => {
+    e.preventDefault()
+
+    const { toggleEditorDropdown } = this.props
+
+    toggleEditorDropdown()
+  }
+
+  switchEditorView = (e, view) => {
+    e.preventDefault()
+
+    const { switchView } = this.props
+
+    switchView(view)
+  }
+
   render() {
-    const { editor, posts: { posts, activeDraft, drafts } } = this.props
+    const {
+      editor: {
+        editorDropdownIsVisible,
+        editorNavIsVisible,
+        view
+      },
+      posts: {
+        posts,
+        activeDraft,
+        drafts
+      }
+    } = this.props
 
     return (
       <div>
@@ -124,15 +153,19 @@ class Editor extends Component {
         <EditorView
           activeDraft={ activeDraft }
           drafts={ drafts }
+          dropdownIsShown={ editorDropdownIsVisible }
           handleDelete={ this.handleDelete }
           handleEditPost={ this.handleEditPost }
           handleNewPost={ this.handleNewPost }
           handlePublish={ this.handlePublish }
           handleSaveDraft={ this.handleSaveDraft }
           handleUnpublish={ this.handleUnpublish }
-          showNav={ this.showNav }
+          navIsShown={ editorNavIsVisible }
           posts={ posts }
-          navIsShown={ editor.editorNavIsVisible }
+          toggleDropdown={ this.toggleDropdown }
+          toggleNav={ this.toggleNav }
+          switchEditorView={ this.switchEditorView }
+          editorView={ view }
         />
       </div>
     )

@@ -7,7 +7,7 @@ import posts from './posts'
 import message from './message'
 import ui from './ui'
 
-const rootReducer = combineReducers({
+export default combineReducers({
   ui,
   auth,
   posts,
@@ -15,5 +15,3 @@ const rootReducer = combineReducers({
   form: formReducer,
   routing: routerReducer
 })
-
-export default rootReducer

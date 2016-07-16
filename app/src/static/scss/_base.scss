@@ -13,7 +13,10 @@ body {
 
 ::selection { background: $selection; }
 
-a { @include dark-link($syntax-accent, 10); }
+a {
+  @include dark-link($syntax-accent, 10);
+  -webkit-tap-highlight-color: transparent;
+}
 
 h1, h2, h3, h4, h5, h6 { text-transform: uppercase }
 

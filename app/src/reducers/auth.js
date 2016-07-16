@@ -10,7 +10,7 @@ import {
   LOGOUT_FAIL
 } from '../constants'
 
-const reducer = (state = { loaded: false }, action = {}) => {
+export default (state = { loaded: false }, action = {}) => {
   switch (action.type) {
     case LOAD_AUTH:
       return {
@@ -84,5 +84,3 @@ const reducer = (state = { loaded: false }, action = {}) => {
       return state
   }
 }
-
-export default reducer

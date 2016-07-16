@@ -6,7 +6,7 @@ import { Icon } from '../'
 
 const b = 'editor-panes__nav'
 
-const EditorNav = ({ iterablePosts, handleEditPost, handleDelete, isShown }) => (
+const EditorNav = ({ iterablePosts, handleEditPost, handleDelete, isShown, toggle }) => (
   <div className={ isShown ? `${b}--isShown` : b }>
     { iterablePosts.length > 0 ?
         iterablePosts.map((p, i) =>
@@ -41,6 +41,11 @@ const EditorNav = ({ iterablePosts, handleEditPost, handleDelete, isShown }) => 
           no posts yet :(
         </small>
       </div> }
+    <div
+      onClick={ toggle }
+      className={ isShown ? `${b}__shadow--isShown` : `${b}__shadow` }
+    >
+    </div>
   </div>
 )
 
@@ -48,7 +53,8 @@ EditorNav.propTypes = {
   handleDelete: PropTypes.func.isRequired,
   handleEditPost: PropTypes.func.isRequired,
   iterablePosts: PropTypes.array,
-  isShown: PropTypes.bool
+  isShown: PropTypes.bool,
+  toggle: PropTypes.func,
 }
 
 export default connect(

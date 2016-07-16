@@ -6,6 +6,8 @@ import { Icon, Codemirror, EditorNav, DropdownButton } from '../'
 
 const EditorView = ({
   activeDraft,
+  dropdownIsShown,
+  editorView,
   handleDelete,
   handleEditPost,
   handleNewPost,
@@ -13,11 +15,13 @@ const EditorView = ({
   handleSaveDraft,
   handleUnpublish,
   navIsShown,
-  showNav
+  switchEditorView,
+  toggleDropdown,
+  toggleNav
 }) => (
   <section className="editor">
     <div className="editor-top-bar">
-      <a href="#" onClick={ e => showNav(e) } className="editor-top-bar__button--show-posts">
+      <a href="#" onClick={ e => toggleNav(e) } className="editor-top-bar__button--show-posts">
         <Icon name="list" />
         <span>posts</span>
       </a>
@@ -32,6 +36,8 @@ const EditorView = ({
         </small>
       </div>
       <DropdownButton
+        isShown={ dropdownIsShown }
+        toggleDropdown={ toggleDropdown }
         options={ activeDraft.isPublished ? [
           { label: 'update', action: handlePublish },
           { label: 'unpublish', action: handleUnpublish }
@@ -47,40 +53,59 @@ const EditorView = ({
     </div>
     <div className="editor-panes">
       <EditorNav
+        toggle={ toggleNav }
         handleEditPost={ handleEditPost }
         handleDelete={ handleDelete }
         isShown={ navIsShown }
       />
-      <div className="editor-panes__code">
-        <Codemirror />
-      </div>
-      <div className="editor-panes__preview">
-        <article
-          dangerouslySetInnerHTML={{
-            __html: `
-              <h2>
-                ${activeDraft.meta.title}
-              </h2>
-              <h3>
-                ${activeDraft.meta.subtitle}
-              </h3>
-              ${activeDraft.html}
-            `
-          }}
-        >
-        </article>
+      <div
+        className={ editorView === 'code' ?
+          'editor-panes__view' :
+          'editor-panes__view--preview' }
+      >
+        <div className="editor-panes__code">
+          <Codemirror />
+        </div>
+        <div className="editor-panes__preview">
+          <article
+            dangerouslySetInnerHTML={{
+              __html: `
+                <h2>
+                  ${activeDraft.meta.title}
+                </h2>
+                <h3>
+                  ${activeDraft.meta.subtitle}
+                </h3>
+                ${activeDraft.html}
+              `
+            }}
+          >
+          </article>
+        </div>
       </div>
     </div>
     <div className="editor-bottom-bar">
-      <a href="#" onClick={ e => showNav(e) } className="editor-bottom-bar__button">
+      <a
+        href="#"
+        onClick={ e => toggleNav(e) }
+        className="editor-bottom-bar__button"
+      >
         <Icon name="list" />
         <span>posts</span>
       </a>
-      <a href="#" className="editor-bottom-bar__button">
+      <a
+        href="#"
+        onClick={ e => switchEditorView(e, 'code') }
+        className="editor-bottom-bar__button"
+      >
         <Icon name="edit" />
         <span>edit</span>
       </a>
-      <a href="#" className="editor-bottom-bar__button">
+      <a
+        href="#"
+        onClick={ e => switchEditorView(e, 'preview') }
+        className="editor-bottom-bar__button"
+      >
         <Icon name="preview" />
         <span>preview</span>
       </a>
@@ -90,6 +115,8 @@ const EditorView = ({
 
 EditorView.propTypes = {
   activeDraft: PropTypes.object.isRequired,
+  dropdownIsShown: PropTypes.bool.isRequired,
+  editorView: PropTypes.string.isRequired,
   handleDelete: PropTypes.func.isRequired,
   handleEditPost: PropTypes.func.isRequired,
   handleNewPost: PropTypes.func.isRequired,
@@ -97,7 +124,9 @@ EditorView.propTypes = {
   handleSaveDraft: PropTypes.func.isRequired,
   handleUnpublish: PropTypes.func.isRequired,
   navIsShown: PropTypes.bool.isRequired,
-  showNav: PropTypes.func.isRequired
+  switchEditorView: PropTypes.func.isRequired,
+  toggleDropdown: PropTypes.func.isRequired,
+  toggleNav: PropTypes.func.isRequired
 }
 
 export default EditorView

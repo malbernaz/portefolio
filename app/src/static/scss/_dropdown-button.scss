@@ -29,14 +29,13 @@
     top: 110%;
     transform: translateY(0);
     transition: opacity .1s ease, transform .1s ease;
-    visibility: visible;
     white-space: nowrap;
 
     &--hidden {
+      @extend .dropdown-button__options;
       opacity: 0;
       pointer-events: none;
       transform: translateY(-1rem);
-      visibility: hidden;
     }
 
     &__option {
@@ -46,6 +45,7 @@
       padding: .5rem 1rem;
 
       &--danger {
+        @extend .dropdown-button__options__option;
         @include dark-link($hue-5, 10);
       }
     }

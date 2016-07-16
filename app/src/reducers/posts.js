@@ -41,7 +41,8 @@ const format = (data, isPost = true) =>
       .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)) :
     ({ ...data, isPublished: isPost, isSaved: true })
 
-const reducer = (state = {}, action = {}) => {
+
+export default (state = {}, action = {}) => {
   // load posts and drafts
   switch (action.type) {
     case LOAD_POSTS_AND_DRAFTS:
@@ -60,7 +61,7 @@ const reducer = (state = {}, action = {}) => {
         status: action.result.message,
         posts,
         drafts,
-        activeDraft: drafts[0] || defaultDraft
+        activeDraft: drafts.length > 0 ? drafts[0] : defaultDraft
       }
     }
     case LOAD_POSTS_AND_DRAFTS_FAIL:
@@ -68,9 +69,7 @@ const reducer = (state = {}, action = {}) => {
         ...state,
         loadingPostsAndDrafts: false,
         loadedPostsAndDrafts: false,
-        status: Object.keys(action.error).length > 0 ?
-          action.error.message :
-          'unathorized'
+        status: Object.keys(action.error).length > 0 ? action.error.message : 'unathorized'
       }
 
     // load posts
@@ -95,9 +94,7 @@ const reducer = (state = {}, action = {}) => {
         ...state,
         loadingPosts: false,
         loadedPosts: false,
-        status: Object.keys(action.error).length > 0 ?
-          action.error.message :
-          'unathorized'
+        status: Object.keys(action.error).length > 0 ? action.error.message : 'unathorized'
       }
 
     // update post
@@ -133,12 +130,14 @@ const reducer = (state = {}, action = {}) => {
         deletingPost: true
       }
     case DELETE_POST_SUCCESS:
+      console.log(state.drafts.length > 0)
+      console.log(state.drafts[0])
       return {
         ...state,
         deletingPost: false,
         deletedPost: true,
         posts: state.posts.filter(p => p._id !== action.result.post._id),
-        activeDrafts: state.drafts[0] || defaultDraft
+        activeDraft: state.drafts.length > 0 ? state.drafts[0] : defaultDraft
       }
     case DELETE_POST_FAIL:
       return {
@@ -151,9 +150,7 @@ const reducer = (state = {}, action = {}) => {
     case CREATE_ACTIVE_DRAFT:
       return {
         ...state,
-        activeDraft: Object.keys(action.activeDraft).length > 0 ?
-          action.activeDraft :
-          defaultDraft
+        activeDraft: Object.keys(action.activeDraft).length > 0 ? action.activeDraft : defaultDraft
       }
     case UPDATE_ACTIVE_DRAFT:
       return {
@@ -178,7 +175,7 @@ const reducer = (state = {}, action = {}) => {
         status: action.result.message,
         posts: [...state.posts, post],
         drafts,
-        activeDraft: drafts[0] || defaultDraft
+        activeDraft: drafts.length > 0 ? drafts[0] : defaultDraft
       }
     }
     case PUBLISH_FAIL:
@@ -232,7 +229,7 @@ const reducer = (state = {}, action = {}) => {
         loadedDrafts: true,
         status: action.result.message,
         drafts,
-        activeDraft: drafts[0] || defaultDraft
+        activeDraft: drafts.length > 0 ? drafts[0] : defaultDraft
       }
     }
     case LOAD_DRAFTS_FAIL:
@@ -240,9 +237,7 @@ const reducer = (state = {}, action = {}) => {
         ...state,
         loadingDrafts: false,
         loadedDrafts: false,
-        status: Object.keys(action.error).length > 0 ?
-          action.error.message :
-          'unathorized'
+        status: Object.keys(action.error).length > 0 ? action.error.message : 'unathorized'
       }
 
     // save draft remotely
@@ -313,7 +308,7 @@ const reducer = (state = {}, action = {}) => {
         deletedDraft: true,
         status: action.result.message,
         drafts,
-        activeDraft: drafts[0] || defaultDraft
+        activeDraft: drafts.length > 0 ? drafts[0] : defaultDraft
       }
     }
     case DELETE_DRAFT_FAIL:
@@ -328,5 +323,3 @@ const reducer = (state = {}, action = {}) => {
       return state
   }
 }
-
-export default reducer

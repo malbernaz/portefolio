@@ -7,14 +7,10 @@ import { Icon } from '../'
 
 import config from '../../config'
 
-import { auth as authActions } from '../../actions'
+import { auth as authActions, ui as uiActions } from '../../actions'
 
-const Nav = ({ auth, logout }) => (
-  <div className="nav">
-    <a herf="#" className="nav__toggle">
-      <Icon name="menu" />
-      <span>menu</span>
-    </a>
+const Nav = ({ auth, logout, ui: { nav }, toggleNav }) => (
+  <div className={ nav.navIsVisible ? 'nav--isShown' : 'nav' }>
     <div className="nav__logo">
       <Icon className="nav__logo__icon" name="logo" />
       <h4 className="nav__logo__title">{ config.title }</h4>
@@ -22,6 +18,7 @@ const Nav = ({ auth, logout }) => (
     </div>
     <div className="nav__main">
       <IndexLink
+        onClick={ toggleNav }
         className="nav__main__item"
         activeClassName="nav__main__item--active"
         to="/"
@@ -29,6 +26,7 @@ const Nav = ({ auth, logout }) => (
         home
       </IndexLink>
       <Link
+        onClick={ toggleNav }
         className="nav__main__item"
         activeClassName="nav__main__item--active"
         to="/about"
@@ -36,6 +34,7 @@ const Nav = ({ auth, logout }) => (
         about
       </Link>
       <Link
+        onClick={ toggleNav }
         className="nav__main__item"
         activeClassName="nav__main__item--active"
         to="/contact"
@@ -44,6 +43,7 @@ const Nav = ({ auth, logout }) => (
       </Link>
       { auth.user ?
         <Link
+          onClick={ toggleNav }
           className="nav__main__item"
           activeClassName="nav__main__item--active"
           to="/admin/editor"
@@ -52,6 +52,7 @@ const Nav = ({ auth, logout }) => (
         </Link> : '' }
       { auth.user ?
         <Link
+          onClick={ toggleNav }
           className="nav__main__item--logout"
           to="/"
           onClick={ logout }
@@ -86,16 +87,27 @@ const Nav = ({ auth, logout }) => (
         </span>
       </div>
     </div>
+    <div
+      onClick={ toggleNav }
+      className={ nav.navIsVisible ? 'nav__shadow--isShown' : 'nav__shadow' }
+    >
+    </div>
   </div>
 )
 
 Nav.propTypes = {
   auth: PropTypes.object,
-  logout: PropTypes.func
+  logout: PropTypes.func,
+  ui: PropTypes.object,
+  toggleNav: PropTypes.func
 }
 
-export default connect(state => ({
-  ...state
-}), dispatch => bindActionCreators({
-  ...authActions
-}, dispatch))(Nav)
+export default connect(
+  state => ({
+    ...state
+  }),
+  dispatch => bindActionCreators({
+    ...authActions,
+    ...uiActions.nav
+  }, dispatch)
+)(Nav)
