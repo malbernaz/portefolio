@@ -3,7 +3,9 @@
   background: $syntax-bg;
   display: block;
   overflow-x: auto;
-  padding: 2rem 0 !important;
+  font-size: .8rem;
+  padding: 1rem;
+  margin: 2rem 0 !important;
 }
 
 .hljs-number,

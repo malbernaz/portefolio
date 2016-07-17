@@ -535,6 +535,10 @@ span.CodeMirror-selectedtext {
 	font-style: italic;
 	color: $hue-5-2;
 }
+.cm-s-one-light .cm-hr {
+	font-weight: 700;
+	color: $hue-5;
+}
 .cm-s-one-light .cm-keyword {
 	color: $hue-3;
 }
@@ -546,6 +550,14 @@ span.CodeMirror-selectedtext {
 }
 .cm-s-one-light .cm-string {
 	color: $hue-4;
+}
+.cm-s-one-light .cm-quote-1 {
+  font-weight: 600;
+	color: $hue-4;
+}
+.cm-s-one-light .cm-variable-2 {
+  font-weight: 600;
+	color: $hue-6-2;
 }
 .cm-s-one-light {
   .cm-property, .cm-strong, .cm-em {

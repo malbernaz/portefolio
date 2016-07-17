@@ -36,7 +36,19 @@ class Editor extends Component {
   // POSTS CRUD
 
   submitPromise = (promise, data) => {
-    const { showMessage } = this.props
+    const {
+      showMessage,
+      toggleEditorDropdown,
+      toggleEditorNav,
+      editor: {
+        editorDropdownIsVisible,
+        editorNavIsVisible
+      }
+    } = this.props
+
+    if (editorDropdownIsVisible) toggleEditorDropdown()
+
+    if (editorNavIsVisible) toggleEditorNav()
 
     return promise(data)
       .then(({ message }) => showMessage(message))
@@ -82,7 +94,13 @@ class Editor extends Component {
   handleDelete = (e, _id) => {
     e.preventDefault()
 
-    const { deletePost, deleteDraft, posts: { activeDraft, drafts, posts } } = this.props
+    const {
+      deletePost,
+      deleteDraft,
+      posts: {
+        activeDraft, drafts, posts
+      }
+    } = this.props
 
     if (_id) {
       const toDelete =
@@ -104,7 +122,9 @@ class Editor extends Component {
   handleEditPost = (e, newActiveDraft) => {
     e.preventDefault()
 
-    const { createActiveDraft } = this.props
+    const { createActiveDraft, toggleEditorNav } = this.props
+
+    toggleEditorNav()
 
     createActiveDraft(newActiveDraft)
   }

@@ -1,4 +1,8 @@
-export default (state = { navIsVisible: false }, action = {}) => {
+const initialState = {
+  navIsVisible: false
+}
+
+export default (state = initialState, action = {}) => {
   switch (action.type) {
     case 'TOGGLE_NAV':
       return {

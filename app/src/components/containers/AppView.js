@@ -18,7 +18,7 @@ const AppView = ({ children, location, toggleNav }) => {
   }
 
   return (
-    <div id="app-view" className="app-view">
+    <div className="app-view">
       <Helmet { ...config.head } />
       <Nav />
       <a href="#" onClick={ e => toggle(e) } className="nav-toggle">

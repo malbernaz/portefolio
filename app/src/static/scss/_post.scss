@@ -1,9 +1,19 @@
 .post {
   @include centered;
 
+  align-items: flex-start;
   justify-content: flex-start;
 
-  height: 100vh;
   overflow-y: scroll;
   padding: 3rem 1rem;
+
+  &__title {
+    text-transform: uppercase;
+    color: $mono-1;
+  }
+
+  &__subtitle {
+    text-transform: uppercase;
+    color: $mono-2;
+  }
 }

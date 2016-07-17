@@ -6,13 +6,15 @@ import moment from 'moment'
 import { postsOrderedByCreatedAt } from '../../selectors'
 
 const Posts = ({ posts }) => (
-  <div>
+  <div className="posts-display">
     { posts.length > 0 ?
       posts.map((post, index) => (
-        <article key={ index }>
-          <small>{ moment(post.createdAt, moment.ISO_8601).fromNow() }</small>
-          <h2>{ post.meta.title }</h2>
-          <h3>{ post.meta.subtitle }</h3>
+        <article key={ index } className="post-display">
+          <small className="post-display__stamp">
+            { moment(post.createdAt, moment.ISO_8601).fromNow() }
+          </small>
+          <h2 className="post-display__title">{ post.meta.title }</h2>
+          <h3 className="post-display__subtitle">{ post.meta.subtitle }</h3>
           <Link to={ `/posts/${post.slug}` }>read more...</Link>
         </article>
       )) :

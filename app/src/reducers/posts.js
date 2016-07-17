@@ -130,8 +130,6 @@ export default (state = {}, action = {}) => {
         deletingPost: true
       }
     case DELETE_POST_SUCCESS:
-      console.log(state.drafts.length > 0)
-      console.log(state.drafts[0])
       return {
         ...state,
         deletingPost: false,

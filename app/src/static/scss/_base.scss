@@ -40,27 +40,20 @@ svg {
 
 article {
   padding-bottom: 5rem;
-  max-width: 600px;
+  max-width: 37.5rem;
+  width: 100%;
+  margin: 0 auto;
 
   *:first-child {
     padding-top: 0;
   }
 
-  h2 {
-    text-transform: uppercase;
-    color: $mono-1;
-  }
-
-  h3 {
-    text-transform: uppercase;
-    color: $mono-2;
-  }
-
   blockquote {
-    border-left: .4rem solid lighten($mono-3, 20%);
-    margin: 0;
+    border-left: .3rem solid lighten($mono-3, 20);
+    margin: 1rem 0;
     padding: .2rem 1rem;
-    color: lighten($syntax-fg, 20%);
+    color: lighten($syntax-fg, 30);
+    font-weight: 600;
 
     p {
       margin: .5rem 0;
@@ -77,11 +70,31 @@ article {
   code {
     font-size: .8rem;
     font-family: $monospace;
-    line-height: 1.2rem;
+    line-height: 1.5rem;
+  }
+
+  th, td {
+    padding: .5rem 1rem !important;
+  }
+
+  th {
+    border-bottom: 1px solid rgba($mono-3, .5);
+  }
+
+  tr {
+    background: $syntax-bg;
+
+    &:nth-child(even) {
+      background: $syntax-bg-alternate;
+    }
   }
 
   img {
     max-width: 100%;
+  }
+
+  hr {
+    border-color: rgba($mono-3, .1);
   }
 }
 

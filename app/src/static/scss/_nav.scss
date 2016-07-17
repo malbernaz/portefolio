@@ -1,4 +1,4 @@
-$nav-width: 10rem;
+$nav-width: 11rem;
 
 .nav-toggle {
   @include icon-link(3.5rem);
@@ -7,7 +7,7 @@ $nav-width: 10rem;
   top: 0;
   left: 0;
   pointer-events: none;
-  position: absolute;
+  position: fixed;
   visibility: hidden;
   z-index: $zi-nav - 1;
 }
@@ -18,7 +18,7 @@ $nav-width: 10rem;
   display: flex;
   flex-direction: column;
   height: 100vh;
-  justify-content: space-between;
+  justify-content: center;
   padding: 0;
   width: $nav-width;
   will-change: transform;
@@ -54,7 +54,7 @@ $nav-width: 10rem;
   width: 100%;
 
   &__item {
-    height: 3rem;
+    height: 3.5rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -72,7 +72,7 @@ $nav-width: 10rem;
       @extend .nav__main__item;
       @include dark-link($syntax-accent, 10);
       border-top: 1px $mono-3 dashed;
-      margin: .5rem 2rem 0;
+      margin: 1.5rem 2rem 0;
 
       &:hover {
         background: transparent;
@@ -88,6 +88,9 @@ $nav-width: 10rem;
   text-align: center;
   align-items: center;
   justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
 
   color: lighten($syntax-fg, 20%);
 
@@ -112,6 +115,9 @@ $nav-width: 10rem;
 
 .nav__footer {
   width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
 
   &__social {
     width: 100%;

@@ -313,6 +313,11 @@ $half-posts-list-width: $posts-list-width / 2;
     width: 100%;
   }
 
+  .editor-top-bar__button--show-posts {
+    pointer-events: none;
+    visibility: hidden;
+  }
+
   .editor-panes__view {
     display: block;
     transform: translateX(0);
@@ -357,11 +362,6 @@ $half-posts-list-width: $posts-list-width / 2;
 
   .editor-bottom-bar {
     width: 100vw;
-  }
-
-  .editor-top-bar__button--show-posts {
-    pointer-events: none;
-    visibility: hidden;
   }
 
   .editor-panes {

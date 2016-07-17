@@ -68,12 +68,13 @@ const EditorView = ({
         </div>
         <div className="editor-panes__preview">
           <article
+            className="post-display"
             dangerouslySetInnerHTML={{
               __html: `
-                <h2>
+                <h2 class="post-display__title">
                   ${activeDraft.meta.title}
                 </h2>
-                <h3>
+                <h3 class="post-display__subtitle">
                   ${activeDraft.meta.subtitle}
                 </h3>
                 ${activeDraft.html}
