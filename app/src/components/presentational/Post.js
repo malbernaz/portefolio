@@ -9,12 +9,14 @@ const Post = ({ posts, slug }) => {
   return (
     <section className="post">
       <Helmet title={ meta.title } />
-      <article className="post-display">
-        <small className="post-display__stamp">{ moment(createdAt, 'YYYYMMDD').fromNow() }</small>
-        <h2 className="post-display__title">{ meta.title }</h2>
-        <h3 className="post-display__subtitle">{ meta.subtitle }</h3>
-        <div dangerouslySetInnerHTML={{ __html: html }}></div>
-      </article>
+      <div className="article-wrapper">
+        <article>
+          <small>{ moment(createdAt, 'YYYYMMDD').fromNow() }</small>
+          <h2>{ meta.title }</h2>
+          <h3>{ meta.subtitle }</h3>
+          <div dangerouslySetInnerHTML={{ __html: html }}></div>
+        </article>
+      </div>
     </section>
   )
 }

@@ -7,6 +7,7 @@ $article-start-width: 40rem;
   overflow-y: scroll;
   width: 100%;
   padding: 3rem 1rem;
+  box-sizing: border-box;
 }
 
 .posts-display {
@@ -15,6 +16,8 @@ $article-start-width: 40rem;
 
 .post-display {
   width: 100%;
+  padding-bottom: 5rem;
+  box-sizing: border-box;
 
   &__title {
     text-transform: uppercase;
@@ -24,5 +27,11 @@ $article-start-width: 40rem;
   &__subtitle {
     text-transform: uppercase;
     color: $mono-2;
+  }
+}
+
+@media (max-width: $tablet) {
+  .home {
+    margin: 3.5rem auto;
   }
 }

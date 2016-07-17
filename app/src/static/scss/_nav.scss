@@ -23,6 +23,7 @@ $nav-width: 11rem;
   width: $nav-width;
   will-change: transform;
   z-index: $zi-nav;
+  box-sizing: border-box;
 
   &--isShown {
     @extend .nav;
@@ -91,6 +92,7 @@ $nav-width: 11rem;
   position: absolute;
   top: 0;
   left: 0;
+  width: $nav-width;
 
   color: lighten($syntax-fg, 20%);
 
@@ -118,12 +120,14 @@ $nav-width: 11rem;
   position: absolute;
   bottom: 0;
   left: 0;
+  width: $nav-width;
 
   &__social {
     width: 100%;
     display: flex;
     height: 1rem;
     align-items: center;
+    box-sizing: border-box;
     padding: 0 2rem;
 
     &__link {
@@ -155,10 +159,41 @@ $nav-width: 11rem;
   }
 }
 
+.nav-mobile {
+  position: absolute;
+  width: 100vw;
+  height: 3.5rem;
+  background: $syntax-bg-alternate;
+  border-bottom: 1px lighten($mono-3, 20) solid;
+  display: none;
+  z-index: $zi-editor - 1;
+  box-sizing: border-box;
+
+  &__logo {
+    @include icon-link(3.5rem);
+    text-transform: uppercase;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: $hue-2;
+
+    svg {
+      path {
+        stroke: $hue-2;
+        stroke-width: 1px;
+      }
+    }
+  }
+}
+
 @media (max-width: $tablet) {
   .nav-toggle {
     pointer-events: all;
     visibility: visible;
+  }
+
+  .nav-mobile {
+    display: block;
   }
 
   .nav {

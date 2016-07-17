@@ -6,7 +6,7 @@ import memoize from 'lru-memoize'
 
 import createForm from '../../helpers/formFactory'
 import { createValidator, required, email } from '../../helpers/validation'
-import { auth as authActions } from '../../actions'
+import { auth as authActions, message as messageActions } from '../../actions'
 
 const validation = createValidator({
   email: [required, email],
@@ -29,12 +29,15 @@ const Form = createForm({
   submitText: 'Sign In'
 })
 
-const SignInForm = ({ auth, signIn, logout, loadAuth }) => {
+const SignInForm = ({ auth, signIn, logout, loadAuth, showMessage }) => {
   function handleSubmit(data) {
     const submitPromise = () => signIn(data)
-      .then(() => browserHistory.push('/admin/editor'))
-      .catch(err => err)
+      .then(({ message }) => {
+        showMessage(message)
+        browserHistory.push('/admin/editor')
+      })
       .then(loadAuth)
+      .catch(({ message }) => showMessage(message))
 
     return auth.user ?
       logout().then(() => submitPromise()) :
@@ -48,11 +51,16 @@ SignInForm.propTypes = {
   auth: PropTypes.object,
   loadAuth: PropTypes.func,
   logout: PropTypes.func,
+  showMessage: PropTypes.func,
   signIn: PropTypes.func
 }
 
-export default connect(state => ({
-  ...state
-}), dispatch => bindActionCreators({
-  ...authActions
-}, dispatch))(SignInForm)
+export default connect(
+  state => ({
+    ...state
+  }),
+  dispatch => bindActionCreators({
+    ...authActions,
+    ...messageActions
+  }, dispatch)
+)(SignInForm)

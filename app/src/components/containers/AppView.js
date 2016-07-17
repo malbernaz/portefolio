@@ -8,36 +8,26 @@ import config from '../../config'
 
 import { ui as uiActions } from '../../actions'
 
-import { Nav, Icon, MessageNotifier } from '../'
+import { Nav, MessageNotifier } from '../'
 
 
-const AppView = ({ children, location, toggleNav }) => {
-  const toggle = e => {
-    e.preventDefault()
-    toggleNav()
-  }
-
-  return (
-    <div className="app-view">
-      <Helmet { ...config.head } />
-      <Nav />
-      <a href="#" onClick={ e => toggle(e) } className="nav-toggle">
-        <Icon name="menu" />
-      </a>
-      <div className="container">
-        <ReactCSSTransitionGroup
-          component="div"
-          transitionName="page-transition"
-          transitionEnterTimeout={ 300 }
-          transitionLeaveTimeout={ 300 }
-        >
-          { cloneElement(children, { key: location.pathname }) }
-        </ReactCSSTransitionGroup>
-      </div>
-      <MessageNotifier />
+const AppView = ({ children, location }) => (
+  <div className="app-view">
+    <Helmet { ...config.head } />
+    <Nav />
+    <div className="container">
+      <ReactCSSTransitionGroup
+        component="div"
+        transitionName="page-transition"
+        transitionEnterTimeout={ 300 }
+        transitionLeaveTimeout={ 300 }
+      >
+        { cloneElement(children, { key: location.pathname }) }
+      </ReactCSSTransitionGroup>
     </div>
-  )
-}
+    <MessageNotifier />
+  </div>
+)
 
 AppView.propTypes = {
   children: PropTypes.node,
@@ -46,7 +36,9 @@ AppView.propTypes = {
 }
 
 export default connect(
-  state => ({ ...state }),
+  state => ({
+    ...state
+  }),
   dispatch => bindActionCreators({
     ...uiActions.nav
   }, dispatch)

@@ -1,7 +1,4 @@
 // RESET
-
-* { box-sizing: border-box; }
-
 body {
   background: $syntax-bg;
   color: $syntax-fg;
@@ -16,6 +13,10 @@ body {
 a {
   @include dark-link($syntax-accent, 10);
   -webkit-tap-highlight-color: transparent;
+
+  &:focus {
+    outline: 0;
+  }
 }
 
 h1, h2, h3, h4, h5, h6 { text-transform: uppercase }
@@ -39,14 +40,11 @@ svg {
 }
 
 article {
-  padding-bottom: 5rem;
   max-width: 37.5rem;
   width: 100%;
+  box-sizing: border-box;
   margin: 0 auto;
-
-  *:first-child {
-    padding-top: 0;
-  }
+  padding: 2rem 0;
 
   blockquote {
     border-left: .3rem solid lighten($mono-3, 20);
@@ -125,12 +123,14 @@ article {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  min-height: 100vh;
+  height: 100%;
   overflow: hidden;
   position: relative;
+  z-index: $zi-editor - 1;
 
-  >div {
+  > div {
     width: 100%;
+    height: 100%;
   }
 }
 

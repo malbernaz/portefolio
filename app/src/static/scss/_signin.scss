@@ -1,20 +1,6 @@
 .signin {
   @include centered;
   position: relative;
-
-  &__error-message {
-    color: $hue-5-2;
-    position: absolute;
-    width: 100%;
-    text-align: center;
-    opacity: 0;
-    transition: opacity .3s ease;
-
-    &--shown {
-      @extend .signin__error-message;
-      opacity: 1;
-    }
-  }
 }
 
 .signin-form {

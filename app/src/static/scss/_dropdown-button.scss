@@ -1,14 +1,14 @@
 .dropdown-button {
-  align-items: center;
-  display: flex;
-  height: 100%;
-  padding: 0 1rem;
-  position: absolute;
-  right: 0;
   z-index: $zi-editor + 1;
 
   &__toggle {
-    padding-left: 1rem;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 1rem;
+    position: absolute;
+    right: 0;
+    top: 0;
 
     svg {
       height: 1rem;
