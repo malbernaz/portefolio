@@ -17,8 +17,18 @@ renderer.code = (code, language) => {
   return `<pre><code class="hljs ${language}">${highlighted}</code></pre>`
 }
 
+renderer.link = (href, title, text) =>
+  text === 'video-embed' ?
+    `
+      <div class="video-embed">
+        <iframe src="${href}" allowfullscreen class="video-embed__video"></iframe>
+      </div>
+    ` :
+    `<a href="${href}">${text}</a>`
+
 marked.setOptions({
   gfm: true,
+  sanitize: true,
   renderer
 })
 
