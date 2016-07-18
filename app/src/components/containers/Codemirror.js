@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux'
 import ReactCodemirror from 'react-codemirror'
 import marked, { Renderer } from 'meta-marked'
 import hljs from 'highlight.js'
+import sanitizeHtml from 'sanitize-html'
 
 import { posts as postsActions } from '../../actions'
 
@@ -12,19 +13,22 @@ const renderer = new Renderer()
 renderer.code = (code, language) => {
   const validLang = !!(language && hljs.getLanguage(language))
 
-  const highlighted = validLang ? hljs.highlight(language, code).value : code
+  const highlighted = validLang ?
+    hljs.highlight(language, code).value :
+    sanitizeHtml(code)
+
+  console.log(code)
 
   return `<pre><code class="hljs ${language}">${highlighted}</code></pre>`
 }
 
-renderer.link = (href, title, text) =>
-  text === 'video-embed' ?
-    `
-      <div class="video-embed">
-        <iframe src="${href}" allowfullscreen class="video-embed__video"></iframe>
-      </div>
-    ` :
-    `<a href="${href}">${text}</a>`
+renderer.link = (href, title, text) => text === 'video-embed' ?
+  `
+    <div class="video-embed">
+      <iframe src="${href}" allowfullscreen class="video-embed__video"></iframe>
+    </div>
+  ` :
+  `<a href="${href}">${text}</a>`
 
 marked.setOptions({
   gfm: true,

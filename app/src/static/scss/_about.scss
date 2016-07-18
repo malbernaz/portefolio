@@ -1,3 +1,29 @@
 .about {
   @include centered;
+  box-sizing: border-box;
+  width: 100%;
+
+  &__avatar {
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    opacity: .5;
+
+    background:
+      radial-gradient(
+        $mono-1 35%,
+        transparent 35%
+      ),
+      $mono-3
+    ;
+  }
+
+  &__blurb {
+    text-align: center;
+    font-size: 1rem;
+    max-width: 20rem;
+  }
 }

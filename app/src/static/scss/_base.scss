@@ -44,7 +44,7 @@ article {
   width: 100%;
   box-sizing: border-box;
   margin: 0 auto;
-  padding: 2rem 0;
+  padding: 2rem 1rem;
 
   blockquote {
     border-left: .3rem solid lighten($mono-3, 20);
@@ -71,8 +71,12 @@ article {
     line-height: 1.5rem;
   }
 
+  table {
+    border: 1px solid rgba($mono-3, .3);
+  }
+
   th, td {
-    padding: .5rem 1rem !important;
+    padding: .7rem 1.5rem !important;
   }
 
   th {

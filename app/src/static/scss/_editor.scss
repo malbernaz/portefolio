@@ -35,14 +35,11 @@ $half-posts-list-width: $posts-list-width / 2;
 
     &--show-posts {
       @extend .editor-top-bar__button;
-      pointer-events: none;
-      visibility: hidden;
     }
   }
 
   &__info {
     text-align: center;
-    color: $mono-2;
 
     &__title {
       width: 40vw;
@@ -61,6 +58,7 @@ $half-posts-list-width: $posts-list-width / 2;
       font-weight: 600;
       line-height: .7rem;
       text-transform: lowercase;
+      color: $mono-2;
     }
   }
 }
@@ -98,7 +96,7 @@ $half-posts-list-width: $posts-list-width / 2;
 }
 
 .editor-panes__view {
-  width: calc(100% - #{$posts-list-width});
+  width: 100%;
   height: 100%;
   display: flex;
 
@@ -116,7 +114,6 @@ $half-posts-list-width: $posts-list-width / 2;
   textarea {
     background: $syntax-bg;
     border: 0;
-    border-right: 1px lighten($mono-3, 20) dashed;
     bottom: 0;
     font-family: $monospace;
     font-size: .75rem;
@@ -131,6 +128,14 @@ $half-posts-list-width: $posts-list-width / 2;
 
   .CodeMirror {
     min-height: 100%;
+
+    &-lines {
+      padding: .5rem;
+    }
+
+    &-line {
+      padding: 0;
+    }
   }
 }
 
@@ -145,7 +150,7 @@ $half-posts-list-width: $posts-list-width / 2;
   transform: translateX(0);
   will-change: transform;
   z-index: $zi-editor - 1;
-  border-left: 1px lighten($mono-3, 20) dashed;
+  border-left: 1px lighten($mono-3, 15) dashed;
 
   article {
     padding-top: 0;
@@ -157,13 +162,20 @@ $half-posts-list-width: $posts-list-width / 2;
 }
 
 .editor-panes__nav {
-  flex: 0 0 $posts-list-width;
   background: $syntax-bg;
-  border-right: 1px lighten($mono-3, 20) dashed;
+  flex: 0 0 $posts-list-width;
   height: 100%;
-  transform: translateX(0);
+  position: absolute;
+  top: 0;
+  transform: translateX(-$posts-list-width);
+  transition: transform .1s ease-out;
   will-change: transform;
   z-index: $zi-editor-posts-list;
+
+  &--isShown {
+    @extend .editor-panes__nav;
+    transform: translateX(0);
+  }
 
   &__item {
     display: flex;
@@ -257,10 +269,6 @@ $half-posts-list-width: $posts-list-width / 2;
     }
   }
 
-  &--isShown {
-    @extend .editor-panes__nav;
-  }
-
   &__shadow {
     position: absolute;
     top: 0;
@@ -276,40 +284,10 @@ $half-posts-list-width: $posts-list-width / 2;
     will-change: opacity;
 
     &--isShown {
-      @extend .editor-panes__nav__shadow;
-    }
-  }
-}
-
-@media (max-width: 90rem) {
-  .editor-panes__nav {
-    position: absolute;
-    top: 0;
-    transform: translateX(-$posts-list-width);
-    will-change: transform;
-    transition: transform .1s ease-out;
-
-    &--isShown {
-      transform: translateX(0);
-    }
-
-    &__shadow--isShown {
       opacity: 1;
       pointer-events: all;
+      @extend .editor-panes__nav__shadow;
     }
-  }
-
-  .editor-top-bar__button--show-posts {
-    pointer-events: all;
-    visibility: visible;
-  }
-
-  .editor-panes__view {
-    width: 100%;
-  }
-
-  .editor-panes__nav {
-    border-right: 0;
   }
 }
 

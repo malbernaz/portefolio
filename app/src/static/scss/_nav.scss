@@ -175,11 +175,11 @@ $nav-width: 11rem;
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    color: $hue-2;
+    color: $syntax-accent;
 
     svg {
       path {
-        stroke: $hue-2;
+        stroke: $syntax-accent;
         stroke-width: 1px;
       }
     }
@@ -210,6 +210,23 @@ $nav-width: 11rem;
     &__shadow--isShown {
       pointer-events: all;
       opacity: 1;
+    }
+  }
+}
+
+@media (max-width: $mobile-s) {
+  .nav {
+    &__logo,
+    &__footer {
+      transform: scale(.8);
+    }
+
+    &__main {
+      margin-top: 3rem;
+
+      &__item {
+        height: 3rem;
+      }
     }
   }
 }
