@@ -1,15 +1,12 @@
 import React, { cloneElement, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
 import Helmet from 'react-helmet'
 import ReactCSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup'
 
 import config from '../../config'
 
-import { ui as uiActions } from '../../actions'
-
-import { Nav, MessageNotifier } from '../'
-
+import Nav from './Nav'
+import MessageNotifier from './MessageNotifier'
 
 const AppView = ({ children, location }) => (
   <div className="app-view">
@@ -36,10 +33,5 @@ AppView.propTypes = {
 }
 
 export default connect(
-  state => ({
-    ...state
-  }),
-  dispatch => bindActionCreators({
-    ...uiActions.nav
-  }, dispatch)
+  state => ({ ...state })
 )(AppView)

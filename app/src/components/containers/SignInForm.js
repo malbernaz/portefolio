@@ -6,7 +6,9 @@ import memoize from 'lru-memoize'
 
 import createForm from '../../helpers/formFactory'
 import { createValidator, required, email } from '../../helpers/validation'
-import { auth as authActions, message as messageActions } from '../../actions'
+
+import * as authActions from '../../actions/auth'
+import * as messageActions from '../../actions/message'
 
 const validation = createValidator({
   email: [required, email],

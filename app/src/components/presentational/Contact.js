@@ -1,7 +1,7 @@
 import React from 'react'
 import Helmet from 'react-helmet'
 
-import { Icon } from '../'
+import Icon from './Icon'
 
 import config from '../../config'
 
@@ -26,14 +26,14 @@ const Contact = () => (
     <div className="contact__item">
       <Icon className="contact__item__icon" name="twitter" />
       <span className="contact__item__text">hit me on twitter:</span>
-      <a className="contact__item__link" href={ config.twitter }>
+      <a className="contact__item__link" target="_blank" href={ config.twitter }>
         { config.twitter }
       </a>
     </div>
     <div className="contact__item">
       <Icon className="contact__item__icon" name="github" />
       <span className="contact__item__text">see my code at github:</span>
-      <a className="contact__item__link" href={ config.github }>
+      <a className="contact__item__link" target="_blank" href={ config.github }>
         { config.github }
       </a>
     </div>

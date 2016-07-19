@@ -3,11 +3,12 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { IndexLink, Link } from 'react-router'
 
-import { Icon } from '../'
+import Icon from '../presentational/Icon'
 
 import config from '../../config'
 
-import { auth as authActions, ui as uiActions } from '../../actions'
+import * as authActions from '../../actions/auth'
+import * as navActions from '../../actions/ui/nav'
 
 const Nav = ({ auth, logout, ui: { nav }, toggleNav }) => {
   const toggle = (e) => {
@@ -130,6 +131,6 @@ export default connect(
   }),
   dispatch => bindActionCreators({
     ...authActions,
-    ...uiActions.nav
+    ...navActions
   }, dispatch)
 )(Nav)

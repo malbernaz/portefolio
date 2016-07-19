@@ -1,8 +1,9 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 
-import { editablePostsSelector } from '../../selectors'
-import { Icon } from '../'
+import editablePostsSelector from '../../selectors/editablePostsSelector'
+
+import Icon from './Icon'
 
 const b = 'editor-panes__nav'
 

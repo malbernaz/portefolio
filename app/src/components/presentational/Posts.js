@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 import { connect } from 'react-redux'
 import moment from 'moment'
 
-import { postsOrderedByCreatedAt } from '../../selectors'
+import postsOrderedByCreatedAt from '../../selectors/postsOrderedByCreatedAt'
 
 const Posts = ({ posts }) => (
   <div className="posts-display">

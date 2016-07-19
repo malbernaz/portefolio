@@ -8,7 +8,10 @@ node_modules
 .v8flags*
 tmp
 .config
+
 app/dist
 app/dist/**
+
+app/node_modules
+api/node_modules
 icons/dist
-.flowconfig

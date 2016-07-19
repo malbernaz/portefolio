@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { message as messageActions } from '../../actions'
+import * as messageActions from '../../actions/message'
 
 const MessageNotifier = ({ message, dissmissMessage }) => {
   const dissmissOnTimeout = () => setTimeout(dissmissMessage, 4000)

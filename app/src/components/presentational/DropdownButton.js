@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 
-import { Icon } from '../'
+import Icon from './Icon'
 
 const block = 'dropdown-button'
 

@@ -3,21 +3,17 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import ReactCodemirror from 'react-codemirror'
 import marked, { Renderer } from 'meta-marked'
-import hljs from 'highlight.js'
-import sanitizeHtml from 'sanitize-html'
+import { getLanguage, highlight } from 'highlight.js'
 
-import { posts as postsActions } from '../../actions'
+import * as postsActions from '../../actions/posts'
 
 const renderer = new Renderer()
 
 renderer.code = (code, language) => {
-  const validLang = !!(language && hljs.getLanguage(language))
+  const validLang = !!(language && getLanguage(language))
 
   const highlighted = validLang ?
-    hljs.highlight(language, code).value :
-    sanitizeHtml(code)
-
-  console.log(code)
+    highlight(language, code).value : code
 
   return `<pre><code class="hljs ${language}">${highlighted}</code></pre>`
 }

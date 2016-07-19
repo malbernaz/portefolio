@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import Helmet from 'react-helmet'
 
-import { SignInForm } from '../'
+import SignInForm from '../containers/SignInForm'
 
 const SignIn = () => (
   <section className="signin">

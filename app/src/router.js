@@ -6,15 +6,14 @@ import { isLoaded as isAuthLoaded, loadAuth } from './actions/auth'
 
 import { loadPosts, loadPostsAndDrafts } from './actions/posts'
 
-import {
-  About,
-  Editor,
-  AppView,
-  Contact,
-  Home,
-  Post,
-  SignIn
-} from './components'
+import AppView from './components/containers/AppView'
+import Editor from './components/containers/Editor'
+
+import About from './components/presentational/About'
+import Contact from './components/presentational/Contact'
+import Home from './components/presentational/Home'
+import Post from './components/presentational/Post'
+import SignIn from './components/presentational/SignIn'
 
 export default store => {
   const mustBeLogged = (nextState, replace, callback) => {

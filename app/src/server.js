@@ -2,7 +2,7 @@
 import Express from 'express'
 import compression from 'compression'
 import { Server } from 'http'
-import path from 'path'
+import { resolve } from 'path'
 import { createProxyServer } from 'http-proxy'
 import morgan from 'morgan'
 
@@ -19,6 +19,7 @@ import configureStore from './store'
 import getRouter from './router'
 import Html from './helpers/Html'
 import ApiClient from './helpers/ApiClient'
+
 import { loadAuth } from './actions/auth'
 import { loadPosts } from './actions/posts'
 
@@ -37,7 +38,7 @@ const proxy = createProxyServer({
 
 // Server middleware
 app.use(compression())
-app.use(Express.static(path.resolve(__dirname, '..', 'dist', 'public')))
+app.use(Express.static(resolve(__dirname, '..', 'dist', 'public')))
 app.use(morgan('dev'))
 
 app.use('/api', (req, res) => {

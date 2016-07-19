@@ -10,7 +10,7 @@
     position: relative;
     overflow: hidden;
     margin-bottom: 1rem;
-    opacity: .5;
+    opacity: .7;
 
     background:
       radial-gradient(
@@ -19,11 +19,16 @@
       ),
       $mono-3
     ;
+
+    &__img {
+      position: absolute;
+      right: 0;
+    }
   }
 
   &__blurb {
     text-align: center;
     font-size: 1rem;
-    max-width: 20rem;
+    max-width: 25rem;
   }
 }

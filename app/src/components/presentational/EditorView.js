@@ -2,7 +2,10 @@ import React, { PropTypes } from 'react'
 
 import moment from 'moment'
 
-import { Icon, Codemirror, EditorNav, DropdownButton } from '../'
+import Icon from './Icon'
+import Codemirror from '../containers/Codemirror'
+import EditorNav from './EditorNav'
+import DropdownButton from './DropdownButton'
 
 const EditorView = ({
   activeDraft,

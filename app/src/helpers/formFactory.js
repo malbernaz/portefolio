@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import { reduxForm } from 'redux-form'
-import _ from 'underscore'
+import { map } from 'underscore'
 
 const formFactory = ({
   validate,
@@ -38,7 +38,7 @@ const formFactory = ({
 
     return (
       <form className={ styleClass } onSubmit={ handleSubmit }>
-        { _.map(fields, (field, key) => {
+        { map(fields, (field, key) => {
           const { type, label } = inputFields.filter(f => f.name === key)[0]
           return renderInput(field, type, label)
         }) }

@@ -3,13 +3,11 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Helmet from 'react-helmet'
 
-import { EditorView } from '../'
+import EditorView from '../presentational/EditorView'
 
-import {
-  posts as postsActions,
-  message as messageActions,
-  ui as uiActions
-} from '../../actions'
+import * as postsActions from '../../actions/posts'
+import * as messageActions from '../../actions/message'
+import * as editorActions from '../../actions/ui/editor'
 
 class Editor extends Component {
   static propTypes = {
@@ -204,6 +202,6 @@ export default connect(({
   dispatch => bindActionCreators({
     ...postsActions,
     ...messageActions,
-    ...uiActions.editor
+    ...editorActions
   }, dispatch)
 )(Editor)
