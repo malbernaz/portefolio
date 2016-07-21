@@ -8,6 +8,7 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import getRouter from './router'
 import configureStore from './store'
 import ApiClient from './helpers/ApiClient'
+import WithStylesContext from './helpers/WithStylesContext'
 
 const initialState = window.__INITIAL_STATE__
 
@@ -18,10 +19,12 @@ const history = syncHistoryWithStore(browserHistory, store)
 
 render(
   <Provider store={ store }>
-    <Router
-      children={ getRouter(store) }
-      history={ history }
-      render={ applyRouterMiddleware(useScroll()) }
-    />
+    <WithStylesContext onInsertCss={ s => s._insertCss() }>
+      <Router
+        children={ getRouter(store) }
+        history={ history }
+        render={ applyRouterMiddleware(useScroll()) }
+      />
+    </WithStylesContext>
   </Provider>, document.getElementById('react-view')
 )

@@ -4,11 +4,9 @@ import { renderToString } from 'react-dom/server'
 
 import serialize from 'serialize-javascript'
 
-const Html = ({ component, store }) => {
+const Html = ({ component, store, css }) => {
   const head = Helmet.rewind()
-  const content = component
-    ? renderToString(component)
-    : ''
+  const content = component ? renderToString(component) : ''
 
   return (
     <html lang="pt-br">
@@ -20,11 +18,7 @@ const Html = ({ component, store }) => {
         { head.script.toComponent() }
 
         <meta charSet="UTF-8" />
-        <title>!PRONTO</title>
-        <meta
-          httpEquiv="content-type"
-          content="text/html; charset=UTF-8"
-        />
+        <meta httpEquiv="content-type" content="text/html; charset=UTF-8" />
         <meta
           name="viewport"
           content="width=device-width,
@@ -32,15 +26,11 @@ const Html = ({ component, store }) => {
                   maximum-scale=1,
                   user-scalable=no"
         />
+        <style>{ css.join('') }</style>
         <link rel="stylesheet" href="/css/main.css" />
       </head>
       <body>
-        <div
-          id="react-view"
-          dangerouslySetInnerHTML={{
-            __html: content
-          }}
-        />
+        <div id="react-view" dangerouslySetInnerHTML={{ __html: content }} />
         <script
           dangerouslySetInnerHTML={{
             __html: `window.__INITIAL_STATE__=${
@@ -58,7 +48,8 @@ const Html = ({ component, store }) => {
 
 Html.propTypes = {
   component: PropTypes.node,
-  store: PropTypes.object
+  store: PropTypes.object,
+  css: PropTypes.array
 }
 
 export default Html

@@ -1,36 +1,30 @@
-const { join } = require('path')
-const webpack = require('webpack')
+const { resolve } = require('path')
+const autoprefixer = require('autoprefixer')
+const precss = require('precss')
 
-const prodPlugs = [
-  new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', minChunks: Infinity }),
-  new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify('production') } }),
-  new webpack.ContextReplacementPlugin(/moment\/locale$/, /^\.\/(pt-br)\.js$/),
-  new webpack.LoaderOptionsPlugin({ minimize: true, debug: false }),
-  new webpack.optimize.UglifyJsPlugin({
-    compress: { warnings: false },
-    output: { comments: false },
-    sourceMap: false
-  })
-]
-
-const devPlugs = [
-  new webpack.optimize.CommonsChunkPlugin({ names: 'vendor', minChunks: Infinity }),
-  new webpack.ContextReplacementPlugin(/moment\/locale$/, /^\.\/(en)$/)
-]
-
-module.exports = env => ({
-  context: join(__dirname, 'src'),
-  entry: {
-    main: './client.js',
-    vendor: ['react', 'react-router', 'moment', 'highlight.js', 'codemirror', 'marked']
-  },
-  output: {
-    path: join(__dirname, 'dist', 'public', 'scripts'),
-    filename: '[name].bundle.js'
-  },
+module.exports = {
+  context: resolve(__dirname, 'src'),
   module: {
-    loaders: [{ test: /\.js$/, exclude: /node_modules/, loader: 'babel' }]
+    loaders: [{
+      test: /\.js$/,
+      exclude: /node_modules/,
+      loader: 'babel'
+    }, {
+      test: /\.css$/,
+      loaders: [
+        'isomorphic-style-loader',
+        'css-loader',
+        'postcss-loader'
+      ],
+      exclude: /node_modules/
+    }]
   },
-  plugins: env === 'prod' ? prodPlugs : devPlugs,
-  devtool: env === 'prod' ? 'hidden-source-map' : 'cheap-module-source-map'
-})
+  postcss: () => ([
+    autoprefixer({ browsers: ['> 0.8%'] }),
+    precss
+  ]),
+  watchOptions: {
+    aggregateTimeout: 300,
+    poll: 1000
+  }
+}

@@ -2,7 +2,7 @@ version: '2'
 services:
 
   api:
-    build: './app'
+    build: './api'
     command: npm run dev
     ports:
       - "5000:5000"
@@ -17,6 +17,8 @@ services:
     command: npm run dev
     ports:
       - "3000:3000"
+    environment:
+      DOCKER: "true"
     volumes:
       - ./app:/home/app/server
       - /home/app/server/node_modules

@@ -1,28 +1,38 @@
-# Portefolio
+# Portefólio
 
 A blog scaffold featuring react, redux, server-side rendering and a markdown editor.
 
 ## Instructions
 
+First of all install docker. Once you have it, go ahead and build from the source:
+
 ```shell
-λ npm install
-λ npm run dev
+λ docker-compose build
 ```
 
+Then get your development environment up and running:
+
+```shell
+λ docker-compose up
+```
+
+Last but not least create a user and you should be able to sign in at `/admin` and play around with the editor:
+
+```curl
+curl -X POST -H "Authorization: secrettoken" -H "Cache-Control: no-cache" -H "Content-Type: application/x-www-form-urlencoded" -d 'username=username&email=email@domain.com&password=password' "http://localhost:5000/user/register"
+```
 ## Acknowledge that:
 
-- I'm using gulp with browserify for the moment (webpack seemed too overwhelming to me at a first glance)
-- For development I'm using redux devtools extension (which is only available in chrome), since that when I've tryed to embed the native DevTools I had some performance Issues (mainly with the editor)
+- I'm using [Docker](http://www.docker.com/) for development and production. If you don't know what Docker is, learn about it and you will make your time worth. Plus they have recently released native clients both for [Mac](http://www.docker.com/products/docker#/mac) and [Windows](http://www.docker.com/products/docker#/windows)!
 
-## Todos in an unordered list:
+- For the dev setup I've stick to [`redux-devtools-extension`](https://github.com/zalmoxisus/redux-devtools-extension) (which is only available in chrome). I've had performance issues with the native [`DevTools`](https://github.com/gaearon/redux-devtools). 
 
-- ~~API endpoins refactoring (use promises instead of callbacks for mongoose queries)~~
-- ~~Find a more efficient way to handle drafts (on its way)~~
-- ~~page animations~~
-- ~~Implement ui interactions~~
-- Create actions prompt component
-- Use css-modules
-- Use service workers
-- Use webpack instead of browserify
-- Deploy with docker
-- Pagination...
+## TODO:
+
+- [x] Page transitions
+- [x] Use webpack 2
+- [x] Use docker
+- [ ] Create actions prompt component
+- [ ] Use css-modules
+- [ ] Use service workers
+- [ ] Pagination...

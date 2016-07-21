@@ -1,7 +1,6 @@
 FROM node:6.3.0
 
-RUN useradd --user-group --create-home --shell /bin/false api && \
-    apt-get update && npm install -g nodemon
+RUN useradd --user-group --create-home --shell /bin/false api && apt-get update
 
 ENV HOME=/home/api
 

@@ -1,8 +1,6 @@
 FROM node:6.3.0
 
-RUN useradd --user-group --create-home --shell /bin/false app && \
-    apt-get update && npm install -g nodemon concurrently
-
+RUN useradd --user-group --create-home --shell /bin/false app && apt-get update
 
 ENV HOME=/home/app
 
@@ -21,6 +19,6 @@ COPY . $HOME/server
 RUN chown -R app:app $HOME/*
 USER app
 
-RUN npm run build
+RUN npm run build:client:dev && npm run build:server:dev
 
 CMD ["npm", "start"]

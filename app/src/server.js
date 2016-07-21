@@ -1,56 +1,49 @@
 // Server imports
-import Express from 'express'
-import compression from 'compression'
-import { Server } from 'http'
-import { resolve } from 'path'
 import { createProxyServer } from 'http-proxy'
+import { resolve } from 'path'
+import { Server } from 'http'
+import compression from 'compression'
+import express from 'express'
 import morgan from 'morgan'
+import serveStatic from 'serve-static'
 
 // React imports
-import React from 'react'
+import { Provider } from 'react-redux'
 import { renderToString } from 'react-dom/server'
 import { RouterContext, match, createMemoryHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
-import { Provider } from 'react-redux'
+import React from 'react'
 
 // Project imports
+import ApiClient from './helpers/ApiClient'
 import config from './config'
 import configureStore from './store'
 import getRouter from './router'
 import Html from './helpers/Html'
-import ApiClient from './helpers/ApiClient'
+import WithStylesContext from './helpers/WithStylesContext'
 
 import { loadAuth } from './actions/auth'
 import { loadPosts } from './actions/posts'
 
 // Server configuration
-const app = new Express()
-const server = new Server(app)
+const app = express()
 const port = process.env.PORT || 3000
-
+const server = new Server(app)
 
 // API proxy
 const targetUrl = `http://${config.apiHost}:${config.apiPort}`
-const proxy = createProxyServer({
-  target: targetUrl,
-  ws: true
-})
+const proxy = createProxyServer({ target: targetUrl })
 
 // Server middleware
 app.use(compression())
-app.use(Express.static(resolve(__dirname, '..', 'dist', 'public')))
+// __dirname does not resolve to the right directory.
+app.use(serveStatic(resolve('.', 'dist', 'public')))
 app.use(morgan('dev'))
+
+// console.log(process.env.DOCKER) // eslint-disable-line
 
 app.use('/api', (req, res) => {
   proxy.web(req, res, { target: `${targetUrl}/` })
-})
-
-app.use('/ws', (req, res) => {
-  proxy.web(req, res, { target: `${targetUrl}/ws` })
-})
-
-server.on('upgrade', (req, socket, head) => {
-  proxy.ws(req, socket, head)
 })
 
 proxy.on('error', (error, req, res, json = null) => {
@@ -87,10 +80,7 @@ app.use((req, res) => {
     renderProps
   ) => {
     if (redirectLocation) {
-      res.redirect(
-        redirectLocation.pathname +
-        redirectLocation.search
-      )
+      res.redirect(redirectLocation.pathname + redirectLocation.search)
     }
 
     if (err) {
@@ -104,21 +94,20 @@ app.use((req, res) => {
     }
 
     function renderPage() {
+      const css = []
+
       const component = (
         <Provider store={ store } key="provider">
-          <RouterContext { ...renderProps } />
+          <WithStylesContext onInsertCss={ s => css.push(s._getCss()) }>
+            <RouterContext { ...renderProps } />
+          </WithStylesContext>
         </Provider>
       )
 
       res.status(200)
 
       res.send(`<!doctype html>\n${
-        renderToString(
-          <Html
-            component={ component }
-            store={ store }
-          />
-        )
+        renderToString(<Html component={ component } css={ css } store={ store } />)
       }`)
 
       global.navigator = { userAgent: req.headers['user-agent'] }

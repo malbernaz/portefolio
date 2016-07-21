@@ -12,13 +12,7 @@
     margin-bottom: 1rem;
     opacity: .7;
 
-    background:
-      radial-gradient(
-        $mono-1 35%,
-        transparent 35%
-      ),
-      $mono-3
-    ;
+    background: radial-gradient($mono-1 35%, transparent 35% ), $mono-3;
 
     &__img {
       position: absolute;

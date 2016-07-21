@@ -11,7 +11,12 @@
     "semi": [2, "never"],
     "no-confusing-arrow": 0,
     "func-names": 0,
-    "import/no-unresolve": 0,
+    "import/no-unresolved": [
+      0, {
+        "commonjs": true,
+        "amd": true
+      }
+    ],
     "react/jsx-curly-spacing": [
       2, "always", {
         "spacing": {
