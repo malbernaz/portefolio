@@ -4,7 +4,7 @@ A blog scaffold featuring react, redux, server-side rendering and a markdown edi
 
 ## Instructions:
 
-First of all install docker. Once you have it, go ahead and build from the source:
+First of all install Docker. Once you have it, go ahead and build from the source:
 
 ```shell
 λ docker-compose build
@@ -32,7 +32,9 @@ curl -X POST -H "Authorization: secrettoken" -H "Cache-Control: no-cache" -H "Co
 - [x] Page transitions
 - [x] Use webpack 2
 - [x] Use docker
-- [ ] Create actions prompt component
-- [ ] Use css-modules
+- [ ] Create `UserSettings` page
+- [ ] Create `ActionsPrompt` component
+- [ ] Better way to handle posts metadata
 - [ ] Use service workers
 - [ ] Pagination...
+- [ ] RSS
