@@ -32,6 +32,7 @@ curl -X POST -H "Authorization: secrettoken" -H "Cache-Control: no-cache" -H "Co
 - [x] Page transitions
 - [x] Use webpack 2
 - [x] Use docker
+- [ ] Use css-modules
 - [ ] Create `UserSettings` page
 - [ ] Create `ActionsPrompt` component
 - [ ] Better way to handle posts metadata
