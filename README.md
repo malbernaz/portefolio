@@ -2,7 +2,7 @@
 
 A blog scaffold featuring react, redux, server-side rendering and a markdown editor.
 
-## Instructions
+## Instructions:
 
 First of all install docker. Once you have it, go ahead and build from the source:
 
