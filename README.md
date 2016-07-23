@@ -25,17 +25,18 @@ curl -X POST -H "Authorization: secrettoken" -H "Cache-Control: no-cache" -H "Co
 
 - I'm using [Docker](http://www.docker.com/) for development and production. If you don't know what Docker is, learn about it and you will make your time worth. Plus they have recently released native clients both for [Mac](http://www.docker.com/products/docker#/mac) and [Windows](http://www.docker.com/products/docker#/windows)!
 
-- For the dev setup I've stick to [`redux-devtools-extension`](https://github.com/zalmoxisus/redux-devtools-extension) (which is only available in chrome). I've had performance issues with the native [`DevTools`](https://github.com/gaearon/redux-devtools). 
+- For the dev setup I've stick to [`redux-devtools-extension`](https://github.com/zalmoxisus/redux-devtools-extension) (which is only available in chrome). I've had performance issues with the native [`DevTools`](https://github.com/gaearon/redux-devtools).
 
 ## TODO:
 
 - [x] Page transitions
 - [x] Use webpack 2
 - [x] Use docker
-- [ ] Use css-modules
+- [x] Use css-modules
 - [ ] Create `UserSettings` page
 - [ ] Create `ActionsPrompt` component
 - [ ] Better way to handle posts metadata
 - [ ] Use service workers
 - [ ] Pagination...
 - [ ] RSS
+- [ ] HTTP2
