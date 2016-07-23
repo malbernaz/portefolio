@@ -1,0 +1,84 @@
+@import '../../theme/vars';
+@import '../../theme/mixins';
+
+.root {
+  position: relative;
+
+  @include centered;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+}
+
+.field {
+  position: relative;
+
+  display: flex;
+
+  margin: 1.5rem;
+}
+
+.placeholder {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+
+  transition: opacity .3s ease, transform .3s ease;
+  transform: scale(1) translateY(0) translateX(-50%);
+  pointer-events: none;
+
+  opacity: .5;
+}
+
+.placeholderDirty {
+  transform: translateY(-140%) translateX(-50%);
+
+  opacity: .8;
+
+  @extend .placeholder;
+}
+
+.input {
+  min-width: 15rem;
+  height: 3rem;
+
+  transition: border-color .3s ease;
+  text-align: center;
+
+  border: 0;
+  border-bottom: 1px solid $syntax-accent;
+  outline: 0;
+  background: transparent;
+
+  appearance: none;
+
+  &::placeholder {
+    color: transparent;
+  }
+}
+
+.inputInvalid {
+  border-color: $hue-5;
+}
+
+.errors {
+  font-size: .7rem;
+
+  position: absolute;
+  top: 110%;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  color: $hue-5;
+}
+
+.submit {
+  margin: 1rem;
+
+  @include button($syntax-accent);
+}

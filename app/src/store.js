@@ -1,13 +1,13 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import { routerMiddleware } from 'react-router-redux'
 
-import createMiddleware from './middleware/clientMiddleware'
+import clientMiddleware from './middleware/clientMiddleware'
 import rootReducer from './reducers'
 
 const configureStore = (client, history, initialState = {}) => {
   const reduxRouterMiddleware = routerMiddleware(history)
   const middleware = [
-    createMiddleware(client),
+    clientMiddleware(client),
     reduxRouterMiddleware
   ]
 

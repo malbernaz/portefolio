@@ -15,15 +15,14 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import React from 'react'
 
 // Project imports
+import { loadAuth } from './actions/auth'
+import { loadPosts } from './actions/posts'
 import ApiClient from './helpers/ApiClient'
 import config from './config'
 import configureStore from './store'
 import getRouter from './router'
 import Html from './helpers/Html'
 import WithStylesContext from './helpers/WithStylesContext'
-
-import { loadAuth } from './actions/auth'
-import { loadPosts } from './actions/posts'
 
 // Server configuration
 const app = express()
@@ -36,11 +35,8 @@ const proxy = createProxyServer({ target: targetUrl })
 
 // Server middleware
 app.use(compression())
-// __dirname does not resolve to the right directory.
-app.use(serveStatic(resolve('.', 'dist', 'public')))
+app.use(serveStatic(resolve(__dirname, 'public')))
 app.use(morgan('dev'))
-
-// console.log(process.env.DOCKER) // eslint-disable-line
 
 app.use('/api', (req, res) => {
   proxy.web(req, res, { target: `${targetUrl}/` })
@@ -65,9 +61,7 @@ app.use((req, res) => {
   const history = syncHistoryWithStore(memoryHistory, store)
 
   function hydrateOnClient() {
-    res.send(`<!doctype html>\n${
-      renderToString(<Html />)
-    }`)
+    res.send(`<!doctype html>${renderToString(<Html />)}`)
   }
 
   match({
@@ -106,8 +100,9 @@ app.use((req, res) => {
 
       res.status(200)
 
-      res.send(`<!doctype html>\n${
-        renderToString(<Html component={ component } css={ css } store={ store } />)
+      res.send(`<!doctype html>${
+        renderToString(
+          <Html component={ component } css={ css } store={ store } />)
       }`)
 
       global.navigator = { userAgent: req.headers['user-agent'] }

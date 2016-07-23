@@ -1,0 +1,60 @@
+@import '../../theme/vars';
+@import '../../theme/mixins';
+
+.root {
+  font-weight: 600;
+
+  position: fixed;
+  z-index: $zi-message-nofifier;
+  bottom: 2rem;
+  left: 2rem;
+
+  display: flex;
+
+  padding: .5rem 1rem;
+
+  transition: transform .1s ease, opacity .1s ease;
+  transform: translateY(.5rem);
+  pointer-events: none;
+
+  opacity: 0;
+  border-radius: .2rem;
+  background: rgba($syntax-fg, .7);
+
+  align-items: center;
+  justify-content: center;
+  will-change: transform, opacity;
+
+  span {
+    line-height: 1.5rem;
+
+    text-align: center;
+
+    color: $syntax-bg;
+
+    &::first-letter {
+      text-transform: capitalize;
+    }
+  }
+
+  @media (max-width: $tablet) {
+    bottom: 5rem;
+    left: 50%;
+
+    transform: translateX(-50%) translateY(.5rem);
+  }
+}
+
+.isShown {
+  transform: translateY(0);
+
+  opacity: 1;
+
+  @extend .root;
+
+  @media (max-width: $tablet) {
+    transform: translateX(-50%) translateY(0);
+
+    opacity: 1;
+  }
+}

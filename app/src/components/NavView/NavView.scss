@@ -1,0 +1,281 @@
+@import '../../theme/vars';
+@import '../../theme/mixins';
+
+.root {
+  z-index: $zi-nav;
+
+  display: flex;
+  flex-direction: column;
+
+  box-sizing: border-box;
+  width: $nav-width;
+  height: 100vh;
+  padding: 0;
+
+  border-right: 1px lighten($mono-3, 20) dashed;
+  background: darken($syntax-bg, 3);
+
+  justify-content: center;
+  will-change: transform;
+
+  @media (max-width: $tablet) {
+    position: absolute;
+    top: 0;
+
+    transition: transform .15s ease-out;
+    transform: translateX(-$nav-width);
+
+    will-change: transform;
+  }
+}
+
+.isShown {
+  @extend .root;
+  @media (max-width: $tablet) {
+    transition: transform .1s ease-out;
+    transform: translateX(0);
+  }
+}
+
+.shadow {
+  position: absolute;
+  z-index: $zi-nav - 1;
+  top: 0;
+  left: 0;
+
+  width: 100vw;
+  height: 100vh;
+
+  transition: opacity .15s ease-out;
+  transform: translateX($nav-width);
+  pointer-events: none;
+
+  opacity: 0;
+  background: rgba($mono-1, .8);
+
+  will-change: opacity;
+}
+
+.shadowIsShown {
+  @extend .shadow;
+  @media (max-width: $tablet) {
+    transition: opacity .1s ease-out;
+    pointer-events: all;
+
+    opacity: 1;
+  }
+}
+
+.toggleBtn {
+  position: fixed;
+  z-index: $zi-nav - 1;
+  top: 0;
+  left: 0;
+
+  visibility: hidden;
+
+  height: 3.5rem;
+
+  pointer-events: none;
+
+  @include icon-link(3.5rem);
+
+  @media (max-width: $tablet) {
+    visibility: visible;
+
+    pointer-events: all;
+  }
+}
+
+.logo {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  width: $nav-width;
+  padding: 1.5rem 0 0;
+
+  text-align: center;
+
+  color: lighten($syntax-fg, 20%);
+
+  align-items: center;
+  justify-content: center;
+
+  @media (max-width: $mobile-s) {
+    transform: scale(.8);
+  }
+}
+
+.logoIcon {
+  height: 3rem;
+}
+
+.logoTitle {
+  margin: 1rem 0 0;
+
+  text-transform: uppercase;
+
+  color: $syntax-accent;
+}
+
+.logoDescription {
+  font-size: .7rem;
+  font-weight: 600;
+  line-height: 1.3rem;
+
+  margin-top: .5rem;
+  padding: 0 1rem;
+}
+
+.navMain {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+
+  @media (max-width: $mobile-s) {
+    margin-top: 3rem;
+  }
+}
+
+.item {
+  display: flex;
+
+  height: 3.5rem;
+
+  transition: background .3s ease, color .3s ease;
+
+  justify-content: center;
+  align-items: center;
+
+  &:hover,
+
+  &:focus {
+    color: $syntax-accent;
+    background: darken($syntax-bg, 7);
+
+    @extend .item;
+  }
+
+  @media (max-width: $mobile-s) {
+    height: 3rem;
+  }
+}
+
+.itemActive {
+  color: $syntax-accent;
+  background: darken($syntax-bg, 7);
+
+  @extend .item;
+}
+
+.itemLogout {
+  margin: 1.5rem 2rem 0;
+
+  border-top: 1px $mono-3 dashed;
+
+  @extend .item;
+  @include dark-link($syntax-accent, 10);
+
+  &:hover {
+    background: transparent;
+  }
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+  width: 100%;
+  width: $nav-width;
+
+  @media (max-width: $mobile-s) {
+    transform: scale(.8);
+  }
+}
+
+.social {
+  display: flex;
+
+  box-sizing: border-box;
+  width: 100%;
+  height: 1rem;
+  padding: 0 2rem;
+
+  align-items: center;
+}
+
+.socialLink {
+  display: flex;
+
+  width: 50%;
+  height: 1rem;
+
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 1.2rem;
+  }
+}
+
+.copyright {
+  font-size: .8rem;
+  font-weight: 600;
+
+  display: flex;
+
+  height: 4rem;
+
+  text-transform: uppercase;
+
+  color: $mono-3;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.copyrightIcon {
+  font-weight: 800;
+}
+
+.navMobile {
+  position: absolute;
+  z-index: $zi-editor - 1;
+
+  display: none;
+
+  box-sizing: border-box;
+  width: 100vw;
+  height: 3.5rem;
+
+  border-bottom: 1px lighten($mono-3, 20) solid;
+  background: $syntax-bg-alternate;
+
+  @media (max-width: $tablet) {
+    display: block;
+  }
+}
+
+.navMobileLogo {
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  color: $syntax-accent;
+
+  @include icon-link(3.5rem);
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    path {
+      stroke: $syntax-accent;
+      stroke-width: 1px;
+    }
+  }
+}

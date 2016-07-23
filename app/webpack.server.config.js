@@ -31,6 +31,7 @@ module.exports = env => Object.assign(baseConfig, {
   entry: './server.js',
   output: { path: resolve(__dirname, 'dist'), filename: 'index.js' },
   target: 'node',
+  node: { __dirname: false, __filename: false },
   externals: nodeModules,
   plugins: env === 'prod' ? prodPlugs : devPlugs,
   devtool: env === 'prod' ? 'hidden-source-map' : 'cheap-module-source-map'

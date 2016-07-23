@@ -11,10 +11,8 @@ import ApiClient from './helpers/ApiClient'
 import WithStylesContext from './helpers/WithStylesContext'
 
 const initialState = window.__INITIAL_STATE__
-
 const client = new ApiClient()
 const store = configureStore(client, browserHistory, initialState)
-
 const history = syncHistoryWithStore(browserHistory, store)
 
 render(

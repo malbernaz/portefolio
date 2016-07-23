@@ -3,17 +3,9 @@ import { IndexRoute, Route } from 'react-router'
 import { reduce } from 'underscore'
 
 import { isLoaded as isAuthLoaded, loadAuth } from './actions/auth'
-
 import { loadPosts, loadPostsAndDrafts } from './actions/posts'
-
-import AppView from './components/containers/AppView'
-import Editor from './components/containers/Editor'
-
-import About from './components/presentational/About'
-import Contact from './components/presentational/Contact'
-import Home from './components/presentational/Home'
-import Post from './components/presentational/Post'
-import SignIn from './components/presentational/SignIn'
+import { AppView, Editor, SignIn, Post } from './containers'
+import { About, Contact, Home } from './components'
 
 export default store => {
   const mustBeLogged = (nextState, replace, callback) => {

@@ -1,0 +1,161 @@
+@import '../../theme/vars';
+@import '../../theme/mixins';
+
+.root {
+  position: absolute;
+  z-index: $zi-editor;
+  top: 0;
+
+  flex: 0 0 $posts-list-width;
+
+  height: 100%;
+
+  transition: transform .15s ease-out;
+  transform: translateX(-$posts-list-width);
+
+  background: $syntax-bg;
+
+  will-change: transform;
+}
+
+.rootIsShown {
+  transition: transform .1s ease-out;
+  transform: translateX(0);
+
+  @extend .root;
+}
+
+.item {
+  position: relative;
+
+  display: flex;
+  overflow: hidden;
+
+  width: $posts-list-width;
+  height: 3rem;
+
+  justify-content: flex-start;
+  align-items: center;
+
+  &:after {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    width: 40%;
+    height: 100%;
+
+    content: '';
+
+    background: linear-gradient(to right, rgba($syntax-bg, 0), $syntax-bg 50%);
+  }
+
+  &:nth-child(even) {
+    background: $syntax-bg-alternate;
+
+    &:after {
+      background: linear-gradient( to right, rgba($syntax-bg-alternate, 0), $syntax-bg-alternate 50% );
+    }
+  }
+}
+
+.title {
+  line-height: 3rem;
+
+  position: absolute;
+  top: 0;
+
+  display: block;
+
+  width: 100vw;
+  margin-left: 1.5rem;
+
+  span {
+    font-size: .625rem;
+
+    padding: 0 .2rem;
+
+    color: $hue-2;
+  }
+}
+
+.titleDraft {
+  @extend .title;
+
+  &:before {
+    position: absolute;
+    top: 50%;
+    left: -.7rem;
+
+    width: .3rem;
+    height: .3rem;
+
+    content: '';
+    transform: translateY(-30%);
+
+    border-radius: 50%;
+    background: $hue-2;
+  }
+}
+
+.actions {
+  position: absolute;
+  z-index: $zi-editor;
+  top: 0;
+  right: 1rem;
+
+  display: flex;
+
+  height: 3rem;
+
+  transition: opacity .1s ease;
+
+  opacity: 0;
+
+  align-items: center;
+
+  svg {
+    height: .9rem;
+  }
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.action {
+  margin-left: .8rem;
+}
+
+.actionDelete {
+  @extend .action;
+  @include dark-link($hue-5, 10);
+}
+
+.shadow {
+  position: absolute;
+  z-index: $zi-editor - 1;
+  top: 0;
+  left: 0;
+
+  width: 100vw;
+  height: 100%;
+
+  transition: opacity .15s ease-out;
+  transform: translateX($posts-list-width);
+  pointer-events: none;
+
+  opacity: 0;
+  background: rgba($mono-1, .8);
+
+  will-change: opacity;
+}
+
+.shadowIsShown {
+  transition: opacity .1s ease-out;
+  pointer-events: all;
+
+  opacity: 1;
+
+  @extend .shadow;
+}
