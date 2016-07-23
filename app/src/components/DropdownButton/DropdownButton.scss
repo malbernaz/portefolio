@@ -1,0 +1,78 @@
+@import '../../theme/vars';
+@import '../../theme/mixins';
+
+%options {
+  position: absolute;
+  top: 110%;
+  right: .5rem;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: .3rem 0;
+
+  transition: opacity .1s ease, transform .1s ease;
+  transform: translateY(0) scale(1);
+  transform-origin: top right;
+  text-align: right;
+  white-space: nowrap;
+  pointer-events: all;
+
+  opacity: 1;
+  border: 1px lighten($mono-3, 20) solid;
+  background: $syntax-bg-alternate;
+
+  will-change: opacity, transform;
+}
+
+%option {
+  font-size: 1rem;
+  line-height: 1rem;
+
+  margin: 0;
+  padding: .5rem 1rem;
+}
+
+.root {
+  z-index: $zi-editor + 1;
+}
+
+.toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  display: flex;
+
+  height: 100%;
+  padding: 0 1rem;
+
+  align-items: center;
+
+  svg {
+    height: 1rem;
+  }
+}
+
+.options {
+  @extend %options;
+}
+
+.optionsHidden {
+  transition: opacity .2s ease, transform .2s ease;
+  transform: translateY(-1rem) scale(.5);
+  pointer-events: none;
+
+  opacity: 0;
+
+  @extend %options;
+}
+
+.option {
+  @extend %option;
+}
+
+.optionDanger {
+  @extend %option;
+  @include dark-link($hue-5, 10);
+}

@@ -1,3 +1,9 @@
+import {
+  TOGGLE_EDITOR_NAV,
+  TOGGLE_EDITOR_DROPDOWN,
+  SWITCH_VIEW
+} from '../../constants'
+
 const initialState = {
   editorNavIsVisible: false,
   editorDropdownIsVisible: false,
@@ -6,19 +12,19 @@ const initialState = {
 
 export default (state = initialState, action = {}) => {
   switch (action.type) {
-    case 'TOGGLE_EDITOR_NAV':
+    case TOGGLE_EDITOR_NAV:
       return {
         ...state,
         editorDropdownIsVisible: false,
         editorNavIsVisible: !state.editorNavIsVisible
       }
-    case 'TOGGLE_EDITOR_DROPDOWN':
+    case TOGGLE_EDITOR_DROPDOWN:
       return {
         ...state,
         editorNavIsVisible: false,
         editorDropdownIsVisible: !state.editorDropdownIsVisible
       }
-    case 'SWITCH_VIEW':
+    case SWITCH_VIEW:
       return {
         ...state,
         editorNavIsVisible: false,

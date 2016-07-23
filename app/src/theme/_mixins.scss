@@ -1,0 +1,162 @@
+@mixin centered {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  height: 100vh;
+
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin strict-width ($width) {
+  width: $width;
+  max-width: $width;
+}
+
+@mixin clearfix {
+  &::before {
+    display: block;
+    clear: both;
+
+    content: '';
+  }
+}
+
+@mixin button ($color) {
+  font-size: .8rem;
+  font-weight: 600;
+
+  display: flex;
+
+  height: 2.25rem;
+  padding: 0 1rem;
+
+  cursor: pointer;
+  transition: opacity .3s ease;
+  text-transform: uppercase;
+
+  color: $color;
+  border: 1px solid;
+  border-radius: 2.25rem;
+  outline: 0;
+  background: transparent;
+
+  align-items: center;
+  appearance: none;
+
+  &:focus,
+
+  &:hover {
+    opacity: .7;
+  }
+}
+
+@mixin small-button ($color) {
+  font-size: .675rem;
+  font-weight: 600;
+  line-height: 2rem;
+
+  height: 2rem;
+  padding: 0 1rem;
+
+  cursor: pointer;
+  transition: opacity .3s ease;
+  text-transform: uppercase;
+
+  color: $color;
+  border: 1px solid;
+  border-radius: 2rem;
+  outline: 0;
+  background: transparent;
+
+  appearance: none;
+
+  &:focus,
+
+  &:hover {
+    opacity: .7;
+  }
+}
+
+@mixin icon-link ($height) {
+  display: flex;
+
+  height: $height;
+  padding: 0 1rem;
+
+  align-items: center;
+
+  svg {
+    height: 1rem;
+  }
+
+  span {
+    margin-left: .5rem;
+  }
+}
+
+@mixin dark-link ($color, $amount) {
+  transition: color .3s ease, fill .3s ease;
+  text-decoration: none;
+
+  color: $color;
+
+  path {
+    transition: fill .3s ease;
+
+    fill: $color;
+  }
+
+  &:focus,
+
+  &:hover {
+    color: darken($color, $amount);
+
+    path {
+      fill: darken($color, $amount);
+    }
+  }
+}
+
+@mixin light-link ($color, $amount) {
+  transition: color .3s ease, fill .3s ease;
+  text-decoration: none;
+
+  color: $color;
+
+  path {
+    transition: fill .3s ease;
+
+    fill: $color;
+  }
+
+  &:focus,
+
+  &:hover {
+    color: lighten($color, $amount);
+
+    path {
+      fill: lighten($color, $amount);
+    }
+  }
+}
+
+@mixin tag($color) {
+  font-size: .5rem;
+  font-weight: 700;
+  line-height: .5rem;
+
+  display: flex;
+
+  height: 1.3rem;
+  padding: 0 .5rem;
+
+  text-decoration: none;
+  text-transform: uppercase;
+
+  color: $syntax-bg;
+  background: $color;
+
+  align-items: center;
+}

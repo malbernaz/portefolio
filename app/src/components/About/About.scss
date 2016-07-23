@@ -1,0 +1,44 @@
+@import '../../theme/vars';
+
+.root {
+  display: flex;
+  flex-direction: column;
+
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100vh;
+  padding: 0 1rem;
+
+  align-items: center;
+  justify-content: center;
+
+  @media (max-width: $mobile-s) {
+    padding-top: 1rem;
+  }
+}
+
+.avatar {
+  position: relative;
+
+  overflow: hidden;
+
+  width: 8rem;
+  height: 8rem;
+  margin-bottom: 1rem;
+
+  opacity: .7;
+  border-radius: 50%;
+}
+
+.img {
+  position: absolute;
+  right: 0;
+}
+
+.blurb {
+  font-size: 1rem;
+
+  max-width: 25rem;
+
+  text-align: center;
+}

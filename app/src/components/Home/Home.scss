@@ -1,0 +1,16 @@
+@import '../../theme/vars';
+@import '../../theme/mixins';
+
+.home {
+  overflow-y: scroll;
+
+  box-sizing: border-box;
+  padding: 3rem 1rem;
+
+  @include centered;
+  justify-content: flex-start;
+
+  @media (max-width: $tablet) {
+    margin: 3.5rem auto;
+  }
+}

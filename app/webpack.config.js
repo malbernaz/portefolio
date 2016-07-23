@@ -1,6 +1,6 @@
 const { resolve } = require('path')
+const cssnano = require('cssnano')
 const autoprefixer = require('autoprefixer')
-const precss = require('precss')
 
 module.exports = {
   context: resolve(__dirname, 'src'),
@@ -8,20 +8,24 @@ module.exports = {
     loaders: [{
       test: /\.js$/,
       exclude: /node_modules/,
-      loader: 'babel'
+      loaders: ['babel-loader', 'eslint-loader']
     }, {
-      test: /\.css$/,
+      test: /\.json$/,
+      loader: 'json-loader'
+    }, {
+      test: /\.scss$/,
       loaders: [
         'isomorphic-style-loader',
-        'css-loader',
-        'postcss-loader'
+        { loader: 'css-loader', query: { modules: true } },
+        'postcss-loader',
+        'sass-loader'
       ],
       exclude: /node_modules/
     }]
   },
   postcss: () => ([
-    autoprefixer({ browsers: ['> 0.8%'] }),
-    precss
+    autoprefixer({ browsers: ['last 2 versions'] }),
+    cssnano({ zindex: false })
   ]),
   watchOptions: {
     aggregateTimeout: 300,

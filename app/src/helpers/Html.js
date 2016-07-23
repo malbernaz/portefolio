@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react'
 import Helmet from 'react-helmet'
 import { renderToString } from 'react-dom/server'
-
 import serialize from 'serialize-javascript'
 
 const Html = ({ component, store, css }) => {
@@ -27,7 +26,6 @@ const Html = ({ component, store, css }) => {
                   user-scalable=no"
         />
         <style>{ css.join('') }</style>
-        <link rel="stylesheet" href="/css/main.css" />
       </head>
       <body>
         <div id="react-view" dangerouslySetInnerHTML={{ __html: content }} />

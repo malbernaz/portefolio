@@ -1,0 +1,28 @@
+{
+  "extends": "airbnb",
+  "installedESLint": true,
+  "parser": "babel-eslint",
+  "plugins": [
+    "react"
+  ],
+  "rules": {
+    "no-underscore-dangle": 0,
+    "comma-dangle": 0,
+    "semi": [2, "never"],
+    "no-confusing-arrow": 0,
+    "func-names": 0,
+    "import/no-unresolved": [
+      0, {
+        "commonjs": true,
+        "amd": true
+      }
+    ],
+    "react/jsx-curly-spacing": [
+      2, "always", {
+        "spacing": {
+          "objectLiterals": "never"
+        }
+      }
+    ]
+  }
+}

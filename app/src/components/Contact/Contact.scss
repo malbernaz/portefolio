@@ -1,0 +1,53 @@
+@import '../../theme/vars';
+
+.root {
+  display: flex;
+  flex-direction: column;
+
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100vh;
+  padding: 0 1rem;
+
+  align-items: center;
+  justify-content: center;
+  @media (max-width: $mobile-s) {
+    padding-top: 1rem;
+  }
+}
+
+.blurb {
+  font-size: 1rem;
+
+  max-width: 15rem;
+
+  text-align: center;
+}
+
+.item {
+  line-height: 2rem;
+
+  margin: 1rem 0;
+
+  text-align: center;
+
+  svg {
+    display: inline-block;
+
+    height: .7rem;
+
+    path {
+      fill: $syntax-fg;
+    }
+  }
+}
+
+.text {
+  font-weight: 600;
+
+  padding-left: .5rem;
+}
+
+.link {
+  display: block;
+}
