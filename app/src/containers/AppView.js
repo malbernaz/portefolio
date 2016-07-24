@@ -16,6 +16,7 @@ const AppView = ({ children, location }) => (
     <div className="container">
       <ReactCSSTransitionGroup
         component="div"
+        className="animationContainer"
         transitionName="page-transition"
         transitionEnterTimeout={ 300 }
         transitionLeaveTimeout={ 300 }

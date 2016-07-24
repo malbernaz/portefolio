@@ -2,29 +2,10 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import ReactCodemirror from 'react-codemirror'
-import marked, { Renderer } from 'meta-marked'
-import { getLanguage, highlight } from 'highlight.js'
+import marked from 'meta-marked'
 
-import * as postsActions from '../actions/posts'
-
-const renderer = new Renderer()
-
-renderer.code = (code, language) => {
-  const validLang = !!(language && getLanguage(language))
-
-  const highlighted = validLang ?
-    highlight(language, code).value : code
-
-  return `<pre><code class="hljs ${language}">${highlighted}</code></pre>`
-}
-
-renderer.link = (href, title, text) => text === 'video-embed' ?
-  `
-    <div class="video-embed">
-      <iframe src="${href}" allowfullscreen class="video-embed__video"></iframe>
-    </div>
-  ` :
-  `<a href="${href}">${text}</a>`
+import * as postsActions from '../../actions/posts'
+import renderer from './renderer'
 
 marked.setOptions({
   gfm: true,
@@ -77,5 +58,10 @@ class Codemirror extends Component {
 }
 
 export default connect(
-  state => ({ ...state }),
-  dispatch => bindActionCreators({ ...postsActions }, dispatch))(Codemirror)
+  state => ({
+    ...state
+  }),
+  dispatch => bindActionCreators({
+    ...postsActions
+  }, dispatch)
+)(Codemirror)

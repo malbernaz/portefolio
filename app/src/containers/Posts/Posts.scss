@@ -25,3 +25,10 @@
   text-transform: uppercase;
   color: $mono-2;
 }
+
+.more {
+  @include button($syntax-accent);
+
+  display: inline;
+  padding: .5rem 1rem;
+}

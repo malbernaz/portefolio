@@ -17,7 +17,7 @@ const Posts = ({ posts }) => (
           </small>
           <h2 className={ s.title }>{ post.meta.title }</h2>
           <h3 className={ s.subtitle }>{ post.meta.subtitle }</h3>
-          <Link to={ `/posts/${post.slug}` }>read more...</Link>
+          <Link className={ s.more } to={ `/posts/${post.slug}` }>read more</Link>
         </article>
       )) :
       <article>There ain't no posts yet :(</article> }

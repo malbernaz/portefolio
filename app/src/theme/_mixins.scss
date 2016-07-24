@@ -9,21 +9,9 @@
   justify-content: center;
 }
 
-@mixin strict-width ($width) {
-  width: $width;
-  max-width: $width;
-}
-
-@mixin clearfix {
-  &::before {
-    display: block;
-    clear: both;
-
-    content: '';
-  }
-}
-
 @mixin button ($color) {
+  @include dark-link($color, 15);
+
   font-size: .8rem;
   font-weight: 600;
 
@@ -33,7 +21,7 @@
   padding: 0 1rem;
 
   cursor: pointer;
-  transition: opacity .3s ease;
+  transition: color .3s ease;
   text-transform: uppercase;
 
   color: $color;
@@ -44,12 +32,6 @@
 
   align-items: center;
   appearance: none;
-
-  &:focus,
-
-  &:hover {
-    opacity: .7;
-  }
 }
 
 @mixin small-button ($color) {

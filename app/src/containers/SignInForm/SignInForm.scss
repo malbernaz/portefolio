@@ -78,7 +78,7 @@
 }
 
 .submit {
-  margin: 1rem;
-
   @include button($syntax-accent);
+
+  margin: 1rem;
 }

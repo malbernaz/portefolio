@@ -17,7 +17,7 @@ const inputFields = [{
   label: 'password'
 }]
 
-let SignIn = ({ handleSubmit, fields: { ...fields } }) => {
+const SignIn = ({ handleSubmit, pristine, fields: { ...fields } }) => {
   const renderInput = (field, type, label) => (
     <div key={ field.name }>
       <label className={ s.field } htmlFor={ field.name }>
@@ -47,7 +47,13 @@ let SignIn = ({ handleSubmit, fields: { ...fields } }) => {
           return renderInput(field, type, label)
         }) }
         <div className="cta">
-          <button className={ s.submit } onClick={ handleSubmit }>Sign In</button>
+          <button
+            className={ s.submit }
+            disabled={ pristine }
+            onClick={ handleSubmit }
+          >
+            Sign In
+          </button>
         </div>
       </form>
     </section>
@@ -56,13 +62,12 @@ let SignIn = ({ handleSubmit, fields: { ...fields } }) => {
 
 SignIn.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
-  fields: PropTypes.object.isRequired
+  fields: PropTypes.object.isRequired,
+  pristine: PropTypes.bool.isRequired
 }
-
-SignIn = withStyles(s)(SignIn)
 
 export default reduxForm({
   form: 'signin',
   fields: inputFields.map(field => field.name),
   validation
-})(SignIn)
+})(withStyles(s)(SignIn))

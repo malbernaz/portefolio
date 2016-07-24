@@ -1,19 +1,30 @@
 @import '../../theme/vars';
 
+.wrapper {
+  width: 100%;
+  height: calc(100% - 3.5rem);
+  overflow-y: scroll;
+  position: absolute;
+  bottom: 0;
+  margin-top: 3.5rem;
+
+  @media (max-width: $tablet) {
+
+    margin-top: auto;
+  }
+}
+
 .root {
   display: flex;
   flex-direction: column;
 
   box-sizing: border-box;
   width: 100%;
-  min-height: 100vh;
+  min-height: 100%;
   padding: 0 1rem;
 
   align-items: center;
-  justify-content: center;
-  @media (max-width: $mobile-s) {
-    padding-top: 1rem;
-  }
+  justify-content: flex-start;
 }
 
 .blurb {
