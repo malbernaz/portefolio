@@ -28,7 +28,7 @@ renderer.list = body => {
           ({ text: i.replace(/^\[x\]\s/, ''), checked: 'checked' }) :
           ({ text: i.replace(/^\[\s\]\s/, ''), checked: '' })
       }
-      return i
+      return { text: i }
     })
     .map(i => {
       if (typeof i !== 'object' && i.match(/\r?\n|\r/)) return i
@@ -38,19 +38,10 @@ renderer.list = body => {
             &nbsp;&nbsp;${i.text}
           </input>
         </li>` :
-        `<li>${i}</li>`
+        `<li>${i.text}</li>`
     })
 
   return output.join('')
 }
-
-renderer.link = (href, title, text) =>
-  text === 'video-embed' ?
-    `
-      <div class="video-embed">
-        <iframe src="${href}" allowfullscreen class="video-embed__video"></iframe>
-      </div>
-    ` :
-    `<a href="${href}">${text}</a>`
 
 export default renderer

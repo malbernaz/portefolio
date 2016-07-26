@@ -3,15 +3,31 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import ReactCodemirror from 'react-codemirror'
 import marked from 'meta-marked'
+import sanitizeHtml from 'sanitize-html'
 
 import * as postsActions from '../../actions/posts'
 import renderer from './renderer'
 
 marked.setOptions({
   gfm: true,
-  sanitize: true,
   renderer
 })
+
+const sanitationOptions = {
+  allowedTags: sanitizeHtml.defaults.allowedTags.concat([
+    'input',
+    'span'
+  ]),
+  allowedAttributes: {
+    '*': ['class'],
+    li: ['style'],
+    input: [
+      'type',
+      'checked',
+      'disabled'
+    ],
+  }
+}
 
 const options = {
   gfm: true,
@@ -38,7 +54,8 @@ class Codemirror extends Component {
 
   handleChange = (raw) => {
     const { updateActiveDraft } = this.props
-    const { meta, html } = marked(raw)
+    let { meta, html } = marked(raw) // eslint-disable-line
+    html = sanitizeHtml(html, sanitationOptions)
 
     updateActiveDraft({ raw, meta, html })
   }
