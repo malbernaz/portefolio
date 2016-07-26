@@ -594,32 +594,37 @@
 
     color: $hue-5;
   }
-  .cm-s-one-light .cm-keyword {
-    color: $hue-3;
+  .cm-s-one-light {
+    .cm-keyword,
+
+    .cm-url.cm-url {
+      color: $hue-3;
+    }
   }
-  .cm-s-one-light .cm-number {
+  .cm-s-one-light .cm-number, {
     color: $hue-6;
   }
   .cm-s-one-light .cm-def {
     color: $mono-2;
   }
-  .cm-s-one-light .cm-string {
+  .cm-s-one-light .cm-string, {
     color: $hue-4;
   }
-  .cm-s-one-light .cm-quote-1 {
-    font-weight: 600;
+  .cm-s-one-light {
+    .cm-quote-1,
 
-    color: $hue-4;
-  }
-  .cm-s-one-light .cm-variable-2 {
-    font-weight: 600;
+    .cm-variable-2 {
+      font-weight: 600;
 
-    color: $hue-6-2;
+      color: $hue-4;
+    }
   }
   .cm-s-one-light {
     .cm-property,
 
     .cm-strong,
+
+    .cm-meta,
 
     .cm-em {
       color: $hue-1;
