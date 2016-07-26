@@ -21,18 +21,23 @@ renderer.list = body => {
 
   const output = items
     .map(i => {
+      if (i.match(/\r?\n|\r/)) return i
       if (i.match(/^\[x\]\s/) || i.match(/^\[\s\]\s/)) {
         hasCheckbox = true
         return i.match(/^\[x\]\s/) ?
-          i.replace(/^\[x\]\s/, '&#9745; ') :
-          i.replace(/^\[\s\]\s/, '&#9744; ')
+          ({ text: i.replace(/^\[x\]\s/, ''), checked: 'checked' }) :
+          ({ text: i.replace(/^\[\s\]\s/, ''), checked: '' })
       }
       return i
     })
     .map(i => {
-      if (i.match(/\r?\n|\r/)) return i
+      if (typeof i !== 'object' && i.match(/\r?\n|\r/)) return i
       return hasCheckbox ?
-        `<li style="list-style: none;">${i}</li>` :
+        `<li style="list-style: none;">
+          <input type="checkbox" disabled ${i.checked}>
+            &nbsp;&nbsp;${i.text}
+          </input>
+        </li>` :
         `<li>${i}</li>`
     })
 
