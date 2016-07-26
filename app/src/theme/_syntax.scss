@@ -1,16 +1,14 @@
 :global {
   .hljs {
-    font-size: 85%;
+    font-size: .8rem;
 
     display: block;
     overflow-x: auto;
 
     margin: 1.5rem 0;
     padding: .8rem;
-    border-radius: 3px;
 
     color: $syntax-fg;
-    background: $syntax-bg-alternate;
   }
 
   .hljs-number,
