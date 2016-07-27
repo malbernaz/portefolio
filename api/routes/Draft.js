@@ -116,7 +116,7 @@ Router.patch('/:slug', passport.authenticate('jwt', {
         updatedAt: new Date(),
         meta: {
           title: meta.title,
-          subtitle: meta.subtitle,
+          description: meta.description,
           tags: meta.tags,
           author: user._id
         }

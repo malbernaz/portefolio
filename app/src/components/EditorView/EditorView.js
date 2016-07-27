@@ -71,7 +71,7 @@ const EditorView = ({
             dangerouslySetInnerHTML={{
               __html: `
                 <h2>${activeDraft.meta.title}</h2>
-                <h3>${activeDraft.meta.subtitle}</h3>
+                <h3>${activeDraft.meta.description}</h3>
                 ${activeDraft.html}
               `
             }}

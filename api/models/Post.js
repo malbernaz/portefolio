@@ -30,7 +30,7 @@ const PostSchema = new mongoose.Schema({
       lowercase: true,
       unique: true
     },
-    subtitle: {
+    description: {
       type: String,
       lowercase: true,
       required: true

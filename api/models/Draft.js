@@ -28,7 +28,7 @@ const DraftSchema = new mongoose.Schema({
       required: true,
       lowercase: true
     },
-    subtitle: {
+    description: {
       type: String,
       lowercase: true,
       required: true

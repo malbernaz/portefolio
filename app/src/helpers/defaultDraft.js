@@ -2,7 +2,7 @@ export default {
   raw: [
     '---',
     'title: my post title',
-    'subtitle: a subtle subtitle',
+    'description: a subtle description',
     'tags:',
     '  - a tag',
     '  - open source',
@@ -10,7 +10,7 @@ export default {
   ].join('\n'),
   meta: {
     title: 'my post title',
-    subtitle: 'a subtle subtitle',
+    description: 'a subtle description',
     tags: ['a tag', 'open source']
   },
   html: '',

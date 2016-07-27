@@ -16,7 +16,7 @@ const Post = ({ posts, slug }) => {
         <article>
           <small>{ moment(createdAt, 'YYYYMMDD').fromNow() }</small>
           <h2 className={ s.title }>{ meta.title }</h2>
-          <h3 className={ s.subtitle }>{ meta.subtitle }</h3>
+          <h3 className={ s.description }>{ meta.description }</h3>
           <div dangerouslySetInnerHTML={{ __html: html }} />
         </article>
       </div>

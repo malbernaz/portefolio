@@ -19,6 +19,6 @@ COPY . $HOME/server
 RUN chown -R app:app $HOME/*
 USER app
 
-RUN npm run build:client:dev && npm run build:server:dev
+RUN npm run build:dev
 
 CMD ["npm", "start"]
