@@ -12,7 +12,7 @@ USER app
 
 WORKDIR $HOME/server
 
-RUN npm install
+RUN rm -fr node_modules && npm install
 
 USER root
 COPY . $HOME/server

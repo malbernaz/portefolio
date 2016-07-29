@@ -14,7 +14,6 @@ const DraftsModel = require('./models/Draft')
 const { User, Post, Draft } = require('./routes')
 
 const api = new Express()
-const port = 5000
 
 // Use native promises with mongoose
 mongoose.Promise = global.Promise
@@ -59,10 +58,10 @@ api.get('/postsanddrafts', passport.authenticate('jwt', {
     }))
 })
 
-api.listen(port, err => {
+api.listen(config.port, err => {
   if (err) {
     console.log(err) // eslint-disable-line no-console
   }
 
-  console.log(`==>  Api listening on port ${port}`) // eslint-disable-line no-console
+  console.log(`==>  Api listening on port ${config.port}`) // eslint-disable-line no-console
 })

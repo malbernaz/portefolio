@@ -5,7 +5,12 @@ services:
     build: './api'
     command: npm run dev
     ports:
-      - "5000:5000"
+      - '5000:5000'
+    environment:
+      PORT: 5000
+      DATABASE: 'mongodb://mongo/portefolio'
+      SECRET: 'secrettoken'
+      REGISTRATIONSECRET: 'secrettoken'
     depends_on:
       - mongo
     volumes:
@@ -18,7 +23,9 @@ services:
     ports:
       - "3000:3000"
     environment:
-      DOCKER: "true"
+      PORT: 3000
+      APIHOST: 'api'
+      APIPORT: 5000
     volumes:
       - ./app:/home/app/server
       - /home/app/server/node_modules

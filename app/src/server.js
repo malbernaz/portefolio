@@ -27,7 +27,6 @@ import WithStylesContext from './helpers/WithStylesContext'
 
 // Server configuration
 const app = express()
-const port = process.env.PORT || 3000
 const server = new Server(app)
 
 // API proxy
@@ -119,7 +118,10 @@ app.use((req, res) => {
   })
 })
 
-server.listen(port, err => {
-  if (err) console.error(err) // eslint-disable-line no-console
-  console.log(`==>  Server listening on port ${port}`) // eslint-disable-line no-console
+server.listen(config.port, err => {
+  if (err) {
+    console.log(err) // eslint-disable-line no-console
+  }
+
+  console.log(`==>  Server listening on port ${config.port}`) // eslint-disable-line no-console
 })

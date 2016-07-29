@@ -2,8 +2,9 @@ const description = 'a blogging platform for the 21th century'
 
 export default {
   title: 'Portefólio',
-  apiHost: process.env.DOCKER ? 'api' : '127.0.1',
-  apiPort: '5000',
+  port: process.env.PORT || 3000,
+  apiHost: process.env.APIHOST || '127.0.1',
+  apiPort: process.env.APIPORT || 5000,
   description,
   github: 'https://github.com/malbernaz',
   twitter: 'https://twitter.com/miguel_albernaz',
