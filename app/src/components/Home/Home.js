@@ -7,7 +7,7 @@ import s from './Home.scss'
 
 const Home = () => (
   <section className={ s.home }>
-    <Helmet title="home" />
+    <Helmet title="HOME" />
     <Posts />
   </section>
 )

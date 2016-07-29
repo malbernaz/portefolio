@@ -15,9 +15,12 @@
     "watch:server:prod": "webpack --config webpack.server.config.js --env prod --watch",
     "build:client:prod": "webpack --config webpack.client.config.js --env prod",
     "build:server:prod": "webpack --config webpack.server.config.js --env prod",
-    "build:dev": "npm run cpstatic && npm run build:client:dev && npm run build:server:dev",
-    "build:prod": "npm run cpstatic && npm run build:client:prod && npm run build:server:prod",
-    "cpstatic": "cp -R ./src/static/** ./dist/public"
+    "build:dev": "npm run build && npm run build:client:dev && npm run build:server:dev",
+    "build:prod": "npm run build && npm run build:client:prod && npm run build:server:prod",
+    "build": "npm run clean && npm run static && npm run imagemin",
+    "imagemin": "imagemin src/static/img/* --out-dir=dist/public/img",
+    "static": "cp src/static/manifest.json dist/public",
+    "clean": "rm -fr dist && mkdir dist"
   },
   "repository": {
     "type": "git",
@@ -39,6 +42,7 @@
     "codemirror": "^5.17.0",
     "compression": "^1.6.2",
     "express": "^4.14.0",
+    "express-favicon": "^1.0.1",
     "highlight.js": "^9.5.0",
     "http-proxy": "^1.14.0",
     "lru-memoize": "^1.0.1",
@@ -82,6 +86,7 @@
     "eslint-plugin-import": "^1.11.1",
     "eslint-plugin-jsx-a11y": "^1.5.5",
     "eslint-plugin-react": "^5.2.2",
+    "imagemin": "^5.2.2",
     "isomorphic-style-loader": "^1.0.0",
     "json-loader": "^0.5.4",
     "node-sass": "^3.8.0",

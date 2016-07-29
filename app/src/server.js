@@ -4,6 +4,7 @@ import { resolve } from 'path'
 import { Server } from 'http'
 import compression from 'compression'
 import express from 'express'
+import favicon from 'express-favicon'
 import morgan from 'morgan'
 import serveStatic from 'serve-static'
 
@@ -36,6 +37,7 @@ const proxy = createProxyServer({ target: targetUrl })
 // Server middleware
 app.use(compression())
 app.use(serveStatic(resolve(__dirname, 'public')))
+app.use(favicon(resolve(__dirname, 'public', 'img', 'icon.png')))
 app.use(morgan('dev'))
 
 app.use('/api', (req, res) => {

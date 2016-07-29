@@ -10,13 +10,13 @@ import MessageNotifier from './MessageNotifier/MessageNotifier'
 import s from '../theme/main.scss'
 
 const AppView = ({ children, location }) => (
-  <div className="app-view">
+  <div className={ s.appView }>
     <Helmet { ...config.head } />
     <Nav />
-    <div className="container">
+    <div className={ s.container }>
       <ReactCSSTransitionGroup
         component="div"
-        className="animationContainer"
+        className={ s.animationContainer }
         transitionName="page-transition"
         transitionEnterTimeout={ 300 }
         transitionLeaveTimeout={ 300 }

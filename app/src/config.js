@@ -10,12 +10,24 @@ export default {
   email: 'albernazmiguel@gmail.com',
   head: {
     title: '',
-    titleTemplate: 'Portefólio λ %s',
+    titleTemplate: 'Portefólio | %s',
     meta: [{
+      charset: 'utf-8'
+    }, {
+      name: 'viewport',
+      content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
+    }, {
       name: 'description',
       content: description
     }, {
-      charset: 'utf-8'
+      'theme-color': '#526eff'
+    }],
+    link: [{
+      rel: 'icon',
+      href: '/img/icon.png'
+    }, {
+      rel: 'manifest',
+      href: '/manifest.json'
     }]
   }
 }

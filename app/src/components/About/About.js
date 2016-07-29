@@ -7,7 +7,7 @@ import s from './About.scss'
 const About = () => (
   <div className={ s.wrapper }>
     <section className={ s.root }>
-      <Helmet title="about" />
+      <Helmet title="ABOUT" />
       <h2 className={ s.header }>
         About
       </h2>

@@ -169,7 +169,7 @@ class Editor extends Component {
 
     return (
       <div>
-        <Helmet title="editor" />
+        <Helmet title="EDITOR" />
         <EditorView
           activeDraft={ activeDraft }
           drafts={ drafts }

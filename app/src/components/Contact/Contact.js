@@ -9,7 +9,7 @@ import s from './Contact.scss'
 const Contact = () => (
   <div className={ s.wrapper }>
     <section className={ s.root }>
-      <Helmet title="contact" />
+      <Helmet title="CONTACT" />
       <h2 className={ s.header }>
         Contact
       </h2>

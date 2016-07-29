@@ -11,7 +11,7 @@ const Post = ({ posts, slug }) => {
 
   return (
     <section className={ s.root }>
-      <Helmet title={ meta.title } />
+      <Helmet title={ meta.title.toUpperCase() } />
       <div className={ s.wrapper }>
         <article>
           <small>{ moment(createdAt, 'YYYYMMDD').fromNow() }</small>

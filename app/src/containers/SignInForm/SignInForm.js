@@ -40,7 +40,7 @@ const SignIn = ({ handleSubmit, pristine, fields: { ...fields } }) => {
 
   return (
     <section className={ s.root }>
-      <Helmet title="sign in" />
+      <Helmet title="SIGN IN" />
       <form className={ s.form } onSubmit={ handleSubmit }>
         { map(fields, (field, key) => {
           const { type, label } = inputFields.filter(f => f.name === key).pop()
