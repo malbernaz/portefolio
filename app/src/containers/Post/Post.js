@@ -14,7 +14,7 @@ const Post = ({ posts, slug }) => {
       <Helmet title={ meta.title.toUpperCase() } />
       <div className={ s.wrapper }>
         <article>
-          <small>{ moment(createdAt, 'YYYYMMDD').fromNow() }</small>
+          <small>{ moment(createdAt, moment.ISO_8601).fromNow() }</small>
           <h2 className={ s.title }>{ meta.title }</h2>
           <h3 className={ s.description }>{ meta.description }</h3>
           <div dangerouslySetInnerHTML={{ __html: html }} />

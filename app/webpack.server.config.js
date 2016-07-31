@@ -1,14 +1,14 @@
 const { resolve } = require('path')
 const { readdirSync } = require('fs')
+const { union } = require('underscore')
 const webpack = require('webpack')
 const baseConfig = require('./webpack.config')
 
-const devPlugins = [
+const plugins = [
   new webpack.ContextReplacementPlugin(/moment\/locale$/, /^\.\/(en)$/)
 ]
 
-const prodPlugins = [
-  new webpack.ContextReplacementPlugin(/moment\/locale$/, /^\.\/(en)$/),
+const prodPlugins = union(plugins, [
   new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify('production') } }),
   new webpack.ContextReplacementPlugin(/moment\/locale$/, /^\.\/(pt-br)\.js$/),
   new webpack.LoaderOptionsPlugin({ minimize: true, debug: false }),
@@ -17,7 +17,7 @@ const prodPlugins = [
     output: { comments: false },
     sourceMap: false
   })
-]
+])
 
 const nodeModules = {}
 
@@ -34,6 +34,6 @@ module.exports = env => Object.assign(baseConfig, {
   target: 'node',
   node: { __dirname: false, __filename: false },
   externals: nodeModules,
-  plugins: env === 'prod' ? prodPlugins : devPlugins,
+  plugins: env === 'prod' ? prodPlugins : plugins,
   devtool: env === 'prod' ? 'hidden-source-map' : 'cheap-module-source-map'
 })

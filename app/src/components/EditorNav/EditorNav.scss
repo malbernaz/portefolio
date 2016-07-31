@@ -121,6 +121,10 @@
   &:hover {
     opacity: 1;
   }
+
+  @media (max-width: $tablet) {
+    opacity: 1;
+  }
 }
 
 .action {

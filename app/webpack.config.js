@@ -5,10 +5,15 @@ const autoprefixer = require('autoprefixer')
 module.exports = {
   context: resolve(__dirname, 'src'),
   module: {
+    preLoaders: [{
+      test: /\.js$/,
+      exclude: /node_modules/,
+      loader: 'eslint-loader'
+    }],
     loaders: [{
       test: /\.js$/,
       exclude: /node_modules/,
-      loaders: ['babel-loader', 'eslint-loader']
+      loader: 'babel-loader'
     }, {
       test: /\.json$/,
       loader: 'json-loader'
