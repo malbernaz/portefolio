@@ -5,7 +5,7 @@ import { reduce } from 'underscore'
 import { isLoaded as isAuthLoaded, loadAuth } from './actions/auth'
 import { loadPosts, loadPostsAndDrafts } from './actions/posts'
 import { AppView, Editor, SignIn, Post } from './containers'
-import { About, Contact, Home } from './components'
+import { About, Contact, Home, NotFound } from './components'
 
 export default store => {
   const mustBeLogged = (nextState, replace, callback) => {
@@ -88,6 +88,8 @@ export default store => {
           <IndexRoute onEnter={ getDrafts } component={ Editor } />
         </Route>
       </Route>
+
+      <Route path="*" component={ NotFound } status="404" />
     </Route>
   )
 }

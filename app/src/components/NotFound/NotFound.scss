@@ -1,0 +1,36 @@
+@import '../../theme/vars';
+
+.wrapper {
+  width: 100%;
+  height: calc(100% - 3.5rem);
+  overflow-y: scroll;
+  position: absolute;
+  bottom: 0;
+  margin-top: 3.5rem;
+
+  @media (max-width: $tablet) {
+
+    margin-top: auto;
+  }
+}
+
+.root {
+  display: flex;
+  flex-direction: column;
+
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100%;
+  padding: 0 1rem;
+
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.blurb {
+  font-size: 1rem;
+
+  max-width: 15rem;
+
+  text-align: center;
+}

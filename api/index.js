@@ -63,5 +63,5 @@ api.listen(config.port, err => {
     console.log(err) // eslint-disable-line no-console
   }
 
-  console.log(`==>  Api listening on port ${config.port}`) // eslint-disable-line no-console
+  console.log(`\n==>  Api listening on port ${config.port}\n`) // eslint-disable-line no-console
 })
