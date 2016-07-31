@@ -26,3 +26,5 @@ render(
     </WithStylesContext>
   </Provider>, document.getElementById('react-view')
 )
+
+require('offline-plugin/runtime').install() // ServiceWorker

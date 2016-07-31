@@ -10,7 +10,6 @@ const Html = ({ component, store, css }) => {
   return (
     <html lang="pt-br">
       <head>
-        { head.base.toComponent() }
         { head.title.toComponent() }
         { head.meta.toComponent() }
         { head.link.toComponent() }

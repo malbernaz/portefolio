@@ -1,6 +1,8 @@
 FROM node:6.3.0
 
-RUN useradd --user-group --create-home --shell /bin/false api && apt-get update
+RUN useradd --user-group --create-home --shell /bin/false api && \
+    echo "America/Sao_Paulo" > /etc/timezone && \
+    dpkg-reconfigure -f noninteractive tzdata
 
 ENV HOME=/home/api
 

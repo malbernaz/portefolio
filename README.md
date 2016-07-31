@@ -33,10 +33,10 @@ Last but not least create a user and you should be able to sign in at `/admin` a
 - [x] Use webpack 2
 - [x] Use docker
 - [x] Use css-modules
+- [x] Use service workers
 - [ ] Create `UserSettings` page
 - [ ] Create `ActionsPrompt` component
 - [ ] Better way to handle posts metadata
-- [ ] Use service workers
 - [ ] Pagination...
-- [ ] RSS
-- [ ] HTTP2
+- [ ] RSS...
+- [ ] Comments

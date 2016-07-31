@@ -1,6 +1,8 @@
 FROM node:6.3.0
 
-RUN useradd --user-group --create-home --shell /bin/false app && apt-get update
+RUN useradd --user-group --create-home --shell /bin/false app && \
+    echo "America/Sao_Paulo" > /etc/timezone && \
+    dpkg-reconfigure -f noninteractive tzdata
 
 ENV HOME=/home/app
 
@@ -19,6 +21,6 @@ COPY . $HOME/server
 RUN chown -R app:app $HOME/*
 USER app
 
-RUN npm run build:dev
+RUN npm run build:prod
 
 CMD ["npm", "start"]

@@ -3,7 +3,12 @@ const { readdirSync } = require('fs')
 const webpack = require('webpack')
 const baseConfig = require('./webpack.config')
 
-const prodPlugs = [
+const devPlugins = [
+  new webpack.ContextReplacementPlugin(/moment\/locale$/, /^\.\/(en)$/)
+]
+
+const prodPlugins = [
+  new webpack.ContextReplacementPlugin(/moment\/locale$/, /^\.\/(en)$/),
   new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify('production') } }),
   new webpack.ContextReplacementPlugin(/moment\/locale$/, /^\.\/(pt-br)\.js$/),
   new webpack.LoaderOptionsPlugin({ minimize: true, debug: false }),
@@ -12,10 +17,6 @@ const prodPlugs = [
     output: { comments: false },
     sourceMap: false
   })
-]
-
-const devPlugs = [
-  new webpack.ContextReplacementPlugin(/moment\/locale$/, /^\.\/(en)$/)
 ]
 
 const nodeModules = {}
@@ -33,6 +34,6 @@ module.exports = env => Object.assign(baseConfig, {
   target: 'node',
   node: { __dirname: false, __filename: false },
   externals: nodeModules,
-  plugins: env === 'prod' ? prodPlugs : devPlugs,
+  plugins: env === 'prod' ? prodPlugins : devPlugins,
   devtool: env === 'prod' ? 'hidden-source-map' : 'cheap-module-source-map'
 })

@@ -33,4 +33,4 @@ services:
   mongo:
     image: mongo
     ports:
-      - "27017:27017"
+      - "5050:27017"

@@ -1,17 +1,18 @@
-const description = 'a blogging platform for the 21th century'
+const title = 'Portefólio'
+const description = 'A blogging platform for the 21th century'
 
 export default {
-  title: 'Portefólio',
+  title,
+  description,
   port: process.env.PORT || 3000,
   apiHost: process.env.APIHOST || '127.0.1',
   apiPort: process.env.APIPORT || 5000,
-  description,
   github: 'https://github.com/malbernaz',
   twitter: 'https://twitter.com/miguel_albernaz',
   email: 'albernazmiguel@gmail.com',
   head: {
-    title: '',
-    titleTemplate: 'Portefólio | %s',
+    title: description,
+    titleTemplate: `${title} | %s`,
     meta: [{
       charset: 'utf-8'
     }, {
@@ -21,7 +22,8 @@ export default {
       name: 'description',
       content: description
     }, {
-      'theme-color': '#526eff'
+      name: 'theme-color',
+      content: '#526eff'
     }],
     link: [{
       rel: 'icon',

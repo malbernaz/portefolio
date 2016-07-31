@@ -123,5 +123,5 @@ server.listen(config.port, err => {
     console.log(err) // eslint-disable-line no-console
   }
 
-  console.log(`==>  Server listening on port ${config.port}`) // eslint-disable-line no-console
+  console.log(`==>  App listening on port ${config.port}`) // eslint-disable-line no-console
 })
