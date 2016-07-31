@@ -7,13 +7,13 @@ import s from './NotFound.scss'
 const NotFound = () => (
   <div className={ s.wrapper }>
     <section className={ s.root }>
-      <Helmet title="PAGE NOT FOUND" />
+      <Helmet title="NOT FOUND" />
       <h2 className={ s.header }>
         404 Page Not Found
       </h2>
-      <p className={ s.blurb }>
+      <h3 className={ s.blurb }>
         you are in unexplored waters
-      </p>
+      </h3>
     </section>
   </div>
 )
