@@ -153,7 +153,14 @@ export default (state = {}, action = {}) => {
     case UPDATE_ACTIVE_DRAFT:
       return {
         ...state,
-        activeDraft: { ...state.activeDraft, ...action.activeDraft }
+        activeDraft: {
+          ...state.activeDraft,
+          ...action.activeDraft,
+          meta: {
+            ...state.activeDraft.meta,
+            ...action.activeDraft.meta,
+          }
+        }
       }
 
     // publish active draft

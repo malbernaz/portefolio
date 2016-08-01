@@ -1,0 +1,129 @@
+@import '../../theme/vars';
+@import '../../theme/mixins';
+
+.wrapper {
+  position: absolute;
+  z-index: $zi-editor;
+  top: 3.5rem;
+  bottom: 0;
+
+  width: 100%;
+}
+
+.shadow {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+
+  width: 100%;
+  height: 100%;
+
+  transition: opacity .15s ease-out;
+  pointer-events: none;
+
+  opacity: 0;
+  background: rgba($mono-1, .8);
+
+  will-change: opacity;
+}
+
+.shadowIsShown {
+  transition: opacity .15s ease-out;
+  pointer-events: all;
+
+  opacity: 1;
+
+  @extend .shadow;
+}
+
+.root {
+  position: absolute;
+  z-index: $zi-editor + 1;
+  top: 0;
+  left: 50%;
+
+  box-sizing: border-box;
+  width: 80%;
+  max-width: 30rem;
+  padding: 2rem;
+
+  transition: transform .15s ease-out;
+  transform: translateX(-50%) translateY(-100%);
+
+  background: $syntax-bg-alternate;
+
+  will-change: transform;
+
+  @media (max-width: $tablet) {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.rootIsShown {
+  transition: transform .15s ease-out;
+  transform: translateX(-50%) translateY(0);
+
+  @extend .root;
+}
+
+.field {
+  position: relative;
+
+  display: block;
+
+  margin-bottom: 2.5rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.placeholder {
+  position: absolute;
+  bottom: 1rem;
+  left: 0;
+
+  transition: opacity .3s ease, transform .3s ease;
+  transform: translateY(-140%);
+  pointer-events: none;
+
+  opacity: .8;
+}
+
+.input {
+  width: 100%;
+  min-width: 15rem;
+  height: 3rem;
+
+  transition: border-color .3s ease;
+
+  color: $syntax-fg;
+  border: 0;
+  border-bottom: 1px solid $syntax-accent;
+  outline: 0;
+  background: transparent;
+
+  appearance: none;
+
+  &::placeholder {
+    color: transparent;
+  }
+}
+
+.dropzone {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  height: 4rem;
+
+  border: 1px $syntax-accent dashed;
+
+  align-items: center;
+  justify-content: center;
+
+  p {
+    opacity: .8;
+  }
+}

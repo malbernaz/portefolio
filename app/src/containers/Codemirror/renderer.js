@@ -1,4 +1,4 @@
-import { Renderer } from 'meta-marked'
+import { Renderer } from 'marked'
 import { getLanguage, highlight } from 'highlight.js'
 
 const renderer = new Renderer()
@@ -12,7 +12,7 @@ renderer.code = (code, language) => {
   return `<pre><code class="hljs ${language}">${highlighted}</code></pre>`
 }
 
-renderer.list = body => {
+renderer.list = (body, ordered) => {
   const items = body
     .split(/<li>|<\/li>/)
     .filter(s => s !== '')
@@ -31,7 +31,10 @@ renderer.list = body => {
       return { text: i }
     })
     .map(i => {
-      if (typeof i !== 'object' && i.match(/\r?\n|\r/)) return i
+      if (typeof i !== 'object' && i.match(/\r?\n|\r/)) {
+        if (i.length > 1) return `<li>${i}</li>`
+        return i
+      }
       return hasCheckbox ?
         `<li style="list-style: none;">
           <input type="checkbox" disabled ${i.checked}>
@@ -41,7 +44,15 @@ renderer.list = body => {
         `<li>${i.text}</li>`
     })
 
-  return output.join('')
+  if (hasCheckbox) {
+    return ordered ?
+      `<ol style="margin: 0; padding: 0">${output.join('')}</ol>` :
+      `<ul style="margin: 0; padding: 0">${output.join('')}</ul>`
+  }
+
+  return ordered ?
+    `<ol>${output.join('')}</ol>` :
+    `<ul>${output.join('')}</ul>`
 }
 
 export default renderer

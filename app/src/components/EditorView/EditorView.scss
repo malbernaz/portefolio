@@ -65,22 +65,46 @@ $posts-list-width: 15rem;
 }
 
 .info {
-  text-align: center;
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: space-between;
+  align-items: center;
 }
 
 .infoTitle {
-  overflow: hidden;
+  position: relative;
 
-  max-width: 40vw;
+  display: flex;
+
+  max-width: 35vw;
+  height: 1.6rem;
 
   text-transform: uppercase;
 
-  > * {
-    line-height: 1.6rem;
+  align-items: center;
+  justify-content: center;
+
+  b {
+    position: relative;
 
     display: block;
+    overflow: hidden;
 
+    max-width: 33.8rem;
     height: 1.3rem;
+
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  svg {
+    flex: 0 0 .7rem;
+
+    height: .7rem;
+    padding-left: .5rem;
   }
 }
 
@@ -89,6 +113,7 @@ $posts-list-width: 15rem;
   font-weight: 600;
   line-height: .7rem;
 
+  text-align: center;
   text-transform: lowercase;
 
   color: $mono-2;
@@ -184,7 +209,7 @@ $posts-list-width: 15rem;
   // reset for the first server render
   textarea {
     font-family: $monospace;
-    font-size: .75rem;
+    font-size: .8rem;
 
     bottom: 0;
 

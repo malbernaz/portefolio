@@ -40,7 +40,7 @@
 
   .CodeMirror {
     font-family: $monospace;
-    font-size: .75rem;
+    font-size: .8rem;
 
     position: relative;
 
@@ -577,7 +577,7 @@
     background: $syntax-bg;
   }
   .cm-s-one-light .CodeMirror-selected {
-    background: $syntax-gutter;
+    background: $selection;
   }
   .cm-s-one-light .cm-comment {
     font-style: italic;

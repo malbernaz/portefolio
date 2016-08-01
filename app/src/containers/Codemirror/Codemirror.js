@@ -2,8 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import ReactCodemirror from 'react-codemirror'
-import marked from 'meta-marked'
-import sanitizeHtml from 'sanitize-html'
+import marked from 'marked'
 
 import * as postsActions from '../../actions/posts'
 import renderer from './renderer'
@@ -12,22 +11,6 @@ marked.setOptions({
   gfm: true,
   renderer
 })
-
-const sanitationOptions = {
-  allowedTags: sanitizeHtml.defaults.allowedTags.concat([
-    'input',
-    'span'
-  ]),
-  allowedAttributes: {
-    '*': ['class'],
-    li: ['style'],
-    input: [
-      'type',
-      'checked',
-      'disabled'
-    ],
-  }
-}
 
 const options = {
   gfm: true,
@@ -48,16 +31,16 @@ class Codemirror extends Component {
   }
 
   componentDidMount() {
-    require('codemirror/mode/gfm/gfm') // eslint-disable-line
+    require('codemirror/mode/gfm/gfm') // eslint-disable-line global-require
     options.mode = 'gfm'
+    this.handleChange(this.props.posts.activeDraft.raw)
   }
 
   handleChange = (raw) => {
     const { updateActiveDraft } = this.props
-    let { meta, html } = marked(raw) // eslint-disable-line
-    html = sanitizeHtml(html, sanitationOptions)
+    const html = marked(raw)
 
-    updateActiveDraft({ raw, meta, html })
+    updateActiveDraft({ raw, html })
   }
 
   render() {
@@ -65,7 +48,6 @@ class Codemirror extends Component {
 
     return (
       <ReactCodemirror
-        ref="editor"
         options={ options }
         onChange={ this.handleChange }
         value={ raw }

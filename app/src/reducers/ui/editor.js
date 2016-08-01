@@ -1,35 +1,41 @@
 import {
-  TOGGLE_EDITOR_NAV,
+  SWITCH_VIEW,
   TOGGLE_EDITOR_DROPDOWN,
-  SWITCH_VIEW
+  TOGGLE_EDITOR_NAV,
+  TOGGLE_EDITOR_SETTINGS
 } from '../../constants'
 
 const initialState = {
-  editorNavIsVisible: false,
   editorDropdownIsVisible: false,
+  editorNavIsVisible: false,
+  editorSettingsIsVisible: false,
   view: 'code'
 }
 
 export default (state = initialState, action = {}) => {
   switch (action.type) {
-    case TOGGLE_EDITOR_NAV:
+    case SWITCH_VIEW:
       return {
-        ...state,
-        editorDropdownIsVisible: false,
-        editorNavIsVisible: !state.editorNavIsVisible
+        ...initialState,
+        view: action.view
       }
     case TOGGLE_EDITOR_DROPDOWN:
       return {
-        ...state,
-        editorNavIsVisible: false,
+        ...initialState,
+        view: state.view,
         editorDropdownIsVisible: !state.editorDropdownIsVisible
       }
-    case SWITCH_VIEW:
+    case TOGGLE_EDITOR_NAV:
       return {
-        ...state,
-        editorNavIsVisible: false,
-        editorDropdownIsVisible: false,
-        view: action.view
+        ...initialState,
+        view: state.view,
+        editorNavIsVisible: !state.editorNavIsVisible
+      }
+    case TOGGLE_EDITOR_SETTINGS:
+      return {
+        ...initialState,
+        view: state.view,
+        editorSettingsIsVisible: !state.editorSettingsIsVisible
       }
     default:
       return state

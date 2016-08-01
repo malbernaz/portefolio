@@ -27,7 +27,9 @@ class Editor extends Component {
     switchView: PropTypes.func,
     toggleEditorDropdown: PropTypes.func,
     toggleEditorNav: PropTypes.func,
+    toggleEditorSettings: PropTypes.func,
     unpublish: PropTypes.func,
+    updateActiveDraft: PropTypes.func,
     updateDraft: PropTypes.func,
     updatePost: PropTypes.func
   }
@@ -116,6 +118,17 @@ class Editor extends Component {
       this.submitPromise(deletePost, activeDraft._id)
   }
 
+  handleChange = e => {
+    e.stopPropagation()
+
+    const { updateActiveDraft } = this.props
+    const { name, value } = e.target
+    const meta = {}
+    meta[name] = value
+
+    updateActiveDraft({ meta })
+  }
+
   // UI INTERACTIONS
 
   handleEditPost = (e, newActiveDraft) => {
@@ -144,6 +157,14 @@ class Editor extends Component {
     toggleEditorDropdown()
   }
 
+  toggleSettings = e => {
+    e.preventDefault()
+
+    const { toggleEditorSettings } = this.props
+
+    toggleEditorSettings()
+  }
+
   switchEditorView = (e, view) => {
     e.preventDefault()
 
@@ -157,6 +178,7 @@ class Editor extends Component {
       editor: {
         editorDropdownIsVisible,
         editorNavIsVisible,
+        editorSettingsIsVisible,
         view
       },
       posts: {
@@ -175,6 +197,7 @@ class Editor extends Component {
           drafts={ drafts }
           dropdownIsShown={ editorDropdownIsVisible }
           editorView={ view }
+          handleChange={ this.handleChange }
           handleDelete={ this.handleDelete }
           handleEditPost={ this.handleEditPost }
           handleNewPost={ this.handleNewPost }
@@ -184,9 +207,11 @@ class Editor extends Component {
           iterablePosts={ iterablePosts }
           navIsShown={ editorNavIsVisible }
           posts={ posts }
+          settingIsShown={ editorSettingsIsVisible }
           switchEditorView={ this.switchEditorView }
           toggleDropdown={ this.toggleDropdown }
           toggleNav={ this.toggleNav }
+          toggleSettings={ this.toggleSettings }
         />
       </div>
     )

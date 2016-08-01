@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import moment from 'moment'
 
-import { Icon, EditorNav, DropdownButton } from '../'
+import { Icon, EditorNav, DropdownButton, EditorSettings } from '../'
 import { Codemirror } from '../../containers'
 import s from './EditorView.scss'
 
@@ -10,6 +10,7 @@ const EditorView = ({
   activeDraft,
   dropdownIsShown,
   editorView,
+  handleChange,
   handleDelete,
   handleEditPost,
   handleNewPost,
@@ -18,22 +19,36 @@ const EditorView = ({
   handleUnpublish,
   iterablePosts,
   navIsShown,
+  settingIsShown,
   switchEditorView,
   toggleDropdown,
-  toggleNav
+  toggleNav,
+  toggleSettings
 }) => (
   <section className={ s.root }>
+    <EditorSettings
+      meta={ activeDraft.meta }
+      handleChange={ handleChange }
+      isShown={ settingIsShown }
+      toggle={ toggleSettings }
+    />
     <div className={ s.topBar }>
       <a href="#" onClick={ e => toggleNav(e) } className={ s.topBarBtnPosts }>
         <Icon name="list" />
         <span>posts</span>
       </a>
       <div className={ s.info }>
-        <div className={ s.infoTitle }>
-          <b>{ activeDraft.meta.title }</b>
-        </div>
+        <a href="#" className={ s.infoTitle } onClick={ e => toggleSettings(e) }>
+          <b>
+            { activeDraft.hasOwnProperty('meta') &&
+              activeDraft.meta.hasOwnProperty('title') ?
+                activeDraft.meta.title :
+                'my post title' }
+          </b>
+          <Icon name="settings" />
+        </a>
         <small className={ s.infoStamps }>
-          updated { activeDraft.updatedAt ?
+          updated { activeDraft.hasOwnProperty('updatedAt') ?
             moment(activeDraft.updatedAt, moment.ISO_8601).subtract('days').calendar() :
             moment(new Date()).subtract('days').calendar() }
         </small>
@@ -67,15 +82,7 @@ const EditorView = ({
           <Codemirror />
         </div>
         <div className={ s.preview }>
-          <article
-            dangerouslySetInnerHTML={{
-              __html: `
-                <h2>${activeDraft.meta.title}</h2>
-                <h3>${activeDraft.meta.description}</h3>
-                ${activeDraft.html}
-              `
-            }}
-          />
+          <article dangerouslySetInnerHTML={{ __html: activeDraft.html }} />
         </div>
       </div>
     </div>
@@ -100,6 +107,7 @@ EditorView.propTypes = {
   activeDraft: PropTypes.object.isRequired,
   dropdownIsShown: PropTypes.bool.isRequired,
   editorView: PropTypes.string.isRequired,
+  handleChange: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
   handleEditPost: PropTypes.func.isRequired,
   handleNewPost: PropTypes.func.isRequired,
@@ -108,9 +116,11 @@ EditorView.propTypes = {
   handleUnpublish: PropTypes.func.isRequired,
   iterablePosts: PropTypes.array.isRequired,
   navIsShown: PropTypes.bool.isRequired,
+  settingIsShown: PropTypes.bool.isRequired,
   switchEditorView: PropTypes.func.isRequired,
   toggleDropdown: PropTypes.func.isRequired,
-  toggleNav: PropTypes.func.isRequired
+  toggleNav: PropTypes.func.isRequired,
+  toggleSettings: PropTypes.func.isRequired
 }
 
 export default withStyles(s)(EditorView)
