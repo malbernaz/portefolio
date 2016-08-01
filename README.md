@@ -21,6 +21,7 @@ Last but not least create a user and you should be able to sign in at `/admin` a
 ```curl
 λ curl -X POST -H "Authorization: secrettoken" -H "Cache-Control: no-cache" -H "Content-Type: application/x-www-form-urlencoded" -d 'username=username&email=email@domain.com&password=password' "http://localhost:5000/user/register"
 ```
+
 ## Acknowledge that:
 
 - I'm using [Docker](http://www.docker.com/) for development and production. If you don't know what Docker is, learn about it and you will make your time worth. Plus they have recently released native clients both for [Mac](http://www.docker.com/products/docker#/mac) and [Windows](http://www.docker.com/products/docker#/windows)!
