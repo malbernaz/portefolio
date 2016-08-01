@@ -119,8 +119,6 @@ class Editor extends Component {
   }
 
   handleChange = e => {
-    e.stopPropagation()
-
     const { updateActiveDraft } = this.props
     const { name, value } = e.target
     const meta = {}
