@@ -1,22 +1,6 @@
 version: '2'
 services:
 
-  api:
-    build: './api'
-    command: npm run dev
-    ports:
-      - '5000:5000'
-    environment:
-      PORT: 5000
-      DATABASE: 'mongodb://mongo/portefolio'
-      SECRET: 'secrettoken'
-      REGISTRATIONSECRET: 'secrettoken'
-    depends_on:
-      - mongo
-    volumes:
-      - ./api:/home/api/server
-      - /home/api/server/node_modules
-
   app:
     build: './app'
     command: npm run dev
@@ -29,6 +13,22 @@ services:
     volumes:
       - ./app:/home/app/server
       - /home/app/server/node_modules
+
+  api:
+    build: './api'
+    command: npm run dev
+    ports:
+      - '5000:5000'
+    environment:
+      PORT: 5000
+      DATABASE: 'mongodb://mongo/portefolio'
+      SECRET: 'secrettoken'
+      REGISTRATIONSECRET: 'secrettoken'
+    volumes:
+      - ./api:/home/api/server
+      - /home/api/server/node_modules
+    depends_on:
+      - mongo
 
   mongo:
     image: mongo
