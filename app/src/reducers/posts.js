@@ -158,7 +158,7 @@ export default (state = {}, action = {}) => {
           ...action.activeDraft,
           meta: {
             ...state.activeDraft.meta,
-            ...action.activeDraft.meta,
+            ...action.activeDraft.meta
           }
         }
       }

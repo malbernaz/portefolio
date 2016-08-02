@@ -122,7 +122,12 @@ class Editor extends Component {
     const { updateActiveDraft } = this.props
     const { name, value } = e.target
     const meta = {}
-    meta[name] = value
+
+    if (name === 'tags') {
+      meta[name] = value.split(', ')
+    } else {
+      meta[name] = value
+    }
 
     updateActiveDraft({ meta })
   }

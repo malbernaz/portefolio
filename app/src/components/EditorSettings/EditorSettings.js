@@ -19,7 +19,7 @@ const EditorSettings = ({ meta, handleChange, toggle, isShown }) => (
             name="title"
             type="text"
             placeholder="title"
-            defaultValue={ meta.title }
+            value={ meta.title }
             onChange={ handleChange }
             className={ s.input }
           />
@@ -32,7 +32,20 @@ const EditorSettings = ({ meta, handleChange, toggle, isShown }) => (
             name="description"
             type="text"
             placeholder="description"
-            defaultValue={ meta.description }
+            value={ meta.description }
+            onChange={ handleChange }
+            className={ s.input }
+          />
+        </label>
+        <label className={ s.field } htmlFor="description">
+          <span className={ s.placeholder }>
+            tags
+          </span>
+          <input
+            name="tags"
+            type="text"
+            placeholder="tags"
+            value={ meta.tags.join(', ') }
             onChange={ handleChange }
             className={ s.input }
           />
