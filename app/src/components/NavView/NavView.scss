@@ -155,7 +155,7 @@
 
   &:focus {
     color: $syntax-accent;
-    background: darken($syntax-bg, 6);
+    background: darken($syntax-bg, 8);
 
     @extend .item;
   }
