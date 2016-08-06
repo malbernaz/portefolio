@@ -1,15 +1,18 @@
 @import '../../theme/vars';
 
 .wrapper {
-  width: 100%;
-  height: calc(100% - 3.5rem);
-  overflow-y: scroll;
   position: absolute;
   bottom: 0;
+
+  overflow-y: scroll;
+
+  width: 100%;
+  height: calc(100% - 3.5rem);
   margin-top: 3.5rem;
 
-  @media (max-width: $tablet) {
+  transform: translateZ(0);
 
+  @media (max-width: $tablet) {
     margin-top: auto;
   }
 }

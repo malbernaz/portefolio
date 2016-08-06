@@ -1,5 +1,5 @@
 import React from 'react'
-import { IndexRoute, Route } from 'react-router'
+import { IndexRoute, Route, Redirect } from 'react-router'
 import { reduce } from 'underscore'
 
 import { isLoaded as isAuthLoaded, loadAuth } from './actions/auth'
@@ -89,7 +89,8 @@ export default store => {
         </Route>
       </Route>
 
-      <Route path="*" component={ NotFound } status="404" />
+      <Route path="pagenotfound" component={ NotFound } />
+      <Redirect from="*" status="404" to="pagenotfound" />
     </Route>
   )
 }

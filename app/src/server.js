@@ -37,9 +37,7 @@ const proxy = createProxyServer({ target: targetUrl })
 app.use(compression())
 app.use(serveStatic(resolve(__dirname, 'public')))
 app.use(favicon(resolve(__dirname, 'public', 'img', 'icon.png')))
-if (!process.env.APIHOST) {
-  app.use(morgan('dev'))
-}
+app.use(morgan('dev'))
 
 app.use('/api', (req, res) => {
   proxy.web(req, res, { target: `${targetUrl}/` })
