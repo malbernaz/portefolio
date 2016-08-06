@@ -1,5 +1,3 @@
-// Server imports
-import { createProxyServer } from 'http-proxy'
 import { resolve } from 'path'
 import { Server } from 'http'
 import compression from 'compression'
@@ -8,14 +6,12 @@ import favicon from 'express-favicon'
 import morgan from 'morgan'
 import serveStatic from 'serve-static'
 
-// React imports
 import { Provider } from 'react-redux'
 import { renderToString } from 'react-dom/server'
 import { RouterContext, match, createMemoryHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import React from 'react'
 
-// Project imports
 import { loadAuth } from './actions/auth'
 import { loadPosts } from './actions/posts'
 import ApiClient from './helpers/ApiClient'
@@ -25,35 +21,13 @@ import getRouter from './router'
 import Html from './helpers/Html'
 import WithStylesContext from './helpers/WithStylesContext'
 
-// Server configuration
 const app = express()
 const server = new Server(app)
 
-// API proxy
-const targetUrl = `http://${config.apiHost}:${config.apiPort}`
-const proxy = createProxyServer({ target: targetUrl })
-
-// Server middleware
 app.use(compression())
 app.use(serveStatic(resolve(__dirname, 'public')))
 app.use(favicon(resolve(__dirname, 'public', 'img', 'icon.png')))
 app.use(morgan('dev'))
-
-app.use('/api', (req, res) => {
-  proxy.web(req, res, { target: `${targetUrl}/` })
-})
-
-proxy.on('error', (error, req, res, json = null) => {
-  if (error.code !== 'ECONNRESET') {
-    console.log('proxy error', error) // eslint-disable-line no-console
-  }
-  if (!res.headersSent) {
-    res.writeHead(500, { 'content-type': 'application/json' })
-  }
-  let errJson = json
-  errJson = { error: 'proxy_error', reason: error.message }
-  res.end(JSON.stringify(errJson))
-})
 
 app.use((req, res) => {
   const client = new ApiClient(req)
