@@ -1,15 +1,25 @@
 version: '2'
 services:
 
+  nginx:
+    build: ./nginx
+    ports:
+      - '8080:80'
+    volumes:
+      - ./nginx/:/etc/nginx
+    links:
+      - app:app
+      - api:api
+
   app:
     build: './app'
     command: npm run dev --silent
     ports:
-      - '3000:3000'
+      - '3000'
     environment:
       PORT: 3000
-      APIHOST: 'api'
-      APIPORT: 5000
+      APIHOST: 'nginx'
+      APIPORT: 8080
     volumes:
       - ./app:/home/app/server
       - /home/app/server/node_modules
@@ -18,7 +28,7 @@ services:
     build: './api'
     command: npm run dev --silent
     ports:
-      - '5000:5000'
+      - '5000'
     environment:
       PORT: 5000
       DATABASE: 'mongodb://mongo/portefolio'
