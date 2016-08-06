@@ -27,12 +27,10 @@ const PostSchema = new mongoose.Schema({
     title: {
       type: String,
       required: true,
-      lowercase: true,
       unique: true
     },
     description: {
       type: String,
-      lowercase: true,
       required: true
     },
     tags: [{
