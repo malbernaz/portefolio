@@ -25,12 +25,10 @@ const DraftSchema = new mongoose.Schema({
   meta: {
     title: {
       type: String,
-      required: true,
-      lowercase: true
+      required: true
     },
     description: {
       type: String,
-      lowercase: true,
       required: true
     },
     tags: [{
