@@ -1,18 +1,18 @@
 import React, { PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { browserHistory } from 'react-router'
+import { push } from 'react-router-redux'
 
 import { SignInForm } from './'
 import * as authActions from '../actions/auth'
 import * as messageActions from '../actions/message'
 
-const SignIn = ({ auth, signIn, logout, loadAuth, showMessage }) => {
+const SignIn = ({ auth, signIn, logout, loadAuth, showMessage, redirect }) => {
   function handleSubmit(data) {
     const submitPromise = () => signIn(data)
       .then(({ message }) => {
         showMessage(message)
-        browserHistory.push('/admin/editor')
+        redirect('/admin/editor')
       })
       .then(loadAuth)
       .catch(({ message }) => showMessage(message))
@@ -29,6 +29,7 @@ SignIn.propTypes = {
   auth: PropTypes.object,
   loadAuth: PropTypes.func,
   logout: PropTypes.func,
+  redirect: PropTypes.func,
   showMessage: PropTypes.func,
   signIn: PropTypes.func
 }
@@ -39,6 +40,7 @@ export default connect(
   }),
   dispatch => bindActionCreators({
     ...authActions,
-    ...messageActions
+    ...messageActions,
+    redirect: push
   }, dispatch)
 )(SignIn)

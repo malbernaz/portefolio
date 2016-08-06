@@ -379,6 +379,8 @@
     overflow: scroll !important;
     //Instead of the line below you could use @include box-sizing($bs)
 
+    transform: translateZ(0);
+
     box-sizing: content-box;
     height: 100%;
     margin-right: -30px;
@@ -404,6 +406,8 @@
     overflow-x: hidden;
     overflow-y: scroll;
 
+    transform: translateZ(0);
+
     @extend %extend_1;
   }
 
@@ -413,6 +417,8 @@
 
     overflow-x: scroll;
     overflow-y: hidden;
+
+    transform: translateZ(0);
 
     @extend %extend_1;
   }

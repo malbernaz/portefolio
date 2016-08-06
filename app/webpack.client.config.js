@@ -15,20 +15,21 @@ const plugins = [
         'scripts/main.bundle.js',
         'scripts/vendor.bundle.js'
       ],
-      additional: [
+      additional: [],
+      optional: [
         '/',
         '/about',
-        '/contact',
         '/admin',
-      ],
-      optional: [
-        '/admin/editor'
+        '/admin/editor',
+        '/contact',
+        '/pagenotfound'
       ]
     },
     externals: [
       '/',
       '/about',
       '/contact',
+      '/pagenotfound',
       '/admin',
       '/admin/editor'
     ],
@@ -38,8 +39,7 @@ const plugins = [
     version: 'v-[hash]',
     ServiceWorker: {
       output: 'sw.js',
-      scope: '/',
-      navigateFallbackURL: '/'
+      scope: '/'
     }
   })
 ]
