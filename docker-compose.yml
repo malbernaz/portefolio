@@ -19,7 +19,7 @@ services:
     environment:
       PORT: 3000
       APIHOST: 'nginx'
-      APIPORT: 8080
+      APIPORT: 80
     volumes:
       - ./app:/home/app/server
       - /home/app/server/node_modules
