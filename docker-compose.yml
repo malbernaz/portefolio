@@ -3,9 +3,9 @@ services:
 
   app:
     build: './app'
-    command: npm run dev
+    command: npm run dev --silent
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
       PORT: 3000
       APIHOST: 'api'
@@ -16,7 +16,7 @@ services:
 
   api:
     build: './api'
-    command: npm run dev
+    command: npm run dev --silent
     ports:
       - '5000:5000'
     environment:
@@ -33,4 +33,4 @@ services:
   mongo:
     image: mongo
     ports:
-      - "5050:27017"
+      - '5050:27017'

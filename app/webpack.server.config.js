@@ -30,9 +30,16 @@ readdirSync('node_modules')
 module.exports = env => Object.assign(baseConfig, {
   context: resolve(__dirname, 'src'),
   entry: './server.js',
-  output: { path: resolve(__dirname, 'dist'), filename: 'index.js' },
+  output: {
+    path: resolve(__dirname, 'dist'),
+    filename: 'index.js',
+    libraryTarget: 'commonjs2'
+  },
   target: 'node',
-  node: { __dirname: false, __filename: false },
+  node: {
+    __dirname: false,
+    __filename: false
+  },
   externals: nodeModules,
   plugins: env === 'prod' ? prodPlugins : plugins,
   devtool: env === 'prod' ? 'hidden-source-map' : 'cheap-module-source-map'

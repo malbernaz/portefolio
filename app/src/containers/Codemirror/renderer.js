@@ -36,7 +36,7 @@ renderer.list = (body, ordered) => {
         return i
       }
       return hasCheckbox ?
-        `<li style="list-style: none;">
+        `<li style="list-style:none;">
           <input type="checkbox" disabled ${i.checked}>
             &nbsp;&nbsp;${i.text}
           </input>
@@ -46,8 +46,8 @@ renderer.list = (body, ordered) => {
 
   if (hasCheckbox) {
     return ordered ?
-      `<ol style="margin: 0; padding: 0">${output.join('')}</ol>` :
-      `<ul style="margin: 0; padding: 0">${output.join('')}</ul>`
+      `<ol style="margin:0;padding:0">${output.join('')}</ol>` :
+      `<ul style="margin:0;padding:0">${output.join('')}</ul>`
   }
 
   return ordered ?
