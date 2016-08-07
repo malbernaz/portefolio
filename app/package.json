@@ -95,6 +95,6 @@
     "postcss-cssnext": "^2.7.0",
     "postcss-loader": "^0.9.1",
     "sass-loader": "^4.0.0",
-    "webpack": "^2.1.0-beta.19"
+    "webpack": "^2.1.0-beta.20"
   }
 }
