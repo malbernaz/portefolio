@@ -66,20 +66,20 @@
     text-transform: uppercase;
   }
 
-  p {
-    line-height: 1.5rem;
-  }
-
-  li {
-    line-height: 1.5rem;
-  }
-
   h2 {
     font-size: 2rem;
   }
 
   h3 {
     font-size: 1.5rem;
+  }
+
+  p {
+    line-height: 1.5rem;
+  }
+
+  li {
+    line-height: 1.5rem;
   }
 
   svg {
@@ -133,13 +133,19 @@
     }
 
     table {
+      margin: 1rem 0;
+
+      border-spacing: 0;
+
+      text-align: left;
+
       border: 1px solid rgba($mono-3, .3);
     }
 
     th,
 
     td {
-      padding: .7rem 1.5rem !important;
+      padding: .8rem 1.5rem;
     }
 
     th {
@@ -147,6 +153,8 @@
     }
 
     tr {
+      border-spacing: 0;
+
       background: $syntax-bg;
 
       &:nth-child(even) {

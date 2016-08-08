@@ -28,14 +28,14 @@ const Contact = () => (
       <div className={ s.item }>
         <Icon className={ s.icon } name="twitter" />
         <span className={ s.text }>hit me on twitter:</span>
-        <a className={ s.link } target="_blank" href={ config.twitter }>
+        <a className={ s.link } rel="noopener noreferrer" target="_blank" href={ config.twitter }>
           { config.twitter }
         </a>
       </div>
       <div className={ s.item }>
         <Icon className={ s.icon } name="github" />
         <span className={ s.text }>see my code at github:</span>
-        <a className={ s.link } target="_blank" href={ config.github }>
+        <a className={ s.link } rel="noopener noreferrer" target="_blank" href={ config.github }>
           { config.github }
         </a>
       </div>

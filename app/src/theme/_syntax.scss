@@ -25,7 +25,11 @@
 
   .hljs-selector-tag,
 
-  .hljs-deletion {
+  .hljs-deletion,
+
+  .hljs-selector-id,
+
+  .hljs-selector-class {
     color: $hue-3;
   }
 
@@ -63,15 +67,11 @@
     color: $hue-2;
   }
 
+  .hljs-params,
+
   .hljs-name,
 
-  .hljs-selector-id,
-
-  .hljs-selector-class {
-    color: $hue-3;
-  }
-
-  .hljs-params,
+  .hljs-attr,
 
   .hljs-subst {
     color: $hue-5;

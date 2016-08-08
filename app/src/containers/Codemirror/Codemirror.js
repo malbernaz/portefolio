@@ -32,6 +32,7 @@ class Codemirror extends Component {
 
   componentDidMount() {
     require('codemirror/mode/gfm/gfm') // eslint-disable-line global-require
+
     options.mode = 'gfm'
     this.handleChange(this.props.posts.activeDraft.raw)
   }

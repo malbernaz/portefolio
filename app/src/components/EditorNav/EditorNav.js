@@ -17,10 +17,10 @@ const EditorNav = ({ iterablePosts, handleEditPost, handleDelete, isShown, toggl
                 { p.meta.title }
               </small> }
             <div className={ s.actions }>
-              <a onClick={ e => handleEditPost(e, p) } className={ s.action } href="#">
+              <a onClick={ e => handleEditPost(e, p) } className={ s.action }>
                 <Icon name="edit" />
               </a>
-              <a onClick={ e => handleDelete(e, p._id) } className={ s.actionDelete } href="#">
+              <a onClick={ e => handleDelete(e, p._id) } className={ s.actionDelete }>
                 <Icon name="trashcan" />
               </a>
             </div>

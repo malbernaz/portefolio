@@ -46,8 +46,8 @@ renderer.list = (body, ordered) => {
 
   if (hasCheckbox) {
     return ordered ?
-      `<ol style="margin:0;padding:0">${output.join('')}</ol>` :
-      `<ul style="margin:0;padding:0">${output.join('')}</ul>`
+      `<ol style="margin-left:0;padding:0">${output.join('')}</ol>` :
+      `<ul style="margin-left:0;padding:0">${output.join('')}</ul>`
   }
 
   return ordered ?

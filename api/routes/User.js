@@ -1,10 +1,11 @@
+const express = require('express')
 const { sign } = require('jsonwebtoken')
 const passport = require('passport')
 
 const { User } = require('../models')
 const config = require('../config/main')
 
-const Router = new require('express').Router() //  eslint-disable-line new-cap
+const Router = new express.Router()
 
 Router.post('/register', (req, res) => {
   const { username, email, password } = req.body

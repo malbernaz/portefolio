@@ -1,10 +1,11 @@
+const express = require('express')
 const passport = require('passport')
 const mongoose = require('mongoose')
 
 const { User, Post, Draft } = require('../models')
 const { titleSlugger } = require('../helpers')
 
-const Router = new require('express').Router() // eslint-disable-line new-cap
+const Router = new express.Router()
 
 const genericErrorMessage =
   'something went wrong. consider sending an email to albernazmiguel@gmail.com'
@@ -251,8 +252,8 @@ Router.put('/unpublish/:slug', passport.authenticate('jwt', {
   // check if post exists and if the user owns that post,
   // if yes remove post and update users drafts
   .then(result => {
-    const { post } = result.filter(r => r.hasOwnProperty('post')).pop()
-    const { postOwner } = result.filter(r => r.hasOwnProperty('postOwner')).pop()
+    const { post } = result.filter(r => Object.hasOwnProperty.call(r, 'post')).pop()
+    const { postOwner } = result.filter(r => Object.hasOwnProperty.call(r, 'postOwner')).pop()
 
     if (!post) {
       return Promise.reject({ why: 'inexsistent' })

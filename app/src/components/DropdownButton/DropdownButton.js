@@ -6,18 +6,17 @@ import s from './DropdownButton.scss'
 
 const DropdownButton = ({ options, fixedOptions, isShown, toggleDropdown }) => (
   <div className={ s.root }>
-    <a href="#" onClick={ e => toggleDropdown(e) } className={ s.toggle }>
+    <a onClick={ e => toggleDropdown(e) } className={ s.toggle }>
       <Icon name="more" />
     </a>
     <div className={ isShown ? s.options : s.optionsHidden }>
       { options.map((o, i) =>
-        <a href="#" className={ s.option } key={ i } onClick={ e => o.action(e) }>
+        <a className={ s.option } key={ i } onClick={ e => o.action(e) }>
           { o.label }
         </a>
       ) }
       { fixedOptions.map((o, i) =>
         <a
-          href="#"
           className={ o.label === 'delete' ? s.optionDanger : s.option }
           key={ i }
           onClick={ e => o.action(e) }

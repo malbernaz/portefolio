@@ -73,6 +73,7 @@ const NavView = ({
             className={ s.socialLink }
             href={ github }
             target="_blank"
+            rel="noopener noreferrer"
           >
             <Icon name="github" />
           </a>
@@ -80,6 +81,7 @@ const NavView = ({
             className={ s.socialLink }
             href={ twitter }
             target="_blank"
+            rel="noopener noreferrer"
           >
             <Icon name="twitter" />
           </a>
@@ -94,8 +96,7 @@ const NavView = ({
       <div
         onClick={ e => toggleNav(e) }
         className={ isVisible ? s.shadowIsShown : s.shadow }
-      >
-      </div>
+      />
     </div>
     <div className={ s.navMobile }>
       <div className={ s.navMobileLogo }>
@@ -103,7 +104,7 @@ const NavView = ({
         <span>portefólio</span>
       </div>
     </div>
-    <a href="#" onClick={ e => toggleNav(e) } className={ s.toggleBtn }>
+    <a onClick={ e => toggleNav(e) } className={ s.toggleBtn }>
       <Icon name="menu" />
     </a>
   </div>

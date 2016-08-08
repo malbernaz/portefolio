@@ -16,11 +16,17 @@
     "passport-jwt": "^2.1.0"
   },
   "devDependencies": {
+    "eslint": "^3.2.2",
+    "eslint-config-airbnb": "^10.0.0",
+    "eslint-plugin-import": "^1.12.0",
+    "eslint-plugin-jsx-a11y": "^2.0.1",
+    "eslint-plugin-react": "^6.0.0",
     "nodemon": "^1.9.2"
   },
   "scripts": {
-    "start": "NODE_ENV=production node index.js",
-    "dev": "nodemon -L index.js"
+    "dev": "nodemon -L index.js --exec 'npm run lint'",
+    "lint": "eslint ./**/*.js",
+    "start": "NODE_ENV=production node index.js"
   },
   "repository": {
     "type": "git",

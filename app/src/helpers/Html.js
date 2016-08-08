@@ -8,7 +8,7 @@ const Html = ({ component, store, css }) => {
   const content = component ? renderToString(component) : ''
 
   return (
-    <html lang="pt-br">
+    <html lang="pt-BR">
       <head>
         { head.title.toComponent() }
         { head.meta.toComponent() }

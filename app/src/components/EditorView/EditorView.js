@@ -33,22 +33,22 @@ const EditorView = ({
       toggle={ toggleSettings }
     />
     <div className={ s.topBar }>
-      <a href="#" onClick={ e => toggleNav(e) } className={ s.topBarBtnPosts }>
+      <a onClick={ e => toggleNav(e) } className={ s.topBarBtnPosts }>
         <Icon name="list" />
         <span>posts</span>
       </a>
       <div className={ s.info }>
-        <a href="#" className={ s.infoTitle } onClick={ e => toggleSettings(e) }>
+        <a className={ s.infoTitle } onClick={ e => toggleSettings(e) }>
           <b>
-            { activeDraft.hasOwnProperty('meta') &&
-              activeDraft.meta.hasOwnProperty('title') ?
+            { Object.hasOwnProperty.call(activeDraft, 'meta') &&
+              Object.hasOwnProperty.call(activeDraft.meta, 'title') ?
                 activeDraft.meta.title :
                 'my post title' }
           </b>
           <Icon name="settings" />
         </a>
         <small className={ s.infoStamps }>
-          updated { activeDraft.hasOwnProperty('updatedAt') ?
+          updated { Object.hasOwnProperty.call(activeDraft, 'updatedAt') ?
             moment(activeDraft.updatedAt, moment.ISO_8601).subtract('days').calendar() :
             moment(new Date()).subtract('days').calendar() }
         </small>
@@ -87,15 +87,15 @@ const EditorView = ({
       </div>
     </div>
     <div className={ s.bottomBar }>
-      <a href="#" onClick={ e => toggleNav(e) } className={ s.bottomBarBtn }>
+      <a onClick={ e => toggleNav(e) } className={ s.bottomBarBtn }>
         <Icon name="list" />
         <span>posts</span>
       </a>
-      <a href="#" onClick={ e => switchEditorView(e, 'code') } className={ s.bottomBarBtn }>
+      <a onClick={ e => switchEditorView(e, 'code') } className={ s.bottomBarBtn }>
         <Icon name="edit" />
         <span>edit</span>
       </a>
-      <a href="#" onClick={ e => switchEditorView(e, 'preview') } className={ s.bottomBarBtn }>
+      <a onClick={ e => switchEditorView(e, 'preview') } className={ s.bottomBarBtn }>
         <Icon name="preview" />
         <span>preview</span>
       </a>

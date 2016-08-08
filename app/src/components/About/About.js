@@ -12,7 +12,7 @@ const About = () => (
         About
       </h2>
       <div className={ s.avatar }>
-        <img src="/img/profile.jpg" alt="avatar" className={ s.img }></img>
+        <img src="/img/profile.jpg" alt="avatar" className={ s.img } />
       </div>
       <p className={ s.blurb }>
         I'm Miguel Albernaz a full stack <b>web developer</b>, based in Rio.
@@ -26,7 +26,13 @@ const About = () => (
         This blog is an always evolving project, that I updated for learning purposes, and fun...
         If that's your thing you can take a look at the
         <b>
-          <a target="_blank" href="https://github.com/malbernaz/portefolio"> source code here</a>
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://github.com/malbernaz/portefolio"
+          >
+            { ' source code here' }
+          </a>
         </b>.
       </p>
     </section>

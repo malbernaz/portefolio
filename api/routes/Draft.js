@@ -1,10 +1,11 @@
+const express = require('express')
 const passport = require('passport')
 const mongoose = require('mongoose')
 
 const { User, Draft } = require('../models')
 const { titleSlugger } = require('../helpers')
 
-const Router = new require('express').Router() // eslint-disable-line new-cap
+const Router = new express.Router()
 
 const genericErrorMessage =
   'something went wrong. consider sending an email to albernazmiguel@gmail.com'

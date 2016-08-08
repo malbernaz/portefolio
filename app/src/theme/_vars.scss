@@ -29,7 +29,7 @@ $syntax-gutter: darken($syntax-bg, 36%);
 $syntax-guide:  fade($syntax-fg, 20%);
 $syntax-accent: hsl($syntax-hue, 100%, 66%);
 
-$syntax-bg-alternate: darken($syntax-bg, 2);
+$syntax-bg-alternate: darken($syntax-bg, 3);
 $selection: #ededed;
 
 
@@ -54,7 +54,7 @@ $mobile-s: 20rem;
 
 // Measures -----------------------------------
 
-$nav-width: 11rem;
+$nav-width: 11.5rem;
 $posts-list-width: 15rem;
 
 // Cubic Bezier

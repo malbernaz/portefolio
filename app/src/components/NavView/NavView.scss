@@ -12,8 +12,8 @@
   height: 100vh;
   padding: 0;
 
-  border-right: 1px lighten($mono-3, 20) dashed;
-  background: darken($syntax-bg, 3);
+  border-right: 1px lighten($mono-3, 15) dashed;
+  background: darken($syntax-bg, 2);
 
   justify-content: center;
   will-change: transform;
@@ -123,12 +123,12 @@
 }
 
 .logoDescription {
-  font-size: .7rem;
+  font-size: .75rem;
   font-weight: 600;
   line-height: 1.3rem;
+  max-width: 8rem;
 
-  margin-top: .5rem;
-  padding: 0 1rem;
+  margin: .5rem auto 0;
 }
 
 .navMain {
@@ -155,7 +155,7 @@
 
   &:focus {
     color: $syntax-accent;
-    background: darken($syntax-bg, 8);
+    background: darken($syntax-bg, 7);
 
     @extend .item;
   }
@@ -167,7 +167,7 @@
 
 .itemActive {
   color: $syntax-accent;
-  background: darken($syntax-bg, 8);
+  background: darken($syntax-bg, 7);
 
   @extend .item;
 }
@@ -233,7 +233,7 @@
 
   text-transform: uppercase;
 
-  color: $mono-3;
+  color: darken($mono-3, 4);
 
   justify-content: center;
   align-items: center;
@@ -253,7 +253,7 @@
   width: 100vw;
   height: 3.5rem;
 
-  border-bottom: 1px lighten($mono-3, 20) solid;
+  border-bottom: 1px lighten($mono-3, 15) solid;
   background: $syntax-bg-alternate;
 
   @media (max-width: $tablet) {
