@@ -19,7 +19,7 @@ Then get your development environment up and running:
 Last but not least create a user and you should be able to sign in at `/admin` and play around with the editor:
 
 ```curl
-λ curl -X POST -H "Authorization: secrettoken" -H "Cache-Control: no-cache" -H "Content-Type: application/x-www-form-urlencoded" -d 'username=username&email=email@domain.com&password=password' "http://localhost:5000/user/register"
+λ curl -X POST -H "Authorization: secrettoken" -H "Cache-Control: no-cache" -H "Content-Type: application/x-www-form-urlencoded" -d 'username=username&email=email@domain.com&password=password' "http://localhost:8080/api/user/register"
 ```
 
 ## Acknowledge that:
