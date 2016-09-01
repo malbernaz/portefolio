@@ -23,7 +23,7 @@ const About = () => (
         spend time with my <b>wife</b> and travel, <i>if the income is not too short</i>.
         <br />
         <br />
-        This blog is an always evolving project, that I updated for learning purposes, and fun...
+        This blog is an always evolving project, that I update for learning purposes, and fun...
         If that's your thing you can take a look at the
         <b>
           <a
