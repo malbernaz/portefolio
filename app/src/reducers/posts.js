@@ -260,7 +260,7 @@ export default (state = {}, action = {}) => {
         savedDraft: true,
         status: action.result.message,
         drafts,
-        activeDraft: drafts.filter(d => d._id === action.result.draft._id).pop()
+        activeDraft: drafts.filter(d => d._id === action.result.draft._id)[0]
       }
     }
     case SAVE_DRAFT_FAIL:

@@ -25,7 +25,7 @@
   },
   "scripts": {
     "dev": "nodemon -L index.js --exec 'npm run lint --silent'",
-    "lint": "node ./node_modules/eslint/bin/eslint ./**/*.js",
+    "lint": "eslint ./**/*.js",
     "start": "NODE_ENV=production node index.js"
   },
   "repository": {
