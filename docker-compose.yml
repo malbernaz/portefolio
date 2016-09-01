@@ -40,6 +40,11 @@ services:
     depends_on:
       - mongo
 
+  minio:
+    image: minio/minio
+    ports:
+      - '9000:9000'
+
   mongo:
     image: mongo
     ports:

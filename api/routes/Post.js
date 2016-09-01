@@ -252,8 +252,8 @@ Router.put('/unpublish/:slug', passport.authenticate('jwt', {
   // check if post exists and if the user owns that post,
   // if yes remove post and update users drafts
   .then(result => {
-    const { post } = result.filter(r => Object.hasOwnProperty.call(r, 'post')).pop()
-    const { postOwner } = result.filter(r => Object.hasOwnProperty.call(r, 'postOwner')).pop()
+    const { post } = result.filter(r => Object.hasOwnProperty.call(r, 'post'))[0]
+    const { postOwner } = result.filter(r => Object.hasOwnProperty.call(r, 'postOwner'))[0]
 
     if (!post) {
       return Promise.reject({ why: 'inexsistent' })

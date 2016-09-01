@@ -105,8 +105,8 @@ class Editor extends Component {
 
     if (_id) {
       const toDelete =
-        drafts.filter(d => d._id === _id).pop() ||
-        posts.filter(d => d._id === _id).pop()
+        drafts.filter(d => d._id === _id)[0] ||
+        posts.filter(d => d._id === _id)[0]
 
       return !toDelete.isPublished && toDelete.isSaved ?
         this.submitPromise(deleteDraft, _id) :

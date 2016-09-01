@@ -2,7 +2,7 @@ const { resolve } = require('path')
 const cssnano = require('cssnano')
 const autoprefixer = require('autoprefixer')
 
-module.exports = {
+module.exports = env => ({
   context: resolve(__dirname, 'src'),
   module: {
     preLoaders: [{
@@ -20,8 +20,15 @@ module.exports = {
     }, {
       test: /\.scss$/,
       loaders: [
-        'isomorphic-style-loader',
-        { loader: 'css-loader', query: { modules: true } },
+        'isomorphic-style-loader', {
+          loader: 'css-loader',
+          query: {
+            modules: true,
+            localIdentName: env === 'prod' ?
+              '[hash:base64:7]' :
+              '[name]__[local]-[hash:base64:5]'
+          }
+        },
         'postcss-loader',
         'sass-loader'
       ],
@@ -36,4 +43,4 @@ module.exports = {
     aggregateTimeout: 300,
     poll: 1000
   }
-}
+})

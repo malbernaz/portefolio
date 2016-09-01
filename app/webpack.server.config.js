@@ -27,7 +27,7 @@ readdirSync('node_modules')
     nodeModules[mod] = `commonjs ${mod}`
   })
 
-module.exports = env => Object.assign(baseConfig, {
+module.exports = env => Object.assign(baseConfig(env), {
   context: resolve(__dirname, 'src'),
   entry: './server.js',
   output: {

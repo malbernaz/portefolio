@@ -54,7 +54,7 @@ const prodPlugins = union(plugins, [
   })
 ])
 
-module.exports = env => Object.assign(baseConfig, {
+module.exports = env => Object.assign(baseConfig(env), {
   context: resolve(__dirname, 'src'),
   entry: {
     main: './client.js',
