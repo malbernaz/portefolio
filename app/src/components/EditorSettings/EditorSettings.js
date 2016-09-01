@@ -11,6 +11,9 @@ const EditorSettings = ({ meta, handleChange, toggle, isShown }) => (
   >
     <div className={ isShown ? s.rootIsShown : s.root }>
       <div className={ s.meta }>
+        <Dropzone className={ s.dropzone }>
+          <p>post image (drop it here)</p>
+        </Dropzone>
         <label className={ s.field } htmlFor="title">
           <span className={ s.placeholder }>
             title
@@ -50,9 +53,6 @@ const EditorSettings = ({ meta, handleChange, toggle, isShown }) => (
             className={ s.input }
           />
         </label>
-        <Dropzone className={ s.dropzone }>
-          <p>post image (drop it here)</p>
-        </Dropzone>
       </div>
     </div>
     <div

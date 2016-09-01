@@ -25,6 +25,7 @@ const DropdownButton = ({ options, fixedOptions, isShown, toggleDropdown }) => (
         </a>
       ) }
     </div>
+    <div className={ isShown ? s.shadowIsShown : s.shadow } onClick={ e => toggleDropdown(e) } />
   </div>
 )
 

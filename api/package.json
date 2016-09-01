@@ -24,7 +24,7 @@
     "nodemon": "^1.9.2"
   },
   "scripts": {
-    "dev": "nodemon -L index.js --exec 'npm run lint --silent'",
+    "dev": "nodemon -L index.js",
     "lint": "eslint ./**/*.js",
     "start": "NODE_ENV=production node index.js"
   },

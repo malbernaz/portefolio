@@ -10,8 +10,6 @@
 }
 
 @mixin button ($color) {
-  @include dark-link($color, 15);
-
   font-size: .8rem;
   font-weight: 600;
 
@@ -30,6 +28,7 @@
   outline: 0;
   background: transparent;
 
+  @include dark-link($color, 15);
   align-items: center;
   appearance: none;
 }
@@ -67,6 +66,8 @@
   height: $height;
   padding: 0 1rem;
 
+  cursor: pointer;
+
   align-items: center;
 
   svg {
@@ -79,6 +80,7 @@
 }
 
 @mixin dark-link ($color, $amount) {
+  cursor: pointer;
   transition: color .3s ease, fill .3s ease;
   text-decoration: none;
 
