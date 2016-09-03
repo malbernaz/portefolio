@@ -1,27 +1,25 @@
-export default function clientMiddleware(client) {
-  return ({ getState, dispatch }) => next => action => {
-    if (typeof action === 'function') {
-      return action(dispatch, getState)
-    }
+export default client => store => next => action => {
+  const { getState, dispatch } = store
 
-    const { promise, types, ...rest } = action
+  if (typeof action === 'function') return action(dispatch, getState)
 
-    if (!promise) return next(action)
+  const { promise, types, ...rest } = action
 
-    const [REQUEST, SUCCESS, FAILURE] = types
+  if (!promise) return next(action)
 
-    next({ ...rest, type: REQUEST })
+  const [REQUEST, SUCCESS, FAILURE] = types
 
-    const actionPromise = promise(client)
+  next({ ...rest, type: REQUEST })
 
-    actionPromise.then(
-      result => next({ ...rest, result, type: SUCCESS }),
-      error => next({ ...rest, error, type: FAILURE })
-    ).catch(err => {
-      console.error('MIDDLEWARE ERROR:', err) // eslint-disable-line no-console
-      next({ ...rest, err, type: FAILURE })
-    })
+  const actionPromise = promise(client)
 
-    return actionPromise
-  }
+  actionPromise.then(
+    result => next({ ...rest, result, type: SUCCESS }),
+    error => next({ ...rest, error, type: FAILURE })
+  ).catch(err => {
+    console.error('MIDDLEWARE ERROR:', err) // eslint-disable-line no-console
+    next({ ...rest, err, type: FAILURE })
+  })
+
+  return actionPromise
 }

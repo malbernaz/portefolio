@@ -24,16 +24,15 @@ export default class ApiClient {
 
           if (params) request.query(params)
 
-          if (isServer && req.get('cookie')) {
+          if (req && req.get('cookie') && isServer) {
             request.set('cookie', req.get('cookie'))
           }
 
           if (data) request.send(data)
 
-          request.end((reqError, { body } = {}) =>
-            reqError ?
-              reject(body || reqError) :
-              resolve(body))
+          request.end((reqError, { body } = {}) => reqError ?
+            reject(body || reqError) :
+            resolve(body))
         })
     })
   }

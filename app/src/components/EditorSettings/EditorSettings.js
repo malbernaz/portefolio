@@ -7,7 +7,7 @@ import s from './EditorSettings.scss'
 const EditorSettings = ({ meta, handleChange, toggle, isShown }) => (
   <div
     className={ s.wrapper }
-    style={ isShown ? { pointerEvents: 'all' } : { pointerEvents: 'none' } }
+    style={{ pointerEvents: isShown ? 'all' : 'none' }}
   >
     <div className={ isShown ? s.rootIsShown : s.root }>
       <div className={ s.meta }>

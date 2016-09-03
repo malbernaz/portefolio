@@ -10,7 +10,7 @@ import {
   LOGOUT_FAIL
 } from '../constants'
 
-export const isLoaded = state => state.auth && state.auth.loaded
+export const isLoaded = ({ auth: { loaded } }) => loaded || false
 
 export const loadAuth = () => ({
   types: [LOAD_AUTH, LOAD_AUTH_SUCCESS, LOAD_AUTH_FAIL],

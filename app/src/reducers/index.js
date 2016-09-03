@@ -6,12 +6,23 @@ import auth from './auth'
 import posts from './posts'
 import message from './message'
 import ui from './ui'
+import latestAction from './latestAction'
 
-export default combineReducers({
-  ui,
-  auth,
-  posts,
-  message,
-  form: formReducer,
-  routing: routerReducer
-})
+export default process.env.NODE_ENV === 'test' ?
+  combineReducers({
+    ui,
+    auth,
+    posts,
+    message,
+    form: formReducer,
+    routing: routerReducer,
+    latestAction
+  }) :
+  combineReducers({
+    ui,
+    auth,
+    posts,
+    message,
+    form: formReducer,
+    routing: routerReducer
+  })
