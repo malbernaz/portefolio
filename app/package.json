@@ -21,7 +21,7 @@
     "prebuild": "npm run clean && npm run static && npm run imagemin",
     "start": "NODE_ENV=production node index.js",
     "static": "cp src/static/manifest.json dist/public",
-    "tests": "NODE_ENV=test tape -r babel-register src/**/*.test.js"
+    "test": "NODE_ENV=test tape -r babel-register src/**/*.test.js"
   },
   "repository": {
     "type": "git",

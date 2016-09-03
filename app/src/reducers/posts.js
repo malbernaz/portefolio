@@ -35,6 +35,11 @@ import {
 
 import defaultDraft from '../helpers/defaultDraft'
 
+const initialState = {
+  posts: [],
+  drafts: []
+}
+
 const format = (data, isPost = true) =>
   data instanceof Array ?
     data.map(d => ({ ...d, isPublished: isPost, isSaved: true }))
@@ -42,7 +47,7 @@ const format = (data, isPost = true) =>
     ({ ...data, isPublished: isPost, isSaved: true })
 
 
-export default (state = {}, action = {}) => {
+export default (state = initialState, action = {}) => {
   // load posts and drafts
   switch (action.type) {
     case LOAD_POSTS_AND_DRAFTS:
@@ -94,7 +99,8 @@ export default (state = {}, action = {}) => {
         ...state,
         loadingPosts: false,
         loadedPosts: false,
-        status: Object.keys(action.error).length > 0 ? action.error.message : 'unathorized'
+        status: Object.keys(action.error).length > 0 ?
+          action.error.message : 'failed to load posts'
       }
 
     // update post
@@ -120,7 +126,8 @@ export default (state = {}, action = {}) => {
         ...state,
         updatingPost: false,
         updatedPost: false,
-        status: action.error.message
+        status: Object.keys(action.error).length > 0 ?
+          action.error.message : 'unauthorized'
       }
 
     // delete post
@@ -141,14 +148,14 @@ export default (state = {}, action = {}) => {
       return {
         ...state,
         deletingPost: false,
-        deletedPost: true,
+        deletedPost: false,
       }
 
     // create or update local active draft
     case CREATE_ACTIVE_DRAFT:
       return {
         ...state,
-        activeDraft: Object.keys(action.activeDraft).length > 0 ? action.activeDraft : defaultDraft
+        activeDraft: action.activeDraft || defaultDraft
       }
     case UPDATE_ACTIVE_DRAFT:
       return {
@@ -188,7 +195,8 @@ export default (state = {}, action = {}) => {
         ...state,
         publishing: false,
         published: false,
-        status: action.error.message
+        status: Object.keys(action.error).length > 0 ?
+          action.error.message : 'unauthorized'
       }
 
     // unpublish post (becomes draft)
@@ -216,7 +224,8 @@ export default (state = {}, action = {}) => {
         ...state,
         unpublishing: false,
         unpublished: false,
-        status: action.error.message
+        status: Object.keys(action.error).length > 0 ?
+          action.error.message : 'unauthorized'
       }
 
     // load drafts
