@@ -59,10 +59,10 @@ test('posts reducer: LOAD_POSTS_AND_DRAFTS_SUCCESS', t => {
 
   const action = {
     type: LOAD_POSTS_AND_DRAFTS_SUCCESS,
-    result: { posts: [], drafts: [], message: 'success', }
+    result: { posts: [], drafts: [], message: 'success' }
   }
 
-  const actionWithDaft = { ...action, result: { ...action.result, drafts: [{}] } }
+  const actionWithDraft = { ...action, result: { ...action.result, drafts: [{}] } }
 
   t.deepEqual(reducer(initialState, action).loadingPostsAndDrafts, false)
   t.deepEqual(reducer(initialState, action).loadedPostsAndDrafts, true)
@@ -71,7 +71,7 @@ test('posts reducer: LOAD_POSTS_AND_DRAFTS_SUCCESS', t => {
   t.deepEqual(reducer(initialState, action).drafts, [])
   t.deepEqual(reducer(initialState, action).activeDraft, defaultDraft)
   t.deepEqual(
-    reducer(initialState, actionWithDaft).activeDraft, { isPublished: false, isSaved: true })
+    reducer(initialState, actionWithDraft).activeDraft, { isPublished: false, isSaved: true })
 })
 
 test('posts reducer: LOAD_POSTS_AND_DRAFTS_FAIL', t => {
@@ -101,7 +101,7 @@ test('posts reducer: LOAD_POSTS_SUCCESS', t => {
 
   const action = {
     type: LOAD_POSTS_SUCCESS,
-    result: { posts: [], message: 'success', }
+    result: { posts: [], message: 'success' }
   }
 
   t.deepEqual(reducer(initialState, action).loadingPosts, false)
@@ -137,7 +137,7 @@ test('posts reducer: UPDATE_POST_SUCCESS', t => {
 
   const action = {
     type: UPDATE_POST_SUCCESS,
-    result: { post: { _id: '123', title: 'new title' }, message: 'success', }
+    result: { post: { _id: '123', title: 'new title' }, message: 'success' }
   }
 
   t.deepEqual(reducer(initialState, action).updatingPost, false)
@@ -176,7 +176,7 @@ test('posts reducer: DELETE_POST', t => {
 })
 
 test('posts reducer: DELETE_POST_SUCCESS', t => {
-  t.plan(5)
+  t.plan(6)
 
   const stateWithPosts = { ...initialState, posts: [{ _id: '123' }] }
 
@@ -184,27 +184,26 @@ test('posts reducer: DELETE_POST_SUCCESS', t => {
 
   const action = {
     type: DELETE_POST_SUCCESS,
-    result: {
-      post: {
-        _id: '123'
-      }
-    }
+    result: { post: { _id: '123' }, message: 'success' }
   }
 
   t.deepEqual(reducer(initialState, action).deletingPost, false)
   t.deepEqual(reducer(initialState, action).deletedPost, true)
+  t.deepEqual(reducer(initialState, action).status, 'success')
   t.deepEqual(reducer(stateWithPosts, action).posts, [])
   t.deepEqual(reducer(stateWithPosts, action).activeDraft, defaultDraft)
   t.deepEqual(reducer(stateWithDrafts, action).activeDraft, {})
 })
 
 test('posts reducer: DELETE_POST_FAIL', t => {
-  t.plan(2)
+  t.plan(4)
 
-  const action = { type: DELETE_POST_FAIL }
+  const action = { type: DELETE_POST_FAIL, error: {} }
 
   t.deepEqual(reducer(initialState, action).deletingPost, false)
   t.deepEqual(reducer(initialState, action).deletedPost, false)
+  t.deepEqual(reducer(initialState, action).status, 'unauthorized')
+  t.deepEqual(reducer(initialState, { ...action, error: { message: 'fail' } }).status, 'fail')
 })
 
 test('posts reducer: CREATE_ACTIVE_DRAFT', t => {
@@ -312,6 +311,168 @@ test('posts reducer: UNPUBLISH_FAIL', t => {
 
   t.deepEqual(reducer(initialState, action).unpublishing, false)
   t.deepEqual(reducer(initialState, action).unpublished, false)
+  t.deepEqual(reducer(initialState, action).status, 'unauthorized')
+  t.deepEqual(reducer(initialState, { ...action, error: { message: 'fail' } }).status, 'fail')
+})
+
+test('posts reducer: LOAD_DRAFTS', t => {
+  t.plan(1)
+
+  const action = { type: LOAD_DRAFTS }
+
+  t.deepEqual(reducer(initialState, action).loadingDrafts, true)
+})
+
+test('posts reducer: LOAD_DRAFTS_SUCCESS', t => {
+  t.plan(6)
+
+  const action = {
+    type: LOAD_DRAFTS_SUCCESS,
+    result: { drafts: [], message: 'success' }
+  }
+
+  const actionWithDraft = {
+    type: LOAD_DRAFTS_SUCCESS,
+    result: { drafts: [{}], message: 'success' }
+  }
+
+  t.deepEqual(reducer(initialState, action).loadingDrafts, false)
+  t.deepEqual(reducer(initialState, action).loadedDrafts, true)
+  t.deepEqual(reducer(initialState, action).status, 'success')
+  t.deepEqual(reducer(initialState, action).drafts, [])
+  t.deepEqual(reducer(initialState, action).activeDraft, defaultDraft)
+  t.deepEqual(reducer(
+    initialState, actionWithDraft).activeDraft, { isPublished: false, isSaved: true })
+})
+
+test('posts reducer: LOAD_DRAFTS_FAIL', t => {
+  t.plan(4)
+
+  const action = {
+    type: LOAD_DRAFTS_FAIL,
+    error: {}
+  }
+
+  t.deepEqual(reducer(initialState, action).loadingDrafts, false)
+  t.deepEqual(reducer(initialState, action).loadedDrafts, false)
+  t.deepEqual(reducer(initialState, action).status, 'unathorized')
+  t.deepEqual(reducer(initialState, { ...action, error: { message: 'fail' } }).status, 'fail')
+})
+
+test('posts reducer: SAVE_DRAFT', t => {
+  t.plan(1)
+
+  const action = { type: SAVE_DRAFT }
+
+  t.deepEqual(reducer(initialState, action).savingDraft, true)
+})
+
+test('posts reducer: SAVE_DRAFT_SUCCESS', t => {
+  t.plan(5)
+
+  const action = {
+    type: SAVE_DRAFT_SUCCESS,
+    result: { draft: { _id: '123' }, message: 'success' }
+  }
+
+  t.deepEqual(reducer(initialState, action).savingDraft, false)
+  t.deepEqual(reducer(initialState, action).savedDraft, true)
+  t.deepEqual(reducer(initialState, action).status, 'success')
+  t.deepEqual(reducer(
+    initialState, action).drafts, [{ _id: '123', isPublished: false, isSaved: true }])
+  t.deepEqual(reducer(
+    initialState, action).activeDraft, { _id: '123', isPublished: false, isSaved: true })
+})
+
+test('posts reducer: SAVE_DRAFT_FAIL', t => {
+  t.plan(4)
+
+  const action = {
+    type: SAVE_DRAFT_FAIL,
+    error: {}
+  }
+
+  t.deepEqual(reducer(initialState, action).savingDraft, false)
+  t.deepEqual(reducer(initialState, action).savedDraft, false)
+  t.deepEqual(reducer(initialState, action).status, 'unauthorized')
+  t.deepEqual(reducer(initialState, { ...action, error: { message: 'fail' } }).status, 'fail')
+})
+
+test('posts reducer: UPDATE_DRAFT', t => {
+  t.plan(1)
+
+  const action = { type: UPDATE_DRAFT }
+
+  t.deepEqual(reducer(initialState, action).updatingDraft, true)
+})
+
+test('posts reducer: UPDATE_DRAFT_SUCCESS', t => {
+  t.plan(5)
+
+  const stateWithDrafts = {
+    ...initialState, drafts: [{ _id: '123', title: 'title' }]
+  }
+
+  const action = {
+    type: UPDATE_DRAFT_SUCCESS,
+    result: { draft: { _id: '123', title: 'new title' }, message: 'success' }
+  }
+
+  t.deepEqual(reducer(initialState, action).updatingDraft, false)
+  t.deepEqual(reducer(initialState, action).updatedDraft, true)
+  t.deepEqual(reducer(initialState, action).status, 'success')
+  t.deepEqual(reducer(stateWithDrafts, action).drafts,
+    [{ _id: '123', isPublished: false, isSaved: true, title: 'new title' }])
+  t.deepEqual(reducer(stateWithDrafts, action).activeDraft,
+    { _id: '123', isPublished: false, isSaved: true, title: 'new title' })
+})
+
+test('posts reducer: UPDATE_DRAFT_FAIL', t => {
+  t.plan(4)
+
+  const action = {
+    type: UPDATE_DRAFT_FAIL,
+    error: {}
+  }
+
+  t.deepEqual(reducer(initialState, action).updatingDraft, false)
+  t.deepEqual(reducer(initialState, action).updatedDraft, false)
+  t.deepEqual(reducer(initialState, action).status, 'unauthorized')
+  t.deepEqual(reducer(initialState, { ...action, error: { message: 'fail' } }).status, 'fail')
+})
+
+test('posts reducer: DELETE_DRAFT', t => {
+  t.plan(1)
+
+  const action = { type: DELETE_DRAFT }
+
+  t.deepEqual(reducer(initialState, action).deletingDraft, true)
+})
+
+test('posts reducer: DELETE_DRAFT_SUCCESS', t => {
+  t.plan(5)
+
+  const stateWithDrafts = { ...initialState, drafts: [{ _id: '123' }] }
+
+  const action = {
+    type: DELETE_DRAFT_SUCCESS,
+    result: { draft: { _id: '123' }, message: 'success' }
+  }
+
+  t.deepEqual(reducer(initialState, action).deletingDraft, false)
+  t.deepEqual(reducer(initialState, action).deletedDraft, true)
+  t.deepEqual(reducer(initialState, action).status, 'success')
+  t.deepEqual(reducer(stateWithDrafts, action).drafts, [])
+  t.deepEqual(reducer(stateWithDrafts, action).activeDraft, defaultDraft)
+})
+
+test('posts reducer: DELETE_DRAFT_FAIL', t => {
+  t.plan(4)
+
+  const action = { type: DELETE_DRAFT_FAIL, error: {} }
+
+  t.deepEqual(reducer(initialState, action).deletingDraft, false)
+  t.deepEqual(reducer(initialState, action).deletedDraft, false)
   t.deepEqual(reducer(initialState, action).status, 'unauthorized')
   t.deepEqual(reducer(initialState, { ...action, error: { message: 'fail' } }).status, 'fail')
 })

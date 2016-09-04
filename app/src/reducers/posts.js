@@ -141,6 +141,7 @@ export default (state = initialState, action = {}) => {
         ...state,
         deletingPost: false,
         deletedPost: true,
+        status: action.result.message,
         posts: state.posts.filter(p => p._id !== action.result.post._id),
         activeDraft: state.drafts.length > 0 ? state.drafts[0] : defaultDraft
       }
@@ -149,6 +150,8 @@ export default (state = initialState, action = {}) => {
         ...state,
         deletingPost: false,
         deletedPost: false,
+        status: Object.keys(action.error).length > 0 ?
+          action.error.message : 'unauthorized'
       }
 
     // create or update local active draft
@@ -277,7 +280,8 @@ export default (state = initialState, action = {}) => {
         ...state,
         savingDraft: false,
         savedDraft: false,
-        status: action.error.message
+        status: Object.keys(action.error).length > 0 ?
+          action.error.message : 'unauthorized'
       }
 
     // update post
@@ -304,7 +308,8 @@ export default (state = initialState, action = {}) => {
         ...state,
         updatingDraft: false,
         updatedDraft: false,
-        status: action.error.message
+        status: Object.keys(action.error).length > 0 ?
+          action.error.message : 'unauthorized'
       }
 
     // delete draft
@@ -330,7 +335,8 @@ export default (state = initialState, action = {}) => {
         ...state,
         deletingDraft: false,
         deletedDraft: false,
-        status: action.error.message
+        status: Object.keys(action.error).length > 0 ?
+          action.error.message : 'unauthorized'
       }
 
     default:
