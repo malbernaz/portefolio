@@ -3,20 +3,7 @@ import test from 'tape'
 import configureStore from '../store'
 import ApiClient from '../helpers/ApiClient'
 import defaultDraft from '../helpers/defaultDraft'
-import {
-  loadPostsAndDrafts,
-  loadPosts,
-  updatePost,
-  deletePost,
-  publish,
-  unpublish,
-  loadDrafts,
-  saveDraft,
-  updateDraft,
-  deleteDraft,
-  createActiveDraft,
-  updateActiveDraft
-} from './posts'
+
 import {
   CREATE_ACTIVE_DRAFT,
   DELETE_DRAFT_FAIL,
@@ -41,6 +28,21 @@ import {
   UPDATE_POST_FAIL,
   UPDATE_POST_SUCCESS
 } from '../constants'
+
+import {
+  loadPostsAndDrafts,
+  loadPosts,
+  updatePost,
+  deletePost,
+  publish,
+  unpublish,
+  loadDrafts,
+  saveDraft,
+  updateDraft,
+  deleteDraft,
+  createActiveDraft,
+  updateActiveDraft
+} from './posts'
 
 const initialState = {}
 const client = new ApiClient()
