@@ -1,70 +1,50 @@
 import React from 'react'
 import { IndexRoute, Route, Redirect } from 'react-router'
-import { reduce } from 'underscore'
 
-import { isLoaded as isAuthLoaded, loadAuth } from './actions/auth'
+import { loadAuth } from './actions/auth'
 import { loadPosts, loadPostsAndDrafts } from './actions/posts'
 import { AppView, Editor, SignIn, Post } from './containers'
 import { About, Contact, Home, NotFound } from './components'
 
 export default store => {
   const mustBeLogged = (nextState, replace, callback) => {
-    function checkAuth() {
-      const { auth: { user } } = store.getState()
+    function checkAuth({ user }) {
       if (!user) replace('/admin')
-      callback()
+
+      return callback()
     }
 
-    if (!isAuthLoaded(store.getState())) {
+    if (!store.getState().auth.loaded) {
       return store.dispatch(loadAuth())
         .then(checkAuth)
         .catch(checkAuth)
     }
-    return checkAuth()
+
+    return checkAuth(store.getState().auth)
   }
 
   const postMustExist = (nextState, replace, callback) => {
     const slug = nextState.params.slug
 
-    const getPosts = () => {
-      const { posts: { posts } } = store.getState()
-      return posts || false
-    }
-
-    function checkIfExists() {
-      const existent = reduce(getPosts(), (p, n) => {
-        if (slug === n.slug || p === true) {
-          return true
-        }
-        return false
-      }, false)
-
-      if (!existent) {
-        replace('/')
-        return callback()
-      }
+    function checkIfExists({ posts }) {
+      if (!posts.some(p => slug === p.slug)) replace('/pagenotfound')
 
       return callback()
     }
 
-    if (!getPosts()) {
+    if (!store.getState().posts.loadedPosts) {
       return store.dispatch(loadPosts())
         .then(checkIfExists)
         .catch(checkIfExists)
     }
 
-    return checkIfExists()
+    return checkIfExists(store.getState().posts)
   }
 
   const getDrafts = (nextState, replace, callback) => {
-    const findDrafts = () => {
-      const { posts: { drafts } } = store.getState()
-      return drafts || false
-    }
-
-    if (!findDrafts()) {
+    if (!store.getState().posts.loadedPostsAndDrafts) {
       return store.dispatch(loadPostsAndDrafts())
-        .then(() => callback())
+        .then(() => callback()) // these two cannot receive parameters
         .catch(() => callback())
     }
 

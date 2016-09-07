@@ -32,7 +32,7 @@
     "dev": "nodemon -L index.js",
     "lint": "eslint ./**/*.js",
     "start": "NODE_ENV=production node index.js",
-    "test": "NODE_ENV=test tape 'test/*test.js' | faucet"
+    "test": "NODE_ENV=test tape 'test/*.test.js' | faucet"
   },
   "repository": {
     "type": "git",

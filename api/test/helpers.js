@@ -1,10 +1,9 @@
 const api = require('../server')
-
-const mongoose = require('mongoose')
-const request = require('supertest')(api)
-
+const User = require('../models/User')
 const Post = require('../models/Post')
 const Draft = require('../models/Draft')
+
+const request = require('supertest')(api)
 
 const createUser = next =>
   request.post('/api/user/register')
@@ -19,8 +18,6 @@ const createLoginCookie = next =>
 
 const genericErrorMessage =
   'something went wrong. consider sending an email to albernazmiguel@gmail.com'
-
-const dropDatabase = mongoose.connection.db.dropDatabase
 
 const populatePosts = (_id, n) => {
   for (let i = 0; i < n; i++) {
@@ -58,6 +55,12 @@ const populateDrafts = (_id, n) => {
   }
 }
 
+const destroyUsers = () => User.remove({}).exec().then
+
+const destroyPosts = () => Post.remove({}).exec().then
+
+const destroyDrafts = () => Draft.remove({}).exec().then
+
 module.exports = {
   request,
   createUser,
@@ -65,5 +68,7 @@ module.exports = {
   genericErrorMessage,
   populatePosts,
   populateDrafts,
-  dropDatabase
+  destroyUsers,
+  destroyPosts,
+  destroyDrafts
 }

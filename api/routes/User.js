@@ -50,7 +50,8 @@ Router.post('/register', (req, res) => {
       user: {
         username: user.username,
         email: user.email,
-        posts: user.posts
+        posts: user.posts,
+        id: user._id
       }
     })
   })
@@ -79,7 +80,8 @@ Router.post('/authenticate', (req, res) => {
       user: {
         username: user.username,
         email: user.email,
-        posts: user.posts
+        posts: user.posts,
+        id: user._id
       }
     })
   })
@@ -104,7 +106,8 @@ Router.get('/loadauth', passport.authenticate('jwt', {
     user: {
       username: user.username,
       email: user.email,
-      posts: user.posts
+      posts: user.posts,
+      id: user._id
     }
   })
 })

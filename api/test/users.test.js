@@ -1,6 +1,8 @@
 const test = require('tape')
 const config = require('../config/main')
-const { request, createLoginCookie } = require('./helpers')
+const { request, createLoginCookie, destroyUsers } = require('./helpers')
+
+destroyUsers()
 
 test('POST /api/user/register, attempt to register without token', t => {
   t.plan(3)
@@ -152,7 +154,7 @@ test('GET /api/user/logout, attempt to logout without token', t => {
 test('GET /api/user/logout, successful attempt to logout', t => {
   t.plan(3)
 
-  createLoginCookie(cookie => {
+  createLoginCookie(cookie =>
     request.get('/api/user/logout')
       .set('cookie', cookie)
       .expect(200)
@@ -163,6 +165,5 @@ test('GET /api/user/logout, successful attempt to logout', t => {
         t.deepEqual(success, true)
         t.deepEqual(message, 'successfully logged out user')
         t.end()
-      })
-  })
+      }))
 })
