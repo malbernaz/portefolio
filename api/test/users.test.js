@@ -1,8 +1,15 @@
 const test = require('tape')
 const config = require('../config/main')
-const { request, createLoginCookie, destroyUsers } = require('./helpers')
+const { request, createLoginCookie, destroyUsers, destroyPosts } = require('./helpers')
 
-destroyUsers()
+const before = test
+
+before('BEFORE USERS TEST', t => {
+  destroyUsers().then(() => {
+    destroyPosts()
+    t.end()
+  })
+})
 
 test('POST /api/user/register, attempt to register without token', t => {
   t.plan(3)

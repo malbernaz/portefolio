@@ -46,7 +46,7 @@ export const loadPosts = () => ({
 
 export const updatePost = data => ({
   types: [UPDATE_POST, UPDATE_POST_SUCCESS, UPDATE_POST_FAIL],
-  promise: client => client.patch(`/posts/${data.slug}`, { data: { ...data } })
+  promise: client => client.patch(`/posts/${data._id}`, { data: { ...data } })
 })
 
 export const deletePost = _id => ({
@@ -61,7 +61,7 @@ export const publish = data => ({
 
 export const unpublish = data => ({
   types: [UNPUBLISH, UNPUBLISH_SUCCESS, UNPUBLISH_FAIL],
-  promise: client => client.put(`/posts/unpublish/${data.slug}`, { data: { ...data } })
+  promise: client => client.put(`/posts/unpublish/${data._id}`, { data: { ...data } })
 })
 
 export const loadDrafts = () => ({
@@ -76,7 +76,7 @@ export const saveDraft = data => ({
 
 export const updateDraft = data => ({
   types: [UPDATE_DRAFT, UPDATE_DRAFT_SUCCESS, UPDATE_DRAFT_FAIL],
-  promise: client => client.patch(`/drafts/${data.slug}`, { data: { ...data } })
+  promise: client => client.patch(`/drafts/${data._id}`, { data: { ...data } })
 })
 
 export const deleteDraft = _id => ({

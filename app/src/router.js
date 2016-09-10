@@ -44,8 +44,8 @@ export default store => {
   const getDrafts = (nextState, replace, callback) => {
     if (!store.getState().posts.loadedPostsAndDrafts) {
       return store.dispatch(loadPostsAndDrafts())
-        .then(() => callback()) // these two cannot receive parameters
-        .catch(() => callback())
+        .then(() => callback())
+        .catch(e => callback(e))
     }
 
     return callback()

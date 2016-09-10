@@ -12,8 +12,7 @@ const PostSchema = new mongoose.Schema({
   },
   slug: {
     type: String,
-    lowercase: true,
-    required: true
+    lowercase: true
   },
   createdAt: {
     type: Date,
@@ -48,9 +47,7 @@ const PostSchema = new mongoose.Schema({
 PostSchema.pre('save', function (next) {
   const post = this
 
-  return this.model('User').update({
-    $push: { posts: this._id }
-  }, () => {
+  return this.model('User').update({ $push: { posts: this._id } }, () => {
     post.slug = titleSlugger(post.meta.title)
 
     post.meta.tags = post.meta.tags.filter((tag, i, array) => array.indexOf(tag) === i)
