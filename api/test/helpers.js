@@ -35,6 +35,8 @@ const createSecondLoginCookie = next =>
 const genericErrorMessage =
   'something went wrong. consider sending an email to albernazmiguel@gmail.com'
 
+const fakeObjectId = '551137c2f9e1fac808a5f572'
+
 const populatePosts = (id, n) => {
   for (let i = 0; i < n; i++) {
     const post = new Post({
@@ -53,18 +55,7 @@ const populatePosts = (id, n) => {
   }
 }
 
-const genericPost = (i) => ({
-  raw: `${i}`,
-  html: `<p>${i}</p>`,
-  slug: `title-${i}`,
-  meta: {
-    title: `Title ${i}`,
-    description: `description ${i}`,
-    tags: ['open source']
-  }
-})
-
-const populateDrafts = (_id, n) => {
+const populateDrafts = (id, n) => {
   for (let i = 0; i < n; i++) {
     const draft = new Draft({
       raw: `${i}`,
@@ -74,13 +65,26 @@ const populateDrafts = (_id, n) => {
         title: `Title ${i}`,
         description: `description ${i}`,
         tags: ['open source'],
-        author: _id
+        author: id
       }
     })
 
     draft.save()
   }
 }
+
+const getPosts = () => Post.find({}).exec()
+
+const genericPost = i => ({
+  raw: `${i}`,
+  html: `<p>${i}</p>`,
+  slug: `title-${i}`,
+  meta: {
+    title: `Title ${i}`,
+    description: `description ${i}`,
+    tags: ['open source']
+  }
+})
 
 const destroyUsers = () => User.remove({}).exec()
 
@@ -98,7 +102,9 @@ module.exports = {
   destroyUsers,
   genericErrorMessage,
   genericPost,
+  getPosts,
   populateDrafts,
   populatePosts,
-  request
+  request,
+  fakeObjectId
 }

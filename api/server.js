@@ -37,14 +37,12 @@ api.use('/drafts', Draft)
 
 api.get('/postsanddrafts', passport.authenticate('jwt', {
   session: false
-}), (req, res) => {
+}), ({ user }, res) => {
   const queries = [
-    PostsModel.find().exec()
-      .then(result => ({ posts: result }))
-      .catch(err => err),
-    DraftsModel.find().exec()
+    PostsModel.find({ 'meta.author': user._id }).exec()
+      .then(result => ({ posts: result })),
+    DraftsModel.find({ 'meta.author': user._id }).exec()
       .then(result => ({ drafts: result }))
-      .catch(err => err)
   ]
 
   return Promise.all(queries)
@@ -52,10 +50,10 @@ api.get('/postsanddrafts', passport.authenticate('jwt', {
       success: true,
       message: 'successfully loaded posts and drafts'
     }, Object.assign(result[0], result[1]))))
-    .catch(err => res.status(400).send({
+
+    .catch(() => res.status(400).send({
       success: false,
-      message: 'something went wrong. could\'t load posts and drafts',
-      err
+      message: 'something went wrong. could not load posts and drafts'
     }))
 })
 

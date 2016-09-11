@@ -1,21 +1,20 @@
 const test = require('tape')
 const {
-  request,
+  createLoginCookie,
   createUser,
-  populatePosts,
+  destroyDrafts,
   destroyPosts,
   destroyUsers,
-  destroyDrafts,
-  createLoginCookie,
   genericPost,
-  createSecondUser,
-  createSecondLoginCookie
+  populatePosts,
+  request,
+  fakeObjectId
 } = require('./helpers')
 
 test('BEFORE POSTS TEST', t => {
   destroyPosts()
-    .then(destroyUsers())
-    .then(destroyDrafts())
+    .then(destroyUsers)
+    .then(destroyDrafts)
     .then(createUser((cookie, { id }) => {
       populatePosts(id, 10)
       t.end()
@@ -130,8 +129,8 @@ test('PATCH /api/posts/:_id, unsuccessful try to update inexistent post', t => {
   t.plan(3)
 
   createLoginCookie(cookie =>
-    request.patch('/api/posts/123')
-      .send({})
+    request.patch(`/api/posts/${fakeObjectId}`)
+      .send({ meta: { title: 'Other Title' } })
       .set('cookie', cookie)
       .expect(404)
       .end((err, res) => {
@@ -139,25 +138,7 @@ test('PATCH /api/posts/:_id, unsuccessful try to update inexistent post', t => {
 
         t.error(err, 'no errors')
         t.deepEqual(success, false)
-        t.deepEqual(message, 'could not update post. inexsistent')
-        t.end()
-      }))
-})
-
-test('PATCH /api/posts/:_id, unsuccessful try to update another users post', t => {
-  t.plan(3)
-
-  createSecondUser(cookie =>
-    request.patch(`/api/posts/${postID}`)
-      .send({})
-      .set('cookie', cookie)
-      .expect(401)
-      .end((err, res) => {
-        const { success, message } = res.body
-
-        t.error(err, 'no errors')
-        t.deepEqual(success, false)
-        t.deepEqual(message, 'you do not own this post')
+        t.deepEqual(message, 'could not update post. inexistent')
         t.end()
       }))
 })
@@ -182,28 +163,11 @@ test('PATCH /api/posts/:_id, successful try to update post', t => {
       }))
 })
 
-test('DELETE /api/posts/:_id, unsuccessful try to delete other users post', t => {
-  t.plan(3)
-
-  createSecondLoginCookie(cookie =>
-    request.delete(`/api/posts/${postID}`)
-      .set('cookie', cookie)
-      .expect(401)
-      .end((err, res) => {
-        const { success, message } = res.body
-
-        t.error(err, 'no errors')
-        t.deepEqual(success, false)
-        t.deepEqual(message, 'you do not own this post')
-        t.end()
-      }))
-})
-
-test('DELETE /api/posts/:_id, unsuccessful try to delete inexsistent post', t => {
+test('DELETE /api/posts/:_id, unsuccessful try to delete inexistent post', t => {
   t.plan(3)
 
   createLoginCookie(cookie =>
-    request.delete('/api/posts/123')
+    request.delete(`/api/posts/${fakeObjectId}`)
       .set('cookie', cookie)
       .expect(404)
       .end((err, res) => {
@@ -211,7 +175,7 @@ test('DELETE /api/posts/:_id, unsuccessful try to delete inexsistent post', t =>
 
         t.error(err, 'no errors')
         t.deepEqual(success, false)
-        t.deepEqual(message, 'could not delete post. inexsistent')
+        t.deepEqual(message, 'could not delete post. inexistent')
         t.end()
       }))
 })
@@ -236,29 +200,11 @@ test('DELETE /api/posts/:_id, successful try to delete post', t => {
       }))
 })
 
-test('PUT /api/posts/unpublish/:_id, unsuccessful try to unpublish other users post', t => {
-  t.plan(3)
-
-  createSecondLoginCookie(cookie =>
-    request.put(`/api/posts/unpublish/${userPosts[0]._id}`)
-      .send({ meta: { title: 'Other Title' } })
-      .set('cookie', cookie)
-      .expect(401)
-      .end((err, res) => {
-        const { success, message } = res.body
-
-        t.error(err, 'no errors')
-        t.deepEqual(success, false)
-        t.deepEqual(message, 'you do not own this post')
-        t.end()
-      }))
-})
-
-test('PUT /api/posts/unpublish/:_id, unsuccessful try to unpublish inexsistent post', t => {
+test('PUT /api/posts/unpublish/:_id, unsuccessful try to unpublish inexistent post', t => {
   t.plan(3)
 
   createLoginCookie(cookie =>
-    request.put('/api/posts/unpublish/123')
+    request.put(`/api/posts/unpublish/${fakeObjectId}`)
       .send({ meta: { title: 'Other Title' } })
       .set('cookie', cookie)
       .expect(404)
@@ -267,7 +213,7 @@ test('PUT /api/posts/unpublish/:_id, unsuccessful try to unpublish inexsistent p
 
         t.error(err, 'no errors')
         t.deepEqual(success, false)
-        t.deepEqual(message, 'could not unpublish post. inexsistent')
+        t.deepEqual(message, 'could not unpublish post. inexistent')
         t.end()
       }))
 })
@@ -289,6 +235,25 @@ test('PUT /api/posts/unpublish/:_id, successful try to unpublish post', t => {
         t.deepEqual(draft._id, userPosts[0]._id)
         t.deepEqual(draft.slug, 'another-title')
         t.deepEqual(draft.meta.title, 'Another Title')
+        t.end()
+      }))
+})
+
+test('GET /api/postsanddrafts successful try to get posts and drafts', t => {
+  t.plan(5)
+
+  createLoginCookie(cookie =>
+    request.get('/api/postsanddrafts')
+      .set('cookie', cookie)
+      .expect(200)
+      .end((err, res) => {
+        const { success, message, posts, drafts } = res.body
+
+        t.error(err, 'no errors')
+        t.deepEqual(success, true)
+        t.deepEqual(message, 'successfully loaded posts and drafts')
+        t.deepEqual(typeof posts, 'object')
+        t.deepEqual(typeof drafts, 'object')
         t.end()
       }))
 })
