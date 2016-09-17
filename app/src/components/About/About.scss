@@ -1,21 +1,5 @@
 @import '../../theme/vars';
-
-.wrapper {
-  position: absolute;
-  bottom: 0;
-
-  overflow-y: scroll;
-
-  width: 100%;
-  height: calc(100% - 3.5rem);
-  margin-top: 3.5rem;
-
-  transform: translateZ(0);
-
-  @media (max-width: $tablet) {
-    margin-top: auto;
-  }
-}
+@import '../../theme/mixins';
 
 .root {
   display: flex;
@@ -24,13 +8,14 @@
   box-sizing: border-box;
   width: 100%;
   min-height: 100%;
-  padding: 0 1rem;
 
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
 }
 
-
+.header {
+  margin-top: 0;
+}
 
 .avatar {
   position: relative;

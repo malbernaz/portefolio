@@ -6,6 +6,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import validation from './SignInFormValidation'
 import s from './SignInForm.scss'
+import { Wrapper } from '../../components'
 
 const inputFields = [{
   name: 'email',
@@ -39,24 +40,26 @@ const SignIn = ({ handleSubmit, pristine, fields: { ...fields } }) => {
   )
 
   return (
-    <section className={ s.root }>
-      <Helmet title="SIGN IN" />
-      <form className={ s.form } onSubmit={ handleSubmit }>
-        { map(fields, (field, key) => {
-          const { type, label } = inputFields.filter(f => f.name === key)[0]
-          return renderInput(field, type, label)
-        }) }
-        <div className="cta">
-          <button
-            className={ s.submit }
-            disabled={ pristine }
-            onClick={ handleSubmit }
-          >
-            Sign In
-          </button>
-        </div>
-      </form>
-    </section>
+    <Wrapper>
+      <section className={ s.root }>
+        <Helmet title="SIGN IN" />
+        <form className={ s.form } onSubmit={ handleSubmit }>
+          { map(fields, (field, key) => {
+            const { type, label } = inputFields.filter(f => f.name === key)[0]
+            return renderInput(field, type, label)
+          }) }
+          <div className="cta">
+            <button
+              className={ s.submit }
+              disabled={ pristine }
+              onClick={ handleSubmit }
+            >
+              Sign In
+            </button>
+          </div>
+        </form>
+      </section>
+    </Wrapper>
   )
 }
 

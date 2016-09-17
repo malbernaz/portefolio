@@ -2,10 +2,11 @@ import React from 'react'
 import Helmet from 'react-helmet'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
+import { Wrapper } from '../'
 import s from './About.scss'
 
 const About = () => (
-  <div className={ s.wrapper }>
+  <Wrapper>
     <section className={ s.root }>
       <Helmet title="ABOUT" />
       <h2 className={ s.header }>
@@ -36,7 +37,7 @@ const About = () => (
         </b>.
       </p>
     </section>
-  </div>
+  </Wrapper>
 )
 
 export default withStyles(s)(About)

@@ -158,7 +158,11 @@ export default (state = initialState, action = {}) => {
     case CREATE_ACTIVE_DRAFT:
       return {
         ...state,
-        activeDraft: action.activeDraft || defaultDraft
+        activeDraft:
+          action.activeDraft &&
+          Object.keys(action.activeDraft).length > 0 ?
+            action.activeDraft :
+            defaultDraft
       }
     case UPDATE_ACTIVE_DRAFT:
       return {

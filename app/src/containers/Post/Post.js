@@ -4,13 +4,14 @@ import Helmet from 'react-helmet'
 import moment from 'moment'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
+import { Wrapper } from '../../components'
 import s from './Post.scss'
 
 const Post = ({ posts, slug }) => {
   const { meta, html, createdAt } = posts.filter(p => p.slug === slug)[0]
 
   return (
-    <section className={ s.root }>
+    <Wrapper>
       <Helmet title={ meta.title.toUpperCase() } />
       <div className={ s.wrapper }>
         <article>
@@ -18,7 +19,7 @@ const Post = ({ posts, slug }) => {
           <div dangerouslySetInnerHTML={{ __html: html }} />
         </article>
       </div>
-    </section>
+    </Wrapper>
   )
 }
 

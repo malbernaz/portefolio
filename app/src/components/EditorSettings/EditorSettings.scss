@@ -4,7 +4,7 @@
 .wrapper {
   position: absolute;
   z-index: $zi-editor;
-  top: 3.5rem;
+  top: $mobile-nav-height;
   bottom: 0;
 
   width: 100%;

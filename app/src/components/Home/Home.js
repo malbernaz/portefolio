@@ -1,15 +1,14 @@
 import React from 'react'
 import Helmet from 'react-helmet'
-import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import { Posts } from '../../containers'
-import s from './Home.scss'
+import { Wrapper } from '../'
 
 const Home = () => (
-  <section className={ s.home }>
+  <Wrapper>
     <Helmet title="HOME" />
     <Posts />
-  </section>
+  </Wrapper>
 )
 
-export default withStyles(s)(Home)
+export default Home

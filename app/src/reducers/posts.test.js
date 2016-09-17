@@ -213,7 +213,7 @@ test('posts reducer: CREATE_ACTIVE_DRAFT', t => {
   const actionWithActiveDraft = { type: CREATE_ACTIVE_DRAFT, activeDraft: {} }
 
   t.deepEqual(reducer(initialState, action).activeDraft, defaultDraft)
-  t.deepEqual(reducer(initialState, actionWithActiveDraft).activeDraft, {})
+  t.deepEqual(reducer(initialState, actionWithActiveDraft).activeDraft, defaultDraft)
 })
 
 test('posts reducer: UPDATE_ACTIVE_DRAFT', t => {

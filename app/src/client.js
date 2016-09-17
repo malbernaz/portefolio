@@ -27,4 +27,4 @@ render(
   </Provider>, document.getElementById('react-view')
 )
 
-require('offline-plugin/runtime').install() // ServiceWorker
+// require('offline-plugin/runtime').install() // ServiceWorker

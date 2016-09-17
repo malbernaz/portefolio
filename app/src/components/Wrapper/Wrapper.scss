@@ -1,0 +1,24 @@
+@import '../../theme/vars';
+@import '../../theme/mixins';
+
+.root {
+  box-sizing: border-box;
+
+  @include centered;
+
+  @media (max-width: $tablet) {
+    height: calc(100vh - #{$mobile-nav-height});
+    margin: $mobile-nav-height auto 0;
+  }
+}
+
+.content {
+  box-sizing: border-box;
+  overflow-y: scroll;
+
+  width: 100%;
+  height: 100%;
+  padding: 2rem 1rem;
+
+  transform: translateZ(0);
+}

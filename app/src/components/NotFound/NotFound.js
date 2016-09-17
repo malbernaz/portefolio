@@ -3,10 +3,11 @@ import Helmet from 'react-helmet'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import s from './NotFound.scss'
+import { Wrapper } from '../'
 
 const NotFound = () => (
-  <div className={ s.wrapper }>
-    <section className={ s.root }>
+  <Wrapper>
+    <div className={ s.root }>
       <Helmet title="NOT FOUND" />
       <h2 className={ s.header }>
         404 Page Not Found
@@ -14,8 +15,8 @@ const NotFound = () => (
       <h3 className={ s.blurb }>
         you are in unexplored waters
       </h3>
-    </section>
-  </div>
+    </div>
+  </Wrapper>
 )
 
 export default withStyles(s)(NotFound)

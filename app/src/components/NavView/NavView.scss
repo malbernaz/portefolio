@@ -74,11 +74,11 @@
 
   visibility: hidden;
 
-  height: 3.5rem;
+  height: $mobile-nav-height;
 
   pointer-events: none;
 
-  @include icon-link(3.5rem);
+  @include icon-link($mobile-nav-height);
 
   @media (max-width: $tablet) {
     visibility: visible;
@@ -251,7 +251,7 @@
 
   box-sizing: border-box;
   width: 100vw;
-  height: 3.5rem;
+  height: $mobile-nav-height;
 
   border-bottom: 1px lighten($mono-3, 15) solid;
   background: $syntax-bg-alternate;
@@ -268,7 +268,7 @@
 
   color: $syntax-accent;
 
-  @include icon-link(3.5rem);
+  @include icon-link($mobile-nav-height);
   align-items: center;
   justify-content: center;
 
