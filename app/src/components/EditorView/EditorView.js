@@ -88,7 +88,6 @@ const EditorView = ({
     </div>
     <div className={ s.bottomBar }>
       <a
-        onTap={ toggleNav }
         onClick={ toggleNav }
         className={ s.bottomBarBtn }
       >
@@ -96,7 +95,6 @@ const EditorView = ({
         <span>posts</span>
       </a>
       <a
-        onTap={ e => switchEditorView(e, 'code') }
         onClick={ e => switchEditorView(e, 'code') }
         className={ s.bottomBarBtn }
       >
@@ -104,7 +102,6 @@ const EditorView = ({
         <span>edit</span>
       </a>
       <a
-        onTap={ e => switchEditorView(e, 'preview') }
         onClick={ e => switchEditorView(e, 'preview') }
         className={ s.bottomBarBtn }
       >

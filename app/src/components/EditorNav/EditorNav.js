@@ -18,14 +18,12 @@ const EditorNav = ({ iterablePosts, handleEditPost, handleDelete, isShown, toggl
               </small> }
             <div className={ s.actions }>
               <a
-                onTap={ e => handleEditPost(e, p) }
                 onClick={ e => handleEditPost(e, p) }
                 className={ s.action }
               >
                 <Icon name="edit" />
               </a>
               <a
-                onTap={ e => handleDelete(e, p._id) }
                 onClick={ e => handleDelete(e, p._id) }
                 className={ s.actionDelete }
               >
@@ -40,7 +38,6 @@ const EditorNav = ({ iterablePosts, handleEditPost, handleDelete, isShown, toggl
         </small>
       </div> }
     <div
-      onTap={ toggle }
       onClick={ toggle }
       className={ isShown ? s.shadowIsShown : s.shadow }
     />

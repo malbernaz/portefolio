@@ -6,7 +6,7 @@ import s from './DropdownButton.scss'
 
 const DropdownButton = ({ options, fixedOptions, isShown, toggleDropdown }) => (
   <div className={ s.root }>
-    <a onTap={ toggleDropdown } onClick={ toggleDropdown } className={ s.toggle }>
+    <a onClick={ toggleDropdown } className={ s.toggle }>
       <Icon name="more" />
     </a>
     <div className={ isShown ? s.options : s.optionsHidden }>
@@ -14,7 +14,6 @@ const DropdownButton = ({ options, fixedOptions, isShown, toggleDropdown }) => (
         <a
           className={ s.option }
           key={ i }
-          onTap={ o.action }
           onClick={ o.action }
         >
           { o.label }
@@ -24,7 +23,6 @@ const DropdownButton = ({ options, fixedOptions, isShown, toggleDropdown }) => (
         <a
           className={ o.label === 'delete' ? s.optionDanger : s.option }
           key={ i }
-          onTap={ o.action }
           onClick={ o.action }
         >
           { o.label }
@@ -32,7 +30,6 @@ const DropdownButton = ({ options, fixedOptions, isShown, toggleDropdown }) => (
       ) }
     </div>
     <div
-      onTap={ toggleDropdown }
       onClick={ toggleDropdown }
       className={ isShown ? s.shadowIsShown : s.shadow }
     />

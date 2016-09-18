@@ -108,7 +108,6 @@ const NavView = ({
       </div>
     </div>
     <div
-      onTap={ toggleNav }
       onClick={ toggleNav }
       className={ isVisible ? s.shadowIsShown : s.shadow }
     />
@@ -119,7 +118,6 @@ const NavView = ({
       </div>
     </div>
     <a
-      onTap={ toggleNav }
       onClick={ toggleNav }
       className={ s.toggleBtn }
     >

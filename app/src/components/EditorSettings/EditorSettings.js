@@ -57,7 +57,6 @@ const EditorSettings = ({ meta, handleChange, toggle, isShown }) => (
     </div>
     <div
       className={ isShown ? s.shadowIsShown : s.shadow }
-      onTap={ toggle }
       onClick={ toggle }
     />
   </div>
