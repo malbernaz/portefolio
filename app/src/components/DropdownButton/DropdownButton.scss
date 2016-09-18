@@ -17,9 +17,9 @@
   text-align: right;
   white-space: nowrap;
   pointer-events: all;
+  box-shadow: 0 0 5px 1px $default-shadow-color;
 
   opacity: 1;
-  border: 1px lighten($mono-3, 15) solid;
   background: $syntax-bg-alternate;
 
   z-index: $zi-editor + 2;
@@ -28,7 +28,6 @@
 }
 
 %option {
-  font-size: 1rem;
   line-height: 1rem;
 
   margin: 0;

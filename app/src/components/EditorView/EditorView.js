@@ -87,15 +87,27 @@ const EditorView = ({
       </div>
     </div>
     <div className={ s.bottomBar }>
-      <a onClick={ e => toggleNav(e) } className={ s.bottomBarBtn }>
+      <a
+        onTap={ toggleNav }
+        onClick={ toggleNav }
+        className={ s.bottomBarBtn }
+      >
         <Icon name="list" />
         <span>posts</span>
       </a>
-      <a onClick={ e => switchEditorView(e, 'code') } className={ s.bottomBarBtn }>
+      <a
+        onTap={ e => switchEditorView(e, 'code') }
+        onClick={ e => switchEditorView(e, 'code') }
+        className={ s.bottomBarBtn }
+      >
         <Icon name="edit" />
         <span>edit</span>
       </a>
-      <a onClick={ e => switchEditorView(e, 'preview') } className={ s.bottomBarBtn }>
+      <a
+        onTap={ e => switchEditorView(e, 'preview') }
+        onClick={ e => switchEditorView(e, 'preview') }
+        className={ s.bottomBarBtn }
+      >
         <Icon name="preview" />
         <span>preview</span>
       </a>

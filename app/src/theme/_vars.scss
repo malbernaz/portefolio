@@ -29,6 +29,7 @@ $syntax-gutter: darken($syntax-bg, 36%);
 $syntax-guide:  fade($syntax-fg, 20%);
 $syntax-accent: hsl($syntax-hue, 100%, 66%);
 
+$default-shadow-color: rgba($syntax-fg, .2);
 $syntax-bg-alternate: darken($syntax-bg, 3);
 $selection: #ededed;
 

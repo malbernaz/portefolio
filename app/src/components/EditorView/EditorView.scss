@@ -21,6 +21,7 @@ $posts-list-width: 15rem;
 
   width: calc(100vw - #{$nav-width});
   height: 100vh;
+  box-sizing: border-box;
 
   @media (max-width: $tablet) {
     width: 100vw;
@@ -33,7 +34,7 @@ $posts-list-width: 15rem;
 
   flex: 0 0 $mobile-nav-height;
 
-  border-bottom: 1px lighten($mono-3, 15) solid;
+  box-shadow: 0 1px 5px $default-shadow-color;
 
   @extend %adminBar;
   justify-content: center;
@@ -95,6 +96,7 @@ $posts-list-width: 15rem;
 
     max-width: 33.8rem;
     height: 1.3rem;
+    padding-right: .5rem;
 
     text-align: left;
     white-space: nowrap;
@@ -104,7 +106,6 @@ $posts-list-width: 15rem;
     flex: 0 0 .7rem;
 
     height: .7rem;
-    padding-left: .5rem;
   }
 }
 
@@ -125,7 +126,7 @@ $posts-list-width: 15rem;
   display: none;
   flex: 0 0 4rem;
 
-  border-top: 1px lighten($mono-3, 15) solid;
+  box-shadow: 0 -1px 5px $default-shadow-color;
 
   @extend %adminBar;
   justify-content: space-around;
@@ -163,7 +164,7 @@ $posts-list-width: 15rem;
   display: flex;
 
   width: calc(100vw - #{$nav-width});
-  height: calc(100% - $mobile-nav-height);
+  height: calc(100% - #{$mobile-nav-height});
 
   @media (max-width: 70rem) {
     height: calc(100% - 7.5rem);
@@ -226,8 +227,6 @@ $posts-list-width: 15rem;
 }
 
 .preview {
-  z-index: $zi-editor - 1;
-
   display: block;
   overflow-y: scroll;
   flex: 1 1 50%;

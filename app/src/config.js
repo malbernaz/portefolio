@@ -23,7 +23,7 @@ export default {
       content: description
     }, {
       name: 'theme-color',
-      content: '#526eff'
+      content: '#f2f2f2'
     }],
     link: [{
       rel: 'icon',

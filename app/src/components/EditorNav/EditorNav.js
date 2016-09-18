@@ -17,10 +17,18 @@ const EditorNav = ({ iterablePosts, handleEditPost, handleDelete, isShown, toggl
                 { p.meta.title }
               </small> }
             <div className={ s.actions }>
-              <a onClick={ e => handleEditPost(e, p) } className={ s.action }>
+              <a
+                onTap={ e => handleEditPost(e, p) }
+                onClick={ e => handleEditPost(e, p) }
+                className={ s.action }
+              >
                 <Icon name="edit" />
               </a>
-              <a onClick={ e => handleDelete(e, p._id) } className={ s.actionDelete }>
+              <a
+                onTap={ e => handleDelete(e, p._id) }
+                onClick={ e => handleDelete(e, p._id) }
+                className={ s.actionDelete }
+              >
                 <Icon name="trashcan" />
               </a>
             </div>
@@ -31,7 +39,11 @@ const EditorNav = ({ iterablePosts, handleEditPost, handleDelete, isShown, toggl
           no posts yet :(
         </small>
       </div> }
-    <div onClick={ toggle } className={ isShown ? s.shadowIsShown : s.shadow } />
+    <div
+      onTap={ toggle }
+      onClick={ toggle }
+      className={ isShown ? s.shadowIsShown : s.shadow }
+    />
   </div>
 )
 

@@ -20,6 +20,7 @@ const Nav = ({ auth, ui: { nav }, logout, toggleNav }) => {
   return (
     <NavView
       description={ config.description }
+      email={ config.email }
       github={ config.github }
       isVisible={ nav.navIsVisible }
       logout={ logout }

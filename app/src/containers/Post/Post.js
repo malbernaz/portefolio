@@ -13,7 +13,7 @@ const Post = ({ posts, slug }) => {
   return (
     <Wrapper>
       <Helmet title={ meta.title.toUpperCase() } />
-      <div className={ s.wrapper }>
+      <div className={ s.root }>
         <article>
           <small>{ moment(createdAt, moment.ISO_8601).fromNow() }</small>
           <div dangerouslySetInnerHTML={{ __html: html }} />

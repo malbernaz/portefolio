@@ -2,26 +2,24 @@
 @import '../../theme/mixins';
 
 .root {
+  position: absolute;
+  top: 0;
+  left: 0;
   z-index: $zi-nav;
 
-  display: flex;
-  flex-direction: column;
+  overflow-y: scroll;
 
   box-sizing: border-box;
   width: $nav-width;
   height: 100vh;
   padding: 0;
 
-  border-right: 1px lighten($mono-3, 15) dashed;
   background: darken($syntax-bg, 2);
+  box-shadow: 0 1px 5px $default-shadow-color;
 
-  justify-content: center;
   will-change: transform;
 
   @media (max-width: $tablet) {
-    position: absolute;
-    top: 0;
-
     transition: transform .15s ease-out;
     transform: translateX(-$nav-width);
 
@@ -29,7 +27,7 @@
   }
 }
 
-.isShown {
+.rootIsShown {
   @extend .root;
   @media (max-width: $tablet) {
     transition: transform .1s ease-out;
@@ -47,7 +45,6 @@
   height: 100vh;
 
   transition: opacity .15s ease-out;
-  transform: translateX($nav-width);
   pointer-events: none;
 
   opacity: 0;
@@ -87,53 +84,59 @@
   }
 }
 
-.logo {
-  position: absolute;
-  top: 0;
-  left: 0;
-
+.content {
   display: flex;
   flex-direction: column;
 
+  width: 100%;
+  height: auto;
+  min-height: 100vh;
+
+  justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+
+  box-sizing: border-box;
   width: $nav-width;
-  padding: 1.5rem 0 0;
+  padding: 2rem 0;
 
   text-align: center;
 
-  color: lighten($syntax-fg, 20%);
+  color: $syntax-bg;
+  background: $syntax-accent;
 
   align-items: center;
   justify-content: center;
-
-  @media (max-width: $mobile-s) {
-    transform: scale(.8);
-  }
 }
 
 .logoIcon {
   height: 3rem;
+
+  path {
+    fill: $syntax-bg;
+  }
 }
 
 .logoTitle {
   margin: 1rem 0 0;
 
   text-transform: uppercase;
-
-  color: $syntax-accent;
 }
 
 .logoDescription {
-  font-size: .75rem;
+  font-size: .8rem;
   font-weight: 600;
-  line-height: 1.3rem;
-  max-width: 8rem;
 
-  margin: .5rem auto 0;
+  max-width: 8rem;
+  margin: .4rem auto 0;
 }
 
 .navMain {
   width: 100%;
-  margin: 0;
+  margin: 0 0 3rem;
   padding: 0;
 
   @media (max-width: $mobile-s) {
@@ -152,7 +155,6 @@
   align-items: center;
 
   &:hover,
-
   &:focus {
     color: $syntax-accent;
     background: darken($syntax-bg, 7);
@@ -186,10 +188,6 @@
 }
 
 .footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-
   width: 100%;
   width: $nav-width;
 
@@ -253,7 +251,7 @@
   width: 100vw;
   height: $mobile-nav-height;
 
-  border-bottom: 1px lighten($mono-3, 15) solid;
+  box-shadow: 1px 0 5px $default-shadow-color;
   background: $syntax-bg-alternate;
 
   @media (max-width: $tablet) {

@@ -11,7 +11,8 @@
   height: 100%;
 
   transition: transform .15s ease-out;
-  transform: translateX(-$posts-list-width);
+  transform: translateX(-$posts-list-width - .2rem);
+  box-shadow: 2px 0 5px rgba($syntax-fg, .3);
 
   background: $syntax-bg;
 

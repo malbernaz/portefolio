@@ -1,11 +1,7 @@
 @import '../../theme/vars';
 
-.wrapper {
-  overflow-y: scroll;
-
-  width: 100%;
-
-  transform: translateZ(0);
+.root {
+  min-height: 100%;
 }
 
 .title {

@@ -46,9 +46,10 @@
   width: 80%;
   max-width: 35rem;
   padding: 2.5rem;
+  box-shadow: 0 0 5px 1px $default-shadow-color;
 
   transition: transform .15s ease-out;
-  transform: translateX(-50%) translateY(-100%);
+  transform: translateX(-50%) translateY(-105%);
 
   background: $syntax-bg-alternate;
 

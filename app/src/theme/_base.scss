@@ -7,16 +7,22 @@
 .container {
   position: relative;
   z-index: $zi-editor - 1;
+  right: -$nav-width;
 
   display: flex;
   overflow: hidden;
   flex-direction: column;
 
-  width: 100%;
+  width: calc(100vw - #{$nav-width});
   height: 100%;
 
   align-items: center;
-  flex-grow: 1;
+  flex-grow: 0;
+
+  @media (max-width: $tablet) {
+    right: 0;
+    width: calc(100vw);
+  }
 }
 
 .animationContainer {
@@ -91,6 +97,7 @@
     box-sizing: border-box;
     width: 100%;
     max-width: 37.5rem;
+    height: 100%;
     margin: 0 auto;
 
     blockquote {

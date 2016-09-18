@@ -21,7 +21,7 @@ const Contact = () => (
       <div className={ s.item }>
         <Icon className={ s.icon } name="paper-plane" />
         <span className={ s.text }>send me an email:</span>
-        <a className={ s.link } href={ config.email }>
+        <a className={ s.link } href={ `mailto:${config.email}` }>
           { config.email }
         </a>
       </div>
