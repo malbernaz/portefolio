@@ -35,9 +35,7 @@ SignIn.propTypes = {
 }
 
 export default connect(
-  state => ({
-    ...state
-  }),
+  state => ({ ...state }),
   dispatch => bindActionCreators({
     ...authActions,
     ...messageActions,

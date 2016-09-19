@@ -3,7 +3,7 @@
 
 .wrapper {
   position: absolute;
-  z-index: $zi-editor;
+  z-index: $zi-editor + 1;
   top: 0;
   bottom: 0;
 

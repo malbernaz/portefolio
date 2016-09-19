@@ -3,7 +3,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import moment from 'moment'
 
 import { Icon, EditorNav, DropdownButton } from '../'
-import { Codemirror } from '../../containers'
+import { Editor } from '../../containers'
 import s from './EditorView.scss'
 
 const EditorView = ({
@@ -22,7 +22,7 @@ const EditorView = ({
   toggleDropdown,
   toggleNav,
   toggleSettings
-}) => (
+}) =>
   <section className={ s.root }>
     <div className={ s.topBar }>
       <div className={ s.info }>
@@ -60,7 +60,7 @@ const EditorView = ({
     <div className={ s.panes }>
       <div className={ editorView === 'code' ? s.panesView : s.panesViewOnPreview }>
         <div className={ s.code }>
-          <Codemirror />
+          <Editor />
         </div>
         <div className={ s.preview }>
           <article dangerouslySetInnerHTML={{ __html: activeDraft.html }} />
@@ -68,24 +68,15 @@ const EditorView = ({
       </div>
     </div>
     <div className={ s.bottomBar }>
-      <a
-        onClick={ toggleNav }
-        className={ s.bottomBarBtn }
-      >
+      <a onClick={ toggleNav } className={ s.bottomBarBtn }>
         <Icon name="list" />
         <span>posts</span>
       </a>
-      <a
-        onClick={ e => switchEditorView(e, 'code') }
-        className={ s.bottomBarBtn }
-      >
+      <a onClick={ e => switchEditorView(e, 'code') } className={ s.bottomBarBtn }>
         <Icon name="edit" />
         <span>edit</span>
       </a>
-      <a
-        onClick={ e => switchEditorView(e, 'preview') }
-        className={ s.bottomBarBtn }
-      >
+      <a onClick={ e => switchEditorView(e, 'preview') } className={ s.bottomBarBtn }>
         <Icon name="preview" />
         <span>preview</span>
       </a>
@@ -98,7 +89,6 @@ const EditorView = ({
       iterablePosts={ iterablePosts }
     />
   </section>
-)
 
 EditorView.propTypes = {
   activeDraft: PropTypes.object.isRequired,

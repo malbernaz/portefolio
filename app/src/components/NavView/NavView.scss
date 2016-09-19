@@ -64,8 +64,8 @@
 }
 
 .toggleBtn {
-  position: fixed;
-  z-index: $zi-nav - 1;
+  position: absolute;
+  z-index: $zi-editor;
   top: 0;
   left: 0;
 

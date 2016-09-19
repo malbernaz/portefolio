@@ -9,7 +9,7 @@ import * as postsActions from '../actions/posts'
 import * as messageActions from '../actions/message'
 import * as editorActions from '../actions/ui/editor'
 
-class Editor extends Component {
+class EditorContainer extends Component {
   static propTypes = {
     createActiveDraft: PropTypes.func,
     deleteDraft: PropTypes.func,
@@ -231,4 +231,4 @@ export default connect(
     ...messageActions,
     ...editorActions
   }, dispatch)
-)(Editor)
+)(EditorContainer)

@@ -1,14 +1,14 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Editor, EditorState, ContentState } from 'draft-js'
+import { Editor as DraftEditor, EditorState, ContentState } from 'draft-js'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import * as postsActions from '../../actions/posts'
 import RedendererWorker from './Renderer.worker'
-import s from './Codemirror.scss'
+import s from './Editor.scss'
 
-class Codemirror extends Component {
+class Editor extends Component {
   static propTypes = {
     posts: PropTypes.object,
     updateActiveDraft: PropTypes.func
@@ -17,17 +17,15 @@ class Codemirror extends Component {
   constructor (props) {
     super(props)
 
-    this.state = {
-      editorState:
-        EditorState.createWithContent(ContentState.createFromText(props.posts.activeDraft.raw))
-    }
+    const { createFromText } = ContentState
 
-    if (typeof window === 'object') {
-      this.rendererWorker = new RedendererWorker()
+    this.state = {
+      editorState: EditorState.createWithContent(createFromText(props.posts.activeDraft.raw))
     }
   }
 
   componentDidMount () {
+    this.rendererWorker = new RedendererWorker()
     this.rendererWorker.addEventListener('message', this.markdownReceiver, false)
   }
 
@@ -58,7 +56,7 @@ class Codemirror extends Component {
   render () {
     const { editorState } = this.state
 
-    return <Editor onChange={ this.handleChange } editorState={ editorState } />
+    return <DraftEditor onChange={ this.handleChange } editorState={ editorState } />
   }
 }
 
@@ -69,4 +67,4 @@ export default connect(
   dispatch => bindActionCreators({
     ...postsActions
   }, dispatch)
-)(withStyles(s)(Codemirror))
+)(withStyles(s)(Editor))

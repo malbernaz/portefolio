@@ -9,7 +9,7 @@ import { Nav } from './'
 import MessageNotifier from './MessageNotifier/MessageNotifier'
 import s from '../theme/main.scss'
 
-const AppView = ({ children, location }) => (
+const AppView = ({ children, location }) =>
   <div className={ s.appView }>
     <Helmet { ...config.head } />
     <Nav />
@@ -26,7 +26,6 @@ const AppView = ({ children, location }) => (
     </div>
     <MessageNotifier />
   </div>
-)
 
 AppView.propTypes = {
   children: PropTypes.element,
@@ -34,7 +33,5 @@ AppView.propTypes = {
 }
 
 export default connect(
-  state => ({
-    ...state
-  })
+  state => ({ ...state })
 )(withStyles(s)(AppView))

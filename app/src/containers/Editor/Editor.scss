@@ -1,6 +1,8 @@
+@import '../../theme/vars';
+
 :global {
   .DraftEditor-root {
-    font-family: Menlo, 'Fira Mono' monospace;
+    font-family: $monospace;
 
     overflow-y: scroll;
 

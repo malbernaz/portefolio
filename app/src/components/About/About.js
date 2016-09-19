@@ -5,7 +5,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import { Wrapper } from '../'
 import s from './About.scss'
 
-const About = () => (
+const About = () =>
   <Wrapper>
     <section className={ s.root }>
       <Helmet title="ABOUT" />
@@ -38,6 +38,5 @@ const About = () => (
       </p>
     </section>
   </Wrapper>
-)
 
 export default withStyles(s)(About)

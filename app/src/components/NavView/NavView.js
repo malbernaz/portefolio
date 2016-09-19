@@ -16,7 +16,7 @@ const NavView = ({
   toggleOnLinkClick,
   twitter,
   user
-}) => (
+}) =>
   <div className={ s.wrapper }>
     <div className={ isVisible ? s.rootIsShown : s.root }>
       <div className={ s.content }>
@@ -91,10 +91,7 @@ const NavView = ({
             >
               <Icon name="twitter" />
             </a>
-            <a
-              className={ s.socialLink }
-              href={ `mailto:${email}` }
-            >
+            <a className={ s.socialLink } href={ `mailto:${email}` }>
               <Icon name="paper-plane" />
             </a>
           </div>
@@ -107,24 +104,15 @@ const NavView = ({
         </div>
       </div>
     </div>
-    <div
-      onClick={ toggleNav }
-      className={ isVisible ? s.shadowIsShown : s.shadow }
-    />
+    <div onClick={ toggleNav } className={ isVisible ? s.shadowIsShown : s.shadow } />
     <div className={ s.navMobile }>
       <div className={ s.navMobileLogo }>
         <Icon name="logo" />
         <span>portefólio</span>
       </div>
     </div>
-    <a
-      onClick={ toggleNav }
-      className={ s.toggleBtn }
-    >
-      <Icon name="menu" />
-    </a>
+    <a onClick={ toggleNav } className={ s.toggleBtn }><Icon name="menu" /></a>
   </div>
-)
 
 NavView.propTypes = {
   description: PropTypes.string.isRequired,
