@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import moment from 'moment'
 
-import { Icon, EditorNav, DropdownButton, EditorSettings } from '../'
+import { Icon, EditorNav, DropdownButton } from '../'
 import { Codemirror } from '../../containers'
 import s from './EditorView.scss'
 
@@ -10,7 +10,6 @@ const EditorView = ({
   activeDraft,
   dropdownIsShown,
   editorView,
-  handleChange,
   handleDelete,
   handleEditPost,
   handleNewPost,
@@ -19,26 +18,15 @@ const EditorView = ({
   handleUnpublish,
   iterablePosts,
   navIsShown,
-  settingIsShown,
   switchEditorView,
   toggleDropdown,
   toggleNav,
   toggleSettings
 }) => (
   <section className={ s.root }>
-    <EditorSettings
-      meta={ activeDraft.meta }
-      handleChange={ handleChange }
-      isShown={ settingIsShown }
-      toggle={ toggleSettings }
-    />
     <div className={ s.topBar }>
-      <a onClick={ e => toggleNav(e) } className={ s.topBarBtnPosts }>
-        <Icon name="list" />
-        <span>posts</span>
-      </a>
       <div className={ s.info }>
-        <a className={ s.infoTitle } onClick={ e => toggleSettings(e) }>
+        <a className={ s.infoTitle } onClick={ toggleSettings }>
           <b>
             { Object.hasOwnProperty.call(activeDraft, 'meta') &&
               Object.hasOwnProperty.call(activeDraft.meta, 'title') ?
@@ -70,13 +58,6 @@ const EditorView = ({
       />
     </div>
     <div className={ s.panes }>
-      <EditorNav
-        toggle={ toggleNav }
-        handleEditPost={ handleEditPost }
-        handleDelete={ handleDelete }
-        isShown={ navIsShown }
-        iterablePosts={ iterablePosts }
-      />
       <div className={ editorView === 'code' ? s.panesView : s.panesViewOnPreview }>
         <div className={ s.code }>
           <Codemirror />
@@ -109,6 +90,13 @@ const EditorView = ({
         <span>preview</span>
       </a>
     </div>
+    <EditorNav
+      toggle={ toggleNav }
+      handleEditPost={ handleEditPost }
+      handleDelete={ handleDelete }
+      isShown={ navIsShown }
+      iterablePosts={ iterablePosts }
+    />
   </section>
 )
 

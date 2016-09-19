@@ -138,10 +138,6 @@
   width: 100%;
   margin: 0 0 3rem;
   padding: 0;
-
-  @media (max-width: $mobile-s) {
-    margin-top: 3rem;
-  }
 }
 
 .item {
@@ -190,10 +186,6 @@
 .footer {
   width: 100%;
   width: $nav-width;
-
-  @media (max-width: $mobile-s) {
-    transform: scale(.8);
-  }
 }
 
 .social {

@@ -8,7 +8,7 @@ import { About, Contact, Home, NotFound } from './components'
 
 export default store => {
   const mustBeLogged = (nextState, replace, callback) => {
-    function checkAuth({ user }) {
+    function checkAuth ({ user }) {
       if (!user) replace('/admin')
 
       return callback()
@@ -26,7 +26,7 @@ export default store => {
   const postMustExist = (nextState, replace, callback) => {
     const slug = nextState.params.slug
 
-    function checkIfExists({ posts }) {
+    function checkIfExists ({ posts }) {
       if (!posts.some(p => slug === p.slug)) replace('/pagenotfound')
 
       return callback()

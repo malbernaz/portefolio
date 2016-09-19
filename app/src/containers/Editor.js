@@ -35,7 +35,6 @@ class Editor extends Component {
   }
 
   // POSTS CRUD
-
   submitPromise = (promise, data) => {
     const {
       showMessage,
@@ -133,7 +132,6 @@ class Editor extends Component {
   }
 
   // UI INTERACTIONS
-
   handleEditPost = (e, newActiveDraft) => {
     e.preventDefault()
 
@@ -176,7 +174,7 @@ class Editor extends Component {
     switchView(view)
   }
 
-  render() {
+  render () {
     const {
       editor: {
         editorDropdownIsVisible,

@@ -1,28 +1,12 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import ReactCodemirror from 'react-codemirror'
-import marked from 'marked'
+import { Editor, EditorState, ContentState } from 'draft-js'
+import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import * as postsActions from '../../actions/posts'
-import renderer from './renderer'
-
-marked.setOptions({
-  gfm: true,
-  renderer
-})
-
-const options = {
-  gfm: true,
-  lineWrapping: true,
-  theme: 'one-light',
-  extraKeys: {
-    Tab: cm => {
-      const spaces = Array(cm.getOption('indentUnit') + 1).join(' ')
-      cm.replaceSelection(spaces)
-    }
-  }
-}
+import RedendererWorker from './Renderer.worker'
+import s from './Codemirror.scss'
 
 class Codemirror extends Component {
   static propTypes = {
@@ -30,30 +14,51 @@ class Codemirror extends Component {
     updateActiveDraft: PropTypes.func
   }
 
-  componentDidMount() {
-    require('codemirror/mode/gfm/gfm') // eslint-disable-line global-require
+  constructor (props) {
+    super(props)
 
-    options.mode = 'gfm'
-    this.handleChange(this.props.posts.activeDraft.raw)
+    this.state = {
+      editorState:
+        EditorState.createWithContent(ContentState.createFromText(props.posts.activeDraft.raw))
+    }
+
+    if (typeof window === 'object') {
+      this.rendererWorker = new RedendererWorker()
+    }
   }
 
-  handleChange = (raw) => {
+  componentDidMount () {
+    this.rendererWorker.addEventListener('message', this.markdownReceiver, false)
+  }
+
+  componentWillUnmount () {
+    this.rendererWorker.removeEventListener('message', this.markdownReceiver, false)
+  }
+
+  markdownReceiver = e => {
+    e.preventDefault()
+
     const { updateActiveDraft } = this.props
-    const html = marked(raw)
+    const { editorState } = this.state
 
-    updateActiveDraft({ raw, html })
+    updateActiveDraft({
+      html: e.data,
+      raw: editorState.getCurrentContent().getPlainText()
+    })
   }
 
-  render() {
-    const { posts: { activeDraft: { raw } } } = this.props
+  handleChange = editorState => {
+    this.setState({ editorState })
 
-    return (
-      <ReactCodemirror
-        options={ options }
-        onChange={ this.handleChange }
-        value={ raw }
-      />
-    )
+    this.rendererWorker.postMessage({
+      raw: editorState.getCurrentContent().getPlainText()
+    })
+  }
+
+  render () {
+    const { editorState } = this.state
+
+    return <Editor onChange={ this.handleChange } editorState={ editorState } />
   }
 }
 
@@ -64,4 +69,4 @@ export default connect(
   dispatch => bindActionCreators({
     ...postsActions
   }, dispatch)
-)(Codemirror)
+)(withStyles(s)(Codemirror))

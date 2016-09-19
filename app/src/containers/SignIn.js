@@ -8,7 +8,7 @@ import * as authActions from '../actions/auth'
 import * as messageActions from '../actions/message'
 
 const SignIn = ({ auth, signIn, logout, loadAuth, showMessage, redirect }) => {
-  function handleSubmit(data) {
+  function handleSubmit (data) {
     const submitPromise = () => signIn(data)
       .then(({ message }) => {
         showMessage(message)

@@ -12,8 +12,17 @@ module.exports = env => ({
     }],
     loaders: [{
       test: /\.js$/,
-      exclude: /node_modules/,
+      exclude: [/node_modules/, /\.worker\.js$/],
       loader: 'babel-loader'
+    }, {
+      test: /\.worker\.js$/,
+      exclude: /node_modules/,
+      loaders: ['babel-loader', {
+        loader: 'worker-loader',
+        query: {
+          inline: true
+        }
+      }]
     }, {
       test: /\.json$/,
       loader: 'json-loader'

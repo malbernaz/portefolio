@@ -8,7 +8,7 @@ $posts-list-width: 15rem;
 
   width: calc(100vw - #{$nav-width});
 
-  background: $syntax-bg-alternate;
+  background: $syntax-bg;
 
   align-items: center;
 }
@@ -19,9 +19,11 @@ $posts-list-width: 15rem;
   display: flex;
   flex-direction: column;
 
+  box-sizing: border-box;
   width: calc(100vw - #{$nav-width});
   height: 100vh;
-  box-sizing: border-box;
+
+  background: $syntax-bg;
 
   @media (max-width: $tablet) {
     width: 100vw;
@@ -30,18 +32,13 @@ $posts-list-width: 15rem;
 
 .topBar {
   position: relative;
-  z-index: $zi-editor + 1;
 
   flex: 0 0 $mobile-nav-height;
 
-  box-shadow: 0 1px 5px $default-shadow-color;
+  width: 100%;
 
   @extend %adminBar;
   justify-content: center;
-
-  @media (max-width: $tablet) {
-    width: 100vw;
-  }
 }
 
 .topBarBtn {
@@ -96,7 +93,7 @@ $posts-list-width: 15rem;
 
     max-width: 33.8rem;
     height: 1.3rem;
-    padding-right: .5rem;
+    margin-right: .5rem;
 
     text-align: left;
     white-space: nowrap;
@@ -123,21 +120,13 @@ $posts-list-width: 15rem;
 .bottomBar {
   z-index: $zi-editor + 1;
 
-  display: none;
+  display: flex;
   flex: 0 0 4rem;
 
-  box-shadow: 0 -1px 5px $default-shadow-color;
+  width: 100%;
 
   @extend %adminBar;
   justify-content: space-around;
-
-  @media (max-width: 70rem) {
-    display: flex;
-  }
-
-  @media (max-width: $tablet) {
-    width: 100vw;
-  }
 }
 
 .bottomBarBtn {
@@ -163,83 +152,50 @@ $posts-list-width: 15rem;
 
   display: flex;
 
-  width: calc(100vw - #{$nav-width});
-  height: calc(100% - #{$mobile-nav-height});
-
-  @media (max-width: 70rem) {
-    height: calc(100% - 7.5rem);
-  }
-
-  @media (max-width: $tablet) {
-    width: 100vw;
-  }
+  width: 100%;
+  height: 100%;
 }
 
 .panesView {
-  display: flex;
+  display: block;
 
   width: 100%;
   height: 100%;
 
-  @media (max-width: 70rem) {
-    display: block;
+  transition: transform .3s $default-cubic-bezier;
+  transform: translateX(0);
 
-    width: 100%;
-
-    transition: transform .2s $default-cubic-bezier;
-    transform: translateX(0);
-
-    will-change: transform;
-  }
+  will-change: transform;
 }
 
 .panesViewOnPreview {
-  @extend .panesView;
+  transform: translateX(-100%);
 
-  @media (max-width: 70rem) {
-    transform: translateX(-100%);
-  }
+  @extend .panesView;
 }
 
 .code {
-  flex: 1 1 50%;
-
   box-sizing: border-box;
+  width: 100%;
   height: 100%;
-
-  // reset for the first server render
-  textarea {
-    font-family: $monospace;
-    font-size: .8rem;
-
-    bottom: 0;
-
-    width: 100%;
-    height: 100%;
-
-    border: 0;
-    background: $syntax-bg;
-  }
-
-  @media (max-width: 70rem) {
-    width: 100%;
-  }
 }
 
 .preview {
+  position: absolute;
+  top: 0;
+  left: 0;
+
   display: block;
   overflow-y: scroll;
-  flex: 1 1 50%;
 
   box-sizing: border-box;
+  width: 100%;
   height: 100%;
   padding: 1rem 1rem 2rem;
 
-  transform: translateX(0) translateZ(0);
+  transform: translateX(100%) translateZ(0);
 
-  border-left: 1px lighten($mono-3, 15) dashed;
-
-  will-change: transform;
+  border-left: 0;
 
   article {
     padding-top: 0;
@@ -247,17 +203,5 @@ $posts-list-width: 15rem;
     h2:first-child {
       margin-top: 0;
     }
-  }
-
-  @media (max-width: 70rem) {
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    width: 100%;
-
-    transform: translateX(100%) translateZ(0);
-
-    border-left: 0;
   }
 }

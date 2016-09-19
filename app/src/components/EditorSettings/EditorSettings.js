@@ -4,11 +4,8 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import s from './EditorSettings.scss'
 
-const EditorSettings = ({ meta, handleChange, toggle, isShown }) => (
-  <div
-    className={ s.wrapper }
-    style={{ pointerEvents: isShown ? 'all' : 'none' }}
-  >
+const EditorSettings = ({ meta, handleChange, isShown }) => (
+  <div className={ s.wrapper }>
     <div className={ isShown ? s.rootIsShown : s.root }>
       <div className={ s.meta }>
         <Dropzone className={ s.dropzone }>
@@ -55,10 +52,6 @@ const EditorSettings = ({ meta, handleChange, toggle, isShown }) => (
         </label>
       </div>
     </div>
-    <div
-      className={ isShown ? s.shadowIsShown : s.shadow }
-      onClick={ toggle }
-    />
   </div>
 )
 

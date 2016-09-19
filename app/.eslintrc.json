@@ -10,6 +10,7 @@
   "rules": {
     "comma-dangle": 0,
     "func-names": 0,
+    "space-before-function-paren": [2, "always"],
     "import/no-unresolved": [0, {}],
     "import/no-extraneous-dependencies": ["error", {
       "devDependencies": true,

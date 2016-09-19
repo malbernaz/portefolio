@@ -1,0 +1,21 @@
+:global {
+  .DraftEditor-root {
+    font-family: Menlo, 'Fira Mono' monospace;
+
+    overflow-y: scroll;
+
+    height: 100%;
+  }
+
+  .DraftEditor-editorContainer {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 600px;
+    height: 100%;
+    margin: 0 auto;
+  }
+
+  .public-DraftEditor-content {
+    padding: 30px 50px 50px;
+  }
+}

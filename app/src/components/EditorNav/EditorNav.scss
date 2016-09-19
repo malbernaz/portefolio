@@ -3,7 +3,7 @@
 
 .root {
   position: absolute;
-  z-index: $zi-editor;
+  z-index: $zi-editor + 1;
   top: 0;
 
   flex: 0 0 $posts-list-width;

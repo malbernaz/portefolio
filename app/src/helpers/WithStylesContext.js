@@ -10,11 +10,11 @@ export default class WithStylesContext extends Component {
     insertCss: PropTypes.func.isRequired,
   }
 
-  getChildContext() {
+  getChildContext () {
     return { insertCss: this.props.onInsertCss }
   }
 
-  render() {
+  render () {
     return Children.only(this.props.children)
   }
 }
