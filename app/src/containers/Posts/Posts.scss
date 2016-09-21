@@ -2,6 +2,7 @@
 @import '../../theme/mixins';
 
 .root {
+  box-sizing: border-box;
   width: 100%;
   padding: 2rem 1rem;
 }
