@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import moment from 'moment'
+import Helmet from 'react-helmet'
 
 import { Icon, EditorNav, DropdownButton } from '../'
 import { Editor } from '../../containers'
@@ -20,11 +21,16 @@ const EditorView = ({
   navIsShown,
   switchEditorView,
   toggleDropdown,
+  toggleEditorNav,
   toggleNav,
   toggleSettings
 }) =>
   <section className={ s.root }>
+    <Helmet title="EDITOR" />
     <div className={ s.topBar }>
+      <a className={ s.menuToggleBtn } onClick={ toggleNav }>
+        <Icon name="menu" />
+      </a>
       <div className={ s.info }>
         <a className={ s.infoTitle } onClick={ toggleSettings }>
           <b>
@@ -59,16 +65,18 @@ const EditorView = ({
     </div>
     <div className={ s.panes }>
       <div className={ editorView === 'code' ? s.panesView : s.panesViewOnPreview }>
-        <div className={ s.code }>
+        <div className={ s.pane }>
           <Editor />
         </div>
-        <div className={ s.preview }>
-          <article dangerouslySetInnerHTML={{ __html: activeDraft.html }} />
+        <div className={ s.pane }>
+          <div className={ s.preview }>
+            <article dangerouslySetInnerHTML={{ __html: activeDraft.html }} />
+          </div>
         </div>
       </div>
     </div>
     <div className={ s.bottomBar }>
-      <a onClick={ toggleNav } className={ s.bottomBarBtn }>
+      <a onClick={ toggleEditorNav } className={ s.bottomBarBtn }>
         <Icon name="list" />
         <span>posts</span>
       </a>
@@ -82,7 +90,7 @@ const EditorView = ({
       </a>
     </div>
     <EditorNav
-      toggle={ toggleNav }
+      toggle={ toggleEditorNav }
       handleEditPost={ handleEditPost }
       handleDelete={ handleDelete }
       isShown={ navIsShown }
@@ -106,6 +114,7 @@ EditorView.propTypes = {
   settingIsShown: PropTypes.bool.isRequired,
   switchEditorView: PropTypes.func.isRequired,
   toggleDropdown: PropTypes.func.isRequired,
+  toggleEditorNav: PropTypes.func.isRequired,
   toggleNav: PropTypes.func.isRequired,
   toggleSettings: PropTypes.func.isRequired
 }

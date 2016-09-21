@@ -2,8 +2,8 @@
 @import '../../theme/mixins';
 
 .root {
-  position: fixed;
-  z-index: $zi-editor + 1;
+  position: absolute;
+  z-index: $zi-nav;
   top: 0;
 
   flex: 0 0 $posts-list-width;

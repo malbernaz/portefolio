@@ -1,13 +1,14 @@
 import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import Helmet from 'react-helmet'
+// import Helmet from 'react-helmet'
 
 import { EditorView } from '../components'
 import editablePostsSelector from '../selectors/editablePostsSelector'
 import * as postsActions from '../actions/posts'
 import * as messageActions from '../actions/message'
 import * as editorActions from '../actions/ui/editor'
+import * as navActions from '../actions/ui/nav'
 
 class EditorContainer extends Component {
   static propTypes = {
@@ -28,6 +29,7 @@ class EditorContainer extends Component {
     toggleEditorDropdown: PropTypes.func,
     toggleEditorNav: PropTypes.func,
     toggleEditorSettings: PropTypes.func,
+    toggleNav: PropTypes.func,
     unpublish: PropTypes.func,
     updateActiveDraft: PropTypes.func,
     updateDraft: PropTypes.func,
@@ -98,7 +100,9 @@ class EditorContainer extends Component {
       deletePost,
       deleteDraft,
       posts: {
-        activeDraft, drafts, posts
+        activeDraft,
+        drafts,
+        posts
       }
     } = this.props
 
@@ -142,7 +146,15 @@ class EditorContainer extends Component {
     createActiveDraft(newActiveDraft)
   }
 
-  toggleNav = e => {
+  toggleGlobalNav = e => {
+    e.preventDefault()
+
+    const { toggleNav } = this.props
+
+    toggleNav()
+  }
+
+  toggleEditorNav = e => {
     e.preventDefault()
 
     const { toggleEditorNav } = this.props
@@ -191,30 +203,28 @@ class EditorContainer extends Component {
     } = this.props
 
     return (
-      <div>
-        <Helmet title="EDITOR" />
-        <EditorView
-          activeDraft={ activeDraft }
-          drafts={ drafts }
-          dropdownIsShown={ editorDropdownIsVisible }
-          editorView={ view }
-          handleChange={ this.handleChange }
-          handleDelete={ this.handleDelete }
-          handleEditPost={ this.handleEditPost }
-          handleNewPost={ this.handleNewPost }
-          handlePublish={ this.handlePublish }
-          handleSaveDraft={ this.handleSaveDraft }
-          handleUnpublish={ this.handleUnpublish }
-          iterablePosts={ iterablePosts }
-          navIsShown={ editorNavIsVisible }
-          posts={ posts }
-          settingIsShown={ editorSettingsIsVisible }
-          switchEditorView={ this.switchEditorView }
-          toggleDropdown={ this.toggleDropdown }
-          toggleNav={ this.toggleNav }
-          toggleSettings={ this.toggleSettings }
-        />
-      </div>
+      <EditorView
+        activeDraft={ activeDraft }
+        drafts={ drafts }
+        dropdownIsShown={ editorDropdownIsVisible }
+        editorView={ view }
+        handleChange={ this.handleChange }
+        handleDelete={ this.handleDelete }
+        handleEditPost={ this.handleEditPost }
+        handleNewPost={ this.handleNewPost }
+        handlePublish={ this.handlePublish }
+        handleSaveDraft={ this.handleSaveDraft }
+        handleUnpublish={ this.handleUnpublish }
+        iterablePosts={ iterablePosts }
+        navIsShown={ editorNavIsVisible }
+        posts={ posts }
+        settingIsShown={ editorSettingsIsVisible }
+        switchEditorView={ this.switchEditorView }
+        toggleDropdown={ this.toggleDropdown }
+        toggleEditorNav={ this.toggleEditorNav }
+        toggleNav={ this.toggleGlobalNav }
+        toggleSettings={ this.toggleSettings }
+      />
     )
   }
 }
@@ -229,6 +239,7 @@ export default connect(
   dispatch => bindActionCreators({
     ...postsActions,
     ...messageActions,
-    ...editorActions
+    ...editorActions,
+    ...navActions
   }, dispatch)
 )(EditorContainer)

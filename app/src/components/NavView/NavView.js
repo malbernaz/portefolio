@@ -98,20 +98,13 @@ const NavView = ({
           <div className={ s.copyright }>
             <span>
               <span className={ s.copyrightIcon }>&copy;</span>
-              { ` ${new Date().getFullYear()} - portefólio` }
+              { ` ${new Date().getFullYear()} - ${title}` }
             </span>
           </div>
         </div>
       </div>
     </div>
     <div onClick={ toggleNav } className={ isVisible ? s.shadowIsShown : s.shadow } />
-    <div className={ s.navMobile }>
-      <div className={ s.navMobileLogo }>
-        <Icon name="logo" />
-        <span>portefólio</span>
-      </div>
-    </div>
-    <a onClick={ toggleNav } className={ s.toggleBtn }><Icon name="menu" /></a>
   </div>
 
 NavView.propTypes = {
