@@ -46,7 +46,7 @@
 
   opacity: .8;
 
-  @extend .placeholder;
+  composes: placeholder;
 }
 
 .input {

@@ -9,8 +9,10 @@ import s from './EditorView.scss'
 
 const EditorView = ({
   activeDraft,
+  creatingActiveDraft,
   dropdownIsShown,
   editorView,
+  handleChange,
   handleDelete,
   handleEditPost,
   handleNewPost,
@@ -66,7 +68,11 @@ const EditorView = ({
     <div className={ s.panes }>
       <div className={ editorView === 'code' ? s.panesView : s.panesViewOnPreview }>
         <div className={ s.pane }>
-          <Editor />
+          <Editor
+            activeDraft={ activeDraft }
+            creatingActiveDraft={ creatingActiveDraft }
+            updateActiveDraft={ handleChange }
+          />
         </div>
         <div className={ s.pane }>
           <div className={ s.preview }>
@@ -100,6 +106,7 @@ const EditorView = ({
 
 EditorView.propTypes = {
   activeDraft: PropTypes.object.isRequired,
+  creatingActiveDraft: PropTypes.bool.isRequired,
   dropdownIsShown: PropTypes.bool.isRequired,
   editorView: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,

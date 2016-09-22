@@ -50,7 +50,7 @@
 
   opacity: 1;
 
-  @extend .root;
+  composes: root;
 
   @media (max-width: $tablet) {
     transform: translateX(-50%) translateY(0);

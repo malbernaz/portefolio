@@ -28,7 +28,8 @@
 }
 
 .rootIsShown {
-  @extend .root;
+  composes: root;
+
   @media (max-width: $tablet) {
     transition: transform .1s ease-out;
     transform: translateX(0);
@@ -54,7 +55,8 @@
 }
 
 .shadowIsShown {
-  @extend .shadow;
+  composes: shadow;
+
   @media (max-width: $tablet) {
     transition: opacity .1s ease-out;
     pointer-events: all;
@@ -133,8 +135,6 @@
   &:focus {
     color: $syntax-accent;
     background: darken($syntax-bg, 7);
-
-    @extend .item;
   }
 
   @media (max-width: $mobile-s) {
@@ -146,7 +146,7 @@
   color: $syntax-accent;
   background: darken($syntax-bg, 7);
 
-  @extend .item;
+  composes: item;
 }
 
 .itemLogout {
@@ -154,7 +154,7 @@
 
   border-top: 1px $mono-3 dashed;
 
-  @extend .item;
+  composes: item;
   @include dark-link($syntax-accent, 10);
 
   &:hover {

@@ -1,7 +1,6 @@
 import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-// import Helmet from 'react-helmet'
 
 import { EditorView } from '../components'
 import editablePostsSelector from '../selectors/editablePostsSelector'
@@ -195,20 +194,23 @@ class EditorContainer extends Component {
         view
       },
       posts: {
-        posts,
         activeDraft,
-        drafts
+        creatingActiveDraft,
+        drafts,
+        posts
       },
-      iterablePosts
+      iterablePosts,
+      updateActiveDraft
     } = this.props
 
     return (
       <EditorView
         activeDraft={ activeDraft }
+        creatingActiveDraft={ creatingActiveDraft }
         drafts={ drafts }
         dropdownIsShown={ editorDropdownIsVisible }
         editorView={ view }
-        handleChange={ this.handleChange }
+        handleChange={ updateActiveDraft }
         handleDelete={ this.handleDelete }
         handleEditPost={ this.handleEditPost }
         handleNewPost={ this.handleNewPost }

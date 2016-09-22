@@ -36,6 +36,7 @@ import {
 import defaultDraft from '../helpers/defaultDraft'
 
 const initialState = {
+  creatingActiveDraft: true,
   posts: [],
   drafts: []
 }
@@ -158,6 +159,7 @@ export default (state = initialState, action = {}) => {
     case CREATE_ACTIVE_DRAFT:
       return {
         ...state,
+        creatingActiveDraft: true,
         activeDraft:
           action.activeDraft &&
           Object.keys(action.activeDraft).length > 0 ?
@@ -167,6 +169,7 @@ export default (state = initialState, action = {}) => {
     case UPDATE_ACTIVE_DRAFT:
       return {
         ...state,
+        creatingActiveDraft: false,
         activeDraft: {
           ...state.activeDraft,
           ...action.activeDraft,

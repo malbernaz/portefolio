@@ -13,7 +13,10 @@ const Html = ({ component, store, css }) => {
         { head.title.toComponent() }
         { head.meta.toComponent() }
         { head.link.toComponent() }
-
+        <meta
+          name="viewport"
+          content=" width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+        />
         <style>{ css.join('') }</style>
       </head>
       <body>

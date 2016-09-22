@@ -57,11 +57,11 @@ $posts-list-width: 15rem;
     display: flex;
   }
 
-  @extend .topBarBtn;
+  composes: topBarBtn;
 }
 
 .topBarBtnPosts {
-  @extend .topBarBtn;
+  composes: topBarBtn;
 
   @media (max-width: 70rem) {
     visibility: hidden;
@@ -156,6 +156,7 @@ $posts-list-width: 15rem;
 }
 
 .panes {
+  contain: strict;
   position: relative;
 
   width: 100%;
@@ -168,7 +169,7 @@ $posts-list-width: 15rem;
   width: 200%;
   height: 100%;
 
-  transition: transform .3s $default-cubic-bezier;
+  transition: transform .3s ease;
   transform: translateX(0);
 
   will-change: transform;
@@ -177,7 +178,7 @@ $posts-list-width: 15rem;
 .panesViewOnPreview {
   transform: translateX(-50%);
 
-  @extend .panesView;
+  composes: panesView;
 }
 
 .pane {
@@ -188,6 +189,8 @@ $posts-list-width: 15rem;
 
 .preview {
   overflow-y: scroll;
+
+  transform: translateZ(0);
 
   height: 100%;
 

@@ -1,32 +1,35 @@
 import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
 import { Editor as DraftEditor, EditorState, ContentState } from 'draft-js'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
-import * as postsActions from '../../actions/posts'
 import RedendererWorker from './Renderer.worker'
 import s from './Editor.scss'
 
+const { createFromText } = ContentState
+const { createWithContent } = EditorState
+
 class Editor extends Component {
   static propTypes = {
-    posts: PropTypes.object,
+    activeDraft: PropTypes.object,
+    creatingActiveDraft: PropTypes.bool,
     updateActiveDraft: PropTypes.func
   }
 
   constructor (props) {
     super(props)
 
-    const { createFromText } = ContentState
-
-    this.state = {
-      editorState: EditorState.createWithContent(createFromText(props.posts.activeDraft.raw))
-    }
+    this.state = { editorState: createWithContent(createFromText(props.activeDraft.raw)) }
   }
 
   componentDidMount () {
     this.rendererWorker = new RedendererWorker()
     this.rendererWorker.addEventListener('message', this.markdownReceiver, false)
+  }
+
+  componentWillReceiveProps ({ activeDraft, creatingActiveDraft }) {
+    if (creatingActiveDraft) {
+      this.setState({ editorState: createWithContent(createFromText(activeDraft.raw)) })
+    }
   }
 
   componentWillUnmount () {
@@ -60,11 +63,4 @@ class Editor extends Component {
   }
 }
 
-export default connect(
-  state => ({
-    ...state
-  }),
-  dispatch => bindActionCreators({
-    ...postsActions
-  }, dispatch)
-)(withStyles(s)(Editor))
+export default withStyles(s)(Editor)
