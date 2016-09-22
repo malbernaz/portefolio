@@ -28,9 +28,7 @@ MessageNotifier.propTypes = {
 }
 
 export default connect(
-  state => ({
-    message: state.message
-  }),
+  state => ({ message: state.message }),
   dispatch => bindActionCreators({
     ...messageActions
   }, dispatch)

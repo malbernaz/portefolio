@@ -36,12 +36,13 @@ $selection: #ededed;
 
 // Fonts -----------------------------------
 $sans-serif: 'Source Sans Pro', helvetica, arial, sans-serif;
-$monospace: Menlo, 'Fira Mono' monospace;
+$monospace: 'Fira Mono', Menlo, monospace;
 
 
 // z-index -----------------------------------
 $zi-nav: 1000;
-$zi-editor: 998;
+$zi-editor: 999;
+$zi-mobile-nav: 998;
 $zi-message-nofifier: 1001;
 
 
@@ -58,7 +59,3 @@ $mobile-s: 20rem;
 $nav-width: 14rem;
 $mobile-nav-height: 4rem;
 $posts-list-width: 15rem;
-
-// Cubic Bezier
-
-$default-cubic-bezier: cubic-bezier(0, 0, 0.2, 1);

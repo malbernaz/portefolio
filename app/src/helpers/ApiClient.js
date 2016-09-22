@@ -5,7 +5,7 @@ const methods = ['del', 'get', 'patch', 'post', 'put']
 
 const isServer = typeof window !== 'object'
 
-function formatUrl(path) {
+function formatUrl (path) {
   const adjustedPath = path[0] !== '/' ? `/${path}` : path
 
   if (isServer) {
@@ -16,7 +16,7 @@ function formatUrl(path) {
 }
 
 export default class ApiClient {
-  constructor(req) {
+  constructor (req) {
     methods.forEach(method => {
       this[method] = (path, { params, data } = {}) =>
         new Promise((resolve, reject) => {

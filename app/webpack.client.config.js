@@ -58,11 +58,12 @@ module.exports = env => Object.assign(baseConfig(env), {
   context: resolve(__dirname, 'src'),
   entry: {
     main: './client.js',
-    vendor: ['react', 'react-router', 'moment', 'highlight.js', 'codemirror', 'marked']
+    vendor: ['react', 'react-router', 'moment']
   },
   output: {
     path: resolve(__dirname, 'dist', 'public'),
-    filename: 'scripts/[name].bundle.js'
+    filename: 'scripts/[name].bundle.js',
+    publicPath: '/',
   },
   plugins: env === 'prod' ? prodPlugins : plugins,
   devtool: env === 'prod' ? 'hidden-source-map' : 'cheap-module-source-map'

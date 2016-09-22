@@ -8,7 +8,7 @@ import * as authActions from '../actions/auth'
 import * as navActions from '../actions/ui/nav'
 
 const Nav = ({ auth, ui: { nav }, logout, toggleNav }) => {
-  const toggle = (e) => {
+  const toggle = e => {
     e.preventDefault()
     toggleNav()
   }

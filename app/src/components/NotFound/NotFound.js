@@ -5,7 +5,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import s from './NotFound.scss'
 import { Wrapper } from '../'
 
-const NotFound = () => (
+const NotFound = () =>
   <Wrapper>
     <div className={ s.root }>
       <Helmet title="NOT FOUND" />
@@ -17,6 +17,5 @@ const NotFound = () => (
       </h3>
     </div>
   </Wrapper>
-)
 
 export default withStyles(s)(NotFound)

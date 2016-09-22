@@ -3,12 +3,12 @@ import { IndexRoute, Route, Redirect } from 'react-router'
 
 import { loadAuth } from './actions/auth'
 import { loadPosts, loadPostsAndDrafts } from './actions/posts'
-import { AppView, Editor, SignIn, Post } from './containers'
+import { AppView, EditorContainer, SignIn, Post } from './containers'
 import { About, Contact, Home, NotFound } from './components'
 
 export default store => {
   const mustBeLogged = (nextState, replace, callback) => {
-    function checkAuth({ user }) {
+    function checkAuth ({ user }) {
       if (!user) replace('/admin')
 
       return callback()
@@ -26,7 +26,7 @@ export default store => {
   const postMustExist = (nextState, replace, callback) => {
     const slug = nextState.params.slug
 
-    function checkIfExists({ posts }) {
+    function checkIfExists ({ posts }) {
       if (!posts.some(p => slug === p.slug)) replace('/pagenotfound')
 
       return callback()
@@ -65,7 +65,7 @@ export default store => {
       <Route name="admin" path="admin">
         <IndexRoute component={ SignIn } />
         <Route onEnter={ mustBeLogged } path="editor">
-          <IndexRoute onEnter={ getDrafts } component={ Editor } />
+          <IndexRoute onEnter={ getDrafts } component={ EditorContainer } />
         </Route>
       </Route>
 

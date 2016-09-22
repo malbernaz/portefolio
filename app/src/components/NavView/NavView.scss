@@ -28,7 +28,8 @@
 }
 
 .rootIsShown {
-  @extend .root;
+  composes: root;
+
   @media (max-width: $tablet) {
     transition: transform .1s ease-out;
     transform: translateX(0);
@@ -54,33 +55,13 @@
 }
 
 .shadowIsShown {
-  @extend .shadow;
+  composes: shadow;
+
   @media (max-width: $tablet) {
     transition: opacity .1s ease-out;
     pointer-events: all;
 
     opacity: 1;
-  }
-}
-
-.toggleBtn {
-  position: fixed;
-  z-index: $zi-nav - 1;
-  top: 0;
-  left: 0;
-
-  visibility: hidden;
-
-  height: $mobile-nav-height;
-
-  pointer-events: none;
-
-  @include icon-link($mobile-nav-height);
-
-  @media (max-width: $tablet) {
-    visibility: visible;
-
-    pointer-events: all;
   }
 }
 
@@ -138,10 +119,6 @@
   width: 100%;
   margin: 0 0 3rem;
   padding: 0;
-
-  @media (max-width: $mobile-s) {
-    margin-top: 3rem;
-  }
 }
 
 .item {
@@ -158,8 +135,6 @@
   &:focus {
     color: $syntax-accent;
     background: darken($syntax-bg, 7);
-
-    @extend .item;
   }
 
   @media (max-width: $mobile-s) {
@@ -171,7 +146,7 @@
   color: $syntax-accent;
   background: darken($syntax-bg, 7);
 
-  @extend .item;
+  composes: item;
 }
 
 .itemLogout {
@@ -179,7 +154,7 @@
 
   border-top: 1px $mono-3 dashed;
 
-  @extend .item;
+  composes: item;
   @include dark-link($syntax-accent, 10);
 
   &:hover {
@@ -190,10 +165,6 @@
 .footer {
   width: 100%;
   width: $nav-width;
-
-  @media (max-width: $mobile-s) {
-    transform: scale(.8);
-  }
 }
 
 .social {
@@ -239,41 +210,4 @@
 
 .copyrightIcon {
   font-weight: 800;
-}
-
-.navMobile {
-  position: absolute;
-  z-index: $zi-editor - 1;
-
-  display: none;
-
-  box-sizing: border-box;
-  width: 100vw;
-  height: $mobile-nav-height;
-
-  box-shadow: 1px 0 5px $default-shadow-color;
-  background: $syntax-bg-alternate;
-
-  @media (max-width: $tablet) {
-    display: block;
-  }
-}
-
-.navMobileLogo {
-  font-weight: 700;
-
-  text-transform: uppercase;
-
-  color: $syntax-accent;
-
-  @include icon-link($mobile-nav-height);
-  align-items: center;
-  justify-content: center;
-
-  svg {
-    path {
-      stroke: $syntax-accent;
-      stroke-width: 1px;
-    }
-  }
 }

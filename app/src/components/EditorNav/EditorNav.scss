@@ -3,7 +3,7 @@
 
 .root {
   position: absolute;
-  z-index: $zi-editor;
+  z-index: $zi-nav;
   top: 0;
 
   flex: 0 0 $posts-list-width;
@@ -11,10 +11,10 @@
   height: 100%;
 
   transition: transform .15s ease-out;
-  transform: translateX(-$posts-list-width - .2rem);
-  box-shadow: 2px 0 5px rgba($syntax-fg, .3);
+  transform: translateX(-102%);
 
   background: $syntax-bg;
+  box-shadow: 2px 0 5px rgba($syntax-fg, .3);
 
   will-change: transform;
 }
@@ -23,7 +23,7 @@
   transition: transform .1s ease-out;
   transform: translateX(0);
 
-  @extend .root;
+  composes: root;
 }
 
 .item {
@@ -55,12 +55,17 @@
     background: $syntax-bg-alternate;
 
     &:after {
-      background: linear-gradient( to right, rgba($syntax-bg-alternate, 0), $syntax-bg-alternate 50% );
+      background: linear-gradient(to right, rgba($syntax-bg-alternate, 0), $syntax-bg-alternate 50%);
     }
+  }
+
+  @media (max-width: $mobile-l) {
+    height: 3.5rem;
   }
 }
 
 .title {
+  font-size: .85rem;
   line-height: 3rem;
 
   position: absolute;
@@ -71,17 +76,14 @@
   width: 100vw;
   margin-left: 1.5rem;
 
-  span {
-    font-size: .625rem;
-
-    padding: 0 .2rem;
-
-    color: $hue-2;
+  @media (max-width: $mobile-l) {
+    font-size: 1rem;
+    line-height: 3.5rem;
   }
 }
 
 .titleDraft {
-  @extend .title;
+  composes: title;
 
   &:before {
     position: absolute;
@@ -126,14 +128,27 @@
   @media (max-width: $tablet) {
     opacity: 1;
   }
+
+  @media (max-width: $mobile-l) {
+    height: 3.5rem;
+
+    svg {
+      height: 1rem;
+    }
+  }
 }
 
 .action {
   margin-left: .8rem;
+
+  @media (max-width: $mobile-l) {
+    margin-left: 1rem;
+  }
 }
 
 .actionDelete {
-  @extend .action;
+  composes: action;
+
   @include dark-link($hue-5, 10);
 }
 
@@ -162,5 +177,5 @@
 
   opacity: 1;
 
-  @extend .shadow;
+  composes: shadow;
 }

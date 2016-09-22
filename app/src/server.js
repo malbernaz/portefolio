@@ -35,7 +35,7 @@ app.use((req, res) => {
   const store = configureStore(client, memoryHistory)
   const history = syncHistoryWithStore(memoryHistory, store)
 
-  function hydrateOnClient() {
+  function hydrateOnClient () {
     res.send(`<!doctype html>${renderToString(<Html />)}`)
   }
 
@@ -62,7 +62,7 @@ app.use((req, res) => {
       return res.status(404).end('Not Found')
     }
 
-    function renderPage() {
+    function renderPage () {
       const css = []
 
       const component = (

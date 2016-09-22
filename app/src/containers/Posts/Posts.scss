@@ -2,13 +2,16 @@
 @import '../../theme/mixins';
 
 .root {
+  box-sizing: border-box;
   width: 100%;
+  padding: 2rem 1rem;
 }
 
 .post {
-  width: 100%;
-  padding: 1.5rem 1rem;
   box-sizing: border-box;
+  width: 100%;
+  padding: 2rem 1rem;
+
   text-align: center;
 
   &:first-child {
@@ -18,19 +21,21 @@
 
 .title {
   text-transform: uppercase;
+
   color: $mono-1;
 }
 
 .description {
   text-transform: uppercase;
+
   color: $mono-2;
 }
 
 .more {
-  @include button($syntax-accent);
-
-  height: 2rem;
-  justify-content: center;
   max-width: 5rem;
+  height: 2rem;
   margin: 1.8rem auto 0;
+
+  @include button($syntax-accent);
+  justify-content: center;
 }

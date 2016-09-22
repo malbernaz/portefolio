@@ -6,7 +6,7 @@ import config from '../../config'
 import { Icon, Wrapper } from '../'
 import s from './Contact.scss'
 
-const Contact = () => (
+const Contact = () =>
   <Wrapper>
     <section className={ s.root }>
       <Helmet title="CONTACT" />
@@ -41,6 +41,5 @@ const Contact = () => (
       </div>
     </section>
   </Wrapper>
-)
 
 export default withStyles(s)(Contact)

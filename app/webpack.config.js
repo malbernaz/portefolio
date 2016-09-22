@@ -12,8 +12,12 @@ module.exports = env => ({
     }],
     loaders: [{
       test: /\.js$/,
-      exclude: /node_modules/,
+      exclude: [/node_modules/, /\.worker\.js$/],
       loader: 'babel-loader'
+    }, {
+      test: /\.worker\.js$/,
+      exclude: /node_modules/,
+      loaders: ['babel-loader', 'worker-loader']
     }, {
       test: /\.json$/,
       loader: 'json-loader'
