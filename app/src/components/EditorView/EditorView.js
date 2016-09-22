@@ -3,8 +3,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import moment from 'moment'
 import Helmet from 'react-helmet'
 
-import { Icon, EditorNav, DropdownButton } from '../'
-import { Editor } from '../../containers'
+import { Icon, Editor, EditorNav, DropdownButton } from '../'
 import s from './EditorView.scss'
 
 const EditorView = ({
