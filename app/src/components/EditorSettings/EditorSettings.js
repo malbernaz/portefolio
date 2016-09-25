@@ -1,16 +1,12 @@
 import React, { PropTypes } from 'react'
-import Dropzone from 'react-dropzone'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import s from './EditorSettings.scss'
 
-const EditorSettings = ({ meta, handleChange, isShown }) =>
-  <div className={ s.wrapper }>
-    <div className={ isShown ? s.rootIsShown : s.root }>
+const EditorSettings = ({ meta, handleChange, isShown, toggle }) =>
+  <div className={ isShown ? s.shadowIsShown : s.shadow } onClick={ toggle }>
+    <div className={ isShown ? s.rootIsShown : s.root } onClick={ e => e.stopPropagation() }>
       <div className={ s.meta }>
-        <Dropzone className={ s.dropzone }>
-          <p>post image (drop it here)</p>
-        </Dropzone>
         <label className={ s.field } htmlFor="title">
           <span className={ s.placeholder }>title</span>
           <input

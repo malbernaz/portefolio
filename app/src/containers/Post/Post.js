@@ -16,6 +16,7 @@ const Post = ({ posts, slug }) => {
       <div className={ s.root }>
         <article>
           <small>{ moment(createdAt, moment.ISO_8601).fromNow() }</small>
+          <h1>{ meta.title }</h1>
           <div dangerouslySetInnerHTML={{ __html: html }} />
         </article>
       </div>

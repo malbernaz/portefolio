@@ -9,7 +9,7 @@ import * as messageActions from '../actions/message'
 import * as editorActions from '../actions/ui/editor'
 import * as navActions from '../actions/ui/nav'
 
-class EditorContainer extends Component {
+class Editor extends Component {
   static propTypes = {
     createActiveDraft: PropTypes.func,
     deleteDraft: PropTypes.func,
@@ -210,7 +210,7 @@ class EditorContainer extends Component {
         drafts={ drafts }
         dropdownIsShown={ editorDropdownIsVisible }
         editorView={ view }
-        handleChange={ updateActiveDraft }
+        handleChange={ this.handleChange }
         handleDelete={ this.handleDelete }
         handleEditPost={ this.handleEditPost }
         handleNewPost={ this.handleNewPost }
@@ -226,6 +226,7 @@ class EditorContainer extends Component {
         toggleEditorNav={ this.toggleEditorNav }
         toggleNav={ this.toggleGlobalNav }
         toggleSettings={ this.toggleSettings }
+        updateActiveDraft={ updateActiveDraft }
       />
     )
   }
@@ -244,4 +245,4 @@ export default connect(
     ...editorActions,
     ...navActions
   }, dispatch)
-)(EditorContainer)
+)(Editor)

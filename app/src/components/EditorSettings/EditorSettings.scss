@@ -1,44 +1,54 @@
 @import '../../theme/vars';
 @import '../../theme/mixins';
 
-.wrapper {
+.shadow {
   position: absolute;
-  z-index: $zi-editor + 1;
+  z-index: $zi-nav + 1;
   top: 0;
-  bottom: 0;
+  left: 0;
 
   width: 100%;
+  height: 100%;
+
+  transition: opacity .3s ease;
+  pointer-events: none;
+
+  opacity: 0;
+  background: rgba($mono-1, .8);
+
+  will-change: opacity;
+}
+
+.shadowIsShown {
+  pointer-events: all;
+
+  opacity: 1;
+
+  composes: shadow;
 }
 
 .root {
   position: absolute;
   z-index: $zi-editor + 1;
-  top: 0;
+  top: 50%;
   left: 50%;
 
   box-sizing: border-box;
-  width: 80%;
-  max-width: 35rem;
   padding: 2.5rem;
 
-  transition: transform .15s ease-out;
-  transform: translateX(-50%) translateY(-105%);
+  transition: transform .15s ease-out, opacity .15s ease-out;
+  transform: translateX(-50%) translateY(-45%);
 
   opacity: 0;
+  border-radius: .15rem;
   background: $syntax-bg-alternate;
-  box-shadow: 0 0 5px 1px $default-shadow-color;
+  box-shadow: 0 0 4px 2px $default-shadow-color;
 
   will-change: transform, opacity;
-
-  @media (max-width: $tablet) {
-    width: 100%;
-    max-width: none;
-  }
 }
 
 .rootIsShown {
-  transition: transform .15s ease-out;
-  transform: translateX(-50%) translateY(0);
+  transform: translateX(-50%) translateY(-50%);
 
   opacity: 1;
 
@@ -50,7 +60,11 @@
 
   display: block;
 
-  margin: 2rem 0;
+  margin: 1rem 0;
+
+  &:first-child {
+    margin-top: 0;
+  }
 
   &:last-child {
     margin-bottom: 0;
@@ -78,23 +92,5 @@
 
   &::placeholder {
     color: transparent;
-  }
-}
-
-.dropzone {
-  display: flex;
-  flex-direction: column;
-
-  box-sizing: border-box;
-  width: 100%;
-  height: 4rem;
-
-  border: 1px $syntax-accent dashed;
-
-  align-items: center;
-  justify-content: center;
-
-  p {
-    opacity: .8;
   }
 }

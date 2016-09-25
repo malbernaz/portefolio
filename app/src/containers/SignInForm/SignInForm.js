@@ -43,7 +43,12 @@ const SignIn = ({ handleSubmit, pristine, fields: { ...fields } }) => {
     <Wrapper>
       <section className={ s.root }>
         <Helmet title="SIGN IN" />
-        <form className={ s.form } onSubmit={ handleSubmit }>
+        <form
+          className={ s.form }
+          onSubmit={ handleSubmit }
+          autoComplete={ false }
+          autoFill={ false }
+        >
           { map(fields, (field, key) => {
             const { type, label } = inputFields.filter(f => f.name === key)[0]
             return renderInput(field, type, label)

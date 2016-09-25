@@ -4,7 +4,9 @@
 .root {
   box-sizing: border-box;
   width: 100%;
+  max-width: 600px;
   padding: 2rem 1rem;
+  margin: 0 auto;
 }
 
 .post {

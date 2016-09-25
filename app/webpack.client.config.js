@@ -3,7 +3,7 @@ const { union } = require('underscore')
 const webpack = require('webpack')
 // const OfflinePlugin = require('offline-plugin')
 
-const baseConfig = require('./webpack.config')
+const wpBaseConfig = require('./webpack.config')
 
 const plugins = [
   new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', minChunks: Infinity }),
@@ -54,17 +54,21 @@ const prodPlugins = union(plugins, [
   })
 ])
 
-module.exports = env => Object.assign(baseConfig(env), {
-  context: resolve(__dirname, 'src'),
-  entry: {
-    main: './client.js',
-    vendor: ['react', 'react-router', 'moment']
-  },
-  output: {
-    path: resolve(__dirname, 'dist', 'public'),
-    filename: 'scripts/[name].bundle.js',
-    publicPath: '/',
-  },
-  plugins: env === 'prod' ? prodPlugins : plugins,
-  devtool: env === 'prod' ? 'hidden-source-map' : 'cheap-module-source-map'
-})
+module.exports = env => {
+  const base = wpBaseConfig(env)
+
+  return Object.assign(base, {
+    context: resolve(__dirname, 'src'),
+    entry: {
+      main: './client.js',
+      vendor: ['react', 'react-router', 'moment']
+    },
+    output: {
+      path: resolve(__dirname, 'dist', 'public'),
+      filename: 'scripts/[name].bundle.js',
+      publicPath: '/',
+    },
+    plugins: union(base.plugins, env === 'prod' ? prodPlugins : plugins),
+    devtool: env === 'prod' ? 'hidden-source-map' : 'cheap-module-source-map'
+  })
+}

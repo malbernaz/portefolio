@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import { Editor as DraftEditor, EditorState, ContentState } from 'draft-js'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
-import RedendererWorker from './Renderer.worker'
 import s from './Editor.scss'
 
 const { createFromText } = ContentState
@@ -22,7 +21,13 @@ class Editor extends Component {
   }
 
   componentDidMount () {
-    this.rendererWorker = new RedendererWorker()
+    System.import('./Renderer.worker')
+      .then(module => {
+        const RedendererWorker = module.default
+
+        this.rendererWorker = new RedendererWorker()
+      })
+
     this.rendererWorker.addEventListener('message', this.markdownReceiver, false)
   }
 

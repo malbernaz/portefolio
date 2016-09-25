@@ -1,23 +1,24 @@
 const { resolve } = require('path')
+const webpack = require('webpack')
 const cssnano = require('cssnano')
 const autoprefixer = require('autoprefixer')
 
 module.exports = env => ({
   context: resolve(__dirname, 'src'),
   module: {
-    preLoaders: [{
+    rules: [{
+      enforce: 'pre',
       test: /\.js$/,
       exclude: /node_modules/,
       loader: 'eslint-loader'
-    }],
-    loaders: [{
+    }, {
       test: /\.js$/,
       exclude: [/node_modules/, /\.worker\.js$/],
       loader: 'babel-loader'
     }, {
       test: /\.worker\.js$/,
       exclude: /node_modules/,
-      loaders: ['babel-loader', 'worker-loader']
+      loaders: ['worker-loader', 'babel-loader']
     }, {
       test: /\.json$/,
       loader: 'json-loader'
@@ -39,10 +40,16 @@ module.exports = env => ({
       exclude: /node_modules/
     }]
   },
-  postcss: () => ([
-    autoprefixer({ browsers: ['last 2 versions'] }),
-    cssnano({ zindex: false })
-  ]),
+  plugins: [
+    new webpack.LoaderOptionsPlugin({
+      options: {
+        postcss: () => ([
+          autoprefixer({ browsers: ['last 2 versions'] }),
+          cssnano({ zindex: false })
+        ])
+      }
+    })
+  ],
   watchOptions: {
     aggregateTimeout: 300,
     poll: 1000

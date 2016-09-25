@@ -3,7 +3,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import moment from 'moment'
 import Helmet from 'react-helmet'
 
-import { Icon, Editor, EditorNav, DropdownButton } from '../'
+import { Icon, Editor, EditorNav, DropdownButton, EditorSettings } from '../'
 import s from './EditorView.scss'
 
 const EditorView = ({
@@ -20,14 +20,22 @@ const EditorView = ({
   handleUnpublish,
   iterablePosts,
   navIsShown,
+  settingIsShown,
   switchEditorView,
   toggleDropdown,
   toggleEditorNav,
   toggleNav,
-  toggleSettings
+  toggleSettings,
+  updateActiveDraft
 }) =>
   <section className={ s.root }>
     <Helmet title="EDITOR" />
+    <EditorSettings
+      handleChange={ handleChange }
+      isShown={ settingIsShown }
+      meta={ activeDraft.meta }
+      toggle={ toggleSettings }
+    />
     <div className={ s.topBar }>
       <a className={ s.menuToggleBtn } onClick={ toggleNav }>
         <Icon name="menu" />
@@ -50,7 +58,10 @@ const EditorView = ({
       </div>
       <DropdownButton
         isShown={ dropdownIsShown }
-        toggleDropdown={ toggleDropdown }
+        fixedOptions={ activeDraft.isSaved ? [
+          { label: 'new post', action: handleNewPost },
+          { label: 'delete', action: handleDelete }
+        ] : [] }
         options={ activeDraft.isPublished ? [
           { label: 'update', action: handlePublish },
           { label: 'unpublish', action: handleUnpublish }
@@ -58,10 +69,7 @@ const EditorView = ({
           { label: 'publish', action: handlePublish },
           { label: 'save draft', action: handleSaveDraft }
         ] }
-        fixedOptions={ activeDraft.isSaved ? [
-          { label: 'new post', action: handleNewPost },
-          { label: 'delete', action: handleDelete }
-        ] : [] }
+        toggleDropdown={ toggleDropdown }
       />
     </div>
     <div className={ s.panes }>
@@ -70,12 +78,15 @@ const EditorView = ({
           <Editor
             activeDraft={ activeDraft }
             creatingActiveDraft={ creatingActiveDraft }
-            updateActiveDraft={ handleChange }
+            updateActiveDraft={ updateActiveDraft }
           />
         </div>
         <div className={ s.pane }>
           <div className={ s.preview }>
-            <article dangerouslySetInnerHTML={{ __html: activeDraft.html }} />
+            <article>
+              <h2>{ activeDraft.meta.title }</h2>
+              <div dangerouslySetInnerHTML={{ __html: activeDraft.html }} />
+            </article>
           </div>
         </div>
       </div>
@@ -95,11 +106,11 @@ const EditorView = ({
       </a>
     </div>
     <EditorNav
-      toggle={ toggleEditorNav }
-      handleEditPost={ handleEditPost }
       handleDelete={ handleDelete }
+      handleEditPost={ handleEditPost }
       isShown={ navIsShown }
       iterablePosts={ iterablePosts }
+      toggle={ toggleEditorNav }
     />
   </section>
 
@@ -122,7 +133,8 @@ EditorView.propTypes = {
   toggleDropdown: PropTypes.func.isRequired,
   toggleEditorNav: PropTypes.func.isRequired,
   toggleNav: PropTypes.func.isRequired,
-  toggleSettings: PropTypes.func.isRequired
+  toggleSettings: PropTypes.func.isRequired,
+  updateActiveDraft: PropTypes.func.isRequired
 }
 
 export default withStyles(s)(EditorView)

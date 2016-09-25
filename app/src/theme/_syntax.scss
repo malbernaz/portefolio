@@ -14,6 +14,7 @@
   .hljs-number,
   .hljs-literal,
   .hljs-symbol,
+  .hljs-attr,
   .hljs-bullet {
     color: $hue-6;
   }
@@ -55,7 +56,6 @@
 
   .hljs-params,
   .hljs-name,
-  .hljs-attr,
   .hljs-subst {
     color: $hue-5;
   }

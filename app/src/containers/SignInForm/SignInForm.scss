@@ -63,6 +63,8 @@
 
   appearance: none;
 
+  -webkit-text-fill-color: tranparent !important;
+
   &::placeholder {
     color: transparent;
   }

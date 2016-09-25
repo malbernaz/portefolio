@@ -57,6 +57,15 @@ const NavView = ({
                 className={ s.item }
                 key="0"
                 activeClassName={ s.itemActive }
+                to="/admin/settings"
+              >
+                settings
+              </Link>,
+              <Link
+                onClick={ toggleOnLinkClick }
+                className={ s.item }
+                key="1"
+                activeClassName={ s.itemActive }
                 to="/admin/editor"
               >
                 editor
@@ -64,7 +73,7 @@ const NavView = ({
               <Link
                 onClick={ toggleOnLinkClick }
                 className={ s.itemLogout }
-                key="1"
+                key="2"
                 to="/"
                 onClick={ logout }
               >

@@ -3,7 +3,7 @@ import { IndexRoute, Route, Redirect } from 'react-router'
 
 import { loadAuth } from './actions/auth'
 import { loadPosts, loadPostsAndDrafts } from './actions/posts'
-import { AppView, EditorContainer, SignIn, Post } from './containers'
+import { AppView, Editor, SignIn, Post, UserSettings } from './containers'
 import { About, Contact, Home, NotFound } from './components'
 
 export default store => {
@@ -65,7 +65,10 @@ export default store => {
       <Route name="admin" path="admin">
         <IndexRoute component={ SignIn } />
         <Route onEnter={ mustBeLogged } path="editor">
-          <IndexRoute onEnter={ getDrafts } component={ EditorContainer } />
+          <IndexRoute onEnter={ getDrafts } component={ Editor } />
+        </Route>
+        <Route onEnter={ mustBeLogged } path="settings">
+          <IndexRoute component={ UserSettings } />
         </Route>
       </Route>
 

@@ -1,6 +1,6 @@
 version: '2'
-services:
 
+services:
   nginx:
     build: ./nginx
     ports:
@@ -22,7 +22,7 @@ services:
       APIPORT: 80
     volumes:
       - ./app:/home/app/server
-      - /home/app/server/node_modules
+      - app-deps:/home/app/server/node_modules
 
   api:
     build: './api'
@@ -37,7 +37,7 @@ services:
       REGISTRATIONSECRET: 'secrettoken'
     volumes:
       - ./api:/home/api/server
-      - /home/api/server/node_modules
+      - api-deps:/home/api/server/node_modules
     depends_on:
       - mongo
 
@@ -50,3 +50,8 @@ services:
     image: mongo
     ports:
       - '5050:27017'
+
+# empty volumes for api and app node_modules
+volumes:
+  app-deps:
+  api-deps:
