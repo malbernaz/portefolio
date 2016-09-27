@@ -7,7 +7,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import postsOrderedByCreatedAt from '../../selectors/postsOrderedByCreatedAt'
 import s from './Posts.scss'
 
-const Posts = ({ posts }) => (
+const Posts = ({ posts }) =>
   <div className={ s.root }>
     { posts.length > 0 ?
       posts.map((post, index) => (
@@ -22,10 +22,9 @@ const Posts = ({ posts }) => (
       )) :
       <div>There ain't no posts yet :(</div> }
   </div>
-)
 
 Posts.propTypes = {
-  posts: PropTypes.array
+  posts: PropTypes.arrayOf(PropTypes.object)
 }
 
 export default connect(

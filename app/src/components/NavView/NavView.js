@@ -71,11 +71,10 @@ const NavView = ({
                 editor
               </Link>,
               <Link
-                onClick={ toggleOnLinkClick }
+                onClick={ toggleOnLinkClick && logout }
                 className={ s.itemLogout }
                 key="2"
                 to="/"
-                onClick={ logout }
               >
                 ← logout
               </Link>
@@ -126,7 +125,7 @@ NavView.propTypes = {
   toggleNav: PropTypes.func.isRequired,
   toggleOnLinkClick: PropTypes.func.isRequired,
   twitter: PropTypes.string.isRequired,
-  user: PropTypes.object
+  user: PropTypes.object // eslint-disable-line react/forbid-prop-types
 }
 
 export default withStyles(s)(NavView)

@@ -1,7 +1,7 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { applyRouterMiddleware, Router, browserHistory } from 'react-router'
-import useScroll from 'react-router-scroll'
+import { useScroll } from 'react-router-scroll'
 import { Provider } from 'react-redux'
 import { syncHistoryWithStore } from 'react-router-redux'
 

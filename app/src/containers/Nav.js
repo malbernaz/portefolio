@@ -4,18 +4,18 @@ import { bindActionCreators } from 'redux'
 
 import config from '../config'
 import { NavView } from '../components'
-import * as authActions from '../actions/auth'
-import * as navActions from '../actions/ui/nav'
+import { logout } from '../actions/auth'
+import { toggleNav } from '../actions/ui/nav'
 
-const Nav = ({ auth, ui: { nav }, logout, toggleNav }) => {
+const Nav = ({ auth, navIsVisible, logoutAction, toggleNavAction }) => {
   const toggle = e => {
     e.preventDefault()
 
-    toggleNav()
+    toggleNavAction()
   }
 
   const toggleOnLinkClick = () => {
-    if (matchMedia('(max-width: 48rem)').matches) toggleNav()
+    if (matchMedia('(max-width: 48rem)').matches) toggleNavAction()
   }
 
   return (
@@ -23,8 +23,8 @@ const Nav = ({ auth, ui: { nav }, logout, toggleNav }) => {
       description={ config.description }
       email={ config.email }
       github={ config.github }
-      isVisible={ nav.navIsVisible }
-      logout={ logout }
+      isVisible={ navIsVisible }
+      logout={ logoutAction }
       title={ config.title }
       toggleNav={ toggle }
       toggleOnLinkClick={ toggleOnLinkClick }
@@ -34,19 +34,22 @@ const Nav = ({ auth, ui: { nav }, logout, toggleNav }) => {
   )
 }
 
+const { func, shape, object, bool } = PropTypes
+
 Nav.propTypes = {
-  auth: PropTypes.object,
-  logout: PropTypes.func,
-  ui: PropTypes.object,
-  toggleNav: PropTypes.func
+  auth: shape({ user: object }),
+  logoutAction: func,
+  navIsVisible: bool,
+  toggleNavAction: func
 }
 
 export default connect(
-  state => ({
-    ...state
+  ({ auth, ui: { nav: { navIsVisible } } }) => ({
+    auth,
+    navIsVisible
   }),
   dispatch => bindActionCreators({
-    ...authActions,
-    ...navActions
+    logoutAction: logout,
+    toggleNavAction: toggleNav
   }, dispatch)
 )(Nav)

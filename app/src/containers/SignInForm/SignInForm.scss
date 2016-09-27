@@ -6,6 +6,7 @@
 
   display: flex;
 
+  box-sizing: border-box;
   width: 100%;
   height: 100%;
   padding: 2rem 1rem;
@@ -62,7 +63,6 @@
   background: transparent;
 
   appearance: none;
-
   -webkit-text-fill-color: tranparent !important;
 
   &::placeholder {
@@ -72,6 +72,16 @@
 
 .inputInvalid {
   border-color: $hue-5;
+
+  composes: input;
+}
+
+.error {
+  position: absolute;
+  bottom: -1.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: .8rem;
 }
 
 .errors {
@@ -87,7 +97,7 @@
 }
 
 .submit {
-  margin: 1rem;
+  margin: 1.5rem 1rem;
 
   @include button($syntax-accent);
 }

@@ -44,11 +44,17 @@ const EditorSettings = ({ meta, handleChange, isShown, toggle }) =>
     </div>
   </div>
 
+const { bool, func, arrayOf, shape, string } = PropTypes
+
 EditorSettings.propTypes = {
-  handleChange: PropTypes.func.isRequired,
-  isShown: PropTypes.bool.isRequired,
-  meta: PropTypes.object.isRequired,
-  toggle: PropTypes.func.isRequired
+  handleChange: func.isRequired,
+  isShown: bool.isRequired,
+  meta: shape({
+    title: string.isRequired,
+    description: string,
+    tags: arrayOf(string)
+  }).isRequired,
+  toggle: func.isRequired
 }
 
 export default withStyles(s)(EditorSettings)

@@ -114,27 +114,33 @@ const EditorView = ({
     />
   </section>
 
+const { arrayOf, bool, func, object, shape, string } = PropTypes
+
 EditorView.propTypes = {
-  activeDraft: PropTypes.object.isRequired,
-  creatingActiveDraft: PropTypes.bool.isRequired,
-  dropdownIsShown: PropTypes.bool.isRequired,
-  editorView: PropTypes.string.isRequired,
-  handleChange: PropTypes.func.isRequired,
-  handleDelete: PropTypes.func.isRequired,
-  handleEditPost: PropTypes.func.isRequired,
-  handleNewPost: PropTypes.func.isRequired,
-  handlePublish: PropTypes.func.isRequired,
-  handleSaveDraft: PropTypes.func.isRequired,
-  handleUnpublish: PropTypes.func.isRequired,
-  iterablePosts: PropTypes.array.isRequired,
-  navIsShown: PropTypes.bool.isRequired,
-  settingIsShown: PropTypes.bool.isRequired,
-  switchEditorView: PropTypes.func.isRequired,
-  toggleDropdown: PropTypes.func.isRequired,
-  toggleEditorNav: PropTypes.func.isRequired,
-  toggleNav: PropTypes.func.isRequired,
-  toggleSettings: PropTypes.func.isRequired,
-  updateActiveDraft: PropTypes.func.isRequired
+  activeDraft: shape({
+    meta: shape({
+      title: string.isRequired
+    })
+  }).isRequired,
+  creatingActiveDraft: bool.isRequired,
+  dropdownIsShown: bool.isRequired,
+  editorView: string.isRequired,
+  handleChange: func.isRequired,
+  handleDelete: func.isRequired,
+  handleEditPost: func.isRequired,
+  handleNewPost: func.isRequired,
+  handlePublish: func.isRequired,
+  handleSaveDraft: func.isRequired,
+  handleUnpublish: func.isRequired,
+  iterablePosts: arrayOf(object).isRequired,
+  navIsShown: bool.isRequired,
+  settingIsShown: bool.isRequired,
+  switchEditorView: func.isRequired,
+  toggleDropdown: func.isRequired,
+  toggleEditorNav: func.isRequired,
+  toggleNav: func.isRequired,
+  toggleSettings: func.isRequired,
+  updateActiveDraft: func.isRequired
 }
 
 export default withStyles(s)(EditorView)

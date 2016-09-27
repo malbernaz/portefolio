@@ -36,10 +36,12 @@ const Html = ({ component, store, css }) => {
   )
 }
 
+const { element, shape, func, string, arrayOf } = PropTypes
+
 Html.propTypes = {
-  component: PropTypes.node,
-  store: PropTypes.object,
-  css: PropTypes.array
+  component: element,
+  store: shape({ getState: func }),
+  css: arrayOf(string)
 }
 
 export default Html

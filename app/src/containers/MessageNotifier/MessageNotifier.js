@@ -23,7 +23,10 @@ const MessageNotifier = ({ message, dissmissMessage }) => {
 }
 
 MessageNotifier.propTypes = {
-  message: PropTypes.object,
+  message: PropTypes.shape({
+    isShown: PropTypes.bool,
+    content: PropTypes.string
+  }),
   dissmissMessage: PropTypes.func
 }
 

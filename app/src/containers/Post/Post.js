@@ -25,13 +25,13 @@ const Post = ({ posts, slug }) => {
 }
 
 Post.propTypes = {
-  posts: PropTypes.array,
+  posts: PropTypes.arrayOf(PropTypes.object),
   slug: PropTypes.string
 }
 
 export default connect(
-  (state, props) => ({
-    posts: state.posts.posts,
-    slug: props.params.slug
+  ({ posts: { posts } }, { params: { slug } }) => ({
+    posts,
+    slug
   })
 )(withStyles(s)(Post))

@@ -4,7 +4,7 @@ import { map } from 'underscore'
 import Helmet from 'react-helmet'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
-import validation from './SignInFormValidation'
+import validate from './SignInFormValidation'
 import s from './SignInForm.scss'
 import { Wrapper } from '../../components'
 
@@ -18,37 +18,34 @@ const inputFields = [{
   label: 'password'
 }]
 
-const SignIn = ({ handleSubmit, pristine, fields: { ...fields } }) => {
-  const renderInput = (field, type, label) => (
-    <div key={ field.name }>
-      <label className={ s.field } htmlFor={ field.name }>
-        <span className={ field.dirty ? s.placeholderDirty : s.placeholder }>
-          { label }
-        </span>
-        <input
-          type={ type }
-          name={ field.name }
-          placeholder={ label }
-          className={ field.invalid && field.touched ? s.inputInvalid : s.input }
-          { ...field }
-        />
-        <span className={ s.error }>
-          { field.touched ? field.error : '' }
-        </span>
-      </label>
-    </div>
-  )
+const SignIn = ({ handleSubmit, pristine, fields }) => {
+  const renderInput = (field, type, label) =>
+    <label key={ field.name } className={ s.field } htmlFor={ field.name }>
+      <span className={ field.dirty ? s.placeholderDirty : s.placeholder }>
+        { label }
+      </span>
+      <input
+        className={ field.invalid && field.touched ? s.inputInvalid : s.input }
+        name={ field.name }
+        onBlur={ field.onBlur }
+        onChange={ field.onChange }
+        onFocus={ e => this[field.name].removeAttribute('readonly') && field.onFocus(e) }
+        placeholder={ label }
+        readOnly
+        ref={ c => { this[field.name] = c } }
+        type={ type }
+        value={ field.value }
+      />
+      <span className={ s.error }>
+        { field.touched ? field.error : '' }
+      </span>
+    </label>
 
   return (
     <Wrapper>
       <section className={ s.root }>
         <Helmet title="SIGN IN" />
-        <form
-          className={ s.form }
-          onSubmit={ handleSubmit }
-          autoComplete={ false }
-          autoFill={ false }
-        >
+        <form className={ s.form } onSubmit={ handleSubmit }>
           { map(fields, (field, key) => {
             const { type, label } = inputFields.filter(f => f.name === key)[0]
             return renderInput(field, type, label)
@@ -70,12 +67,12 @@ const SignIn = ({ handleSubmit, pristine, fields: { ...fields } }) => {
 
 SignIn.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
-  fields: PropTypes.object.isRequired,
-  pristine: PropTypes.bool.isRequired
+  fields: PropTypes.objectOf(PropTypes.object).isRequired,
+  pristine: PropTypes.bool.isRequired,
 }
 
 export default reduxForm({
   form: 'signin',
   fields: inputFields.map(field => field.name),
-  validation
+  validate
 })(withStyles(s)(SignIn))

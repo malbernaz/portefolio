@@ -9,7 +9,7 @@ const { createWithContent } = EditorState
 
 class Editor extends Component {
   static propTypes = {
-    activeDraft: PropTypes.object,
+    activeDraft: PropTypes.shape({ raw: PropTypes.string }),
     creatingActiveDraft: PropTypes.bool,
     updateActiveDraft: PropTypes.func
   }
@@ -17,18 +17,17 @@ class Editor extends Component {
   constructor (props) {
     super(props)
 
-    this.state = { editorState: createWithContent(createFromText(props.activeDraft.raw)) }
+    this.state = {
+      editorState: createWithContent(createFromText(props.activeDraft.raw))
+    }
   }
 
   componentDidMount () {
     System.import('./Renderer.worker')
-      .then(module => {
-        const RedendererWorker = module.default
-
-        this.rendererWorker = new RedendererWorker()
+      .then(Worker => {
+        this.rendererWorker = new Worker()
+        this.rendererWorker.addEventListener('message', this.markdownReceiver, false)
       })
-
-    this.rendererWorker.addEventListener('message', this.markdownReceiver, false)
   }
 
   componentWillReceiveProps ({ activeDraft, creatingActiveDraft }) {

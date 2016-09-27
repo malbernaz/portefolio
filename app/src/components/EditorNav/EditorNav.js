@@ -34,12 +34,14 @@ const EditorNav = ({ iterablePosts, handleEditPost, handleDelete, isShown, toggl
     <div onClick={ toggle } className={ isShown ? s.shadowIsShown : s.shadow } />
   </div>
 
+const { func, arrayOf, object, bool } = PropTypes
+
 EditorNav.propTypes = {
-  handleDelete: PropTypes.func.isRequired,
-  handleEditPost: PropTypes.func.isRequired,
-  iterablePosts: PropTypes.array,
-  isShown: PropTypes.bool,
-  toggle: PropTypes.func
+  handleDelete: func.isRequired,
+  handleEditPost: func.isRequired,
+  iterablePosts: arrayOf(object),
+  isShown: bool,
+  toggle: func
 }
 
 export default withStyles(s)(EditorNav)

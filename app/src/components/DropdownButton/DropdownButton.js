@@ -26,11 +26,19 @@ const DropdownButton = ({ options, fixedOptions, isShown, toggleDropdown }) =>
     <div onClick={ toggleDropdown } className={ isShown ? s.shadowIsShown : s.shadow } />
   </div>
 
+const { arrayOf, bool, shape, string, func } = PropTypes
+
 DropdownButton.propTypes = {
-  options: PropTypes.array.isRequired,
-  fixedOptions: PropTypes.array.isRequired,
-  isShown: PropTypes.bool.isRequired,
-  toggleDropdown: PropTypes.func.isRequired
+  options: arrayOf(shape({
+    label: string.isRequired,
+    action: func.isRequired
+  })).isRequired,
+  fixedOptions: arrayOf(shape({
+    label: string.isRequired,
+    action: func.isRequired
+  })).isRequired,
+  isShown: bool.isRequired,
+  toggleDropdown: func.isRequired
 }
 
 export default withStyles(s)(DropdownButton)

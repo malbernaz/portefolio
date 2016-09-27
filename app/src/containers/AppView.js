@@ -9,7 +9,7 @@ import { Nav, MobileNav } from './'
 import MessageNotifier from './MessageNotifier/MessageNotifier'
 import s from '../theme/main.scss'
 
-const AppView = ({ children, location }) =>
+const AppView = ({ path, children }) =>
   <div className={ s.appView }>
     <Helmet { ...config.head } />
     <Nav />
@@ -22,7 +22,7 @@ const AppView = ({ children, location }) =>
         transitionEnterTimeout={ 300 }
         transitionLeaveTimeout={ 300 }
       >
-        { cloneElement(children, { key: location.pathname }) }
+        { cloneElement(children, { key: path }) }
       </ReactCSSTransitionGroup>
     </div>
     <MessageNotifier />
@@ -30,7 +30,12 @@ const AppView = ({ children, location }) =>
 
 AppView.propTypes = {
   children: PropTypes.element,
-  location: PropTypes.object
+  path: PropTypes.string
 }
 
-export default connect(state => ({ ...state }))(withStyles(s)(AppView))
+export default connect(
+  (state, { location, children }) => ({
+    path: location.pathname,
+    children
+  })
+)(withStyles(s)(AppView))
