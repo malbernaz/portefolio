@@ -51,5 +51,6 @@ export default connect(
   dispatch => bindActionCreators({
     logoutAction: logout,
     toggleNavAction: toggleNav
-  }, dispatch)
+  }, dispatch),
+  null, { pure: false }
 )(Nav)

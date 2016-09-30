@@ -55,24 +55,17 @@ export default store => {
     <Route name="app" component={ AppView } path="/">
       <IndexRoute component={ Home } />
 
-      <Route path="posts">
-        <Route path=":slug" onEnter={ postMustExist } component={ Post } />
-      </Route>
-
       <Route component={ About } path="about" />
       <Route component={ Contact } path="contact" />
+      <Route onEnter={ postMustExist } component={ Post } path="posts/:slug" />
 
-      <Route name="admin" path="admin">
+      <Route path="admin">
         <IndexRoute component={ SignIn } />
-        <Route onEnter={ mustBeLogged } path="editor">
-          <IndexRoute onEnter={ getDrafts } component={ Editor } />
-        </Route>
-        <Route onEnter={ mustBeLogged } path="settings">
-          <IndexRoute component={ UserSettings } />
-        </Route>
+        <Route onEnter={ mustBeLogged && getDrafts } component={ Editor } path="editor" />
+        <Route onEnter={ mustBeLogged } component={ UserSettings } path="settings" />
       </Route>
 
-      <Route path="pagenotfound" component={ NotFound } />
+      <Route component={ NotFound } path="pagenotfound" />
       <Redirect from="*" status="404" to="pagenotfound" />
     </Route>
   )

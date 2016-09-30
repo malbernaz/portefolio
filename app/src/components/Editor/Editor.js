@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { Editor as DraftEditor, EditorState, ContentState } from 'draft-js'
+import { Editor as DraftEditor, EditorState, ContentState, Modifier } from 'draft-js'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import s from './Editor.scss'
@@ -14,12 +14,8 @@ class Editor extends Component {
     updateActiveDraft: PropTypes.func
   }
 
-  constructor (props) {
-    super(props)
-
-    this.state = {
-      editorState: createWithContent(createFromText(props.activeDraft.raw))
-    }
+  state = {
+    editorState: createWithContent(createFromText(this.props.activeDraft.raw))
   }
 
   componentDidMount () {
@@ -38,6 +34,25 @@ class Editor extends Component {
 
   componentWillUnmount () {
     this.rendererWorker.removeEventListener('message', this.markdownReceiver, false)
+  }
+
+  onTab = e => {
+    e.preventDefault()
+
+    const currentState = this.state.editorState
+    const newContentState = Modifier.replaceText(
+      currentState.getCurrentContent(),
+      currentState.getSelection(),
+      '  '
+    )
+
+    this.setState({
+      editorState: EditorState.push(currentState, newContentState, 'insert-characters')
+    })
+
+    this.rendererWorker.postMessage({
+      raw: this.state.editorState.getCurrentContent().getPlainText()
+    })
   }
 
   markdownReceiver = e => {
@@ -63,7 +78,13 @@ class Editor extends Component {
   render () {
     const { editorState } = this.state
 
-    return <DraftEditor onChange={ this.handleChange } editorState={ editorState } />
+    return (
+      <DraftEditor
+        editorState={ editorState }
+        onChange={ this.handleChange }
+        onTab={ this.onTab }
+      />
+    )
   }
 }
 
