@@ -20,7 +20,7 @@ const Posts = ({ posts }) =>
           <Link className={ s.more } to={ `/posts/${post.slug}` }>read more</Link>
         </div>
       )) :
-      <div>There ain't no posts yet :(</div> }
+      <div>There ain&apos;t no posts yet :(</div> }
   </div>
 
 Posts.propTypes = {

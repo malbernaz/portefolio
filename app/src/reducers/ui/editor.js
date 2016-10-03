@@ -5,7 +5,7 @@ import {
   TOGGLE_EDITOR_SETTINGS
 } from '../../constants'
 
-const initialState = {
+export const initialState = {
   editorDropdownIsVisible: false,
   editorNavIsVisible: false,
   editorSettingsIsVisible: false,

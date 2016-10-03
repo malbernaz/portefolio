@@ -1,13 +1,19 @@
 import React, { Component, PropTypes } from 'react'
-import { Editor as DraftEditor, EditorState, ContentState, Modifier } from 'draft-js'
+import {
+  ContentState,
+  Editor as DraftEditor,
+  EditorState,
+  Modifier
+} from 'draft-js'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import s from './Editor.scss'
 
 const { createFromText } = ContentState
-const { createWithContent } = EditorState
+const { createWithContent, push } = EditorState
 
-class Editor extends Component {
+@withStyles(s)
+export default class Editor extends Component {
   static propTypes = {
     activeDraft: PropTypes.shape({ raw: PropTypes.string }),
     creatingActiveDraft: PropTypes.bool,
@@ -46,18 +52,10 @@ class Editor extends Component {
       '  '
     )
 
-    this.setState({
-      editorState: EditorState.push(currentState, newContentState, 'insert-characters')
-    })
-
-    this.rendererWorker.postMessage({
-      raw: this.state.editorState.getCurrentContent().getPlainText()
-    })
+    this.handleChange(push(currentState, newContentState, 'insert-characters'))
   }
 
   markdownReceiver = e => {
-    e.preventDefault()
-
     const { updateActiveDraft } = this.props
     const { editorState } = this.state
 
@@ -76,16 +74,12 @@ class Editor extends Component {
   }
 
   render () {
-    const { editorState } = this.state
-
     return (
       <DraftEditor
-        editorState={ editorState }
+        editorState={ this.state.editorState }
         onChange={ this.handleChange }
         onTab={ this.onTab }
       />
     )
   }
 }
-
-export default withStyles(s)(Editor)

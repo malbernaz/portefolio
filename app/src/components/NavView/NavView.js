@@ -39,7 +39,7 @@ const NavView = ({
               onClick={ toggleOnLinkClick }
               className={ s.item }
               activeClassName={ s.itemActive }
-              to="about"
+              to="/about"
             >
               about
             </Link>
@@ -47,7 +47,7 @@ const NavView = ({
               onClick={ toggleOnLinkClick }
               className={ s.item }
               activeClassName={ s.itemActive }
-              to="contact"
+              to="/contact"
             >
               contact
             </Link>
@@ -71,7 +71,10 @@ const NavView = ({
                 editor
               </Link>,
               <Link
-                onClick={ toggleOnLinkClick && logout }
+                onClick={ () => {
+                  toggleOnLinkClick()
+                  logout()
+                } }
                 className={ s.itemLogout }
                 key="2"
                 to="/"

@@ -36,9 +36,7 @@ import {
 } from '../constants'
 
 import defaultDraft from '../helpers/defaultDraft'
-import reducer from './posts'
-
-const initialState = { posts: [], drafts: [] }
+import reducer, { initialState } from './posts'
 
 test('posts reducer: returns state by default', t => {
   t.plan(1)

@@ -4,7 +4,7 @@
   .DraftEditor-root {
     font-family: $monospace;
 
-    overflow-y: scroll;
+    overflow-y: auto;
 
     height: 100%;
 
@@ -20,6 +20,6 @@
   }
 
   .public-DraftEditor-content {
-    padding: 3rem 2rem 4rem;
+    padding: 2rem 1rem 4rem;
   }
 }

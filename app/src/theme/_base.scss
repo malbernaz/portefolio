@@ -218,8 +218,7 @@
       @extend .page-transition;
 
       &-active {
-        transition: opacity .3s ease;
-
+        transition: opacity .3s $default-bezier;
         opacity: 1;
 
         @extend .page-transition-enter;
@@ -233,8 +232,7 @@
       @extend .page-transition;
 
       &-active {
-        transition: opacity .3s ease;
-
+        transition: opacity .3s $default-bezier;
         opacity: 0;
 
         @extend .page-transition-leave;

@@ -10,6 +10,7 @@ import s from './MobileNav.scss'
 const MobileNav = ({ toggleNav }) => {
   const toggle = e => {
     e.preventDefault()
+
     toggleNav()
   }
 

@@ -7,7 +7,7 @@
   left: 0;
   z-index: $zi-nav;
 
-  overflow-y: scroll;
+  overflow-y: auto;
 
   box-sizing: border-box;
   width: $nav-width;
@@ -20,7 +20,7 @@
   will-change: transform;
 
   @media (max-width: $tablet) {
-    transition: transform .15s ease-out;
+    transition: transform .2s $default-bezier;
     transform: translateX(-$nav-width);
 
     will-change: transform;
@@ -31,7 +31,6 @@
   composes: root;
 
   @media (max-width: $tablet) {
-    transition: transform .1s ease-out;
     transform: translateX(0);
   }
 }
@@ -45,7 +44,7 @@
   width: 100vw;
   height: 100vh;
 
-  transition: opacity .15s ease-out;
+  transition: opacity .2s $default-bezier;
   pointer-events: none;
 
   opacity: 0;
@@ -58,7 +57,6 @@
   composes: shadow;
 
   @media (max-width: $tablet) {
-    transition: opacity .1s ease-out;
     pointer-events: all;
 
     opacity: 1;

@@ -7,14 +7,7 @@ import {
   TOGGLE_EDITOR_SETTINGS
 } from '../../constants'
 
-import reducer from './editor'
-
-const initialState = {
-  editorDropdownIsVisible: false,
-  editorNavIsVisible: false,
-  editorSettingsIsVisible: false,
-  view: 'code'
-}
+import reducer, { initialState } from './editor'
 
 test('ui/editor reducer: returns state by default', t => {
   t.plan(1)

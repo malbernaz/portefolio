@@ -4,9 +4,7 @@
 .root {
   box-sizing: border-box;
   width: 100%;
-  max-width: 600px;
-  padding: 2rem 1rem;
-  margin: 0 auto;
+  padding: 0 1rem;
 }
 
 .post {
@@ -15,10 +13,6 @@
   padding: 2rem 1rem;
 
   text-align: center;
-
-  &:first-child {
-    padding-top: 0;
-  }
 }
 
 .title {
@@ -31,6 +25,9 @@
   text-transform: uppercase;
 
   color: $mono-2;
+
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .more {

@@ -35,7 +35,7 @@ import {
 
 import defaultDraft from '../helpers/defaultDraft'
 
-const initialState = {
+export const initialState = {
   creatingActiveDraft: true,
   posts: [],
   drafts: []

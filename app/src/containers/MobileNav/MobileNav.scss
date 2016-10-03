@@ -13,9 +13,6 @@
   width: 100vw;
   height: $mobile-nav-height;
 
-  box-shadow: 1px 0 5px $default-shadow-color;
-  background: $syntax-bg-alternate;
-
   @media (max-width: $tablet) {
     display: block;
   }
@@ -29,14 +26,13 @@
   color: $syntax-accent;
 
   @include icon-link($mobile-nav-height);
-  align-items: center;
+  align-items: baseline;
+  line-height: $mobile-nav-height;
   justify-content: center;
+  cursor: auto;
 
   svg {
-    path {
-      stroke: $syntax-accent;
-      stroke-width: 1px;
-    }
+    height: .9rem;
   }
 }
 

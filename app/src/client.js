@@ -18,11 +18,9 @@ const history = syncHistoryWithStore(browserHistory, store)
 render(
   <Provider store={ store }>
     <WithStylesContext onInsertCss={ s => s._insertCss() }>
-      <Router
-        children={ getRouter(store) }
-        history={ history }
-        render={ applyRouterMiddleware(useScroll()) }
-      />
+      <Router history={ history } render={ applyRouterMiddleware(useScroll()) }>
+        { getRouter(store) }
+      </Router>
     </WithStylesContext>
   </Provider>, document.getElementById('react-view')
 )

@@ -12,7 +12,7 @@
 
   padding: .3rem 0;
 
-  transition: opacity .1s ease, transform .1s ease;
+  transition: opacity .2s $default-bezier, transform .2s $default-bezier;
   transform: translateY(0) scale(1);
   transform-origin: top right;
   text-align: left;
@@ -60,7 +60,6 @@
 }
 
 .optionsHidden {
-  transition: opacity .2s ease, transform .2s ease;
   transform: translateY(-1rem) scale(.5);
   pointer-events: none;
 

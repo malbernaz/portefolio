@@ -11,7 +11,22 @@ import * as navActions from '../actions/ui/nav'
 
 const { array, arrayOf, bool, func, object, shape, string } = PropTypes
 
-class Editor extends Component {
+const mapStateToProps = state => ({
+  posts: state.posts,
+  message: state.message,
+  editor: state.ui.editor,
+  iterablePosts: editablePostsSelector(state)
+})
+
+const mapDispatchToProps = d => bindActionCreators({
+  ...postsActions,
+  ...messageActions,
+  ...editorActions,
+  ...navActions
+}, d)
+
+@connect(mapStateToProps, mapDispatchToProps)
+export default class Editor extends Component {
   static propTypes = {
     createActiveDraft: func,
     deleteDraft: func,
@@ -238,18 +253,3 @@ class Editor extends Component {
     )
   }
 }
-
-export default connect(
-  state => ({
-    posts: state.posts,
-    message: state.message,
-    editor: state.ui.editor,
-    iterablePosts: editablePostsSelector(state)
-  }),
-  dispatch => bindActionCreators({
-    ...postsActions,
-    ...messageActions,
-    ...editorActions,
-    ...navActions
-  }, dispatch)
-)(Editor)

@@ -10,7 +10,7 @@
 
   height: 100%;
 
-  transition: transform .15s ease-out;
+  transition: transform .3s $default-bezier;
   transform: translateX(-102%);
 
   background: $syntax-bg;
@@ -20,10 +20,36 @@
 }
 
 .rootIsShown {
-  transition: transform .1s ease-out;
   transform: translateX(0);
 
   composes: root;
+}
+
+.shadow {
+  position: absolute;
+  z-index: $zi-editor - 1;
+  top: 0;
+  left: 0;
+
+  width: 100vw;
+  height: 100%;
+
+  transition: opacity .3s $default-bezier;
+  transform: translateX($posts-list-width);
+  pointer-events: none;
+
+  opacity: 0;
+  background: rgba($mono-1, .8);
+
+  will-change: opacity;
+}
+
+.shadowIsShown {
+  pointer-events: all;
+
+  opacity: 1;
+
+  composes: shadow;
 }
 
 .item {
@@ -150,32 +176,4 @@
   composes: action;
 
   @include dark-link($hue-5, 10);
-}
-
-.shadow {
-  position: absolute;
-  z-index: $zi-editor - 1;
-  top: 0;
-  left: 0;
-
-  width: 100vw;
-  height: 100%;
-
-  transition: opacity .15s ease-out;
-  transform: translateX($posts-list-width);
-  pointer-events: none;
-
-  opacity: 0;
-  background: rgba($mono-1, .8);
-
-  will-change: opacity;
-}
-
-.shadowIsShown {
-  transition: opacity .1s ease-out;
-  pointer-events: all;
-
-  opacity: 1;
-
-  composes: shadow;
 }

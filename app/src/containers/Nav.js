@@ -40,7 +40,7 @@ Nav.propTypes = {
   auth: shape({ user: object }),
   logoutAction: func,
   navIsVisible: bool,
-  toggleNavAction: func
+  toggleNavAction: func,
 }
 
 export default connect(

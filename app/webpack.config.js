@@ -3,6 +3,19 @@ const webpack = require('webpack')
 const cssnano = require('cssnano')
 const autoprefixer = require('autoprefixer')
 
+const babelLoader = {
+  loader: 'babel-loader',
+  query: {
+    presets: [['es2015', { loose: true, modules: false }], 'react'],
+    plugins: [
+      'transform-class-properties',
+      'transform-object-rest-spread',
+      'transform-export-extensions',
+      'transform-decorators-legacy'
+    ]
+  }
+}
+
 module.exports = env => ({
   context: resolve(__dirname, 'src'),
   module: {
@@ -14,11 +27,11 @@ module.exports = env => ({
     }, {
       test: /\.js$/,
       exclude: [/node_modules/, /\.worker\.js$/],
-      loader: 'babel-loader'
+      loaders: [babelLoader]
     }, {
       test: /\.worker\.js$/,
       exclude: /node_modules/,
-      loaders: ['worker-loader', 'babel-loader']
+      loaders: ['worker-loader', babelLoader]
     }, {
       test: /\.json$/,
       loader: 'json-loader'
