@@ -6,28 +6,41 @@ services:
     build: './app'
     command: npm run dev --silent
     ports:
-      - '3000:3000'
+      - '80:80'
     env_file: .env
     volumes:
       - ./app:/home/app/server
       - app-deps:/home/app/server/node_modules
+      - /etc/letsencrypt
 
   api:
     build: './api'
     command: npm run dev --silent
     ports:
-      - '5000:5000'
+      - '5000'
     env_file: .env
     volumes:
       - ./api:/home/api/server
       - api-deps:/home/api/server/node_modules
+      - /etc/letsencrypt
     depends_on:
       - mongo
+
+  letsencrypt:
+    image: blacklabelops/letsencrypt
+    ports:
+      - '80:80'
+      - '433:433'
+    volumes_from:
+      - app
+      - api
 
   mongo:
     image: mongo
     ports:
-      - '5050:27017'
+      - '27017'
+    volumes:
+      - ./data:/data/db
 
 # empty volumes for api and app node_modules
 volumes:

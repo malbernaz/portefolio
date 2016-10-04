@@ -14,7 +14,6 @@ const DraftsModel = require('./models/Draft')
 const { User, Post, Draft } = require('./routes')
 
 const api = new Express()
-const server = new Express()
 
 // Use native promises with mongoose
 mongoose.Promise = global.Promise
@@ -31,11 +30,11 @@ mongoose.connect(config.database)
 
 passportConfig(passport)
 
-api.use('/user', User)
-api.use('/posts', Post)
-api.use('/drafts', Draft)
+api.use('/api/user', User)
+api.use('/api/posts', Post)
+api.use('/api/drafts', Draft)
 
-api.get('/postsanddrafts', passport.authenticate('jwt', {
+api.get('/api/postsanddrafts', passport.authenticate('jwt', {
   session: false
 }), ({ user }, res) => {
   const queries = [
@@ -57,6 +56,4 @@ api.get('/postsanddrafts', passport.authenticate('jwt', {
     }))
 })
 
-server.use('/api', api)
-
-module.exports = server
+module.exports = api

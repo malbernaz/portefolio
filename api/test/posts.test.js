@@ -75,7 +75,7 @@ test('POST /api/posts, unsuccessful try to create post unauthenticated', t => {
 
   request.post('/api/posts')
     .expect(401)
-    .end((err) => {
+    .end(err => {
       t.error(err, 'no errors')
       t.end()
     })

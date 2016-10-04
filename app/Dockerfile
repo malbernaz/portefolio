@@ -23,6 +23,6 @@ COPY . $HOME/server
 RUN chown -R app:app $HOME/*
 USER app
 
-RUN npm run build:prod --silent
+RUN npm run build:prod --silent npm test --silent
 
 CMD ["npm", "start"]
