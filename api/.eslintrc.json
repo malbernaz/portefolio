@@ -1,5 +1,5 @@
 {
-  "extends": "airbnb",
+  "extends": "airbnb-base",
   "installedESLint": true,
   "rules": {
     "no-underscore-dangle": 0,
@@ -7,6 +7,7 @@
     "semi": [2, "never"],
     "no-confusing-arrow": 0,
     "func-names": 0,
+    "arrow-parens": ["error", "as-needed"],
     "import/no-unresolved": [0, {}],
     "import/no-extraneous-dependencies": ["error", {
       "devDependencies": true,

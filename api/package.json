@@ -11,18 +11,16 @@
     "express": "^4.14.0",
     "imagemin": "^5.2.2",
     "jsonwebtoken": "^7.1.9",
-    "minio": "^2.0.3",
-    "mongoose": "^4.6.1",
+    "mongoose": "^4.6.2",
     "morgan": "^1.7.0",
     "passport": "^0.3.2",
-    "passport-jwt": "^2.1.0"
+    "passport-jwt": "^2.1.0",
+    "tape": "^4.6.2"
   },
   "devDependencies": {
-    "eslint": "^3.6.0",
-    "eslint-config-airbnb": "^10.0.1",
+    "eslint": "^3.7.1",
+    "eslint-config-airbnb-base": "^8.0.0",
     "eslint-plugin-import": "^1.16.0",
-    "eslint-plugin-jsx-a11y": "^2.2.2",
-    "eslint-plugin-react": "^6.3.0",
     "faucet": "0.0.1",
     "nodemon": "^1.10.2",
     "supertest": "^2.0.0",
@@ -30,9 +28,9 @@
   },
   "scripts": {
     "dev": "nodemon -L index.js",
-    "lint": "eslint ./**/*.js",
+    "lint": "eslint './**/*.js'",
     "start": "NODE_ENV=production node index.js",
-    "test": "NODE_ENV=test tape 'test/*.test.js' | faucet"
+    "test": "npm run lint && NODE_ENV=test tape test/index.test.js | faucet"
   },
   "repository": {
     "type": "git",

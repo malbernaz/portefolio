@@ -23,4 +23,6 @@ COPY . $HOME/server
 RUN chown -R api:api $HOME/*
 USER api
 
+run npm test --silent
+
 CMD ["npm", "start"]

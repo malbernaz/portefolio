@@ -38,7 +38,7 @@ const genericErrorMessage =
 const fakeObjectId = '551137c2f9e1fac808a5f572'
 
 const populatePosts = (id, n) => {
-  for (let i = 0; i < n; i++) {
+  for (let i = 0; i < n; i += 1) {
     const post = new Post({
       raw: `${i}`,
       html: `<p>${i}</p>`,
@@ -56,7 +56,7 @@ const populatePosts = (id, n) => {
 }
 
 const populateDrafts = (id, n) => {
-  for (let i = 0; i < n; i++) {
+  for (let i = 0; i < n; i += 1) {
     const draft = new Draft({
       raw: `${i}`,
       html: `<p>${i}</p>`,
