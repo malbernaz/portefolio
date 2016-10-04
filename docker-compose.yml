@@ -1,51 +1,35 @@
 version: '2'
-services:
 
-  nginx:
-    build: ./nginx
-    ports:
-      - '8080:80'
-    volumes:
-      - ./nginx/:/etc/nginx
-    links:
-      - app:app
-      - api:api
+services:
 
   app:
     build: './app'
     command: npm run dev --silent
     ports:
-      - '3000'
-    environment:
-      PORT: 3000
-      APIHOST: 'nginx'
-      APIPORT: 80
+      - '3000:3000'
+    env_file: .env
     volumes:
       - ./app:/home/app/server
-      - /home/app/server/node_modules
+      - app-deps:/home/app/server/node_modules
 
   api:
     build: './api'
     command: npm run dev --silent
     ports:
-      - '5000'
-    environment:
-      PORT: 5000
-      DATABASE: 'mongodb://mongo/portefolio'
-      SECRET: 'secrettoken'
-      REGISTRATIONSECRET: 'secrettoken'
+      - '5000:5000'
+    env_file: .env
     volumes:
       - ./api:/home/api/server
-      - /home/api/server/node_modules
+      - api-deps:/home/api/server/node_modules
     depends_on:
       - mongo
-
-  minio:
-    image: minio/minio
-    ports:
-      - '9000:9000'
 
   mongo:
     image: mongo
     ports:
       - '5050:27017'
+
+# empty volumes for api and app node_modules
+volumes:
+  app-deps:
+  api-deps:

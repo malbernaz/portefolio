@@ -3,26 +3,53 @@
 
 .root {
   position: absolute;
-  z-index: $zi-editor;
+  z-index: $zi-nav;
   top: 0;
 
   flex: 0 0 $posts-list-width;
 
   height: 100%;
 
-  transition: transform .15s ease-out;
-  transform: translateX(-$posts-list-width);
+  transition: transform .3s $default-bezier;
+  transform: translateX(-102%);
 
   background: $syntax-bg;
+  box-shadow: 2px 0 5px rgba($syntax-fg, .3);
 
   will-change: transform;
 }
 
 .rootIsShown {
-  transition: transform .1s ease-out;
   transform: translateX(0);
 
-  @extend .root;
+  composes: root;
+}
+
+.shadow {
+  position: absolute;
+  z-index: $zi-editor - 1;
+  top: 0;
+  left: 0;
+
+  width: 100vw;
+  height: 100%;
+
+  transition: opacity .3s $default-bezier;
+  transform: translateX($posts-list-width);
+  pointer-events: none;
+
+  opacity: 0;
+  background: rgba($mono-1, .8);
+
+  will-change: opacity;
+}
+
+.shadowIsShown {
+  pointer-events: all;
+
+  opacity: 1;
+
+  composes: shadow;
 }
 
 .item {
@@ -54,12 +81,17 @@
     background: $syntax-bg-alternate;
 
     &:after {
-      background: linear-gradient( to right, rgba($syntax-bg-alternate, 0), $syntax-bg-alternate 50% );
+      background: linear-gradient(to right, rgba($syntax-bg-alternate, 0), $syntax-bg-alternate 50%);
     }
+  }
+
+  @media (max-width: $mobile-l) {
+    height: 3.5rem;
   }
 }
 
 .title {
+  font-size: .85rem;
   line-height: 3rem;
 
   position: absolute;
@@ -70,17 +102,14 @@
   width: 100vw;
   margin-left: 1.5rem;
 
-  span {
-    font-size: .625rem;
-
-    padding: 0 .2rem;
-
-    color: $hue-2;
+  @media (max-width: $mobile-l) {
+    font-size: 1rem;
+    line-height: 3.5rem;
   }
 }
 
 .titleDraft {
-  @extend .title;
+  composes: title;
 
   &:before {
     position: absolute;
@@ -125,41 +154,26 @@
   @media (max-width: $tablet) {
     opacity: 1;
   }
+
+  @media (max-width: $mobile-l) {
+    height: 3.5rem;
+
+    svg {
+      height: 1rem;
+    }
+  }
 }
 
 .action {
   margin-left: .8rem;
+
+  @media (max-width: $mobile-l) {
+    margin-left: 1rem;
+  }
 }
 
 .actionDelete {
-  @extend .action;
+  composes: action;
+
   @include dark-link($hue-5, 10);
-}
-
-.shadow {
-  position: absolute;
-  z-index: $zi-editor - 1;
-  top: 0;
-  left: 0;
-
-  width: 100vw;
-  height: 100%;
-
-  transition: opacity .15s ease-out;
-  transform: translateX($posts-list-width);
-  pointer-events: none;
-
-  opacity: 0;
-  background: rgba($mono-1, .8);
-
-  will-change: opacity;
-}
-
-.shadowIsShown {
-  transition: opacity .1s ease-out;
-  pointer-events: all;
-
-  opacity: 1;
-
-  @extend .shadow;
 }

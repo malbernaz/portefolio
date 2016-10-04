@@ -29,18 +29,20 @@ $syntax-gutter: darken($syntax-bg, 36%);
 $syntax-guide:  fade($syntax-fg, 20%);
 $syntax-accent: hsl($syntax-hue, 100%, 66%);
 
+$default-shadow-color: rgba($syntax-fg, .2);
 $syntax-bg-alternate: darken($syntax-bg, 3);
 $selection: #ededed;
 
 
 // Fonts -----------------------------------
 $sans-serif: 'Source Sans Pro', helvetica, arial, sans-serif;
-$monospace: Menlo, 'Fira Mono' monospace;
+$monospace: 'Fira Mono', Menlo, monospace;
 
 
 // z-index -----------------------------------
 $zi-nav: 1000;
-$zi-editor: 998;
+$zi-editor: 999;
+$zi-mobile-nav: 998;
 $zi-message-nofifier: 1001;
 
 
@@ -54,9 +56,10 @@ $mobile-s: 20rem;
 
 // Measures -----------------------------------
 
-$nav-width: 11.5rem;
-$posts-list-width: 15rem;
+$nav-width: 18rem;
+$mobile-nav-height: 4rem;
+$posts-list-width: 18rem;
 
-// Cubic Bezier
+// Cubic-beziers
 
-$default-cubic-bezier: cubic-bezier(0, 0, 0.2, 1);
+$default-bezier: cubic-bezier(0,0,0.32,1);

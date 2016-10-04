@@ -35,6 +35,6 @@
   "start_url": "/?homescreen=1",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#fafafa",
-  "theme_color": "#526eff"
+  "background_color": "#383a42",
+  "theme_color": "#f2f2f2"
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { applyRouterMiddleware, Router, browserHistory } from 'react-router'
-import useScroll from 'react-router-scroll'
+import { useScroll } from 'react-router-scroll'
 import { Provider } from 'react-redux'
 import { syncHistoryWithStore } from 'react-router-redux'
 
@@ -18,13 +18,11 @@ const history = syncHistoryWithStore(browserHistory, store)
 render(
   <Provider store={ store }>
     <WithStylesContext onInsertCss={ s => s._insertCss() }>
-      <Router
-        children={ getRouter(store) }
-        history={ history }
-        render={ applyRouterMiddleware(useScroll()) }
-      />
+      <Router history={ history } render={ applyRouterMiddleware(useScroll()) }>
+        { getRouter(store) }
+      </Router>
     </WithStylesContext>
   </Provider>, document.getElementById('react-view')
 )
 
-require('offline-plugin/runtime').install() // ServiceWorker
+// require('offline-plugin/runtime').install() // ServiceWorker

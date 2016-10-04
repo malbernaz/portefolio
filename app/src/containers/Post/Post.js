@@ -4,32 +4,34 @@ import Helmet from 'react-helmet'
 import moment from 'moment'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
+import { Wrapper } from '../../components'
 import s from './Post.scss'
 
 const Post = ({ posts, slug }) => {
   const { meta, html, createdAt } = posts.filter(p => p.slug === slug)[0]
 
   return (
-    <section className={ s.root }>
+    <Wrapper>
       <Helmet title={ meta.title.toUpperCase() } />
-      <div className={ s.wrapper }>
+      <div className={ s.root }>
         <article>
           <small>{ moment(createdAt, moment.ISO_8601).fromNow() }</small>
+          <h1>{ meta.title }</h1>
           <div dangerouslySetInnerHTML={{ __html: html }} />
         </article>
       </div>
-    </section>
+    </Wrapper>
   )
 }
 
 Post.propTypes = {
-  posts: PropTypes.array,
+  posts: PropTypes.arrayOf(PropTypes.object),
   slug: PropTypes.string
 }
 
 export default connect(
-  (state, props) => ({
-    posts: state.posts.posts,
-    slug: props.params.slug
+  ({ posts: { posts } }, { params: { slug } }) => ({
+    posts,
+    slug
   })
 )(withStyles(s)(Post))

@@ -1,6 +1,17 @@
+const {
+  APIPORT,
+  NODE_ENV,
+  TEST_DATABASE,
+  DATABASE,
+  SECRET,
+  REGISTRATIONSECRET
+} = process.env
+
 module.exports = {
-  port: process.env.PORT || 5000,
-  database: process.env.DATABASE || 'mongodb://127.0.1:27017/portefolio',
-  secret: process.env.SECRET || 'secrettoken',
-  registrationSecret: process.env.REGISTRATIONSECRET || 'secrettoken'
+  port: APIPORT || 5000,
+  database: NODE_ENV === 'test' ?
+    TEST_DATABASE || 'mongodb://127.0.1:27017/portefolio_test' :
+    DATABASE || 'mongodb://127.0.1:27017/portefolio',
+  secret: SECRET || 'secrettoken',
+  registrationSecret: REGISTRATIONSECRET || 'secrettoken'
 }

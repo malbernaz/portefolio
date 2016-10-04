@@ -1,19 +1,37 @@
 const { resolve } = require('path')
+const webpack = require('webpack')
 const cssnano = require('cssnano')
 const autoprefixer = require('autoprefixer')
+
+const babelLoader = {
+  loader: 'babel-loader',
+  query: {
+    presets: [['es2015', { loose: true, modules: false }], 'react'],
+    plugins: [
+      'transform-class-properties',
+      'transform-object-rest-spread',
+      'transform-export-extensions',
+      'transform-decorators-legacy'
+    ]
+  }
+}
 
 module.exports = env => ({
   context: resolve(__dirname, 'src'),
   module: {
-    preLoaders: [{
+    rules: [{
+      enforce: 'pre',
       test: /\.js$/,
       exclude: /node_modules/,
       loader: 'eslint-loader'
-    }],
-    loaders: [{
+    }, {
       test: /\.js$/,
+      exclude: [/node_modules/, /\.worker\.js$/],
+      loaders: [babelLoader]
+    }, {
+      test: /\.worker\.js$/,
       exclude: /node_modules/,
-      loader: 'babel-loader'
+      loaders: ['worker-loader', babelLoader]
     }, {
       test: /\.json$/,
       loader: 'json-loader'
@@ -35,10 +53,16 @@ module.exports = env => ({
       exclude: /node_modules/
     }]
   },
-  postcss: () => ([
-    autoprefixer({ browsers: ['last 2 versions'] }),
-    cssnano({ zindex: false })
-  ]),
+  plugins: [
+    new webpack.LoaderOptionsPlugin({
+      options: {
+        postcss: () => ([
+          autoprefixer({ browsers: ['last 2 versions'] }),
+          cssnano({ zindex: false })
+        ])
+      }
+    })
+  ],
   watchOptions: {
     aggregateTimeout: 300,
     poll: 1000

@@ -1,10 +1,12 @@
-FROM node:6.3.0
+FROM node:6.6.0
 
 RUN useradd --user-group --create-home --shell /bin/false api && \
     echo "America/Sao_Paulo" > /etc/timezone && \
     dpkg-reconfigure -f noninteractive tzdata
 
 ENV HOME=/home/api
+
+ENV NODE_CONFIG_LOGLEVEL=warn
 
 COPY package.json npm-shrinkwrap.json $HOME/server/
 
@@ -14,11 +16,13 @@ USER api
 
 WORKDIR $HOME/server
 
-RUN npm install
+RUN rm -fr node_modules && npm install --silent
 
 USER root
 COPY . $HOME/server
 RUN chown -R api:api $HOME/*
 USER api
+
+run npm test --silent
 
 CMD ["npm", "start"]

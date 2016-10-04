@@ -13,7 +13,10 @@ const Html = ({ component, store, css }) => {
         { head.title.toComponent() }
         { head.meta.toComponent() }
         { head.link.toComponent() }
-
+        <meta
+          name="viewport"
+          content=" width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+        />
         <style>{ css.join('') }</style>
       </head>
       <body>
@@ -33,10 +36,12 @@ const Html = ({ component, store, css }) => {
   )
 }
 
+const { element, shape, func, string, arrayOf } = PropTypes
+
 Html.propTypes = {
-  component: PropTypes.node,
-  store: PropTypes.object,
-  css: PropTypes.array
+  component: element,
+  store: shape({ getState: func }),
+  css: arrayOf(string)
 }
 
 export default Html

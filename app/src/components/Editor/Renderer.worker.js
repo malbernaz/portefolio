@@ -1,7 +1,9 @@
-import { Renderer } from 'marked'
+import marked, { Renderer } from 'marked'
 import { getLanguage, highlight } from 'highlight.js'
 
 const renderer = new Renderer()
+
+marked.setOptions({ gfm: true, renderer })
 
 renderer.code = (code, language) => {
   const validLang = !!(language && getLanguage(language))
@@ -18,7 +20,6 @@ renderer.list = (body, ordered) => {
     .filter(s => s !== '')
 
   let hasCheckbox = false
-
   const output = items
     .map(i => {
       if (i.match(/\r?\n|\r/)) return i
@@ -55,4 +56,8 @@ renderer.list = (body, ordered) => {
     `<ul>${output.join('')}</ul>`
 }
 
-export default renderer
+self.onmessage = e => {
+  e.preventDefault()
+
+  self.postMessage(marked(e.data.raw))
+}

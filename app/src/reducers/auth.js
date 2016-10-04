@@ -30,10 +30,7 @@ export default (state = { loaded: false }, action = {}) => {
         ...state,
         loading: false,
         loaded: false,
-        status:
-          typeof state.status === 'undefined' ?
-            'unauthorized' :
-            state.status,
+        status: typeof state.status === 'undefined' ? 'unauthorized' : state.status,
         user: null
       }
 

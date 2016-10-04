@@ -4,11 +4,15 @@ import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 
 import { SignInForm } from './'
-import * as authActions from '../actions/auth'
-import * as messageActions from '../actions/message'
+import {
+  signIn as signInAction,
+  logout as logoutAction,
+  loadAuth as loadAuthAction
+} from '../actions/auth'
+import { showMessage as showMessageAction } from '../actions/message'
 
-const SignIn = ({ auth, signIn, logout, loadAuth, showMessage, redirect }) => {
-  function handleSubmit(data) {
+const SignIn = ({ user, signIn, logout, loadAuth, showMessage, redirect }) => {
+  function handleSubmit (data) {
     const submitPromise = () => signIn(data)
       .then(({ message }) => {
         showMessage(message)
@@ -17,7 +21,7 @@ const SignIn = ({ auth, signIn, logout, loadAuth, showMessage, redirect }) => {
       .then(loadAuth)
       .catch(({ message }) => showMessage(message))
 
-    return auth.user ?
+    return user ?
       logout().then(() => submitPromise()) :
       submitPromise()
   }
@@ -25,22 +29,24 @@ const SignIn = ({ auth, signIn, logout, loadAuth, showMessage, redirect }) => {
   return <SignInForm onSubmit={ handleSubmit } />
 }
 
+const { object, func } = PropTypes
+
 SignIn.propTypes = {
-  auth: PropTypes.object,
-  loadAuth: PropTypes.func,
-  logout: PropTypes.func,
-  redirect: PropTypes.func,
-  showMessage: PropTypes.func,
-  signIn: PropTypes.func
+  user: object, // eslint-disable-line react/forbid-prop-types
+  loadAuth: func,
+  logout: func,
+  redirect: func,
+  showMessage: func,
+  signIn: func
 }
 
 export default connect(
-  state => ({
-    ...state
-  }),
+  ({ auth: { user } }) => ({ user }),
   dispatch => bindActionCreators({
-    ...authActions,
-    ...messageActions,
+    signIn: signInAction,
+    logout: logoutAction,
+    loadAuth: loadAuthAction,
+    showMessage: showMessageAction,
     redirect: push
   }, dispatch)
 )(SignIn)

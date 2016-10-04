@@ -1,8 +1,7 @@
 const express = require('express')
 const passport = require('passport')
-const mongoose = require('mongoose')
 
-const { User, Draft } = require('../models')
+const { Draft } = require('../models')
 const { titleSlugger } = require('../helpers')
 
 const Router = new express.Router()
@@ -13,8 +12,8 @@ const genericErrorMessage =
 
 Router.get('/', passport.authenticate('jwt', {
   session: false
-}), (req, res) => {
-  Draft.find().exec()
+}), ({ user: { _id } }, res) => {
+  Draft.find({ 'meta.author': _id }).exec()
 
   // return drafts or a message saying there ain't any
   .then(drafts => res.json({
@@ -31,17 +30,17 @@ Router.get('/', passport.authenticate('jwt', {
 })
 
 
-Router.get('/:slug', passport.authenticate('jwt', {
+Router.get('/:_id', passport.authenticate('jwt', {
   session: false
-}), ({ params: { slug } }, res) => {
-  Draft.findOne({ slug }).exec()
+}), ({ params, user }, res) => {
+  Draft.findOne({ _id: params._id, 'meta.author': user._id }).exec()
 
   // search draft by slug
-  .then(draft => res.json({
+  .then(draft => draft !== null ? res.json({
     success: true,
     message: 'successfully loaded draft',
     draft
-  }))
+  }) : Promise.reject())
 
   // catch any error
   .catch(() => res.status(404).send({
@@ -52,22 +51,14 @@ Router.get('/:slug', passport.authenticate('jwt', {
 
 Router.post('/', passport.authenticate('jwt', {
   session: false
-}), ({ body: { raw, meta, html, _id, createdAt }, user }, res) => {
-  const slug = titleSlugger(meta.title)
-  const newDraft = new Draft({
-    raw,
-    html,
-    slug,
-    updatedAt: new Date(),
-    meta: Object.assign(meta, { author: user._id })
-  })
-
-  if (_id) newDraft._id = new mongoose.Types.ObjectId(_id)
-
-  if (createdAt) newDraft.createdAt = createdAt
-
+}), ({ body: { raw, meta, html }, user }, res) => {
   // save draft
-  Promise.resolve(newDraft.save())
+  Promise.resolve(
+    new Draft({
+      raw,
+      html,
+      meta: Object.assign(meta, { author: user._id })
+    }).save())
 
   // send ok response
   .then(draft => res.json({
@@ -77,52 +68,34 @@ Router.post('/', passport.authenticate('jwt', {
   }))
 
   // catch any error
-  .catch(err => {
-    if (err.code) {
-      return res.status(400).json({
-        success: false,
-        message: 'could not create draft. existent title'
-      })
-    }
-
-    return res.status(400).json({
-      success: false,
-      message: genericErrorMessage
-    })
-  })
+  .catch(() => res.status(400).json({
+    success: false,
+    message: genericErrorMessage
+  }))
 })
 
 
-Router.patch('/:slug', passport.authenticate('jwt', {
+Router.patch('/:_id', passport.authenticate('jwt', {
   session: false,
-}), ({ body: { raw, meta, html, _id }, params: { slug }, user }, res) => {
-  Draft.findOne({ slug }).exec()
+}), ({ body: { raw, meta, html }, params: { _id }, user }, res) => {
+  Draft.findOne({ _id, 'meta.author': user._id }).exec()
 
   // save new draft data,
   // or reject if the user is not the owner of the draft
   .then(draft => {
-    if (!draft) {
-      return Promise.reject({ why: 'inexsistent' })
+    if (draft === null) {
+      return Promise.reject({ why: 'inexistent' })
     }
 
-    if (draft.meta.author.toString() !== user._id.toString()) {
-      return Promise.reject({ why: 'unauthorized' })
-    }
-
-    return draft.update({
-      $set: {
-        html,
-        raw,
-        slug: titleSlugger(meta.title),
-        updatedAt: new Date(),
-        meta: {
-          title: meta.title,
-          description: meta.description,
-          tags: meta.tags,
-          author: user._id
-        }
-      }
+    const newData = Object.assign(draft, {
+      html,
+      raw,
+      slug: titleSlugger(meta.title),
+      updatedAt: new Date(),
+      meta: Object.assign(draft.meta, meta)
     })
+
+    return draft.update({ $set: newData })
   })
 
   // update method does not return updated doc
@@ -137,17 +110,10 @@ Router.patch('/:slug', passport.authenticate('jwt', {
 
   // catch any error
   .catch(err => {
-    if (err.why === 'unauthorized') {
-      return res.status(401).json({
-        success: false,
-        message: 'you do not own this draft'
-      })
-    }
-
     if (err.why === 'inexistent') {
       return res.status(404).json({
         success: false,
-        message: 'could\'t update draft. inexsistent'
+        message: 'could not update draft. inexistent'
       })
     }
 
@@ -161,28 +127,11 @@ Router.patch('/:slug', passport.authenticate('jwt', {
 
 Router.delete('/:_id', passport.authenticate('jwt', {
   session: false
-}), ({ params, user }, res) => {
-  User.findOne({ _id: user._id }).exec()
-
-  // if the user is not the owner of the draft reject, else query on drafts
-  .then(draftOwner => {
-    const self = draftOwner
-
-    if (self.drafts.indexOf(params._id) < 0) {
-      return Promise.reject({ why: 'unauthorized' })
-    }
-
-    return Draft.findOne({ _id: params._id }).exec()
-  })
+}), ({ params: { _id }, user }, res) => {
+  Draft.findOne({ _id, 'meta.author': user._id }).exec()
 
   // if unexistent reject, else delete
-  .then(draft => {
-    if (!draft) {
-      return Promise.reject({ why: 'inexsistent' })
-    }
-
-    return draft.remove()
-  })
+  .then(draft => draft === null ? Promise.reject({ why: 'inexistent' }) : draft.remove())
 
   // send ok response
   .then(draft => res.json({
@@ -193,17 +142,10 @@ Router.delete('/:_id', passport.authenticate('jwt', {
 
   // catch any error
   .catch(err => {
-    if (err.why === 'unauthorized') {
-      return res.status(401).json({
-        success: false,
-        message: 'you do not own this draft'
-      })
-    }
-
     if (err.why === 'inexistent') {
       return res.status(404).json({
         success: false,
-        message: 'could\'t delete draft. inexsistent'
+        message: 'could not delete draft. inexistent'
       })
     }
 

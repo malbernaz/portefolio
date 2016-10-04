@@ -10,8 +10,6 @@ import {
   LOGOUT_FAIL
 } from '../constants'
 
-export const isLoaded = (state) => state.auth && state.auth.loaded
-
 export const loadAuth = () => ({
   types: [LOAD_AUTH, LOAD_AUTH_SUCCESS, LOAD_AUTH_FAIL],
   promise: client => client.get('/user/loadauth')

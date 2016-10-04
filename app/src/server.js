@@ -1,5 +1,6 @@
 import { resolve } from 'path'
 import { Server } from 'http'
+import { createProxyServer } from 'http-proxy'
 import compression from 'compression'
 import express from 'express'
 import favicon from 'express-favicon'
@@ -24,10 +25,36 @@ import WithStylesContext from './helpers/WithStylesContext'
 const app = express()
 const server = new Server(app)
 
+const targetUrl = `http://${config.apiHost}:${config.apiPort}`
+const proxy = createProxyServer({
+  target: targetUrl,
+  ws: true,
+})
+
 app.use(compression())
 app.use(serveStatic(resolve(__dirname, 'public')))
 app.use(favicon(resolve(__dirname, 'public', 'img', 'icon.png')))
 app.use(morgan('dev'))
+
+app.use('/api', (req, res) => {
+  proxy.web(req, res, { target: `${targetUrl}/api` })
+})
+
+server.on('upgrade', (req, socket, head) => {
+  proxy.ws(req, socket, head)
+})
+
+proxy.on('error', (error, req, res) => {
+  if (error.code !== 'ECONNRESET') {
+    console.error('proxy error:', error) // eslint-disable-line no-console
+  }
+
+  if (!res.headersSent) {
+    res.writeHead(500, { 'content-type': 'application/json' })
+  }
+
+  res.end(JSON.stringify({ error: 'proxy_error', reason: error.message }))
+})
 
 app.use((req, res) => {
   const client = new ApiClient(req)
@@ -35,7 +62,7 @@ app.use((req, res) => {
   const store = configureStore(client, memoryHistory)
   const history = syncHistoryWithStore(memoryHistory, store)
 
-  function hydrateOnClient() {
+  function hydrateOnClient () {
     res.send(`<!doctype html>${renderToString(<Html />)}`)
   }
 
@@ -62,7 +89,7 @@ app.use((req, res) => {
       return res.status(404).end('Not Found')
     }
 
-    function renderPage() {
+    function renderPage () {
       const css = []
 
       const component = (

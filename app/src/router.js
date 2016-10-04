@@ -1,71 +1,51 @@
 import React from 'react'
 import { IndexRoute, Route, Redirect } from 'react-router'
-import { reduce } from 'underscore'
 
-import { isLoaded as isAuthLoaded, loadAuth } from './actions/auth'
+import { loadAuth } from './actions/auth'
 import { loadPosts, loadPostsAndDrafts } from './actions/posts'
-import { AppView, Editor, SignIn, Post } from './containers'
+import { AppView, Editor, SignIn, Post, UserSettings } from './containers'
 import { About, Contact, Home, NotFound } from './components'
 
 export default store => {
   const mustBeLogged = (nextState, replace, callback) => {
-    function checkAuth() {
-      const { auth: { user } } = store.getState()
+    function checkAuth ({ user }) {
       if (!user) replace('/admin')
-      callback()
+
+      return callback()
     }
 
-    if (!isAuthLoaded(store.getState())) {
+    if (!store.getState().auth.loaded) {
       return store.dispatch(loadAuth())
         .then(checkAuth)
         .catch(checkAuth)
     }
-    return checkAuth()
+
+    return checkAuth(store.getState().auth)
   }
 
   const postMustExist = (nextState, replace, callback) => {
     const slug = nextState.params.slug
 
-    const getPosts = () => {
-      const { posts: { posts } } = store.getState()
-      return posts || false
-    }
-
-    function checkIfExists() {
-      const existent = reduce(getPosts(), (p, n) => {
-        if (slug === n.slug || p === true) {
-          return true
-        }
-        return false
-      }, false)
-
-      if (!existent) {
-        replace('/')
-        return callback()
-      }
+    function checkIfExists ({ posts }) {
+      if (!posts.some(p => slug === p.slug)) replace('/pagenotfound')
 
       return callback()
     }
 
-    if (!getPosts()) {
+    if (!store.getState().posts.loadedPosts) {
       return store.dispatch(loadPosts())
         .then(checkIfExists)
         .catch(checkIfExists)
     }
 
-    return checkIfExists()
+    return checkIfExists(store.getState().posts)
   }
 
   const getDrafts = (nextState, replace, callback) => {
-    const findDrafts = () => {
-      const { posts: { drafts } } = store.getState()
-      return drafts || false
-    }
-
-    if (!findDrafts()) {
+    if (!store.getState().posts.loadedPostsAndDrafts) {
       return store.dispatch(loadPostsAndDrafts())
         .then(() => callback())
-        .catch(() => callback())
+        .catch(e => callback(e))
     }
 
     return callback()
@@ -75,21 +55,17 @@ export default store => {
     <Route name="app" component={ AppView } path="/">
       <IndexRoute component={ Home } />
 
-      <Route path="posts">
-        <Route path=":slug" onEnter={ postMustExist } component={ Post } />
-      </Route>
-
       <Route component={ About } path="about" />
       <Route component={ Contact } path="contact" />
+      <Route onEnter={ postMustExist } component={ Post } path="posts/:slug" />
 
-      <Route name="admin" path="admin">
+      <Route path="admin">
         <IndexRoute component={ SignIn } />
-        <Route onEnter={ mustBeLogged } path="editor">
-          <IndexRoute onEnter={ getDrafts } component={ Editor } />
-        </Route>
+        <Route onEnter={ mustBeLogged && getDrafts } component={ Editor } path="editor" />
+        <Route onEnter={ mustBeLogged } component={ UserSettings } path="settings" />
       </Route>
 
-      <Route path="pagenotfound" component={ NotFound } />
+      <Route component={ NotFound } path="pagenotfound" />
       <Redirect from="*" status="404" to="pagenotfound" />
     </Route>
   )

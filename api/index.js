@@ -1,70 +1,33 @@
-const Express = require('express')
-const mongoose = require('mongoose')
-const bodyParser = require('body-parser')
-const cookie = require('cookie-parser')
-const morgan = require('morgan')
-const passport = require('passport')
+const fs = require('fs')
+const http = require('http')
+const https = require('https')
 
 const config = require('./config/main')
-const passportConfig = require('./config/passport')
+const api = require('./server')
 
-const PostsModel = require('./models/Post')
-const DraftsModel = require('./models/Draft')
+if (process.env.NODE_ENV === 'production') {
+  const key = fs.readFileSync('sslcert/server.key', 'utf8')
+  const cert = fs.readFileSync('sslcert/server.crt', 'utf8')
 
-const { User, Post, Draft } = require('./routes')
+  const credentials = { key, cert }
 
-const api = new Express()
-const server = new Express()
+  const httpsServer = https.createServer(credentials, api)
 
-// Use native promises with mongoose
-mongoose.Promise = global.Promise
+  httpsServer.listen(config.port, err => {
+    if (err) {
+      console.log(err) // eslint-disable-line no-console
+    }
 
-api.use(bodyParser.urlencoded({ extended: false }))
-api.use(bodyParser.json())
-api.use(cookie(config.secret))
+    console.log(`\n==>  Api listening on port ${config.port}\n`) // eslint-disable-line no-console
+  })
+} else {
+  const httpServer = http.createServer(api)
 
-api.use(morgan('dev'))
+  httpServer.listen(config.port, err => {
+    if (err) {
+      console.log(err) // eslint-disable-line no-console
+    }
 
-api.use(passport.initialize())
-
-mongoose.connect(config.database)
-
-passportConfig(passport)
-
-api.use('/user', User)
-api.use('/posts', Post)
-api.use('/drafts', Draft)
-
-api.get('/postsanddrafts', passport.authenticate('jwt', {
-  session: false
-}), (req, res) => {
-  const queries = [
-    PostsModel.find().exec()
-      .then(result => ({ posts: result }))
-      .catch(err => err),
-    DraftsModel.find().exec()
-      .then(result => ({ drafts: result }))
-      .catch(err => err)
-  ]
-
-  return Promise.all(queries)
-    .then(result => res.send(Object.assign({
-      success: true,
-      message: 'successfully loaded posts and drafts'
-    }, Object.assign(result[0], result[1]))))
-    .catch(err => res.status(400).send({
-      success: false,
-      message: 'something went wrong. could\'t load posts and drafts',
-      err
-    }))
-})
-
-server.use('/api', api)
-
-server.listen(config.port, err => {
-  if (err) {
-    console.log(err) // eslint-disable-line no-console
-  }
-
-  console.log(`\n==>  Api listening on port ${config.port}\n`) // eslint-disable-line no-console
-})
+    console.log(`\n==>  Api listening on port ${config.port}\n`) // eslint-disable-line no-console
+  })
+}

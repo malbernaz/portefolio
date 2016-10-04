@@ -2,37 +2,35 @@
 @import '../../theme/mixins';
 
 .root {
+  position: absolute;
+  top: 0;
+  left: 0;
   z-index: $zi-nav;
 
-  display: flex;
-  flex-direction: column;
+  overflow-y: auto;
 
   box-sizing: border-box;
   width: $nav-width;
   height: 100vh;
   padding: 0;
 
-  border-right: 1px lighten($mono-3, 15) dashed;
   background: darken($syntax-bg, 2);
+  box-shadow: 0 1px 5px $default-shadow-color;
 
-  justify-content: center;
   will-change: transform;
 
   @media (max-width: $tablet) {
-    position: absolute;
-    top: 0;
-
-    transition: transform .15s ease-out;
+    transition: transform .2s $default-bezier;
     transform: translateX(-$nav-width);
 
     will-change: transform;
   }
 }
 
-.isShown {
-  @extend .root;
+.rootIsShown {
+  composes: root;
+
   @media (max-width: $tablet) {
-    transition: transform .1s ease-out;
     transform: translateX(0);
   }
 }
@@ -46,8 +44,7 @@
   width: 100vw;
   height: 100vh;
 
-  transition: opacity .15s ease-out;
-  transform: translateX($nav-width);
+  transition: opacity .2s $default-bezier;
   pointer-events: none;
 
   opacity: 0;
@@ -57,88 +54,69 @@
 }
 
 .shadowIsShown {
-  @extend .shadow;
+  composes: shadow;
+
   @media (max-width: $tablet) {
-    transition: opacity .1s ease-out;
     pointer-events: all;
 
     opacity: 1;
   }
 }
 
-.toggleBtn {
-  position: fixed;
-  z-index: $zi-nav - 1;
-  top: 0;
-  left: 0;
-
-  visibility: hidden;
-
-  height: 3.5rem;
-
-  pointer-events: none;
-
-  @include icon-link(3.5rem);
-
-  @media (max-width: $tablet) {
-    visibility: visible;
-
-    pointer-events: all;
-  }
-}
-
-.logo {
-  position: absolute;
-  top: 0;
-  left: 0;
-
+.content {
   display: flex;
   flex-direction: column;
 
+  width: 100%;
+  height: auto;
+  min-height: 100vh;
+
+  justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+
+  box-sizing: border-box;
   width: $nav-width;
-  padding: 1.5rem 0 0;
+  padding: 2rem 0;
 
   text-align: center;
 
-  color: lighten($syntax-fg, 20%);
+  color: $syntax-bg;
+  background: $syntax-accent;
 
   align-items: center;
   justify-content: center;
-
-  @media (max-width: $mobile-s) {
-    transform: scale(.8);
-  }
 }
 
 .logoIcon {
   height: 3rem;
+
+  path {
+    fill: $syntax-bg;
+  }
 }
 
 .logoTitle {
   margin: 1rem 0 0;
 
   text-transform: uppercase;
-
-  color: $syntax-accent;
 }
 
 .logoDescription {
-  font-size: .75rem;
+  font-size: .8rem;
   font-weight: 600;
-  line-height: 1.3rem;
-  max-width: 8rem;
 
-  margin: .5rem auto 0;
+  max-width: 8rem;
+  margin: .4rem auto 0;
 }
 
 .navMain {
   width: 100%;
-  margin: 0;
+  margin: 0 0 3rem;
   padding: 0;
-
-  @media (max-width: $mobile-s) {
-    margin-top: 3rem;
-  }
 }
 
 .item {
@@ -152,12 +130,9 @@
   align-items: center;
 
   &:hover,
-
   &:focus {
     color: $syntax-accent;
     background: darken($syntax-bg, 7);
-
-    @extend .item;
   }
 
   @media (max-width: $mobile-s) {
@@ -169,7 +144,7 @@
   color: $syntax-accent;
   background: darken($syntax-bg, 7);
 
-  @extend .item;
+  composes: item;
 }
 
 .itemLogout {
@@ -177,7 +152,7 @@
 
   border-top: 1px $mono-3 dashed;
 
-  @extend .item;
+  composes: item;
   @include dark-link($syntax-accent, 10);
 
   &:hover {
@@ -186,16 +161,8 @@
 }
 
 .footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-
   width: 100%;
   width: $nav-width;
-
-  @media (max-width: $mobile-s) {
-    transform: scale(.8);
-  }
 }
 
 .social {
@@ -241,41 +208,4 @@
 
 .copyrightIcon {
   font-weight: 800;
-}
-
-.navMobile {
-  position: absolute;
-  z-index: $zi-editor - 1;
-
-  display: none;
-
-  box-sizing: border-box;
-  width: 100vw;
-  height: 3.5rem;
-
-  border-bottom: 1px lighten($mono-3, 15) solid;
-  background: $syntax-bg-alternate;
-
-  @media (max-width: $tablet) {
-    display: block;
-  }
-}
-
-.navMobileLogo {
-  font-weight: 700;
-
-  text-transform: uppercase;
-
-  color: $syntax-accent;
-
-  @include icon-link(3.5rem);
-  align-items: center;
-  justify-content: center;
-
-  svg {
-    path {
-      stroke: $syntax-accent;
-      stroke-width: 1px;
-    }
-  }
 }

@@ -8,19 +8,23 @@ $posts-list-width: 15rem;
 
   width: calc(100vw - #{$nav-width});
 
-  background: $syntax-bg-alternate;
+  background: $syntax-bg;
 
   align-items: center;
 }
 
 .root {
+  position: relative;
   z-index: $zi-editor;
 
   display: flex;
   flex-direction: column;
 
+  box-sizing: border-box;
   width: calc(100vw - #{$nav-width});
   height: 100vh;
+
+  background: $syntax-bg;
 
   @media (max-width: $tablet) {
     width: 100vw;
@@ -29,33 +33,35 @@ $posts-list-width: 15rem;
 
 .topBar {
   position: relative;
-  z-index: $zi-editor + 1;
 
-  flex: 0 0 3.5rem;
+  flex: 0 0 $mobile-nav-height;
 
-  border-bottom: 1px lighten($mono-3, 15) solid;
+  width: 100%;
 
   @extend %adminBar;
   justify-content: center;
-
-  @media (max-width: $tablet) {
-    width: 100vw;
-  }
 }
 
 .topBarBtn {
   position: absolute;
   top: 0;
 
-  @include icon-link(3.5rem);
+  @include icon-link($mobile-nav-height);
+}
 
-  &:first-child {
-    left: 0;
+.menuToggleBtn {
+  left: 0;
+  display: none;
+
+  @media (max-width: $tablet) {
+    display: flex;
   }
+
+  composes: topBarBtn;
 }
 
 .topBarBtnPosts {
-  @extend .topBarBtn;
+  composes: topBarBtn;
 
   @media (max-width: 70rem) {
     visibility: hidden;
@@ -95,16 +101,17 @@ $posts-list-width: 15rem;
 
     max-width: 33.8rem;
     height: 1.3rem;
+    margin-right: .5rem;
 
     text-align: left;
     white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   svg {
     flex: 0 0 .7rem;
 
     height: .7rem;
-    padding-left: .5rem;
   }
 }
 
@@ -122,21 +129,13 @@ $posts-list-width: 15rem;
 .bottomBar {
   z-index: $zi-editor + 1;
 
-  display: none;
+  display: flex;
   flex: 0 0 4rem;
 
-  border-top: 1px lighten($mono-3, 15) solid;
+  width: 100%;
 
   @extend %adminBar;
   justify-content: space-around;
-
-  @media (max-width: 70rem) {
-    display: flex;
-  }
-
-  @media (max-width: $tablet) {
-    width: 100vw;
-  }
 }
 
 .bottomBarBtn {
@@ -158,107 +157,49 @@ $posts-list-width: 15rem;
 }
 
 .panes {
+  contain: strict;
   position: relative;
 
-  display: flex;
-
-  width: calc(100vw - #{$nav-width});
-  height: calc(100% - 3.5rem);
-
-  @media (max-width: 70rem) {
-    height: calc(100% - 7.5rem);
-  }
-
-  @media (max-width: $tablet) {
-    width: 100vw;
-  }
+  width: 100%;
+  height: calc(100% - #{$mobile-nav-height * 2});
 }
 
 .panesView {
+  position: absolute;
   display: flex;
 
-  width: 100%;
+  width: 200%;
   height: 100%;
 
-  @media (max-width: 70rem) {
-    display: block;
+  left: 0;
 
-    width: 100%;
-
-    transition: transform .2s $default-cubic-bezier;
-    transform: translateX(0);
-
-    will-change: transform;
-  }
+  will-change: transform;
 }
 
 .panesViewOnPreview {
-  @extend .panesView;
+  left: -100%;
 
-  @media (max-width: 70rem) {
-    transform: translateX(-100%);
-  }
+  composes: panesView;
 }
 
-.code {
-  flex: 1 1 50%;
-
+.pane {
   box-sizing: border-box;
+  width: 50%;
   height: 100%;
-
-  // reset for the first server render
-  textarea {
-    font-family: $monospace;
-    font-size: .8rem;
-
-    bottom: 0;
-
-    width: 100%;
-    height: 100%;
-
-    border: 0;
-    background: $syntax-bg;
-  }
-
-  @media (max-width: 70rem) {
-    width: 100%;
-  }
 }
 
 .preview {
-  z-index: $zi-editor - 1;
+  overflow-y: auto;
 
-  display: block;
-  overflow-y: scroll;
-  flex: 1 1 50%;
+  transform: translateZ(0);
 
-  box-sizing: border-box;
   height: 100%;
-  padding: 1rem 1rem 2rem;
-
-  transform: translateX(0) translateZ(0);
-
-  border-left: 1px lighten($mono-3, 15) dashed;
-
-  will-change: transform;
 
   article {
-    padding-top: 0;
+    padding: 2rem 1rem 4rem;
 
     h2:first-child {
       margin-top: 0;
     }
-  }
-
-  @media (max-width: 70rem) {
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    width: 100%;
-
-    transform: translateX(100%) translateZ(0);
-
-    border-left: 0;
   }
 }

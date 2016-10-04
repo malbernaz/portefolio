@@ -3,11 +3,11 @@ import Helmet from 'react-helmet'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import config from '../../config'
-import { Icon } from '../'
+import { Icon, Wrapper } from '../'
 import s from './Contact.scss'
 
-const Contact = () => (
-  <div className={ s.wrapper }>
+const Contact = () =>
+  <Wrapper>
     <section className={ s.root }>
       <Helmet title="CONTACT" />
       <h2 className={ s.header }>
@@ -21,7 +21,7 @@ const Contact = () => (
       <div className={ s.item }>
         <Icon className={ s.icon } name="paper-plane" />
         <span className={ s.text }>send me an email:</span>
-        <a className={ s.link } href={ config.email }>
+        <a className={ s.link } href={ `mailto:${config.email}` }>
           { config.email }
         </a>
       </div>
@@ -40,7 +40,6 @@ const Contact = () => (
         </a>
       </div>
     </section>
-  </div>
-)
+  </Wrapper>
 
 export default withStyles(s)(Contact)

@@ -4,14 +4,12 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import { Icon } from '../'
 import s from './DropdownButton.scss'
 
-const DropdownButton = ({ options, fixedOptions, isShown, toggleDropdown }) => (
+const DropdownButton = ({ options, fixedOptions, isShown, toggleDropdown }) =>
   <div className={ s.root }>
-    <a onClick={ e => toggleDropdown(e) } className={ s.toggle }>
-      <Icon name="more" />
-    </a>
+    <a onClick={ toggleDropdown } className={ s.toggle }><Icon name="more" /></a>
     <div className={ isShown ? s.options : s.optionsHidden }>
       { options.map((o, i) =>
-        <a className={ s.option } key={ i } onClick={ e => o.action(e) }>
+        <a className={ s.option } key={ i } onClick={ o.action }>
           { o.label }
         </a>
       ) }
@@ -19,21 +17,28 @@ const DropdownButton = ({ options, fixedOptions, isShown, toggleDropdown }) => (
         <a
           className={ o.label === 'delete' ? s.optionDanger : s.option }
           key={ i }
-          onClick={ e => o.action(e) }
+          onClick={ o.action }
         >
           { o.label }
         </a>
       ) }
     </div>
-    <div className={ isShown ? s.shadowIsShown : s.shadow } onClick={ e => toggleDropdown(e) } />
+    <div onClick={ toggleDropdown } className={ isShown ? s.shadowIsShown : s.shadow } />
   </div>
-)
+
+const { arrayOf, bool, shape, string, func } = PropTypes
 
 DropdownButton.propTypes = {
-  options: PropTypes.array.isRequired,
-  fixedOptions: PropTypes.array.isRequired,
-  isShown: PropTypes.bool.isRequired,
-  toggleDropdown: PropTypes.func.isRequired
+  options: arrayOf(shape({
+    label: string.isRequired,
+    action: func.isRequired
+  })).isRequired,
+  fixedOptions: arrayOf(shape({
+    label: string.isRequired,
+    action: func.isRequired
+  })).isRequired,
+  isShown: bool.isRequired,
+  toggleDropdown: func.isRequired
 }
 
 export default withStyles(s)(DropdownButton)

@@ -1,0 +1,57 @@
+@import '../../theme/vars';
+@import '../../theme/mixins';
+
+.navMobile {
+  position: absolute;
+  z-index: $zi-mobile-nav;
+  top: 0;
+  left: 0;
+
+  display: none;
+
+  box-sizing: border-box;
+  width: 100vw;
+  height: $mobile-nav-height;
+
+  @media (max-width: $tablet) {
+    display: block;
+  }
+}
+
+.navMobileLogo {
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  color: $syntax-accent;
+
+  @include icon-link($mobile-nav-height);
+  align-items: baseline;
+  line-height: $mobile-nav-height;
+  justify-content: center;
+  cursor: auto;
+
+  svg {
+    height: .9rem;
+  }
+}
+
+.toggleBtn {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  visibility: hidden;
+
+  height: $mobile-nav-height;
+
+  pointer-events: none;
+
+  @include icon-link($mobile-nav-height);
+
+  @media (max-width: $tablet) {
+    visibility: visible;
+
+    pointer-events: all;
+  }
+}

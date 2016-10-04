@@ -2,35 +2,39 @@
 @import '../../theme/mixins';
 
 .root {
+  box-sizing: border-box;
   width: 100%;
+  padding: 0 1rem;
 }
 
 .post {
-  width: 100%;
-  padding: 1.5rem 1rem;
   box-sizing: border-box;
-  text-align: center;
+  width: 100%;
+  padding: 2rem 1rem;
 
-  &:first-child {
-    padding-top: 0;
-  }
+  text-align: center;
 }
 
 .title {
   text-transform: uppercase;
+
   color: $mono-1;
 }
 
 .description {
   text-transform: uppercase;
+
   color: $mono-2;
+
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .more {
-  @include button($syntax-accent);
-
-  height: 2rem;
-  justify-content: center;
   max-width: 5rem;
+  height: 2rem;
   margin: 1.8rem auto 0;
+
+  @include button($syntax-accent);
+  justify-content: center;
 }

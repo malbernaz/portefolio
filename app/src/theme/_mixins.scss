@@ -54,7 +54,6 @@
   appearance: none;
 
   &:focus,
-
   &:hover {
     opacity: .7;
   }
@@ -93,7 +92,6 @@
   }
 
   &:focus,
-
   &:hover {
     color: darken($color, $amount);
 
@@ -116,7 +114,6 @@
   }
 
   &:focus,
-
   &:hover {
     color: lighten($color, $amount);
 

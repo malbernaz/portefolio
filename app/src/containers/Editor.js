@@ -1,41 +1,63 @@
 import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import Helmet from 'react-helmet'
 
 import { EditorView } from '../components'
 import editablePostsSelector from '../selectors/editablePostsSelector'
 import * as postsActions from '../actions/posts'
 import * as messageActions from '../actions/message'
 import * as editorActions from '../actions/ui/editor'
+import * as navActions from '../actions/ui/nav'
 
-class Editor extends Component {
+const { array, arrayOf, bool, func, object, shape, string } = PropTypes
+
+const mapStateToProps = state => ({
+  posts: state.posts,
+  message: state.message,
+  editor: state.ui.editor,
+  iterablePosts: editablePostsSelector(state)
+})
+
+const mapDispatchToProps = d => bindActionCreators({
+  ...postsActions,
+  ...messageActions,
+  ...editorActions,
+  ...navActions
+}, d)
+
+@connect(mapStateToProps, mapDispatchToProps)
+export default class Editor extends Component {
   static propTypes = {
-    createActiveDraft: PropTypes.func,
-    deleteDraft: PropTypes.func,
-    deletePost: PropTypes.func,
-    drafts: PropTypes.object,
-    editor: PropTypes.object,
-    iterablePosts: PropTypes.array,
-    loadDrafts: PropTypes.func,
-    loadPosts: PropTypes.func,
-    message: PropTypes.object,
-    posts: PropTypes.object,
-    publish: PropTypes.func,
-    saveDraft: PropTypes.func,
-    showMessage: PropTypes.func,
-    switchView: PropTypes.func,
-    toggleEditorDropdown: PropTypes.func,
-    toggleEditorNav: PropTypes.func,
-    toggleEditorSettings: PropTypes.func,
-    unpublish: PropTypes.func,
-    updateActiveDraft: PropTypes.func,
-    updateDraft: PropTypes.func,
-    updatePost: PropTypes.func
+    createActiveDraft: func,
+    deleteDraft: func,
+    deletePost: func,
+    editor: shape({
+      editorDropdownIsVisible: bool,
+      editorNavIsVisible: bool,
+      editorSettingsIsVisible: bool,
+      view: string
+    }),
+    iterablePosts: arrayOf(object),
+    posts: shape({
+      activeDraft: object,
+      drafts: array,
+      posts: array
+    }),
+    publish: func,
+    saveDraft: func,
+    showMessage: func,
+    switchView: func,
+    toggleEditorDropdown: func,
+    toggleEditorNav: func,
+    toggleEditorSettings: func,
+    toggleNav: func,
+    unpublish: func,
+    updateActiveDraft: func,
+    updateDraft: func,
+    updatePost: func
   }
 
   // POSTS CRUD
-
   submitPromise = (promise, data) => {
     const {
       showMessage,
@@ -99,7 +121,9 @@ class Editor extends Component {
       deletePost,
       deleteDraft,
       posts: {
-        activeDraft, drafts, posts
+        activeDraft,
+        drafts,
+        posts
       }
     } = this.props
 
@@ -133,7 +157,6 @@ class Editor extends Component {
   }
 
   // UI INTERACTIONS
-
   handleEditPost = (e, newActiveDraft) => {
     e.preventDefault()
 
@@ -144,7 +167,15 @@ class Editor extends Component {
     createActiveDraft(newActiveDraft)
   }
 
-  toggleNav = e => {
+  toggleGlobalNav = e => {
+    e.preventDefault()
+
+    const { toggleNav } = this.props
+
+    toggleNav()
+  }
+
+  toggleEditorNav = e => {
     e.preventDefault()
 
     const { toggleEditorNav } = this.props
@@ -176,7 +207,7 @@ class Editor extends Component {
     switchView(view)
   }
 
-  render() {
+  render () {
     const {
       editor: {
         editorDropdownIsVisible,
@@ -185,52 +216,40 @@ class Editor extends Component {
         view
       },
       posts: {
-        posts,
         activeDraft,
-        drafts
+        creatingActiveDraft,
+        drafts,
+        posts
       },
-      iterablePosts
+      iterablePosts,
+      updateActiveDraft
     } = this.props
 
     return (
-      <div>
-        <Helmet title="EDITOR" />
-        <EditorView
-          activeDraft={ activeDraft }
-          drafts={ drafts }
-          dropdownIsShown={ editorDropdownIsVisible }
-          editorView={ view }
-          handleChange={ this.handleChange }
-          handleDelete={ this.handleDelete }
-          handleEditPost={ this.handleEditPost }
-          handleNewPost={ this.handleNewPost }
-          handlePublish={ this.handlePublish }
-          handleSaveDraft={ this.handleSaveDraft }
-          handleUnpublish={ this.handleUnpublish }
-          iterablePosts={ iterablePosts }
-          navIsShown={ editorNavIsVisible }
-          posts={ posts }
-          settingIsShown={ editorSettingsIsVisible }
-          switchEditorView={ this.switchEditorView }
-          toggleDropdown={ this.toggleDropdown }
-          toggleNav={ this.toggleNav }
-          toggleSettings={ this.toggleSettings }
-        />
-      </div>
+      <EditorView
+        activeDraft={ activeDraft }
+        creatingActiveDraft={ creatingActiveDraft }
+        drafts={ drafts }
+        dropdownIsShown={ editorDropdownIsVisible }
+        editorView={ view }
+        handleChange={ this.handleChange }
+        handleDelete={ this.handleDelete }
+        handleEditPost={ this.handleEditPost }
+        handleNewPost={ this.handleNewPost }
+        handlePublish={ this.handlePublish }
+        handleSaveDraft={ this.handleSaveDraft }
+        handleUnpublish={ this.handleUnpublish }
+        iterablePosts={ iterablePosts }
+        navIsShown={ editorNavIsVisible }
+        posts={ posts }
+        settingIsShown={ editorSettingsIsVisible }
+        switchEditorView={ this.switchEditorView }
+        toggleDropdown={ this.toggleDropdown }
+        toggleEditorNav={ this.toggleEditorNav }
+        toggleNav={ this.toggleGlobalNav }
+        toggleSettings={ this.toggleSettings }
+        updateActiveDraft={ updateActiveDraft }
+      />
     )
   }
 }
-
-export default connect(
-  state => ({
-    posts: state.posts,
-    message: state.message,
-    editor: state.ui.editor,
-    iterablePosts: editablePostsSelector(state)
-  }),
-  dispatch => bindActionCreators({
-    ...postsActions,
-    ...messageActions,
-    ...editorActions
-  }, dispatch)
-)(Editor)

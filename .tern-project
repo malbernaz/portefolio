@@ -1,11 +1,28 @@
 {
-  "ecmaVersion": 6,
-  "libs": ["browser"],
+  "ecmaVersion": 7,
+  "libs": [
+    "browser",
+    "underscore"
+  ],
   "plugins": {
-    "complete_strings": {},
-    "node": {},
-    "modules": {},
+    "complete_strings": {
+      "maxLength": 15
+    },
+    "node": {
+      "dontLoad": "",
+      "load": "",
+      "modules": ""
+    },
+    "modules": {
+      "dontLoad": "",
+      "load": "",
+      "modules": ""
+    },
     "es_modules": {},
-    "doc_comment": { "fullDocs": true }
+    "doc_comment": {
+      "fullDocs": true,
+      "strong": false
+    },
+    "node_resolve": {}
   }
 }

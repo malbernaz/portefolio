@@ -5,15 +5,16 @@ import ReactCSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import config from '../config'
-import { Nav } from './'
+import { Nav, MobileNav } from './'
 import MessageNotifier from './MessageNotifier/MessageNotifier'
 import s from '../theme/main.scss'
 
-const AppView = ({ children, location }) => (
+const AppView = ({ path, children }) =>
   <div className={ s.appView }>
     <Helmet { ...config.head } />
     <Nav />
     <div className={ s.container }>
+      <MobileNav />
       <ReactCSSTransitionGroup
         component="div"
         className={ s.animationContainer }
@@ -21,20 +22,20 @@ const AppView = ({ children, location }) => (
         transitionEnterTimeout={ 300 }
         transitionLeaveTimeout={ 300 }
       >
-        { cloneElement(children, { key: location.pathname }) }
+        { cloneElement(children, { key: path }) }
       </ReactCSSTransitionGroup>
     </div>
     <MessageNotifier />
   </div>
-)
 
 AppView.propTypes = {
   children: PropTypes.element,
-  location: PropTypes.object
+  path: PropTypes.string
 }
 
 export default connect(
-  state => ({
-    ...state
+  (state, { location, children }) => ({
+    path: location.pathname,
+    children
   })
 )(withStyles(s)(AppView))
