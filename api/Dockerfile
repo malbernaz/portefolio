@@ -16,13 +16,11 @@ USER api
 
 WORKDIR $HOME/server
 
-RUN rm -fr node_modules && npm install --silent
+RUN rm -fr node_modules && npm install
 
 USER root
 COPY . $HOME/server
 RUN chown -R api:api $HOME/*
 USER api
-
-run npm test --silent
 
 CMD ["npm", "start"]

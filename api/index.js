@@ -6,8 +6,8 @@ const config = require('./config/main')
 const api = require('./server')
 
 if (process.env.NODE_ENV === 'production') {
-  const key = fs.readFileSync('sslcert/server.key', 'utf8')
-  const cert = fs.readFileSync('sslcert/server.crt', 'utf8')
+  const key = fs.readFileSync('/sslcert/server.key', 'utf8')
+  const cert = fs.readFileSync('/sslcert/server.crt', 'utf8')
 
   const credentials = { key, cert }
 
