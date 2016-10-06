@@ -1,5 +1,5 @@
 import React from 'react'
-import { IndexRoute, Route, Redirect } from 'react-router'
+import { IndexRoute, Route, Redirect } from 'react-router/es6'
 
 import { loadAuth } from './actions/auth'
 import { loadPosts, loadPostsAndDrafts } from './actions/posts'

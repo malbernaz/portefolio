@@ -1,5 +1,5 @@
 import marked, { Renderer } from 'marked'
-import { getLanguage, highlight } from 'highlight.js'
+import { getLanguage, highlight } from '../../helpers/highlightjs'
 
 const renderer = new Renderer()
 

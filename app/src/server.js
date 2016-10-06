@@ -9,7 +9,7 @@ import serveStatic from 'serve-static'
 
 import { Provider } from 'react-redux'
 import { renderToString } from 'react-dom/server'
-import { RouterContext, match, createMemoryHistory } from 'react-router'
+import { RouterContext, match, createMemoryHistory } from 'react-router/es6'
 import { syncHistoryWithStore } from 'react-router-redux'
 import React from 'react'
 
