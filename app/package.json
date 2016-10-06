@@ -19,7 +19,7 @@
     "imagemin": "imagemin src/static/img/* --out-dir=dist/public/img",
     "nm": "nodemon -L ./dist/index.js --ignore ./dist/public",
     "prebuild": "npm run clean && npm run static && npm run imagemin",
-    "start": "NODE_ENV=production node index.js",
+    "start": "npm run build:prod && NODE_ENV=production node ./dist/index.js",
     "static": "cp src/static/manifest.json dist/public",
     "test": "NODE_ENV=test tape -r babel-register 'src/**/*.test.js' | faucet"
   },

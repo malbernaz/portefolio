@@ -6,7 +6,7 @@ services:
     build: './app'
     command: npm start
     ports:
-      - '80:80'
+      - '80:3000'
     env_file: .env
     volumes:
       - ./app:/home/app/server
