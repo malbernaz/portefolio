@@ -29,8 +29,8 @@ const Html = ({ component, store, css }) => {
           }}
           charSet="UTF-8"
         />
-        <script src="/scripts/vendor.bundle.js" defer />
-        <script src="/scripts/main.bundle.js" defer />
+        <script src="/vendor.bundle.js" defer />
+        <script src="/main.bundle.js" defer />
       </body>
     </html>
   )

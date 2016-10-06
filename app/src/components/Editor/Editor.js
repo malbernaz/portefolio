@@ -25,7 +25,7 @@ export default class Editor extends Component {
   }
 
   componentDidMount () {
-    System.import('./Renderer.worker')
+    System.import('../../helpers/Renderer.worker')
       .then(Worker => {
         this.rendererWorker = new Worker()
         this.rendererWorker.addEventListener('message', this.markdownReceiver, false)

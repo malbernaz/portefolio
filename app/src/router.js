@@ -1,10 +1,7 @@
-import React from 'react'
-import { IndexRoute, Route, Redirect } from 'react-router/es6'
-
+import { AppView } from './containers'
+import { Home, About, Contact, Post, NotFound } from './components'
 import { loadAuth } from './actions/auth'
 import { loadPosts, loadPostsAndDrafts } from './actions/posts'
-import { AppView, Editor, SignIn, Post, UserSettings } from './containers'
-import { About, Contact, Home, NotFound } from './components'
 
 export default store => {
   const mustBeLogged = (nextState, replace, callback) => {
@@ -51,22 +48,42 @@ export default store => {
     return callback()
   }
 
-  return (
-    <Route name="app" component={ AppView } path="/">
-      <IndexRoute component={ Home } />
-
-      <Route component={ About } path="about" />
-      <Route component={ Contact } path="contact" />
-      <Route onEnter={ postMustExist } component={ Post } path="posts/:slug" />
-
-      <Route path="admin">
-        <IndexRoute component={ SignIn } />
-        <Route onEnter={ mustBeLogged && getDrafts } component={ Editor } path="editor" />
-        <Route onEnter={ mustBeLogged } component={ UserSettings } path="settings" />
-      </Route>
-
-      <Route component={ NotFound } path="pagenotfound" />
-      <Redirect from="*" status="404" to="pagenotfound" />
-    </Route>
-  )
+  return {
+    component: AppView,
+    path: '/',
+    indexRoute: { component: Home },
+    childRoutes: [{
+      path: 'about',
+      component: About
+    }, {
+      path: 'contact',
+      component: Contact
+    }, {
+      path: 'posts/:slug',
+      component: Post,
+      onEnter: postMustExist
+    }, {
+      path: 'admin',
+      indexRoute: {
+        getComponent: (location, cb) =>
+          System.import('./containers')
+            .then(({ SignIn }) => cb(null, SignIn))
+      },
+      childRoutes: [{
+        path: 'editor',
+        getComponent: (location, cb) =>
+          System.import('./containers')
+            .then(({ Editor }) => cb(null, Editor)),
+        onEnter: mustBeLogged && getDrafts,
+      }]
+    }, {
+      path: 'pagenotfound',
+      component: NotFound
+    }],
+    redirect: {
+      from: '*',
+      status: '404',
+      to: 'pagenotfound',
+    }
+  }
 }

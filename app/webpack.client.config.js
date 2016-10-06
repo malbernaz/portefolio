@@ -1,47 +1,12 @@
 const { resolve } = require('path')
 const { union } = require('underscore')
 const webpack = require('webpack')
-// const OfflinePlugin = require('offline-plugin')
 
 const wpBaseConfig = require('./webpack.config')
 
 const plugins = [
-  new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', minChunks: Infinity }),
   new webpack.ContextReplacementPlugin(/moment\/locale$/, /^\.\/(en)$/),
-  // new OfflinePlugin({
-  //   AppCache: false,
-  //   caches: {
-  //     main: [
-  //       'scripts/main.bundle.js',
-  //       'scripts/vendor.bundle.js'
-  //     ],
-  //     additional: [],
-  //     optional: [
-  //       '/',
-  //       '/about',
-  //       '/admin',
-  //       '/admin/editor',
-  //       '/contact',
-  //       '/pagenotfound'
-  //     ]
-  //   },
-  //   externals: [
-  //     '/',
-  //     '/about',
-  //     '/contact',
-  //     '/pagenotfound',
-  //     '/admin',
-  //     '/admin/editor'
-  //   ],
-  //   publicPath: '/',
-  //   relativePaths: false,
-  //   safeToUseOptionalCaches: true,
-  //   version: 'v-[hash]',
-  //   ServiceWorker: {
-  //     output: 'sw.js',
-  //     scope: '/'
-  //   }
-  // })
+  new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', minChunks: Infinity })
 ]
 
 const prodPlugins = union(plugins, [
@@ -60,12 +25,12 @@ module.exports = env => {
   return Object.assign(base, {
     context: resolve(__dirname, 'src'),
     entry: {
-      main: './client.js',
-      vendor: ['react', 'react-router', 'moment']
+      main: ['./client', './containers/AppView'],
+      vendor: ['react', 'moment']
     },
     output: {
       path: resolve(__dirname, 'dist', 'public'),
-      filename: 'scripts/[name].bundle.js',
+      filename: '[name].bundle.js',
       publicPath: '/',
     },
     plugins: union(base.plugins, env === 'prod' ? prodPlugins : plugins),
