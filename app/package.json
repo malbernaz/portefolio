@@ -91,10 +91,10 @@
     "json-loader": "^0.5.4",
     "node-sass": "^3.10.1",
     "nodemon": "^1.10.2",
-    "offline-plugin": "^3.4.2",
     "postcss-cssnext": "^2.8.0",
     "postcss-loader": "^0.13.0",
     "sass-loader": "^4.0.2",
+    "sw-precache-webpack-plugin": "^0.5.1",
     "tape": "^4.6.2",
     "webpack": "^2.1.0-beta.25",
     "worker-loader": "^0.7.1"

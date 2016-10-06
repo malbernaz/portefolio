@@ -1,12 +1,30 @@
 const { resolve } = require('path')
 const { union } = require('underscore')
 const webpack = require('webpack')
+const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin')
 
 const wpBaseConfig = require('./webpack.config')
 
+const BUILD_DIR = resolve(__dirname, 'dist', 'public')
+
 const plugins = [
   new webpack.ContextReplacementPlugin(/moment\/locale$/, /^\.\/(en)$/),
-  new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', minChunks: Infinity })
+  new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', minChunks: Infinity }),
+  new SWPrecacheWebpackPlugin({
+    cacheId: 'portefolio_app',
+    filename: 'sw.js',
+    staticFileGlobs: [
+      `${BUILD_DIR}/**/*.js`,
+      `${BUILD_DIR}/img/**/*`
+    ],
+    navigateFallback: '/',
+    runtimeCaching: [{
+      urlPattern: /\/api/,
+      handler: 'fastest'
+    }, {
+      default: 'networkFirst'
+    }]
+  })
 ]
 
 const prodPlugins = union(plugins, [
@@ -29,7 +47,7 @@ module.exports = env => {
       vendor: ['react', 'moment']
     },
     output: {
-      path: resolve(__dirname, 'dist', 'public'),
+      path: BUILD_DIR,
       filename: '[name].bundle.js',
       publicPath: '/',
     },
