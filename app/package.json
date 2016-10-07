@@ -18,7 +18,7 @@
     "nodemon": "nodemon -L ./dist/index.js --ignore ./dist/public",
     "prebuild": "npm run clean && npm run static && npm run imagemin",
     "start": "npm run build:prod && NODE_ENV=production node ./dist/index.js",
-    "static": "cp src/static/manifest.json dist/public",
+    "static": "cp src/static/manifest.json src/static/runtime-cache-strategy.js node_modules/sw-toolbox/sw-toolbox.js dist/public",
     "test": "NODE_ENV=test tape -r babel-register 'src/**/*.test.js' | faucet"
   },
   "repository": {
@@ -63,6 +63,7 @@
     "serve-static": "^1.11.1",
     "spdy": "^3.4.3",
     "superagent": "^2.3.0",
+    "sw-toolbox": "^3.3.0",
     "underscore": "^1.8.3"
   },
   "devDependencies": {

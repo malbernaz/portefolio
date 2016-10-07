@@ -29,7 +29,7 @@ const Html = ({ component, store, css }) => {
               }
 
               if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('sw.js').then(function(reg) {
+                navigator.serviceWorker.register('sw.js', { scope: '/' }).then(function(reg) {
                   reg.onupdatefound = function() {
                     var installingWorker = reg.installing
 
@@ -57,8 +57,18 @@ const Html = ({ component, store, css }) => {
           }}
           charSet="UTF-8"
         />
-        <script src="/vendor.bundle.js" defer />
-        <script src="/main.bundle.js" defer />
+        <script src="/vendor.bundle.js" />
+        <script src="/main.bundle.js" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date
+              ga('create', '${process.env.GANALYTICS}', 'auto')
+              ga('send', 'pageview')
+            `
+          }}
+        />
+        <script src="https://www.google-analytics.com/analytics.js" async />
       </body>
     </html>
   )

@@ -18,12 +18,10 @@ const plugins = [
       `${BUILD_DIR}/img/**/*`
     ],
     navigateFallback: '/',
-    runtimeCaching: [{
-      urlPattern: /\/api/,
-      handler: 'fastest'
-    }, {
-      default: 'networkFirst'
-    }]
+    importScripts: [
+      'sw-toolbox.js',
+      'runtime-cache-strategy.js'
+    ]
   })
 ]
 

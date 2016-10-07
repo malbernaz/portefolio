@@ -1,5 +1,5 @@
-import { AppView } from './containers'
-import { Home, About, Contact, Post, NotFound } from './components'
+import { AppView, Post } from './containers'
+import { Home, About, Contact, NotFound } from './components'
 import { loadAuth } from './actions/auth'
 import { loadPosts, loadPostsAndDrafts } from './actions/posts'
 
