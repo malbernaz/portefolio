@@ -3,7 +3,7 @@
 (function (global) {
   'use strict'
 
-  global.toolbox.router.get('/(.*)', global.toolbox.fastest, {
+  global.toolbox.router.get('/(.*)', global.toolbox.cacheFirst, {
     origin: /\.(?:googleapis|gstatic|)\.com$/
   })
 

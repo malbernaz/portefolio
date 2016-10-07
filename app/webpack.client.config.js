@@ -10,6 +10,7 @@ const BUILD_DIR = resolve(__dirname, 'dist', 'public')
 const plugins = [
   new webpack.ContextReplacementPlugin(/moment\/locale$/, /^\.\/(en)$/),
   new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', minChunks: Infinity }),
+  new webpack.optimize.MinChunkSizePlugin({ minChunkSize: 10000 }),
   new SWPrecacheWebpackPlugin({
     cacheId: 'portefolio_app',
     filename: 'sw.js',
