@@ -1,12 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 import { reduxForm } from 'redux-form'
-import { map } from 'underscore'
 import Helmet from 'react-helmet'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import validate from './SignInFormValidation'
 import s from './SignInForm.scss'
-import { Wrapper } from '../../components'
+import Wrapper from '../../components/Wrapper/Wrapper'
 
 const inputFields = [{
   name: 'email',
@@ -64,9 +63,10 @@ export default class SignIn extends Component {
         <section className={ s.root }>
           <Helmet title="SIGN IN" />
           <form className={ s.form } onSubmit={ handleSubmit }>
-            { map(fields, (field, key) => {
-              const { type, label } = inputFields.filter(f => f.name === key)[0]
-              return this.renderInput(field, type, label)
+            { Object.keys(fields).map(field => {
+              const { type, label } = inputFields.filter(f => f.name === field)[0]
+
+              return this.renderInput(fields[field], type, label)
             }) }
             <div className="cta">
               <button

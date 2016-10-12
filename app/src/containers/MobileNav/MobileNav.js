@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import * as navActions from '../../actions/ui/nav'
-import { Icon } from '../../components'
+import Icon from '../../components/Icon'
 import s from './MobileNav.scss'
 
 const MobileNav = ({ toggleNav }) => {

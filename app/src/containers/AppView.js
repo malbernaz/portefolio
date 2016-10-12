@@ -4,9 +4,11 @@ import Helmet from 'react-helmet'
 import ReactCSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
-import config from '../config'
-import { Nav, MobileNav } from './'
+import Nav from './Nav'
+import MobileNav from './MobileNav/MobileNav'
 import MessageNotifier from './MessageNotifier/MessageNotifier'
+
+import config from '../config'
 import s from '../theme/main.scss'
 
 const AppView = ({ path, children }) =>

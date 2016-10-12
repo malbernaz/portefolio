@@ -1,30 +1,36 @@
 const { resolve } = require('path')
 const { readdirSync } = require('fs')
-const { union } = require('underscore')
-const webpack = require('webpack')
+
+const {
+  DefinePlugin,
+  LoaderOptionsPlugin,
+  IgnorePlugin,
+  optimize: { UglifyJsPlugin }
+} = require('webpack')
+
 const wpBaseConfig = require('./webpack.config')
 
 const plugins = [
-  new webpack.ContextReplacementPlugin(/moment\/locale$/, /^\.\/(en)$/),
-  new webpack.IgnorePlugin(/worker/i)
+  new IgnorePlugin(/worker/i)
 ]
 
-const prodPlugins = union(plugins, [
-  new webpack.DefinePlugin({
+const prodPlugins = plugins.concat([
+  new DefinePlugin({
     'process.env': {
-       NODE_ENV: JSON.stringify('production')
+      NODE_ENV: JSON.stringify('production'),
+      APPPORT: JSON.stringify(process.env.APPPORT),
+      APIHOST: JSON.stringify(process.env.APIHOST),
+      APIPORT: JSON.stringify(process.env.APIPORT)
     }
   }),
-  new webpack.EnvironmentPlugin([
-    'APPPORT',
-    'APIHOST',
-    'APIPORT'
-  ]),
-  new webpack.ContextReplacementPlugin(/moment\/locale$/, /^\.\/(pt-br)\.js$/),
-  new webpack.LoaderOptionsPlugin({ minimize: true, debug: false }),
-  new webpack.optimize.UglifyJsPlugin({
-    compress: { warnings: false },
-    output: { comments: false },
+  new LoaderOptionsPlugin({
+    minimize: true,
+    debug: false
+  }),
+  new UglifyJsPlugin({
+    compress: { screw_ie8: true, warnings: false },
+    output: { comments: false, screw_ie8: true },
+    mangle: { screw_ie8: true },
     sourceMap: false
   })
 ])
@@ -51,8 +57,8 @@ module.exports = env => {
       __dirname: false,
       __filename: false
     },
-    externals: Object.assign(nodeModules, { './Renderer.worker': true }),
-    plugins: union(base.plugins, env === 'prod' ? prodPlugins : plugins),
+    externals: Object.assign(nodeModules),
+    plugins: base.plugins.concat(env === 'prod' ? prodPlugins : plugins),
     devtool: env === 'prod' ? 'hidden-source-map' : 'cheap-module-source-map'
   })
 }

@@ -15,7 +15,7 @@ const Html = ({ component, store, css }) => {
         { head.link.toComponent() }
         <meta
           name="viewport"
-          content=" width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
         />
         <style>{ css.join('') }</style>
       </head>
@@ -29,16 +29,19 @@ const Html = ({ component, store, css }) => {
         />
         <script src="/vendor.bundle.js" />
         <script src="/main.bundle.js" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date
-              ga('create', '${process.env.GANALYTICS}', 'auto')
-              ga('send', 'pageview')
-            `
-          }}
-        />
-        <script src="https://www.google-analytics.com/analytics.js" async />
+        { process.env.NODE_ENV === 'production' ? [
+          <script
+            key="0"
+            dangerouslySetInnerHTML={{
+              __html: `
+                window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date
+                ga('create', '${process.env.GANALYTICS}', 'auto')
+                ga('send', 'pageview')
+              `
+            }}
+          />,
+          <script key="1" src="https://www.google-analytics.com/analytics.js" async />
+        ] : '' }
       </body>
     </html>
   )

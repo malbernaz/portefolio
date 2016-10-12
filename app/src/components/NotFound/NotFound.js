@@ -3,7 +3,7 @@ import Helmet from 'react-helmet'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import s from './NotFound.scss'
-import { Wrapper } from '../'
+import Wrapper from '../Wrapper/Wrapper'
 
 const NotFound = () =>
   <Wrapper>

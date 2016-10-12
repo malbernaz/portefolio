@@ -1,6 +1,6 @@
 import React from 'react'
 import { render } from 'react-dom'
-import { applyRouterMiddleware, Router, browserHistory } from 'react-router/es6'
+import { match, applyRouterMiddleware, Router, browserHistory } from 'react-router/es6'
 import { useScroll } from 'react-router-scroll'
 import { Provider } from 'react-redux'
 import { syncHistoryWithStore } from 'react-router-redux'
@@ -17,7 +17,7 @@ const store = configureStore(client, browserHistory, initialState)
 const history = syncHistoryWithStore(browserHistory, store)
 
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js', { scope: '/' }).then(reg => {
+  navigator.serviceWorker.register('/sw.js', { scope: './' }).then(reg => {
     reg.onupdatefound = function () { // eslint-disable-line no-param-reassign
       const installingWorker = reg.installing
 
@@ -43,14 +43,16 @@ if ('serviceWorker' in navigator) {
   })
 }
 
-render(
-  <Provider store={ store }>
-    <WithStylesContext onInsertCss={ s => s._insertCss() }>
-      <Router
-        history={ history }
-        render={ applyRouterMiddleware(useScroll()) }
-        routes={ getRouter(store) }
-      />
-    </WithStylesContext>
-  </Provider>, document.getElementById('react-view')
-)
+match({
+  history,
+  routes: getRouter(store),
+  render: applyRouterMiddleware(useScroll())
+}, (err, redirect, renderProps) => {
+  render(
+    <Provider store={ store }>
+      <WithStylesContext onInsertCss={ s => s._insertCss() }>
+        <Router { ...renderProps } />
+      </WithStylesContext>
+    </Provider>, document.getElementById('react-view')
+  )
+})

@@ -1,17 +1,18 @@
 const { resolve } = require('path')
-const webpack = require('webpack')
+const { LoaderOptionsPlugin, ContextReplacementPlugin } = require('webpack')
 const cssnano = require('cssnano')
 const autoprefixer = require('autoprefixer')
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 
 const babelLoader = {
   loader: 'babel-loader',
-  query: {
+  options: {
     presets: [['es2015', { loose: true, modules: false }], 'react'],
     plugins: [
       'transform-class-properties',
       'transform-object-rest-spread',
-      'transform-export-extensions',
-      'transform-decorators-legacy'
+      'transform-decorators-legacy',
+      'lodash'
     ]
   }
 }
@@ -40,7 +41,7 @@ module.exports = env => ({
       loaders: [
         'isomorphic-style-loader', {
           loader: 'css-loader',
-          query: {
+          options: {
             modules: true,
             localIdentName: env === 'prod' ?
               '[hash:base64:7]' :
@@ -54,7 +55,9 @@ module.exports = env => ({
     }]
   },
   plugins: [
-    new webpack.LoaderOptionsPlugin({
+    new LodashModuleReplacementPlugin(),
+    new ContextReplacementPlugin(/moment\/locale$/, /^\.\/(en)$/),
+    new LoaderOptionsPlugin({
       options: {
         postcss: () => ([
           autoprefixer({ browsers: ['last 2 versions'] }),
@@ -66,5 +69,8 @@ module.exports = env => ({
   watchOptions: {
     aggregateTimeout: 300,
     poll: 1000
+  },
+  stats: {
+    colors: true
   }
 })

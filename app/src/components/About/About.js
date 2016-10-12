@@ -4,7 +4,7 @@ import React from 'react'
 import Helmet from 'react-helmet'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
-import { Wrapper } from '../'
+import Wrapper from '../Wrapper/Wrapper'
 import s from './About.scss'
 
 const About = () =>

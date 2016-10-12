@@ -1,6 +1,7 @@
 import { resolve } from 'path'
 import { Server } from 'http'
 import { createProxyServer } from 'http-proxy'
+import crypto from 'crypto'
 import compression from 'compression'
 import express from 'express'
 import favicon from 'express-favicon'
@@ -8,7 +9,7 @@ import morgan from 'morgan'
 import serveStatic from 'serve-static'
 
 import { Provider } from 'react-redux'
-import { renderToString } from 'react-dom/server'
+import { renderToStaticMarkup } from 'react-dom/server'
 import { RouterContext, match, createMemoryHistory } from 'react-router/es6'
 import { syncHistoryWithStore } from 'react-router-redux'
 import React from 'react'
@@ -28,7 +29,7 @@ const server = new Server(app)
 const targetUrl = `http://${config.apiHost}:${config.apiPort}`
 const proxy = createProxyServer({
   target: targetUrl,
-  ws: true,
+  ws: true
 })
 
 app.use(compression())
@@ -63,18 +64,14 @@ app.use((req, res) => {
   const history = syncHistoryWithStore(memoryHistory, store)
 
   function hydrateOnClient () {
-    res.send(`<!doctype html>${renderToString(<Html />)}`)
+    res.send(`<!doctype html>${renderToStaticMarkup(<Html />)}`)
   }
 
   match({
     history,
     routes: getRouter(store),
     location: req.url
-  }, (
-    err,
-    redirectLocation,
-    renderProps
-  ) => {
+  }, (err, redirectLocation, renderProps) => {
     if (redirectLocation) {
       res.redirect(redirectLocation.pathname + redirectLocation.search)
     }
@@ -100,12 +97,23 @@ app.use((req, res) => {
         </Provider>
       )
 
-      res.status(200)
+      const content = renderToStaticMarkup(
+        <Html
+          component={ component }
+          css={ css }
+          store={ store }
+        />
+      )
 
-      res.send(`<!doctype html>${
-        renderToString(
-          <Html component={ component } css={ css } store={ store } />)
-      }`)
+      const hash = crypto
+        .createHash('sha256')
+        .update(content)
+        .digest('hex')
+
+      // eslint-disable-next-line quote-props
+      res.set({ 'Etag': hash, 'Cache-Control': 'public, no-cache' })
+        .status(200)
+        .send(`<!doctype html>${content}`)
 
       global.navigator = { userAgent: req.headers['user-agent'] }
     }
@@ -113,7 +121,8 @@ app.use((req, res) => {
     return store.dispatch(loadPosts())
       .then(
         () => store.dispatch(loadAuth()),
-        () => store.dispatch(loadAuth()))
+        () => store.dispatch(loadAuth())
+      )
       .then(renderPage)
       .catch(renderPage)
   })

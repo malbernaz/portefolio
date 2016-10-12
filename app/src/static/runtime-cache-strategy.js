@@ -4,8 +4,14 @@
   'use strict'
 
   global.toolbox.router.get('/(.*)', global.toolbox.cacheFirst, {
-    origin: /\.(?:googleapis|gstatic|)\.com$/
+    origin: /fonts\.gstatic\.com/,
+    cache: {
+      name: 'static-vendor-cache-v1',
+      maxEntries: 10
+    }
   })
+
+  global.toolbox.router.get('*/loadauth', global.toolbox.networkOnly)
 
   global.toolbox.router.get('/*', global.toolbox.fastest)
 })(self)

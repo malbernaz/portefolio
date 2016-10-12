@@ -1,6 +1,6 @@
 # Portefólio
 
-A blog scaffold featuring react, redux, server-side rendering and a markdown editor.
+My personal blog featuring isomorphic react, redux and a markdown editor.
 
 ## Instructions:
 
@@ -21,23 +21,3 @@ Last but not least create a user and you should be able to sign in at `/admin` a
 ```curl
 λ curl -X POST -H "Authorization: secrettoken" -H "Cache-Control: no-cache" -H "Content-Type: application/x-www-form-urlencoded" -d 'username=username&email=email@domain.com&password=password' "http://localhost:8080/api/user/register"
 ```
-
-## Acknowledge that:
-
-- I'm using [Docker](http://www.docker.com/) for development and production. If you don't know what Docker is, learn about it and you will make your time worth. Plus they have recently released native clients both for [Mac](http://www.docker.com/products/docker#/mac) and [Windows](http://www.docker.com/products/docker#/windows)!
-
-- For the dev setup I've stick to [`redux-devtools-extension`](https://github.com/zalmoxisus/redux-devtools-extension) (which is only available in chrome). I've had performance issues with the native [`DevTools`](https://github.com/gaearon/redux-devtools).
-
-## TODO:
-
-- [x] Page transitions
-- [x] Use webpack 2
-- [x] Use docker
-- [x] Use css-modules
-- [x] Use service workers
-- [ ] Create `UserSettings` page
-- [ ] Create `ActionsPrompt` component
-- [ ] Better way to handle posts metadata
-- [ ] Pagination...
-- [ ] RSS...
-- [ ] Comments...
