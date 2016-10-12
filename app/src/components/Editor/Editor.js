@@ -21,7 +21,8 @@ export default class Editor extends Component {
   }
 
   state = {
-    editorState: createWithContent(createFromText(this.props.activeDraft.raw))
+    editorState: createWithContent(createFromText(this.props.activeDraft.raw)),
+    clientReady: false
   }
 
   componentDidMount () {
@@ -30,6 +31,8 @@ export default class Editor extends Component {
         this.rendererWorker = new Worker()
         this.rendererWorker.addEventListener('message', this.markdownReceiver, false)
       })
+
+    this.setState({ clientReady: true }) // eslint-disable-line
   }
 
   componentWillReceiveProps ({ activeDraft, creatingActiveDraft }) {
@@ -75,11 +78,14 @@ export default class Editor extends Component {
 
   render () {
     return (
-      <DraftEditor
-        editorState={ this.state.editorState }
-        onChange={ this.handleChange }
-        onTab={ this.onTab }
-      />
+      <div className={ this.state.clientReady ? s.rootIsShown : s.root }>
+        { this.state.clientReady ?
+          <DraftEditor
+            editorState={ this.state.editorState }
+            onChange={ this.handleChange }
+            onTab={ this.onTab }
+          /> : '' }
+      </div>
     )
   }
 }
