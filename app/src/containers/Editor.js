@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { EditorView } from '../components'
+import EditorView from '../components/EditorView/EditorView'
 import editablePostsSelector from '../selectors/editablePostsSelector'
 import * as postsActions from '../actions/posts'
 import * as messageActions from '../actions/message'
@@ -191,9 +191,7 @@ export default class Editor extends Component {
     toggleEditorDropdown()
   }
 
-  toggleSettings = e => {
-    e.preventDefault()
-
+  toggleSettings = () => {
     const { toggleEditorSettings } = this.props
 
     toggleEditorSettings()

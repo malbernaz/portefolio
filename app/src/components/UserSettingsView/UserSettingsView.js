@@ -4,7 +4,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import s from './UserSettingsView.scss'
 
-import { Wrapper } from '../'
+import Wrapper from '../Wrapper/Wrapper'
 
 const UserSettingsView = () =>
   <Wrapper>

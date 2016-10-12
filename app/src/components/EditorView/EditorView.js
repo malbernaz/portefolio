@@ -3,7 +3,12 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles'
 import moment from 'moment'
 import Helmet from 'react-helmet'
 
-import { Icon, Editor, EditorNav, DropdownButton, EditorSettings } from '../'
+import Icon from '../Icon'
+import Editor from '../Editor/Editor'
+import EditorNav from '../EditorNav/EditorNav'
+import DropdownButton from '../DropdownButton/DropdownButton'
+import EditorSettings from '../EditorSettings/EditorSettings'
+
 import s from './EditorView.scss'
 
 const { arrayOf, bool, func, object, shape, string } = PropTypes

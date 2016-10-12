@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import config from '../config'
-import { NavView } from '../components'
+import NavView from '../components/NavView/NavView'
+
 import { logout } from '../actions/auth'
 import { toggleNav } from '../actions/ui/nav'
 

@@ -1,5 +1,10 @@
-import { AppView, Post } from './containers'
-import { Home, About, Contact, NotFound } from './components'
+import AppView from './containers/AppView'
+import Home from './components/Home/Home'
+import About from './components/About/About'
+import Contact from './components/Contact/Contact'
+import NotFound from './components/NotFound/NotFound'
+import Post from './containers/Post/Post'
+
 import { loadAuth } from './actions/auth'
 import { loadPosts, loadPostsAndDrafts } from './actions/posts'
 
@@ -42,7 +47,7 @@ export default store => {
     if (!store.getState().posts.loadedPostsAndDrafts) {
       return store.dispatch(loadPostsAndDrafts())
         .then(() => callback())
-        .catch(e => callback(e))
+        .catch(() => callback())
     }
 
     return callback()
@@ -65,15 +70,17 @@ export default store => {
     }, {
       path: 'admin',
       indexRoute: {
-        getComponent: (location, cb) =>
-          System.import('./containers')
-            .then(({ SignIn }) => cb(null, SignIn))
+        getComponent (nextState, callback) {
+          System.import('./containers/SignIn')
+            .then(module => callback(null, module.default))
+        }
       },
       childRoutes: [{
         path: 'editor',
-        getComponent: (location, cb) =>
-          System.import('./containers')
-            .then(({ Editor }) => cb(null, Editor)),
+        getComponent (nextState, callback) {
+          System.import('./containers/Editor')
+            .then(module => callback(null, module.default))
+        },
         onEnter: mustBeLogged && getDrafts,
       }]
     }, {

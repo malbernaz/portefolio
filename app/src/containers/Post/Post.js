@@ -4,7 +4,7 @@ import Helmet from 'react-helmet'
 import moment from 'moment'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
-import { Wrapper } from '../../components'
+import Wrapper from '../../components/Wrapper/Wrapper'
 import s from './Post.scss'
 
 const Post = ({ posts, slug }) => {

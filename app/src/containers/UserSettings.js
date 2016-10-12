@@ -1,5 +1,6 @@
 import React from 'react'
-import { UserSettingsView } from '../components'
+
+import UserSettingsView from '../components/UserSettingsView/UserSettingsView'
 
 const UserSettings = () => <UserSettingsView />
 

@@ -3,7 +3,8 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 
-import { SignInForm } from './'
+import SignInForm from './SignInForm/SignInForm'
+
 import {
   signIn as signInAction,
   logout as logoutAction,

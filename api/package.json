@@ -4,12 +4,12 @@
   "description": "backend for the portefólio blog",
   "main": "index.js",
   "dependencies": {
+    "bcrypt": "^0.8.7",
     "bcrypt-as-promised": "^1.1.0",
     "body-parser": "^1.15.2",
     "compression": "^1.6.2",
     "cookie-parser": "^1.4.3",
     "express": "^4.14.0",
-    "imagemin": "^5.2.2",
     "jsonwebtoken": "^7.1.9",
     "mongoose": "^4.6.2",
     "morgan": "^1.7.0",

@@ -1,9 +1,55 @@
 @import '../../theme/vars';
 @import '../../theme/mixins';
 
+.root {
+  position: absolute;
+  z-index: $zi-editor + 2;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+
+  width: 100%;
+  height: 100vh;
+}
+
+.wrapper {
+  position: absolute;
+  z-index: $zi-editor + 3;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+
+  box-sizing: border-box;
+  padding: 2rem 2rem 3rem;
+
+  transition: transform .2s $default-bezier, opacity .2s $default-bezier;
+  transform: translateY(-102%);
+
+  background: $syntax-bg-alternate;
+  box-shadow: 0 2px 5px rgba($syntax-fg, .3);
+
+  will-change: transform;
+}
+
+.wrapperIsShown {
+  transform: translateY(0);
+
+  composes: wrapper;
+}
+
+.meta {
+  max-width: 600px;
+  margin: 0 auto;
+
+  h3 {
+    margin-top: 0;
+  }
+}
+
 .shadow {
   position: absolute;
-  z-index: $zi-nav + 1;
+  z-index: $zi-editor + 2;
   top: 0;
   left: 0;
 
@@ -25,34 +71,6 @@
   opacity: 1;
 
   composes: shadow;
-}
-
-.root {
-  position: absolute;
-  z-index: $zi-editor + 1;
-  top: 50%;
-  left: 50%;
-
-  box-sizing: border-box;
-  padding: 2.5rem;
-
-  transition: transform .15s ease-out, opacity .15s ease-out;
-  transform: translateX(-50%) translateY(-45%);
-
-  opacity: 0;
-  border-radius: .15rem;
-  background: $syntax-bg-alternate;
-  box-shadow: 0 0 4px 2px $default-shadow-color;
-
-  will-change: transform, opacity;
-}
-
-.rootIsShown {
-  transform: translateX(-50%) translateY(-50%);
-
-  opacity: 1;
-
-  composes: root;
 }
 
 .field {

@@ -8,7 +8,7 @@ ENV HOME=/home/api
 
 ENV NODE_CONFIG_LOGLEVEL=warn
 
-COPY package.json npm-shrinkwrap.json $HOME/server/
+COPY package.json $HOME/server/
 
 RUN chown -R api:api $HOME/
 
@@ -16,11 +16,12 @@ USER api
 
 WORKDIR $HOME/server
 
-RUN rm -fr node_modules && npm install
-
 USER root
 COPY . $HOME/server
 RUN chown -R api:api $HOME/*
 USER api
+
+RUN rm -fr node_modules/** && \
+    npm install
 
 CMD ["npm", "start"]

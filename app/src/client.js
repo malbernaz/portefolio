@@ -17,7 +17,7 @@ const store = configureStore(client, browserHistory, initialState)
 const history = syncHistoryWithStore(browserHistory, store)
 
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js', { scope: '/' }).then(reg => {
+  navigator.serviceWorker.register('/sw.js', { scope: './' }).then(reg => {
     reg.onupdatefound = function () { // eslint-disable-line no-param-reassign
       const installingWorker = reg.installing
 

@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
-import { Icon } from '../'
+import Icon from '../Icon'
 import s from './EditorNav.scss'
 
 const EditorNav = ({ iterablePosts, handleEditPost, handleDelete, isShown, toggle }) =>

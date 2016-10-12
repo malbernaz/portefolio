@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import { Link, IndexLink } from 'react-router/es6'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
-import { Icon } from '../'
+import Icon from '../Icon'
 import s from './NavView.scss'
 
 const NavView = ({

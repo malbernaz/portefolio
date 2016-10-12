@@ -1,12 +1,12 @@
 import React, { Component, PropTypes } from 'react'
 import { reduxForm } from 'redux-form'
-import { map } from 'underscore'
+import { map } from 'lodash'
 import Helmet from 'react-helmet'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import validate from './SignInFormValidation'
 import s from './SignInForm.scss'
-import { Wrapper } from '../../components'
+import Wrapper from '../../components/Wrapper/Wrapper'
 
 const inputFields = [{
   name: 'email',

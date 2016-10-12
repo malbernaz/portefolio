@@ -1,16 +1,41 @@
 const { resolve } = require('path')
-const { union } = require('underscore')
-const webpack = require('webpack')
+
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const WebpackShellPlugin = require('webpack-shell-plugin')
+const {
+  DefinePlugin,
+  LoaderOptionsPlugin,
+  optimize: {
+    CommonsChunkPlugin,
+    MinChunkSizePlugin,
+    UglifyJsPlugin
+  }
+} = require('webpack')
 
 const wpBaseConfig = require('./webpack.config')
 
 const BUILD_DIR = resolve(__dirname, 'dist', 'public')
 
 const plugins = [
-  new webpack.ContextReplacementPlugin(/moment\/locale$/, /^\.\/(en)$/),
-  new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', minChunks: Infinity }),
-  new webpack.optimize.MinChunkSizePlugin({ minChunkSize: 10000 }),
+  new CommonsChunkPlugin({
+    name: 'vendor',
+    minChunks: Infinity
+  }),
+  new MinChunkSizePlugin({
+    minChunkSize: 1000
+  }),
+  new WebpackShellPlugin({
+    onBuildStart: ['npm run imagemin']
+  }),
+  new CopyWebpackPlugin([{
+    from: './static/manifest.json'
+  }, {
+    from: './static/runtime-cache-strategy.js'
+  }, {
+    context: resolve(__dirname),
+    from: './node_modules/sw-toolbox/sw-toolbox.js'
+  }]),
   new SWPrecacheWebpackPlugin({
     cacheId: 'portefolio_app',
     filename: 'sw.js',
@@ -26,10 +51,17 @@ const plugins = [
   })
 ]
 
-const prodPlugins = union(plugins, [
-  new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify('production') } }),
-  new webpack.LoaderOptionsPlugin({ minimize: true, debug: false }),
-  new webpack.optimize.UglifyJsPlugin({
+const prodPlugins = plugins.concat([
+  new DefinePlugin({
+    'process.env': {
+      NODE_ENV: JSON.stringify('production')
+    }
+  }),
+  new LoaderOptionsPlugin({
+    minimize: true,
+    debug: false
+  }),
+  new UglifyJsPlugin({
     compress: { warnings: false },
     output: { comments: false },
     sourceMap: false
@@ -42,15 +74,16 @@ module.exports = env => {
   return Object.assign(base, {
     context: resolve(__dirname, 'src'),
     entry: {
-      main: ['./client', './containers/AppView'],
-      vendor: ['react', 'moment']
+      main: ['./client'],
+      vendor: ['react', 'react-dom', 'moment']
     },
     output: {
       path: BUILD_DIR,
       filename: '[name].bundle.js',
       publicPath: '/',
     },
-    plugins: union(base.plugins, env === 'prod' ? prodPlugins : plugins),
-    devtool: env === 'prod' ? 'hidden-source-map' : 'cheap-module-source-map'
+    plugins: base.plugins.concat(env === 'prod' ? prodPlugins : plugins),
+    devtool: env === 'prod' ? 'source-map' : 'eval',
+    bail: env === 'prod'
   })
 }
