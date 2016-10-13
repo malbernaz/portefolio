@@ -10,6 +10,7 @@ app/dist
 app/dist/**
 app/node_modules
 mongodb
+certs
 logs
 node_modules
 npm-debug.log*
