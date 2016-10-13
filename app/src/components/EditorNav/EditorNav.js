@@ -13,9 +13,9 @@ const EditorNav = ({ iterablePosts, handleEditPost, handleDelete, isShown, toggl
               <span className={ s.title }>
                 { p.meta.title }
               </span> :
-              <span className={ s.titleDraft }>
-                { p.meta.title }
-              </span> }
+                <span className={ s.titleDraft }>
+                  { p.meta.title }
+                </span> }
             <div className={ s.actions }>
               <a onClick={ e => handleEditPost(e, p) } className={ s.action }>
                 <Icon name="edit" />
@@ -26,11 +26,9 @@ const EditorNav = ({ iterablePosts, handleEditPost, handleDelete, isShown, toggl
             </div>
           </div>
         ) :
-      <div className={ s.item }>
-        <small className={ s.title }>
-          no posts yet :(
-        </small>
-      </div> }
+          <div className={ s.item }>
+            <small className={ s.title }>no posts yet :(</small>
+          </div> }
     <div onClick={ toggle } className={ isShown ? s.shadowIsShown : s.shadow } />
   </div>
 
