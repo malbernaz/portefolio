@@ -1,27 +1,12 @@
 @import '../../theme/vars';
 
-.root {
-  overflow-y: auto;
-
-  height: 100%;
-
-  transition: opacity .3s $default-bezier;
-  transition-delay: .3s;
-
-  opacity: 0;
-}
-
-.rootIsShown {
-  opacity: 1;
-
-  composes: root;
-}
-
 :global {
   .DraftEditor-root {
     font-family: $monospace;
 
     height: 100%;
+
+    overflow-y: auto;
 
     transform: translateZ(0);
   }

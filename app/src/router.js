@@ -53,10 +53,23 @@ export default store => {
     return callback()
   }
 
+  const getPosts = (nextState, replace, callback) => {
+    if (!store.getState().posts.loadedPosts) {
+      return store.dispatch(loadPosts())
+        .then(() => callback())
+        .catch(() => callback())
+    }
+
+    return callback()
+  }
+
   return {
     component: AppView,
     path: '/',
-    indexRoute: { component: Home },
+    indexRoute: {
+      component: Home,
+      onEnter: getPosts
+    },
     childRoutes: [{
       path: 'about',
       component: About

@@ -15,7 +15,6 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import React from 'react'
 
 import { loadAuth } from './actions/auth'
-import { loadPosts } from './actions/posts'
 import ApiClient from './helpers/ApiClient'
 import config from './config'
 import configureStore from './store'
@@ -27,15 +26,15 @@ const app = express()
 const server = new Server(app)
 
 const targetUrl = `http://${config.apiHost}:${config.apiPort}`
-const proxy = createProxyServer({
-  target: targetUrl,
-  ws: true
-})
+const proxy = createProxyServer({ target: targetUrl, ws: true })
 
 app.use(compression())
 app.use(serveStatic(resolve(__dirname, 'public')))
-app.use(favicon(resolve(__dirname, 'public', 'img', 'icon.png')))
-app.use(morgan('dev'))
+app.use(favicon(resolve(__dirname, 'public', 'img', 'icon.ico')))
+
+if (process.env.NODE_ENV !== 'production') {
+  app.use(morgan('dev'))
+}
 
 app.use('/api', (req, res) => {
   proxy.web(req, res, { target: `${targetUrl}/api` })
@@ -61,14 +60,13 @@ app.use((req, res) => {
   const client = new ApiClient(req)
   const memoryHistory = createMemoryHistory(req.url)
   const store = configureStore(client, memoryHistory)
-  const history = syncHistoryWithStore(memoryHistory, store)
 
   function hydrateOnClient () {
     res.send(`<!doctype html>${renderToStaticMarkup(<Html />)}`)
   }
 
   match({
-    history,
+    history: syncHistoryWithStore(memoryHistory, store),
     routes: getRouter(store),
     location: req.url
   }, (err, redirectLocation, renderProps) => {
@@ -118,11 +116,7 @@ app.use((req, res) => {
       global.navigator = { userAgent: req.headers['user-agent'] }
     }
 
-    return store.dispatch(loadPosts())
-      .then(
-        () => store.dispatch(loadAuth()),
-        () => store.dispatch(loadAuth())
-      )
+    return store.dispatch(loadAuth())
       .then(renderPage)
       .catch(renderPage)
   })
