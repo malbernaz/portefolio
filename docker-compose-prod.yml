@@ -13,11 +13,11 @@ services:
       - /home/app/server/node_modules
 
   mongo:
-    image: mongo
+    build: './mongo'
     ports:
       - '27017'
     volumes:
-      - ./data:/data/db
+      - /opt/mongodb:/data/db
 
   api:
     build: './api'

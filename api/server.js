@@ -22,7 +22,9 @@ api.use(bodyParser.urlencoded({ extended: false }))
 api.use(bodyParser.json())
 api.use(cookie(config.secret))
 
-api.use(morgan('dev'))
+if (process.env.NODE_ENV !== 'production') {
+  api.use(morgan('dev'))
+}
 
 api.use(passport.initialize())
 

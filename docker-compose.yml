@@ -25,6 +25,8 @@ services:
       - mongo
 
   mongo:
-    image: mongo
+    build: './mongo'
     ports:
       - '5050:27017'
+    volumes:
+      - /opt/mongodb:/data/db
