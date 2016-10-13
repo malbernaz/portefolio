@@ -10,7 +10,7 @@ services:
     env_file: .env
     volumes:
       - ./app:/home/app/server
-      - app-deps:/home/app/server/node_modules
+      - /home/app/server/node_modules
 
   mongo:
     image: mongo
@@ -27,13 +27,6 @@ services:
     env_file: .env
     volumes:
       - ./api:/home/api/server
-      - api-deps:/home/api/server/node_modules
-      - /etc/letsencrypt
+      - /home/app/server/node_modules
     depends_on:
       - mongo
-
-
-# empty volumes for api and app node_modules
-volumes:
-  app-deps:
-  api-deps:
