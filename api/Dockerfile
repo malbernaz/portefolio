@@ -21,7 +21,6 @@ COPY . $HOME/server
 RUN chown -R api:api $HOME/*
 USER api
 
-RUN rm -fr node_modules/** && \
-    npm install
+RUN rm -fr node_modules/** && npm install
 
 CMD ["npm", "start"]
