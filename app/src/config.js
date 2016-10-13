@@ -1,5 +1,5 @@
-const title = 'Portefólio'
-const description = 'A blogging platform for the 21th century'
+const title = 'Miguel Albernaz'
+const description = 'Frontend dev based in Rio de Janeiro'
 
 export default {
   title,

@@ -18,7 +18,7 @@ const About = () =>
         <img src="/img/profile.jpg" alt="avatar" className={ s.img } />
       </div>
       <p className={ s.blurb }>
-        I&apos;m Miguel Albernaz a full stack <b>web developer</b>, based in Rio.
+        I&apos;m Miguel Albernaz a full stack <b>web developer</b>, from Rio.
         This blog is where I post about my <b>experiments</b>, <b>ideas</b> and whatever I&apos;m up to.
       </p>
       <p className={ s.blurb }>

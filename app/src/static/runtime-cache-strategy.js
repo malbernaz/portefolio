@@ -3,8 +3,6 @@
 (function (global) {
   'use strict'
 
-  global.toolbox.options.debug = true
-
   global.toolbox.precache([
     '/',
     '/about',
