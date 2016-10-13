@@ -21,7 +21,8 @@ const prodPlugins = plugins.concat([
       NODE_ENV: JSON.stringify('production'),
       APPPORT: JSON.stringify(process.env.APPPORT),
       APIHOST: JSON.stringify(process.env.APIHOST),
-      APIPORT: JSON.stringify(process.env.APIPORT)
+      APIPORT: JSON.stringify(process.env.APIPORT),
+      GANALYTICS: JSON.stringify(process.env.GANALYTICS))
     }
   }),
   new WebpackShellPlugin({
