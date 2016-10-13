@@ -8,7 +8,7 @@ ENV HOME=/home/api
 
 ENV NODE_CONFIG_LOGLEVEL=warn
 
-COPY package.json $HOME/server/
+COPY package.json npm-shrinkwrap.json $HOME/server/
 
 RUN chown -R api:api $HOME/
 
