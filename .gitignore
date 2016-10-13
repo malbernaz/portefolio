@@ -9,7 +9,7 @@ api/node_modules
 app/dist
 app/dist/**
 app/node_modules
-data
+mongodb
 logs
 node_modules
 npm-debug.log*

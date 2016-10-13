@@ -1,5 +1,7 @@
 import { resolve } from 'path'
+import { readFileSync } from 'fs'
 import { Server } from 'http'
+import { createServer } from 'spdy'
 import { createProxyServer } from 'http-proxy'
 import crypto from 'crypto'
 import compression from 'compression'
@@ -23,7 +25,18 @@ import Html from './helpers/Html'
 import WithStylesContext from './helpers/WithStylesContext'
 
 const app = express()
-const server = new Server(app)
+
+let server
+if (process.env.NODE_ENV === 'production') {
+  const options = {
+    key: readFileSync(resolve(__dirname, 'certs', 'privkey.pem')),
+    cert: readFileSync(resolve(__dirname, 'certs', 'cert.pem'))
+  }
+
+  server = createServer(options, app)
+} else {
+  server = new Server(app)
+}
 
 const targetUrl = `http://${config.apiHost}:${config.apiPort}`
 const proxy = createProxyServer({ target: targetUrl, ws: true })

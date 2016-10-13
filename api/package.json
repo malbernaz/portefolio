@@ -28,7 +28,7 @@
   "scripts": {
     "dev": "nodemon -L index.js",
     "lint": "eslint './**/*.js'",
-    "start": "npm install && NODE_ENV=production node index.js",
+    "start": "NODE_ENV=production node index.js",
     "test": "npm run lint && NODE_ENV=test tape test/index.test.js | faucet"
   },
   "repository": {

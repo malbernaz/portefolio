@@ -1,5 +1,6 @@
 const { resolve } = require('path')
 const { readdirSync } = require('fs')
+const WebpackShellPlugin = require('webpack-shell-plugin')
 
 const {
   DefinePlugin,
@@ -22,6 +23,9 @@ const prodPlugins = plugins.concat([
       APIHOST: JSON.stringify(process.env.APIHOST),
       APIPORT: JSON.stringify(process.env.APIPORT)
     }
+  }),
+  new WebpackShellPlugin({
+    onBuildStart: 'cp -r certs dist'
   }),
   new LoaderOptionsPlugin({
     minimize: true,

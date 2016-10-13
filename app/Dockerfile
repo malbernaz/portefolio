@@ -25,4 +25,5 @@ RUN rm -fr node_modules/** && npm install
 
 RUN npm run build:prod && npm test
 
+
 CMD ["npm", "start"]
