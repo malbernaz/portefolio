@@ -1,5 +1,5 @@
 import { resolve } from 'path'
-import { readFileSync } from 'fs'
+import { readFileSync, readDirSync } from 'fs'
 import { Server } from 'http'
 import { createServer } from 'spdy'
 import { createProxyServer } from 'http-proxy'
@@ -28,6 +28,8 @@ const app = express()
 
 let server
 if (process.env.NODE_ENV === 'production') {
+  console.log(readDirSync(resolve(__dirname, 'certs'))) // eslint-disable-line
+
   const options = {
     key: readFileSync(resolve(__dirname, 'certs', 'privkey.pem')),
     cert: readFileSync(resolve(__dirname, 'certs', 'cert.pem'))
