@@ -16,14 +16,15 @@ USER app
 
 WORKDIR $HOME/server
 
+RUN rm -fr node_modules/** && \
+    npm install && \
+
 USER root
 COPY . $HOME/server
 RUN chown -R app:app $HOME/*
 USER app
 
-RUN rm -fr node_modules/** && \
-    npm install && \
-    npm run build:prod && \
+RUN npm run build:prod && \
     npm test
 
 CMD ["npm", "start"]
