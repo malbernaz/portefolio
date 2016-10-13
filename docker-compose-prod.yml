@@ -17,7 +17,7 @@ services:
     ports:
       - '27017'
     volumes:
-      - /opt/mongodb:/data/db
+      - ./mongodb:/data/db
 
   api:
     build: './api'
