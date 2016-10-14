@@ -34,7 +34,7 @@ if (process.env.NODE_ENV === 'production') {
         resolve(__dirname, 'certs', 'live', 'malbernaz.me', 'privkey.pem')))),
     cert: readFileSync(
       resolve(__dirname, 'certs', 'live', 'malbernaz.me', readlinkSync(
-        resolve(__dirname, 'certs', 'live', 'malbernaz.me', 'cert.pem')))),
+        resolve(__dirname, 'certs', 'live', 'malbernaz.me', 'fullchain.pem')))),
   }
 
   server = createServer(options, app)
