@@ -29,7 +29,7 @@
     "dev": "nodemon -L index.js",
     "lint": "eslint './**/*.js'",
     "start": "NODE_ENV=production node index.js",
-    "test": "npm run lint && NODE_ENV=test tape test/index.test.js | faucet"
+    "test": "yarn run lint && NODE_ENV=test tape test/index.test.js | faucet"
   },
   "repository": {
     "type": "git",

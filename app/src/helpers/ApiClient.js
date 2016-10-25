@@ -30,9 +30,12 @@ export default class ApiClient {
 
           if (data) request.send(data)
 
-          request.end((reqError, { body } = {}) => reqError ?
-            reject(body || reqError) :
-            resolve(body))
+          request.end(
+            (reqError, { body } = {}) =>
+              reqError ?
+                reject(body || reqError) :
+                resolve(body)
+          )
         })
     })
   }

@@ -4,7 +4,7 @@ services:
 
   app:
     build: './app'
-    command: npm start
+    command: yarn start
     ports:
       - '443:3000'
       - '80:3000'
@@ -23,7 +23,7 @@ services:
 
   api:
     build: './api'
-    command: npm start
+    command: yarn start
     ports:
       - '5000'
     env_file: .env

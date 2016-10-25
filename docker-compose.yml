@@ -2,19 +2,30 @@ version: '2'
 
 services:
 
+  certs:
+    image: centurylink/openssl
+    environment:
+      COMMON_NAME: portefoliodev
+      KEY_NAME: portefoliodev
+    volumes:
+      - certs:/certs
+
   app:
     build: './app'
-    command: npm run dev --silent
+    command: yarn run dev
     ports:
       - '3000:3000'
     env_file: .env
+    depends_on:
+      - certs
     volumes:
       - ./app:/home/app/server
       - /home/app/server/node_modules
+      - certs:/home/app/server/certs
 
   api:
     build: './api'
-    command: npm run dev --silent
+    command: yarn run dev
     ports:
       - '5000:5000'
     env_file: .env
@@ -28,3 +39,6 @@ services:
     image: mongo
     ports:
       - '5050:27017'
+
+volumes:
+  certs: {}

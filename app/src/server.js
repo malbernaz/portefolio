@@ -1,6 +1,5 @@
 import { resolve } from 'path'
 import { readFileSync, readlinkSync } from 'fs'
-import { Server } from 'http'
 import { createServer } from 'spdy'
 import { createProxyServer } from 'http-proxy'
 import crypto from 'crypto'
@@ -26,21 +25,19 @@ import WithStylesContext from './helpers/WithStylesContext'
 
 const app = express()
 
-let server
-if (process.env.NODE_ENV === 'production') {
-  const options = {
-    key: readFileSync(
-      resolve(__dirname, 'certs', 'live', 'malbernaz.me', readlinkSync(
-        resolve(__dirname, 'certs', 'live', 'malbernaz.me', 'privkey.pem')))),
-    cert: readFileSync(
-      resolve(__dirname, 'certs', 'live', 'malbernaz.me', readlinkSync(
-        resolve(__dirname, 'certs', 'live', 'malbernaz.me', 'cert.pem')))),
-  }
-
-  server = createServer(options, app)
-} else {
-  server = new Server(app)
+const options = process.env.NODE_ENV === 'production' ? {
+  key: readFileSync(
+    resolve(__dirname, 'certs', 'live', 'malbernaz.me', readlinkSync(
+      resolve(__dirname, 'certs', 'live', 'malbernaz.me', 'privkey.pem'))), 'utf-8'),
+  cert: readFileSync(
+    resolve(__dirname, 'certs', 'live', 'malbernaz.me', readlinkSync(
+      resolve(__dirname, 'certs', 'live', 'malbernaz.me', 'cert.pem'))), 'utf-8'),
+} : {
+  key: resolve(__dirname, 'certs', 'key.pem', 'utf-8'),
+  cert: resolve(__dirname, 'certs', 'server.crt', 'utf-8')
 }
+
+const server = createServer(options, app)
 
 const targetUrl = `http://${config.apiHost}:${config.apiPort}`
 const proxy = createProxyServer({ target: targetUrl, ws: true })

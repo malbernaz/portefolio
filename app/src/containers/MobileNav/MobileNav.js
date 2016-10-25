@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
+import config from '../../config'
 import * as navActions from '../../actions/ui/nav'
 import Icon from '../../components/Icon'
 import s from './MobileNav.scss'
@@ -21,7 +22,7 @@ const MobileNav = ({ toggleNav }) => {
       </a>
       <div className={ s.navMobileLogo }>
         <Icon name="logo" />
-        <span>portefólio</span>
+        <span>{ config.title }</span>
       </div>
     </div>
   )

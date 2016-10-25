@@ -20,7 +20,7 @@ export function match (field) {
   return (value, data) => {
     if (data) {
       if (value !== data[field]) {
-        return 'As senhas não coincidem'
+        return 'the passwords do not match'
       }
     }
   }

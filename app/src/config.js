@@ -1,5 +1,5 @@
 const title = 'Miguel Albernaz'
-const description = 'Frontend dev based in Rio de Janeiro'
+const description = 'Rio de Janeiro based webdev'
 
 export default {
   title,

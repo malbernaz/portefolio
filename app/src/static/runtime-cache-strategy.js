@@ -1,16 +1,18 @@
 /* eslint-disable wrap-iife, strict, no-param-reassign */
 
-(function (global) {
+(global => {
   'use strict'
 
-  global.toolbox.precache([
+  const { toolbox } = global
+
+  toolbox.precache([
     '/',
     '/about',
     '/contact',
     '/admin'
   ])
 
-  global.toolbox.router.get('/(.*)', global.toolbox.fastest, {
+  toolbox.router.get('/(.*)', toolbox.fastest, {
     origin: /fonts\.gstatic\.com/,
     cache: {
       name: 'static-vendor-cache',
@@ -18,7 +20,11 @@
     }
   })
 
-  global.toolbox.router.get('*/api/user/*', global.toolbox.networkOnly)
+  toolbox.router.get('*/api/user/*', toolbox.networkOnly)
 
-  global.toolbox.router.get('/*', global.toolbox.fastest)
+  toolbox.router.get('*/api/posts/*', toolbox.networkFirst)
+
+  toolbox.router.get('*/api/postsanddrafts/*', toolbox.networkFirst)
+
+  toolbox.router.get('/*', toolbox.fastest)
 })(self)

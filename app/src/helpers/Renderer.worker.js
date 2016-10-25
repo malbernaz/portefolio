@@ -3,8 +3,6 @@ import { getLanguage, highlight } from './highlightjs'
 
 const renderer = new Renderer()
 
-marked.setOptions({ gfm: true, renderer })
-
 renderer.code = (code, language) => {
   const validLang = !!(language && getLanguage(language))
 
@@ -58,6 +56,11 @@ renderer.list = (body, ordered) => {
 
 self.onmessage = e => {
   e.preventDefault()
+
+  marked.setOptions({
+    sanitize: e.data.sanitize || false,
+    renderer
+  })
 
   self.postMessage(marked(e.data.raw))
 }
