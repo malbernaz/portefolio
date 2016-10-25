@@ -13,7 +13,15 @@ const babelLoader = {
       'transform-object-rest-spread',
       'transform-decorators-legacy',
       'lodash'
-    ]
+    ],
+    env: {
+      production: {
+        plugins: [
+          'transform-react-constant-elements',
+          'transform-react-inline-elements'
+        ]
+      }
+    }
   }
 }
 

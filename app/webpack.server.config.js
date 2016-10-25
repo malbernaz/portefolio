@@ -33,9 +33,17 @@ const prodPlugins = plugins.concat([
     debug: false
   }),
   new UglifyJsPlugin({
-    compress: { screw_ie8: true, warnings: false },
-    output: { comments: false, screw_ie8: true },
-    mangle: { screw_ie8: true },
+    compress: {
+      screw_ie8: true,
+      warnings: false
+    },
+    output: {
+      comments: false,
+      screw_ie8: true
+    },
+    mangle: {
+      screw_ie8: true
+    },
     sourceMap: false
   })
 ])

@@ -26,7 +26,7 @@ const plugins = [
     minChunkSize: 1000
   }),
   new WebpackShellPlugin({
-    onBuildStart: ['npm run imagemin']
+    onBuildStart: ['yarn run imagemin']
   }),
   new CopyWebpackPlugin([{
     from: './static/manifest.json'
