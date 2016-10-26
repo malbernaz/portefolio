@@ -51,10 +51,10 @@ app.use(favicon(resolve(__dirname, 'public', 'img', 'icon.ico')))
 
 app.use((req, res, next) => {
   const host = __DEV__ ?
-    req.get('host').split(':')[0] : req.get('host')
+    `${req.get('host').split(':')[0]}:${config.httpsPort}` : req.get('host')
 
   return !req.secure ?
-    res.redirect(`https://${host}:${config.httpsPort + req.url}`) : next()
+    res.redirect(`https://${host}:${req.url}`) : next()
 })
 
 if (__DEV__) {
