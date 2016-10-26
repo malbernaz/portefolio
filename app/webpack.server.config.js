@@ -22,7 +22,8 @@ const prodPlugins = plugins.concat([
   new DefinePlugin({
     'process.env': {
       NODE_ENV: JSON.stringify('production'),
-      APPPORT: JSON.stringify(process.env.APPPORT),
+      APPHTTPPORT: JSON.stringify(process.env.APPHTTPPORT),
+      APPHTTPSPORT: JSON.stringify(process.env.APPHTTPSPORT),
       APIHOST: JSON.stringify(process.env.APIHOST),
       APIPORT: JSON.stringify(process.env.APIPORT),
       GANALYTICS: JSON.stringify(process.env.GANALYTICS)
