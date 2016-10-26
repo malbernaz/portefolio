@@ -7,7 +7,7 @@ services:
     command: yarn start
     ports:
       - '443:3000'
-      - '80:3000'
+      - '80:3001'
     env_file: .env
     volumes:
       - ./app:/home/app/server
