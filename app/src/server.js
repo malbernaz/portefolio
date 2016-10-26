@@ -33,8 +33,8 @@ const options = process.env.NODE_ENV === 'production' ? {
     resolve(__dirname, 'certs', 'live', 'malbernaz.me', readlinkSync(
       resolve(__dirname, 'certs', 'live', 'malbernaz.me', 'cert.pem'))), 'utf-8'),
 } : {
-  key: resolve(__dirname, 'certs', 'key.pem', 'utf-8'),
-  cert: resolve(__dirname, 'certs', 'server.crt', 'utf-8')
+  key: readFileSync(resolve(__dirname, 'certs', 'portefoliodev.key'), 'utf-8'),
+  cert: readFileSync(resolve(__dirname, 'certs', 'portefoliodev.crt'), 'utf-8')
 }
 
 const server = createServer(options, app)

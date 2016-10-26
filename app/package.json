@@ -4,8 +4,8 @@
   "description": "frontend for the portefólio blog",
   "main": "index.js",
   "scripts": {
-    "build:dev": "npm run clean && npm run build:client:dev && npm run build:server:dev",
-    "build:prod": "npm run clean && npm run build:client:prod && npm run build:server:prod",
+    "build:dev": "yarn run clean && yarn run build:client:dev && yarn run build:server:dev",
+    "build:prod": "yarn run clean && yarn run build:client:prod && yarn run build:server:prod",
     "build:client:dev": "webpack --config webpack.client.config.js --env dev",
     "build:client:prod": "webpack --config webpack.client.config.js --env prod",
     "build:server:dev": "webpack --config webpack.server.config.js --env dev",
@@ -13,10 +13,10 @@
     "watch:client": "webpack --config webpack.client.config.js --env dev --watch",
     "watch:server": "webpack --config webpack.server.config.js --env dev --watch",
     "clean": "rm -fr dist && mkdir -p dist/public/img",
-    "dev": "concurrently --raw --kill-others 'npm run nodemon' 'npm run watch:client' 'npm run watch:server'",
+    "dev": "concurrently --raw --kill-others 'yarn run nodemon' 'yarn run watch:client' 'yarn run watch:server'",
     "imagemin": "imagemin src/static/img/* --out-dir=dist/public/img",
     "nodemon": "nodemon -L ./dist/index.js --ignore ./dist/public",
-    "start": "npm run build:prod && NODE_ENV=production node ./dist/index.js",
+    "start": "yarn run build:prod && NODE_ENV=production node ./dist/index.js",
     "test": "NODE_ENV=test tape -r babel-register 'src/**/*.test.js' | faucet"
   },
   "repository": {

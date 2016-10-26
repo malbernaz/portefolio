@@ -12,7 +12,10 @@ const {
 const wpBaseConfig = require('./webpack.config')
 
 const plugins = [
-  new IgnorePlugin(/worker/i)
+  new IgnorePlugin(/worker/i),
+  new WebpackShellPlugin({
+    onBuildStart: 'cp -r certs dist'
+  })
 ]
 
 const prodPlugins = plugins.concat([
@@ -24,9 +27,6 @@ const prodPlugins = plugins.concat([
       APIPORT: JSON.stringify(process.env.APIPORT),
       GANALYTICS: JSON.stringify(process.env.GANALYTICS)
     }
-  }),
-  new WebpackShellPlugin({
-    onBuildStart: 'cp -r certs dist'
   }),
   new LoaderOptionsPlugin({
     minimize: true,
