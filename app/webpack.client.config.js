@@ -1,7 +1,6 @@
 const { resolve } = require('path')
-
-const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin')
 const WebpackShellPlugin = require('webpack-shell-plugin')
 const {
   DefinePlugin,

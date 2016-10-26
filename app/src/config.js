@@ -1,10 +1,11 @@
 const title = 'Miguel Albernaz'
-const description = 'Rio de Janeiro based webdev'
+const description = 'Rio de Janeiro based web developer'
 
 export default {
   title,
   description,
-  port: process.env.APPPORT || 3000,
+  httpsPort: process.env.APPHTTPSPORT || 8080,
+  httpPort: process.env.APPHTTPPORT || 3000,
   apiHost: process.env.APIHOST || '127.0.1',
   apiPort: process.env.APIPORT || 5000,
   github: 'https://github.com/malbernaz',

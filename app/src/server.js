@@ -1,13 +1,14 @@
-import { resolve } from 'path'
-import { readFileSync, readlinkSync } from 'fs'
-import { createServer } from 'spdy'
 import { createProxyServer } from 'http-proxy'
-import crypto from 'crypto'
+import { readFileSync, readlinkSync } from 'fs'
+import { resolve } from 'path'
 import compression from 'compression'
+import crypto from 'crypto'
 import express from 'express'
 import favicon from 'express-favicon'
+import http from 'http'
 import morgan from 'morgan'
 import serveStatic from 'serve-static'
+import spdy from 'spdy'
 
 import { Provider } from 'react-redux'
 import { renderToStaticMarkup } from 'react-dom/server'
@@ -23,21 +24,23 @@ import getRouter from './router'
 import Html from './helpers/Html'
 import WithStylesContext from './helpers/WithStylesContext'
 
+const __DEV__ = process.env.NODE_ENV !== 'production'
+
 const app = express()
 
-const options = process.env.NODE_ENV === 'production' ? {
+const options = __DEV__ ? {
+  key: readFileSync(resolve(__dirname, 'certs', 'portefoliodev.key'), 'utf-8'),
+  cert: readFileSync(resolve(__dirname, 'certs', 'portefoliodev.crt'), 'utf-8')
+} : {
   key: readFileSync(
     resolve(__dirname, 'certs', 'live', 'malbernaz.me', readlinkSync(
       resolve(__dirname, 'certs', 'live', 'malbernaz.me', 'privkey.pem'))), 'utf-8'),
   cert: readFileSync(
     resolve(__dirname, 'certs', 'live', 'malbernaz.me', readlinkSync(
       resolve(__dirname, 'certs', 'live', 'malbernaz.me', 'cert.pem'))), 'utf-8'),
-} : {
-  key: readFileSync(resolve(__dirname, 'certs', 'portefoliodev.key'), 'utf-8'),
-  cert: readFileSync(resolve(__dirname, 'certs', 'portefoliodev.crt'), 'utf-8')
 }
 
-const server = createServer(options, app)
+const server = spdy.createServer(options, app)
 
 const targetUrl = `http://${config.apiHost}:${config.apiPort}`
 const proxy = createProxyServer({ target: targetUrl, ws: true })
@@ -46,7 +49,15 @@ app.use(compression())
 app.use(serveStatic(resolve(__dirname, 'public')))
 app.use(favicon(resolve(__dirname, 'public', 'img', 'icon.ico')))
 
-if (process.env.NODE_ENV !== 'production') {
+app.use((req, res, next) => {
+  const host = __DEV__ ?
+    req.get('host').split(':')[0] : req.get('host')
+
+  return !req.secure ?
+    res.redirect(`https://${host}:${config.httpsPort + req.url}`) : next()
+})
+
+if (__DEV__) {
   app.use(morgan('dev'))
 }
 
@@ -136,10 +147,12 @@ app.use((req, res) => {
   })
 })
 
-server.listen(config.port, err => {
+http.createServer(app).listen(config.httpPort)
+
+server.listen(config.httpsPort, err => {
   if (err) {
     console.log(err) // eslint-disable-line no-console
   }
 
-  console.log(`\n==>  App listening on port ${config.port}\n`) // eslint-disable-line no-console
+  console.log(`\n==>  App listening on port ${config.httpsPort}\n`) // eslint-disable-line no-console
 })
