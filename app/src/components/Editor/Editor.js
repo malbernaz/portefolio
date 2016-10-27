@@ -1,28 +1,13 @@
 import React, { Component, PropTypes } from 'react'
-import {
-  ContentState,
-  Editor as DraftEditor,
-  EditorState,
-  Modifier
-} from 'draft-js'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import s from './Editor.scss'
-
-const { createFromText } = ContentState
-const { createWithContent, push } = EditorState
 
 @withStyles(s)
 export default class Editor extends Component {
   static propTypes = {
     activeDraft: PropTypes.shape({ raw: PropTypes.string }),
-    creatingActiveDraft: PropTypes.bool,
     updateActiveDraft: PropTypes.func
-  }
-
-  state = {
-    editorState: createWithContent(createFromText(this.props.activeDraft.raw)),
-    clientReady: false
   }
 
   componentDidMount () {
@@ -33,54 +18,61 @@ export default class Editor extends Component {
       })
   }
 
-  componentWillReceiveProps ({ activeDraft, creatingActiveDraft }) {
-    if (creatingActiveDraft) {
-      this.setState({ editorState: createWithContent(createFromText(activeDraft.raw)) })
-    }
-  }
-
   componentWillUnmount () {
     this.rendererWorker.removeEventListener('message', this.markdownReceiver, false)
   }
 
-  onTab = e => {
-    e.preventDefault()
-
-    const currentState = this.state.editorState
-    const newContentState = Modifier.replaceText(
-      currentState.getCurrentContent(),
-      currentState.getSelection(),
-      '  '
-    )
-
-    this.handleChange(push(currentState, newContentState, 'insert-characters'))
-  }
-
   markdownReceiver = e => {
     const { updateActiveDraft } = this.props
-    const { editorState } = this.state
 
-    updateActiveDraft({
-      html: e.data,
-      raw: editorState.getCurrentContent().getPlainText()
-    })
+    if (this.timeout) clearTimeout(this.timeout)
+
+    this.timeout = setTimeout(() => updateActiveDraft({ html: e.data }), 500)
   }
 
-  handleChange = editorState => {
-    this.setState({ editorState })
+  handleKeyDown = e => {
+    if (e.keyCode === 9) {
+      e.preventDefault()
 
-    this.rendererWorker.postMessage({
-      raw: editorState.getCurrentContent().getPlainText()
-    })
+      const { updateActiveDraft } = this.props
+
+      const { selectionStart, selectionEnd, value } = e.target
+
+      const newValue = `${value.substring(0, selectionStart)}  ${value.substring(selectionEnd)}`
+
+      updateActiveDraft({ raw: newValue })
+
+      setTimeout(() => {
+        this.editor.selectionStart = this.editor.selectionEnd = selectionStart + 2
+      }, 0)
+
+      this.rendererWorker.postMessage({ raw: newValue })
+    }
+  }
+
+  handleChange = e => {
+    const { updateActiveDraft } = this.props
+
+    const raw = e.target.value
+
+    updateActiveDraft({ raw })
+
+    this.rendererWorker.postMessage({ raw })
   }
 
   render () {
     return (
-      <DraftEditor
-        editorState={ this.state.editorState }
-        onChange={ this.handleChange }
-        onTab={ this.onTab }
-      />
+      <div className={ s.root }>
+        <div className={ s.container }>
+          <textarea
+            className={ s.content }
+            onKeyDown={ this.handleKeyDown }
+            onChange={ this.handleChange }
+            value={ this.props.activeDraft.raw }
+            ref={ c => { this.editor = c } }
+          />
+        </div>
+      </div>
     )
   }
 }

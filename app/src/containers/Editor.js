@@ -215,7 +215,6 @@ export default class Editor extends Component {
       },
       posts: {
         activeDraft,
-        creatingActiveDraft,
         drafts,
         posts
       },
@@ -226,7 +225,6 @@ export default class Editor extends Component {
     return (
       <EditorView
         activeDraft={ activeDraft }
-        creatingActiveDraft={ creatingActiveDraft }
         drafts={ drafts }
         dropdownIsShown={ editorDropdownIsVisible }
         editorView={ view }
