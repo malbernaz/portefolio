@@ -25,12 +25,28 @@ export default class Editor extends Component {
   markdownReceiver = e => {
     const { updateActiveDraft } = this.props
 
-    updateActiveDraft({ html: e.data })
+    if (this.timeout) clearTimeout(this.timeout)
+
+    this.timeout = setTimeout(() => updateActiveDraft({ html: e.data }), 500)
   }
 
   handleKeyDown = e => {
     if (e.keyCode === 9) {
       e.preventDefault()
+
+      const { updateActiveDraft } = this.props
+
+      const { selectionStart, selectionEnd, value } = e.target
+
+      const newValue = `${value.substring(0, selectionStart)}  ${value.substring(selectionEnd)}`
+
+      updateActiveDraft({ raw: newValue })
+
+      setTimeout(() => {
+        this.editor.selectionStart = this.editor.selectionEnd = selectionStart + 2
+      }, 0)
+
+      this.rendererWorker.postMessage({ raw: newValue })
     }
   }
 
