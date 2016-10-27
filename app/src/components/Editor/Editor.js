@@ -27,7 +27,7 @@ export default class Editor extends Component {
 
     if (this.timeout) clearTimeout(this.timeout)
 
-    this.timeout = setTimeout(() => updateActiveDraft({ html: e.data }), 500)
+    this.timeout = setTimeout(() => updateActiveDraft({ html: e.data }), 1000)
   }
 
   handleKeyDown = e => {
