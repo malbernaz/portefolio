@@ -63,15 +63,13 @@ export default class Editor extends Component {
   render () {
     return (
       <div className={ s.root }>
-        <div className={ s.container }>
-          <textarea
-            className={ s.content }
-            onKeyDown={ this.handleKeyDown }
-            onChange={ this.handleChange }
-            value={ this.props.activeDraft.raw }
-            ref={ c => { this.editor = c } }
-          />
-        </div>
+        <textarea
+          className={ s.content }
+          onKeyDown={ this.handleKeyDown }
+          onChange={ this.handleChange }
+          value={ this.props.activeDraft.raw }
+          ref={ c => { this.editor = c } }
+        />
       </div>
     )
   }
