@@ -17,7 +17,6 @@ const { arrayOf, bool, func, object, shape, string } = PropTypes
 export default class EditorView extends Component {
   static propTypes = {
     activeDraft: shape({ meta: shape({ title: string.isRequired }) }).isRequired,
-    creatingActiveDraft: bool.isRequired,
     dropdownIsShown: bool.isRequired,
     editorView: string.isRequired,
     handleChange: func.isRequired,
@@ -80,7 +79,6 @@ export default class EditorView extends Component {
   render () {
     const {
       activeDraft,
-      creatingActiveDraft,
       dropdownIsShown,
       handleChange,
       handleDelete,
@@ -150,7 +148,6 @@ export default class EditorView extends Component {
             <div className={ s.pane }>
               <Editor
                 activeDraft={ activeDraft }
-                creatingActiveDraft={ creatingActiveDraft }
                 updateActiveDraft={ updateActiveDraft }
               />
             </div>

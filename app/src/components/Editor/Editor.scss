@@ -1,25 +1,37 @@
 @import '../../theme/vars';
 
-:global {
-  .DraftEditor-root {
-    font-family: $monospace;
+.root {
+  font-family: $monospace;
+  line-height: 1.6;
 
-    height: 100%;
+  overflow-y: auto;
 
-    overflow-y: auto;
+  height: 100%;
 
-    transform: translateZ(0);
-  }
+  transform: translateZ(0);
+}
 
-  .DraftEditor-editorContainer {
-    box-sizing: border-box;
-    width: 100%;
-    max-width: 600px;
-    height: 100%;
-    margin: 0 auto;
-  }
+.container {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 600px;
+  height: 100%;
+  margin: 0 auto;
+}
 
-  .public-DraftEditor-content {
-    padding: 2rem 1rem 4rem;
-  }
+.content {
+  overflow-y: hidden;
+
+  width: 100%;
+  height: 100%;
+  padding: 2rem 1rem 4rem;
+
+  resize: none;
+
+  border: none;
+  background: transparent;
+}
+
+.content:focus {
+  outline: none;
 }

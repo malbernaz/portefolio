@@ -49,13 +49,10 @@ app.use(compression())
 app.use(serveStatic(resolve(__dirname, 'public')))
 app.use(favicon(resolve(__dirname, 'public', 'img', 'icon.ico')))
 
-app.use((req, res, next) => {
-  const host = __DEV__ ?
-    `${req.get('host').split(':')[0]}:${config.httpsPort}` : req.get('host')
-
-  return !req.secure ?
-    res.redirect(`https://${host}:${req.url}`) : next()
-})
+if (!__DEV__) {
+  app.use((req, res, next) =>
+    !req.secure ? res.redirect(`https://${req.get('host')}:${req.url}`) : next())
+}
 
 if (__DEV__) {
   app.use(morgan('dev'))
