@@ -27,18 +27,17 @@ import WithStylesContext from './helpers/WithStylesContext'
 const __DEV__ = process.env.NODE_ENV !== 'production'
 
 const app = express()
-const httpApp = express()
 
 const options = __DEV__ ? {
-  key: readFileSync(resolve(__dirname, 'certs', 'portefoliodev.key')),
-  cert: readFileSync(resolve(__dirname, 'certs', 'portefoliodev.crt'))
+  key: readFileSync(resolve(__dirname, 'certs', 'portefoliodev.key'), 'utf-8'),
+  cert: readFileSync(resolve(__dirname, 'certs', 'portefoliodev.crt'), 'utf-8')
 } : {
   key: readFileSync(
     resolve(__dirname, 'certs', 'live', 'malbernaz.me', readlinkSync(
-      resolve(__dirname, 'certs', 'live', 'malbernaz.me', 'privkey.pem')))),
+      resolve(__dirname, 'certs', 'live', 'malbernaz.me', 'privkey.pem'))), 'utf-8'),
   cert: readFileSync(
     resolve(__dirname, 'certs', 'live', 'malbernaz.me', readlinkSync(
-      resolve(__dirname, 'certs', 'live', 'malbernaz.me', 'cert.pem')))),
+      resolve(__dirname, 'certs', 'live', 'malbernaz.me', 'cert.pem'))), 'utf-8'),
 }
 
 const server = spdy.createServer(options, app)
@@ -46,12 +45,13 @@ const server = spdy.createServer(options, app)
 const targetUrl = `http://${config.apiHost}:${config.apiPort}`
 const proxy = createProxyServer({ target: targetUrl, ws: true })
 
+app.enable('trust proxy')
 app.use(compression())
 app.use(serveStatic(resolve(__dirname, 'public')))
 app.use(favicon(resolve(__dirname, 'public', 'img', 'icon.ico')))
 
 if (!__DEV__) {
-  httpApp.use((req, res, next) =>
+  app.use((req, res, next) =>
     !req.secure ? res.redirect(`https://${req.get('host')}:${req.url}`) : next())
 }
 
@@ -145,7 +145,7 @@ app.use((req, res) => {
   })
 })
 
-http.createServer(httpApp).listen(config.httpPort)
+http.createServer(app).listen(config.httpPort)
 
 server.listen(config.httpsPort, err => {
   if (err) {
