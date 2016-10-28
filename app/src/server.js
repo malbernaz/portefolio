@@ -29,15 +29,15 @@ const __DEV__ = process.env.NODE_ENV !== 'production'
 const app = express()
 
 const options = __DEV__ ? {
-  key: readFileSync(resolve(__dirname, 'certs', 'portefoliodev.key'), 'utf-8'),
-  cert: readFileSync(resolve(__dirname, 'certs', 'portefoliodev.crt'), 'utf-8')
+  key: readFileSync(resolve(__dirname, 'certs', 'portefoliodev.key')),
+  cert: readFileSync(resolve(__dirname, 'certs', 'portefoliodev.crt'))
 } : {
   key: readFileSync(
     resolve(__dirname, 'certs', 'live', 'malbernaz.me', readlinkSync(
-      resolve(__dirname, 'certs', 'live', 'malbernaz.me', 'privkey.pem'))), 'utf-8'),
+      resolve(__dirname, 'certs', 'live', 'malbernaz.me', 'privkey.pem')))),
   cert: readFileSync(
     resolve(__dirname, 'certs', 'live', 'malbernaz.me', readlinkSync(
-      resolve(__dirname, 'certs', 'live', 'malbernaz.me', 'cert.pem'))), 'utf-8'),
+      resolve(__dirname, 'certs', 'live', 'malbernaz.me', 'cert.pem')))),
 }
 
 const server = spdy.createServer(options, app)
