@@ -27,6 +27,7 @@ import WithStylesContext from './helpers/WithStylesContext'
 const __DEV__ = process.env.NODE_ENV !== 'production'
 
 const app = express()
+const httpApp = express()
 
 const options = __DEV__ ? {
   key: readFileSync(resolve(__dirname, 'certs', 'portefoliodev.key'), 'utf-8'),
@@ -50,7 +51,7 @@ app.use(serveStatic(resolve(__dirname, 'public')))
 app.use(favicon(resolve(__dirname, 'public', 'img', 'icon.ico')))
 
 if (!__DEV__) {
-  app.use((req, res, next) =>
+  httpApp.use((req, res, next) =>
     !req.secure ? res.redirect(`https://${req.get('host')}:${req.url}`) : next())
 }
 
@@ -144,7 +145,7 @@ app.use((req, res) => {
   })
 })
 
-http.createServer(app).listen(config.httpPort)
+http.createServer(httpApp).listen(config.httpPort)
 
 server.listen(config.httpsPort, err => {
   if (err) {
