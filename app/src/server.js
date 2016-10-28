@@ -11,7 +11,7 @@ import serveStatic from 'serve-static'
 import spdy from 'spdy'
 
 import { Provider } from 'react-redux'
-import { renderToStaticMarkup } from 'react-dom/server'
+import { renderToString } from 'react-dom/server'
 import { RouterContext, match, createMemoryHistory } from 'react-router/es6'
 import { syncHistoryWithStore } from 'react-router-redux'
 import React from 'react'
@@ -85,7 +85,7 @@ app.use((req, res) => {
   const store = configureStore(client, memoryHistory)
 
   function hydrateOnClient () {
-    res.send(`<!doctype html>${renderToStaticMarkup(<Html />)}`)
+    res.send(`<!doctype html>${renderToString(<Html />)}`)
   }
 
   match({
@@ -118,7 +118,7 @@ app.use((req, res) => {
         </Provider>
       )
 
-      const content = renderToStaticMarkup(
+      const content = renderToString(
         <Html
           component={ component }
           css={ css }
@@ -152,5 +152,6 @@ server.listen(config.httpsPort, err => {
     console.log(err) // eslint-disable-line no-console
   }
 
-  console.log(`\n==>  App listening on port ${config.httpsPort}\n`) // eslint-disable-line no-console
+  // eslint-disable-next-line no-console
+  console.log(`\n==>  App listening on port ${config.httpsPort}\n`)
 })
