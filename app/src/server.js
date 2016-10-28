@@ -37,7 +37,7 @@ const options = __DEV__ ? {
       resolve(__dirname, 'certs', 'live', 'malbernaz.me', 'privkey.pem')))),
   cert: readFileSync(
     resolve(__dirname, 'certs', 'live', 'malbernaz.me', readlinkSync(
-      resolve(__dirname, 'certs', 'live', 'malbernaz.me', 'cert.pem')))),
+      resolve(__dirname, 'certs', 'live', 'malbernaz.me', 'fullchain.pem')))),
 }
 
 const server = spdy.createServer(options, app)
