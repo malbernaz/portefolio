@@ -16,7 +16,6 @@ import { RouterContext, match, createMemoryHistory } from 'react-router/es6'
 import { syncHistoryWithStore } from 'react-router-redux'
 import React from 'react'
 
-import { loadAuth } from './actions/auth'
 import ApiClient from './helpers/ApiClient'
 import config from './config'
 import configureStore from './store'
@@ -139,9 +138,7 @@ app.use((req, res) => {
       global.navigator = { userAgent: req.headers['user-agent'] }
     }
 
-    return store.dispatch(loadAuth())
-      .then(renderPage)
-      .catch(renderPage)
+    return renderPage()
   })
 })
 
