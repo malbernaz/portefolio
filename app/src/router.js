@@ -9,9 +9,15 @@ import { loadAuth } from './actions/auth'
 import { loadPosts, loadPostsAndDrafts } from './actions/posts'
 
 export default store => {
-  const mustBeLogged = (nextState, replace, callback) => {
+  const onEditorEnter = (nextState, replace, callback) => {
     function checkAuth ({ user }) {
       if (!user) replace('/admin')
+
+      if (!store.getState().posts.loadedPostsAndDrafts) {
+        return store.dispatch(loadPostsAndDrafts())
+          .then(() => callback())
+          .catch(() => callback())
+      }
 
       return callback()
     }
@@ -41,16 +47,6 @@ export default store => {
     }
 
     return checkIfExists(store.getState().posts)
-  }
-
-  const getDrafts = (nextState, replace, callback) => {
-    if (!store.getState().posts.loadedPostsAndDrafts) {
-      return store.dispatch(loadPostsAndDrafts())
-        .then(() => callback())
-        .catch(() => callback())
-    }
-
-    return callback()
   }
 
   const getPosts = (nextState, replace, callback) => {
@@ -94,16 +90,12 @@ export default store => {
           System.import('./containers/Editor')
             .then(module => callback(null, module.default))
         },
-        onEnter: mustBeLogged && getDrafts,
+        onEnter: onEditorEnter,
       }]
     }, {
-      path: 'pagenotfound',
-      component: NotFound
-    }],
-    redirect: {
-      from: '*',
+      path: '*',
       status: '404',
-      to: 'pagenotfound',
-    }
+      component: NotFound,
+    }]
   }
 }
