@@ -154,7 +154,7 @@ export default class EditorView extends Component {
             <div className={ s.pane }>
               <div className={ s.preview }>
                 <article>
-                  <h2>{ activeDraft.meta.title }</h2>
+                  <h1>{ activeDraft.meta.title }</h1>
                   <div dangerouslySetInnerHTML={{ __html: activeDraft.html }} />
                 </article>
               </div>

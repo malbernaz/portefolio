@@ -1,12 +1,28 @@
 :global {
-  .hljs {
-    font-size: .8rem;
+  pre {
+    width: calc(100vw - #{$nav-width});
+    margin-left: calc(-100vw/2 + #{$nav-width}/2 + 50%);
 
+    background: $syntax-bg-alternate;
+  }
+
+  @media (max-width: $tablet) {
+    pre {
+      width: calc(100vw);
+      margin-left: calc(-100vw/2 + 50%);
+
+      background: $syntax-bg-alternate;
+    }
+  }
+
+  .hljs {
     display: block;
     overflow-x: auto;
 
-    margin: 1.5rem 0;
-    padding: .8rem;
+    line-height: 1.6rem;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: .8rem 0;
 
     color: $syntax-fg;
   }
@@ -22,6 +38,7 @@
   .hljs-keyword,
   .hljs-selector-tag,
   .hljs-deletion,
+  .hljs-function,
   .hljs-selector-id,
   .hljs-selector-class {
     color: $hue-3;

@@ -5,6 +5,8 @@
 
   const { toolbox } = global
 
+  toolbox.options.debug = true
+
   toolbox.precache([
     '/',
     '/about',
@@ -20,11 +22,14 @@
     }
   })
 
-  toolbox.router.get('*/api/user/*', toolbox.networkOnly)
+  toolbox.router.any('*/api/user/*', toolbox.networkOnly)
 
-  toolbox.router.get('*/api/posts/*', toolbox.networkFirst)
+  toolbox.router.get('*/api/posts/*', toolbox.fastest)
+  toolbox.router.post('*/api/posts/*', toolbox.networkOnly)
+  toolbox.router.put('*/api/posts/*', toolbox.networkOnly)
+  toolbox.router.delete('*/api/posts/*', toolbox.networkOnly)
 
-  toolbox.router.get('*/api/postsanddrafts/*', toolbox.networkFirst)
+  toolbox.router.delete('*/api/postsanddrafts/*', toolbox.networkOnly)
 
-  toolbox.router.get('/*', toolbox.fastest)
+  toolbox.router.get('*/api/postsanddrafts/*', toolbox.networkOnly)
 })(self)
