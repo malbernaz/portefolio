@@ -89,6 +89,8 @@
   article {
     position: relative;
 
+    overflow-x: hidden;
+
     box-sizing: border-box;
     width: 100%;
     max-width: 37.5rem;
@@ -123,9 +125,10 @@
     }
 
     code:not(.hljs) {
-      border-radius: 3px;
-      border: 1px solid rgba($mono-3, .3);
       padding: 0 .2rem;
+
+      border: 1px solid rgba($mono-3, .3);
+      border-radius: 3px;
     }
 
     table {
