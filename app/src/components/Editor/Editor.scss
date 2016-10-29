@@ -15,7 +15,7 @@
   box-sizing: border-box;
   width: 100%;
   height: 100%;
-  padding: 2rem calc((100% - 600px)/2 + 1rem) 4rem;
+  padding: 2rem calc((100% - #{$text-container})/2 + 1rem) 4rem;
 
   resize: none;
 
@@ -27,19 +27,19 @@
   outline: none;
 }
 
-@media (max-width: 888px) {
+@media (max-width: $text-container + $nav-width) {
   .content {
     padding: 2rem 1rem 4rem;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: $tablet) {
   .content {
-    padding: 2rem calc((100% - 600px)/2 + 1rem)  4rem;
+    padding: 2rem calc((100% - #{$text-container})/2 + 1rem)  4rem;
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: $text-container) {
   .content {
     padding: 2rem 1rem 4rem;
   }
