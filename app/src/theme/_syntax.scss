@@ -1,5 +1,6 @@
 :global {
   pre {
+    padding: 0 1rem;
     width: calc(100vw - #{$nav-width});
     margin-left: calc(-100vw/2 + #{$nav-width}/2 + 50%);
 
@@ -22,7 +23,7 @@
     line-height: 1.6rem;
     max-width: 600px;
     margin: 0 auto;
-    padding: 1rem 0;
+    padding: 1rem;
 
     color: $syntax-fg;
   }
