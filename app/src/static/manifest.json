@@ -1,6 +1,6 @@
 {
-  "name": "Malbernaz",
-  "short_name": "Malbernaz",
+  "name": "malbernaz.me",
+  "short_name": "malbernaz.me",
   "icons": [{
     "src": "/img/icon-36x36.png",
     "sizes": "36x36",
@@ -36,5 +36,5 @@
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#383a42",
-  "theme_color": "#f2f2f2"
+  "theme_color": "#526fff"
 }
