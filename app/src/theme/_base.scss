@@ -21,6 +21,7 @@
 
   @media (max-width: $tablet) {
     right: 0;
+
     width: calc(100vw);
   }
 }
@@ -67,20 +68,12 @@
     text-transform: uppercase;
   }
 
-  h2 {
-    font-size: 2rem;
-  }
-
-  h3 {
-    font-size: 1.5rem;
+  li {
+    line-height: 1.5rem;
   }
 
   p {
-    line-height: 1.5rem;
-  }
-
-  li {
-    line-height: 1.5rem;
+    line-height: 1.6rem;
   }
 
   svg {
@@ -94,6 +87,8 @@
   }
 
   article {
+    position: relative;
+
     box-sizing: border-box;
     width: 100%;
     max-width: 37.5rem;
@@ -123,13 +118,14 @@
     code {
       font-family: $monospace;
       font-size: .8rem;
-      line-height: 1.5rem;
 
-      padding: 0 .2rem;
-
-      border: 1px solid lighten($mono-3, 25);
-      border-radius: 3px;
       background: $syntax-bg-alternate;
+    }
+
+    code:not(.hljs) {
+      border-radius: 3px;
+      border: 1px solid rgba($mono-3, .3);
+      padding: .1rem .2rem;
     }
 
     table {
@@ -219,6 +215,7 @@
 
       &-active {
         transition: opacity .3s $default-bezier;
+
         opacity: 1;
 
         @extend .page-transition-enter;
@@ -233,6 +230,7 @@
 
       &-active {
         transition: opacity .3s $default-bezier;
+
         opacity: 0;
 
         @extend .page-transition-leave;

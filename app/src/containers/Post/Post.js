@@ -12,7 +12,16 @@ const Post = ({ posts, slug }) => {
 
   return (
     <Wrapper>
-      <Helmet title={ meta.title.toUpperCase() } />
+      <Helmet
+        title={ meta.title.toUpperCase() }
+        meta={ [{
+          name: 'description',
+          content: meta.description
+        }, {
+          name: 'keywords',
+          content: meta.tags.join(',')
+        }] }
+      />
       <div className={ s.root }>
         <article>
           <small>{ moment(createdAt, moment.ISO_8601).fromNow() }</small>
