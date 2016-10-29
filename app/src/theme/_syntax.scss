@@ -1,6 +1,5 @@
 :global {
   pre {
-    padding: 0 1rem;
     width: calc(100vw - #{$nav-width});
     margin-left: calc(-100vw/2 + #{$nav-width}/2 + 50%);
 
@@ -17,10 +16,13 @@
   }
 
   .hljs {
+    line-height: 1.6rem;
+
     display: block;
     overflow-x: auto;
 
-    line-height: 1.6rem;
+    // box-sizing: border-box;
+    width: calc(100% - 2rem);
     max-width: 600px;
     margin: 0 auto;
     padding: 1rem;
