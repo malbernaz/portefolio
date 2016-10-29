@@ -27,7 +27,7 @@
   transform: translateY(-102%);
 
   background: $syntax-bg-alternate;
-  box-shadow: 0 2px 5px rgba($syntax-fg, .3);
+  box-shadow: 0 5px 5px $default-shadow-color;
 
   will-change: transform;
 }
