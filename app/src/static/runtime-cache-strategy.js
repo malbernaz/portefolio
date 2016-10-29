@@ -29,7 +29,7 @@
   toolbox.router.put('*/api/posts/*', toolbox.networkOnly)
   toolbox.router.delete('*/api/posts/*', toolbox.networkOnly)
 
-  toolbox.router.delete('*/api/postsanddrafts/*', toolbox.networkOnly)
+  toolbox.router.any('*/api/drafts/*', toolbox.networkOnly)
 
   toolbox.router.get('*/api/postsanddrafts/*', toolbox.networkOnly)
 })(self)
