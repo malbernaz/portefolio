@@ -21,10 +21,10 @@
     display: block;
     overflow-x: auto;
 
-    width: calc(100% - 2rem);
-    max-width: 600px;
+    width: calc(100% - 4rem);
+    max-width: $text-container - 4rem;
     margin: 0 auto;
-    padding: 1rem;
+    padding: 1rem 2rem;
 
     color: $syntax-fg;
   }
