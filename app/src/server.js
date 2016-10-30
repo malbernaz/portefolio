@@ -1,5 +1,5 @@
 import { createProxyServer } from 'http-proxy'
-import { readFile, readFileSync, readlinkSync } from 'fs'
+import { readFileSync, readlinkSync } from 'fs'
 import { resolve } from 'path'
 import compression from 'compression'
 import crypto from 'crypto'
@@ -22,6 +22,27 @@ import configureStore from './store'
 import getRouter from './router'
 import Html from './helpers/Html'
 import WithStylesContext from './helpers/WithStylesContext'
+
+const manifest = JSON.parse(readFileSync(resolve(__dirname, 'manifest.json')))
+
+const assets = manifest.assets.filter(a => !/\.json/.test(a)).map(asset => {
+  const data = readFileSync(resolve(__dirname, 'public', asset))
+
+  const hash = crypto
+    .createHash('sha256')
+    .update(data)
+    .digest('hex')
+
+  return {
+    path: `/${asset}`,
+    headers: {
+      'content-type': 'application/javascript',
+      'Etag': hash, // eslint-disable-line quote-props
+      'Cache-Control': 'public, no-cache'
+    },
+    data
+  }
+})
 
 const __DEV__ = process.env.NODE_ENV !== 'production'
 
@@ -56,15 +77,11 @@ if (!__DEV__) {
 
 app.use((req, res, next) => {
   if (res.push && !/\/api/.test(req.url)) {
-    const manifest = JSON.parse(readFileSync(resolve(__dirname, 'manifest.json')))
-
-    manifest.assets.filter(a => !/\.json/.test(a)).forEach(a => {
-      res.push(`/${a}`, { 'content-type': 'application/javascript' }, (pushErr, stream) => {
+    assets.forEach(asset => {
+      res.push(asset.path, asset.headers, (pushErr, stream) => {
         if (pushErr) return
 
-        readFile(resolve(__dirname, 'public', a), 'utf-8', (fileErr, data) => {
-          stream.end(data)
-        })
+        stream.end(asset.data)
       })
     })
   }
