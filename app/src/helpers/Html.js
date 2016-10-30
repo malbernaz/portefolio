@@ -29,6 +29,38 @@ const Html = ({ component, store, css }) => {
         />
         <script src="/vendor.bundle.js" />
         <script src="/main.bundle.js" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/sw.js', { scope: './' }).then(reg => {
+                  reg.onupdatefound = function () {
+                    const installingWorker = reg.installing
+
+                    installingWorker.onstatechange = function () {
+                      switch (installingWorker.state) {
+                        case 'installed':
+                          if (navigator.serviceWorker.controller) {
+                            console.log('New or updated content is available.')
+                          } else {
+                            console.log('Content is now available offline!')
+                          }
+                          break
+                        case 'redundant':
+                          console.log('The installing service worker became redundant.')
+                          break
+                        default:
+                          break
+                      }
+                    }
+                  }
+                }).catch(e => {
+                  console.error('Error during service worker registration:', e)
+                })
+              }
+            `
+          }}
+        />
         { process.env.NODE_ENV === 'production' ? [
           <script
             key="0"

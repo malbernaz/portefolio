@@ -3,9 +3,9 @@
 
 .root {
   position: absolute;
+  z-index: $zi-nav;
   top: 0;
   left: 0;
-  z-index: $zi-nav;
 
   overflow-y: auto;
 
@@ -125,13 +125,16 @@
   height: 3.5rem;
 
   transition: background .3s ease, color .3s ease;
+  text-transform: lowercase;
+
+  color: $syntax-fg;
 
   justify-content: center;
   align-items: center;
 
   &:hover,
   &:focus {
-    color: $syntax-accent;
+    color: $syntax-fg;
     background: darken($syntax-bg, 7);
   }
 
@@ -141,7 +144,7 @@
 }
 
 .itemActive {
-  color: $syntax-accent;
+  color: $syntax-fg;
   background: darken($syntax-bg, 7);
 
   composes: item;
@@ -153,7 +156,7 @@
   border-top: 1px $mono-3 dashed;
 
   composes: item;
-  @include dark-link($syntax-accent, 10);
+  @include dark-link($syntax-fg, 10);
 
   &:hover {
     background: transparent;

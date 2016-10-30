@@ -1,6 +1,6 @@
 const { resolve } = require('path')
 const { readdirSync } = require('fs')
-const WebpackShellPlugin = require('webpack-shell-plugin')
+const ShellPlugin = require('webpack-shell-plugin')
 
 const {
   DefinePlugin,
@@ -13,7 +13,7 @@ const wpBaseConfig = require('./webpack.config')
 
 const plugins = [
   new IgnorePlugin(/worker/i),
-  new WebpackShellPlugin({
+  new ShellPlugin({
     onBuildStart: 'cp -r certs dist'
   })
 ]

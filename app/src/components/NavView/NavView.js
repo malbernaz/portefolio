@@ -70,7 +70,7 @@ const NavView = ({
                 key="1"
                 to="/"
               >
-                ← logout
+                logout
               </Link>
             ] : '' }
           </div>

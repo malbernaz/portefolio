@@ -1,5 +1,5 @@
 import { createProxyServer } from 'http-proxy'
-import { readFileSync, readlinkSync } from 'fs'
+import { readFile, readFileSync, readlinkSync } from 'fs'
 import { resolve } from 'path'
 import compression from 'compression'
 import crypto from 'crypto'
@@ -53,6 +53,24 @@ if (!__DEV__) {
   app.use((req, res, next) =>
     !req.secure ? res.redirect(`https://${req.get('host')}:${req.url}`) : next())
 }
+
+app.use((req, res, next) => {
+  if (res.push && !/\/api/.test(req.url)) {
+    const manifest = JSON.parse(readFileSync(resolve(__dirname, 'manifest.json')))
+
+    manifest.assets.filter(a => !/\.json/.test(a)).forEach(a => {
+      res.push(`/${a}`, { 'content-type': 'application/javascript' }, (pushErr, stream) => {
+        if (pushErr) return
+
+        readFile(resolve(__dirname, 'public', a), 'utf-8', (fileErr, data) => {
+          stream.end(data)
+        })
+      })
+    })
+  }
+
+  next()
+})
 
 if (__DEV__) {
   app.use(morgan('dev'))

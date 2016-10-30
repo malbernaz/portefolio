@@ -1,7 +1,8 @@
 const { resolve } = require('path')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin')
-const WebpackShellPlugin = require('webpack-shell-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
+const SWPrecachePlugin = require('sw-precache-webpack-plugin')
+const ShellPlugin = require('webpack-shell-plugin')
+const { StatsWriterPlugin } = require('webpack-stats-plugin')
 const {
   DefinePlugin,
   LoaderOptionsPlugin,
@@ -24,10 +25,10 @@ const plugins = [
   new MinChunkSizePlugin({
     minChunkSize: 1000
   }),
-  new WebpackShellPlugin({
+  new ShellPlugin({
     onBuildStart: ['yarn run imagemin']
   }),
-  new CopyWebpackPlugin([{
+  new CopyPlugin([{
     from: './static/manifest.json'
   }, {
     from: './static/runtime-cache-strategy.js'
@@ -35,7 +36,7 @@ const plugins = [
     context: resolve(__dirname),
     from: './node_modules/sw-toolbox/sw-toolbox.js'
   }]),
-  new SWPrecacheWebpackPlugin({
+  new SWPrecachePlugin({
     cacheId: 'portefolio_app',
     filename: 'sw.js',
     staticFileGlobs: [
@@ -47,6 +48,12 @@ const plugins = [
       'sw-toolbox.js',
       'runtime-cache-strategy.js'
     ]
+  }),
+  new StatsWriterPlugin({
+    filename: '../manifest.json',
+    fields: ['assets'],
+    transform: ({ assets }) =>
+      JSON.stringify({ assets: assets.map(a => a.name) })
   })
 ]
 

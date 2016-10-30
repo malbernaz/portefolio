@@ -9,7 +9,7 @@ import { loadAuth } from './actions/auth'
 import { loadPosts, loadPostsAndDrafts } from './actions/posts'
 
 export default store => {
-  const onEditorEnter = (nextState, replace, callback) => {
+  function onEditorEnter (nextState, replace, callback) {
     function checkAuth ({ user }) {
       if (!user) replace('/admin')
 
@@ -31,7 +31,7 @@ export default store => {
     return checkAuth(store.getState().auth)
   }
 
-  const postMustExist = (nextState, replace, callback) => {
+  function postMustExist (nextState, replace, callback) {
     const slug = nextState.params.slug
 
     function checkIfExists ({ posts }) {
@@ -49,7 +49,7 @@ export default store => {
     return checkIfExists(store.getState().posts)
   }
 
-  const getPosts = (nextState, replace, callback) => {
+  function getPosts (nextState, replace, callback) {
     if (!store.getState().posts.loadedPosts) {
       return store.dispatch(loadPosts())
         .then(() => callback())

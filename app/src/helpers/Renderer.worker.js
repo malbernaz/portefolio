@@ -9,7 +9,7 @@ renderer.code = (code, language) => {
   const highlighted = validLang ?
     highlight(language, code).value : code
 
-  return `<pre><code class="hljs ${language}">${highlighted}</code></pre>`
+  return `<pre class="highlightjs"><code class="hljs ${language}">${highlighted}</code></pre>`
 }
 
 renderer.list = (body, ordered) => {
