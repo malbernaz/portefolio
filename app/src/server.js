@@ -23,27 +23,6 @@ import getRouter from './router'
 import Html from './helpers/Html'
 import WithStylesContext from './helpers/WithStylesContext'
 
-const manifest = JSON.parse(readFileSync(resolve(__dirname, 'manifest.json')))
-
-const assets = manifest.assets.filter(a => !/\.json/.test(a)).map(asset => {
-  const data = readFileSync(resolve(__dirname, 'public', asset))
-
-  const hash = crypto
-    .createHash('sha256')
-    .update(data)
-    .digest('hex')
-
-  return {
-    path: `/${asset}`,
-    headers: {
-      'content-type': 'application/javascript',
-      'Etag': hash, // eslint-disable-line quote-props
-      'Cache-Control': 'public, no-cache'
-    },
-    data
-  }
-})
-
 const __DEV__ = process.env.NODE_ENV !== 'production'
 
 const app = express()
@@ -74,24 +53,6 @@ if (!__DEV__) {
   app.use((req, res, next) =>
     !req.secure ? res.redirect(`https://${req.get('host')}:${req.url}`) : next())
 }
-
-app.use((req, res, next) => {
-  if (res.push && !/\/api/.test(req.url)) {
-    assets.forEach(asset => {
-      res.push(asset.path, asset.headers, (pushErr, stream) => {
-        if (pushErr) return
-
-        stream.on('error', err => {
-          console.log('stream error:', err) // eslint-disable-line no-console
-        })
-
-        stream.end(asset.data)
-      })
-    })
-  }
-
-  next()
-})
 
 if (__DEV__) {
   app.use(morgan('dev'))
