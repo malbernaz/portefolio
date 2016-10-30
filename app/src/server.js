@@ -81,6 +81,10 @@ app.use((req, res, next) => {
       res.push(asset.path, asset.headers, (pushErr, stream) => {
         if (pushErr) return
 
+        stream.on('error', err => {
+          console.log('stream error:', err) // eslint-disable-line no-console
+        })
+
         stream.end(asset.data)
       })
     })
