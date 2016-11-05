@@ -1,33 +1,18 @@
+const { optimize: { CommonsChunkPlugin, MinChunkSizePlugin } } = require('webpack')
 const { resolve } = require('path')
-const CopyPlugin = require('copy-webpack-plugin')
-const SWPrecachePlugin = require('sw-precache-webpack-plugin')
-const ShellPlugin = require('webpack-shell-plugin')
 const { StatsWriterPlugin } = require('webpack-stats-plugin')
-const {
-  DefinePlugin,
-  LoaderOptionsPlugin,
-  optimize: {
-    CommonsChunkPlugin,
-    MinChunkSizePlugin,
-    UglifyJsPlugin
-  }
-} = require('webpack')
+const CopyPlugin = require('copy-webpack-plugin')
+const ShellPlugin = require('webpack-shell-plugin')
+const SWPrecachePlugin = require('sw-precache-webpack-plugin')
 
 const wpBaseConfig = require('./webpack.config')
 
 const BUILD_DIR = resolve(__dirname, 'dist', 'public')
 
 const plugins = [
-  new CommonsChunkPlugin({
-    name: 'vendor',
-    minChunks: Infinity
-  }),
-  new MinChunkSizePlugin({
-    minChunkSize: 1000
-  }),
-  new ShellPlugin({
-    onBuildStart: ['yarn run imagemin']
-  }),
+  new CommonsChunkPlugin({ name: 'vendor', minChunks: Infinity }),
+  new MinChunkSizePlugin({ minChunkSize: 1000 }),
+  new ShellPlugin({ onBuildStart: ['yarn run imagemin'] }),
   new CopyPlugin([{
     from: './static/manifest.json'
   }, {
@@ -52,27 +37,11 @@ const plugins = [
   new StatsWriterPlugin({
     filename: '../manifest.json',
     fields: ['assets'],
-    transform: ({ assets }) =>
-      JSON.stringify({ assets: assets.map(a => a.name) })
+    transform: ({ assets }) => JSON.stringify({
+      assets: assets.map(a => a.name)
+    })
   })
 ]
-
-const prodPlugins = plugins.concat([
-  new DefinePlugin({
-    'process.env': {
-      NODE_ENV: JSON.stringify('production')
-    }
-  }),
-  new LoaderOptionsPlugin({
-    minimize: true,
-    debug: false
-  }),
-  new UglifyJsPlugin({
-    compress: { warnings: false },
-    output: { comments: false },
-    sourceMap: false
-  })
-])
 
 module.exports = env => {
   const base = wpBaseConfig(env)
@@ -88,8 +57,6 @@ module.exports = env => {
       filename: '[name].bundle.js',
       publicPath: '/',
     },
-    plugins: base.plugins.concat(env === 'prod' ? prodPlugins : plugins),
-    devtool: env === 'prod' ? 'source-map' : 'eval',
-    bail: env === 'prod'
+    plugins: base.plugins.concat(plugins)
   })
 }

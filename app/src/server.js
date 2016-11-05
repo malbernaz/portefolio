@@ -23,27 +23,6 @@ import getRouter from './router'
 import Html from './helpers/Html'
 import WithStylesContext from './helpers/WithStylesContext'
 
-const manifest = JSON.parse(readFileSync(resolve(__dirname, 'manifest.json')))
-
-const assets = manifest.assets.filter(a => !/\.json/.test(a)).map(asset => {
-  const data = readFileSync(resolve(__dirname, 'public', asset))
-
-  const hash = crypto
-    .createHash('sha256')
-    .update(data)
-    .digest('hex')
-
-  return {
-    path: `/${asset}`,
-    headers: {
-      'content-type': 'application/javascript',
-      'Etag': hash, // eslint-disable-line quote-props
-      'Cache-Control': 'public, no-cache'
-    },
-    data
-  }
-})
-
 const __DEV__ = process.env.NODE_ENV !== 'production'
 
 const app = express()
@@ -75,24 +54,6 @@ if (!__DEV__) {
     !req.secure ? res.redirect(`https://${req.get('host')}:${req.url}`) : next())
 }
 
-app.use((req, res, next) => {
-  if (res.push && !/\/api/.test(req.url)) {
-    assets.forEach(asset => {
-      res.push(asset.path, asset.headers, (pushErr, stream) => {
-        if (pushErr) return
-
-        stream.on('error', err => {
-          console.log('stream error:', err) // eslint-disable-line no-console
-        })
-
-        stream.end(asset.data)
-      })
-    })
-  }
-
-  next()
-})
-
 if (__DEV__) {
   app.use(morgan('dev'))
 }
@@ -122,10 +83,6 @@ app.use((req, res) => {
   const memoryHistory = createMemoryHistory(req.url)
   const store = configureStore(client, memoryHistory)
 
-  function hydrateOnClient () {
-    res.send(`<!doctype html>${renderToString(<Html />)}`)
-  }
-
   match({
     history: syncHistoryWithStore(memoryHistory, store),
     routes: getRouter(store),
@@ -137,8 +94,8 @@ app.use((req, res) => {
 
     if (err) {
       console.error(err) // eslint-disable-line no-console
-      res.status(500).end('Internal Server Error')
-      hydrateOnClient()
+
+      res.status(500).end('Internal server error. Please report to albernazmiguel@gmail.com')
     }
 
     if (!renderProps) {
@@ -189,5 +146,5 @@ server.listen(config.httpsPort, err => {
   }
 
   // eslint-disable-next-line no-console
-  console.log(`\n==>  App listening on port ${config.httpsPort}\n`)
+  console.log(`\n==> App listening on port ${config.httpsPort}\n`)
 })

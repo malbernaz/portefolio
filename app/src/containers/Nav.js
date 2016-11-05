@@ -19,13 +19,19 @@ const Nav = ({ auth, navIsVisible, logoutAction, toggleNavAction }) => {
     if (matchMedia('(max-width: 48rem)').matches) toggleNavAction()
   }
 
+  const logoutAndToggle = () => {
+    if (matchMedia('(max-width: 48rem)').matches) toggleNavAction()
+
+    logoutAction()
+  }
+
   return (
     <NavView
       description={ config.description }
       email={ config.email }
       github={ config.github }
       isVisible={ navIsVisible }
-      logout={ logoutAction }
+      logout={ logoutAndToggle }
       title={ config.title }
       toggleNav={ toggle }
       toggleOnLinkClick={ toggleOnLinkClick }
