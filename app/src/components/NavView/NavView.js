@@ -62,10 +62,7 @@ const NavView = ({
                 editor
               </Link>,
               <Link
-                onClick={ () => {
-                  toggleOnLinkClick()
-                  logout()
-                } }
+                onClick={ logout }
                 className={ s.itemLogout }
                 key="1"
                 to="/"

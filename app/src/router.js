@@ -1,3 +1,6 @@
+import React from 'react'
+import { Route, IndexRoute } from 'react-router/es6'
+
 import AppView from './containers/AppView'
 import Home from './components/Home/Home'
 import About from './components/About/About'
@@ -9,6 +12,16 @@ import { loadAuth } from './actions/auth'
 import { loadPosts, loadPostsAndDrafts } from './actions/posts'
 
 export default store => {
+  function checkAuthentication (nextState, replace, callback) {
+    if (!store.getState().auth.loaded) {
+      return store.dispatch(loadAuth())
+        .then(() => callback())
+        .catch(() => callback())
+    }
+
+    return callback()
+  }
+
   function onEditorEnter (nextState, replace, callback) {
     function checkAuth ({ user }) {
       if (!user) replace('/admin')
@@ -59,43 +72,29 @@ export default store => {
     return callback()
   }
 
-  return {
-    component: AppView,
-    path: '/',
-    indexRoute: {
-      component: Home,
-      onEnter: getPosts
-    },
-    childRoutes: [{
-      path: 'about',
-      component: About
-    }, {
-      path: 'contact',
-      component: Contact
-    }, {
-      path: 'posts/:slug',
-      component: Post,
-      onEnter: postMustExist
-    }, {
-      path: 'admin',
-      indexRoute: {
-        getComponent (nextState, callback) {
-          System.import('./containers/SignIn')
-            .then(module => callback(null, module.default))
-        }
-      },
-      childRoutes: [{
-        path: 'editor',
-        getComponent (nextState, callback) {
-          System.import('./containers/Editor')
-            .then(module => callback(null, module.default))
-        },
-        onEnter: onEditorEnter,
-      }]
-    }, {
-      path: '*',
-      status: '404',
-      component: NotFound,
-    }]
-  }
+  return (
+    <Route component={ AppView } onEnter={ checkAuthentication } path="/">
+      <IndexRoute component={ Home } onEnter={ getPosts } />
+      <Route component={ About } path="about" />
+      <Route component={ Contact } path="contact" />
+      <Route component={ Post } onEnter={ postMustExist } path="posts/:slug" />
+      <Route path="admin">
+        <IndexRoute
+          getComponent={ (nextState, callback) => {
+            System.import('./containers/SignIn')
+              .then(module => callback(null, module.default))
+          } }
+        />
+        <Route
+          getComponent={ (nextState, callback) => {
+            System.import('./containers/Editor')
+              .then(module => callback(null, module.default))
+          } }
+          onEnter={ onEditorEnter }
+          path="editor"
+        />
+      </Route>
+      <Route component={ NotFound } path="*" status="404" />
+    </Route>
+  )
 }
