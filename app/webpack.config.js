@@ -104,7 +104,6 @@ module.exports = env => {
       }]
     },
     plugins,
-    stats: { colors: true },
-    watchOptions: { aggregateTimeout: 300, poll: 1000 }
+    stats: { colors: true }
   }
 }

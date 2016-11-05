@@ -83,10 +83,6 @@ app.use((req, res) => {
   const memoryHistory = createMemoryHistory(req.url)
   const store = configureStore(client, memoryHistory)
 
-  function hydrateOnClient () {
-    res.send(`<!doctype html>${renderToString(<Html />)}`)
-  }
-
   match({
     history: syncHistoryWithStore(memoryHistory, store),
     routes: getRouter(store),
@@ -98,8 +94,8 @@ app.use((req, res) => {
 
     if (err) {
       console.error(err) // eslint-disable-line no-console
-      res.status(500).end('Internal Server Error')
-      hydrateOnClient()
+
+      res.status(500).end('Internal server error. Please report to albernazmiguel@gmail.com')
     }
 
     if (!renderProps) {
@@ -150,5 +146,5 @@ server.listen(config.httpsPort, err => {
   }
 
   // eslint-disable-next-line no-console
-  console.log(`\n==>  App listening on port ${config.httpsPort}\n`)
+  console.log(`\n==> App listening on port ${config.httpsPort}\n`)
 })

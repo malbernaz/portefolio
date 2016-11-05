@@ -15,7 +15,7 @@
     "clean": "rm -fr dist && mkdir -p dist/public/img",
     "dev": "concurrently --raw --kill-others 'yarn run nodemon' 'node wp-dev-server' 'yarn run watch:server'",
     "imagemin": "imagemin src/static/img/* --out-dir=dist/public/img",
-    "nodemon": "nodemon -L ./dist/index.js --ignore ./dist/public",
+    "nodemon": "nodemon ./dist/index.js --ignore ./dist/public",
     "start": "yarn run build:prod && NODE_ENV=production node ./dist/index.js",
     "test": "NODE_ENV=test tape -r babel-register 'src/**/*.test.js' | faucet"
   },

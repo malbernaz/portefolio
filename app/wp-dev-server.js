@@ -5,8 +5,9 @@ const extend = require('lodash/extend')
 const baseConfig = require('./webpack.client.config')('dev')
 
 const port = parseInt(process.env.APPHTTPPORT, 10) + 1 || 3001
+const host = '0.0.0.0'
 
-const babelLoaderHotPatch = {
+const babelLoaderHotPatched = {
   loader: 'babel-loader',
   options: {
     presets: [['es2015', {
@@ -26,7 +27,7 @@ const babelLoaderHotPatch = {
 const devServerConfig = extend({}, baseConfig, {
   entry: extend({}, baseConfig.entry, {
     main: [
-      `webpack-dev-server/client?http://0.0.0.0:${port}`,
+      `webpack-dev-server/client?http://${host}:${port}`,
       'webpack/hot/only-dev-server',
       'react-hot-loader/patch'
     ].concat(baseConfig.entry.main)
@@ -34,7 +35,7 @@ const devServerConfig = extend({}, baseConfig, {
   module: {
     rules: baseConfig.module.rules.map(
       rule => rule.test.test('.js') && typeof rule.enforce === 'undefined' ?
-        extend({}, rule, { loaders: [babelLoaderHotPatch] }) : rule
+        extend({}, rule, { loaders: [babelLoaderHotPatched] }) : rule
     )
   },
   plugins: baseConfig.plugins.concat([
@@ -44,13 +45,14 @@ const devServerConfig = extend({}, baseConfig, {
 })
 
 const serverConfig = {
+  clientLogLevel: 'none',
   headers: { 'Access-Control-Allow-Origin': '*' },
-  host: '0.0.0.0',
+  host,
   hot: true,
   inline: true,
   port,
-  proxy: { '*': { target: `http://0.0.0.0:${port - 1}` } },
-  publicPath: baseConfig.output.publicPath,
+  proxy: { '*': { target: `http://${host}:${port - 1}` } },
+  publicPath: `http://${host}:${port}/`,
   stats: {
     assets: true,
     assetsSort: false,
@@ -75,7 +77,7 @@ const serverConfig = {
 
 const server = new WebpackDevServer(webpack(devServerConfig), serverConfig)
 
-server.listen(port, 'localhost', err => {
+server.listen(port, host, err => {
   if (err) console.log(err) // eslint-disable-line no-console
 
   // eslint-disable-next-line no-console
