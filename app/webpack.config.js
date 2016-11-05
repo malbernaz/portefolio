@@ -1,7 +1,8 @@
-const { resolve } = require('path')
+const { DefinePlugin, optimize: { UglifyJsPlugin } } = require('webpack')
 const { LoaderOptionsPlugin, ContextReplacementPlugin } = require('webpack')
-const cssnano = require('cssnano')
+const { resolve } = require('path')
 const autoprefixer = require('autoprefixer')
+const cssnano = require('cssnano')
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 
 module.exports = env => {
@@ -24,8 +25,50 @@ module.exports = env => {
     }
   }
 
+  const plugins = [
+    new LodashModuleReplacementPlugin(),
+    new ContextReplacementPlugin(/moment\/locale$/, /^\.\/(en)$/),
+    new LoaderOptionsPlugin({
+      minimize: env === 'prod',
+      debug: env !== 'prod',
+      options: {
+        postcss: () => [
+          autoprefixer({ browsers: ['last 2 versions'] }),
+          cssnano({ zindex: false })
+        ]
+      }
+    })
+  ].concat(env === 'prod' ? [
+    new DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('production'),
+        APPHTTPPORT: JSON.stringify(process.env.APPHTTPPORT),
+        APPHTTPSPORT: JSON.stringify(process.env.APPHTTPSPORT),
+        APIHOST: JSON.stringify(process.env.APIHOST),
+        APIPORT: JSON.stringify(process.env.APIPORT),
+        GANALYTICS: JSON.stringify(process.env.GANALYTICS)
+      }
+    }),
+    new UglifyJsPlugin({
+      compress: {
+        screw_ie8: true,
+        warnings: false
+      },
+      output: {
+        comments: false,
+        screw_ie8: true
+      },
+      mangle: {
+        screw_ie8: true
+      },
+      sourceMap: false
+    })
+  ] : [])
+
   return {
     context: resolve(__dirname, 'src'),
+    bail: env === 'prod',
+    devtool: env === 'prod' ? 'source-map' : 'eval',
     module: {
       rules: [{
         enforce: 'pre',
@@ -51,8 +94,7 @@ module.exports = env => {
             options: {
               modules: true,
               localIdentName: env === 'prod' ?
-                '[hash:base64:7]' :
-                '[name]__[local]-[hash:base64:5]'
+                '[hash:base64:7]' : '[name]__[local]-[hash:base64:5]'
             }
           },
           'postcss-loader',
@@ -61,24 +103,8 @@ module.exports = env => {
         exclude: /node_modules/
       }]
     },
-    plugins: [
-      new LodashModuleReplacementPlugin(),
-      new ContextReplacementPlugin(/moment\/locale$/, /^\.\/(en)$/),
-      new LoaderOptionsPlugin({
-        options: {
-          postcss: () => ([
-            autoprefixer({ browsers: ['last 2 versions'] }),
-            cssnano({ zindex: false })
-          ])
-        }
-      })
-    ],
-    watchOptions: {
-      aggregateTimeout: 300,
-      poll: 1000
-    },
-    stats: {
-      colors: true
-    }
+    plugins,
+    stats: { colors: true },
+    watchOptions: { aggregateTimeout: 300, poll: 1000 }
   }
 }

@@ -1,7 +1,3 @@
-import 'webpack-dev-server/client?http://0.0.0.0:3001'
-import 'webpack/hot/only-dev-server'
-import 'react-hot-loader/patch'
-
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { match, applyRouterMiddleware, browserHistory } from 'react-router/es6'
@@ -43,7 +39,6 @@ if (module.hot) {
     './router',
     './containers/Root',
     './containers/Editor',
-    './containers/SignIn',
-    './helpers/WithStylesContext'
+    './containers/SignIn'
   ], renderApp)
 }

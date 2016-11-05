@@ -13,11 +13,16 @@ services:
   app:
     build: './app'
     command: yarn run dev
+    environment:
+      APPHTTPSPORT: 8080
+      APPHTTPPORT: 3000
+      APIHOST: api
+      APIPORT: 5000
+    env_file: .env
     ports:
       - '3000:3000'
       - '3001:3001'
       - '8080:8080'
-    env_file: .env
     depends_on:
       - certs
     volumes:
@@ -28,9 +33,11 @@ services:
   api:
     build: './api'
     command: yarn run dev
+    environment:
+      APIPORT: 5000
+    env_file: .env
     ports:
       - '5000:5000'
-    env_file: .env
     volumes:
       - ./api:/home/api/server
       - /home/api/server/node_modules
