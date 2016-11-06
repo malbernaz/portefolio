@@ -8,6 +8,8 @@ import { AppContainer } from 'react-hot-loader'
 import configureStore from './store'
 import ApiClient from './helpers/ApiClient'
 
+import Root from './containers/Root'
+
 const initialState = window.__INITIAL_STATE__
 const client = new ApiClient()
 const store = configureStore(client, browserHistory, initialState)
@@ -16,7 +18,6 @@ const history = syncHistoryWithStore(browserHistory, store)
 const mountPoint = document.getElementById('react-view')
 
 const renderApp = () => {
-  const Root = require('./containers/Root').default // eslint-disable-line
   const getRouter = require('./router').default // eslint-disable-line
 
   match({
@@ -35,10 +36,5 @@ const renderApp = () => {
 renderApp()
 
 if (module.hot) {
-  module.hot.accept([
-    './router',
-    './containers/Root',
-    './containers/Editor',
-    './containers/SignIn'
-  ], renderApp)
+  module.hot.accept(['./router'], renderApp)
 }
