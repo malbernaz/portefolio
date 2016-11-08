@@ -1,13 +1,6 @@
 import React from 'react'
 import { Route, IndexRoute } from 'react-router/es6'
 
-import AppView from './containers/AppView'
-import Home from './components/Home/Home'
-import About from './components/About/About'
-import Contact from './components/Contact/Contact'
-import NotFound from './components/NotFound/NotFound'
-import Post from './containers/Post/Post'
-
 import { loadAuth } from './actions/auth'
 import { loadPosts, loadPostsAndDrafts } from './actions/posts'
 
@@ -73,11 +66,43 @@ export default store => {
   }
 
   return (
-    <Route component={ AppView } onEnter={ checkAuthentication } path="/">
-      <IndexRoute component={ Home } onEnter={ getPosts } />
-      <Route component={ About } path="about" />
-      <Route component={ Contact } path="contact" />
-      <Route component={ Post } onEnter={ postMustExist } path="posts/:slug" />
+    <Route
+      getComponent={ (nextState, callback) => {
+        System.import('./containers/AppView')
+          .then(module => callback(null, module.default))
+      } }
+      onEnter={ checkAuthentication }
+      path="/"
+    >
+      <IndexRoute
+        getComponent={ (nextState, callback) => {
+          System.import('./components/Home/Home')
+            .then(module => callback(null, module.default))
+        } }
+        onEnter={ getPosts }
+      />
+      <Route
+        getComponent={ (nextState, callback) => {
+          System.import('./components/About/About')
+            .then(module => callback(null, module.default))
+        } }
+        path="about"
+      />
+      <Route
+        getComponent={ (nextState, callback) => {
+          System.import('./components/Contact/Contact')
+            .then(module => callback(null, module.default))
+        } }
+        path="contact"
+      />
+      <Route
+        getComponent={ (nextState, callback) => {
+          System.import('./containers/Post/Post')
+            .then(module => callback(null, module.default))
+        } }
+        onEnter={ postMustExist }
+        path="posts/:slug"
+      />
       <Route path="admin">
         <IndexRoute
           getComponent={ (nextState, callback) => {
@@ -94,7 +119,14 @@ export default store => {
           path="editor"
         />
       </Route>
-      <Route component={ NotFound } path="*" status="404" />
+      <Route
+        getComponent={ (nextState, callback) => {
+          System.import('./components/NotFound/NotFound')
+            .then(module => callback(null, module.default))
+        } }
+        path="*"
+        status="404"
+      />
     </Route>
   )
 }

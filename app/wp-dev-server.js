@@ -55,7 +55,7 @@ const serverConfig = {
   publicPath: `http://${host}:${port}/`,
   stats: {
     assets: true,
-    assetsSort: false,
+    assetsSort: true,
     cached: false,
     children: false,
     chunkModules: false,

@@ -6,8 +6,10 @@ import s from './Editor.scss'
 @withStyles(s)
 export default class Editor extends Component {
   static propTypes = {
-    activeDraft: PropTypes.shape({ raw: PropTypes.string }),
-    updateActiveDraft: PropTypes.func
+    activeDraft: PropTypes.shape({ raw: PropTypes.string }).isRequired,
+    editorFocused: PropTypes.bool.isRequired,
+    switchEditorFocus: PropTypes.func.isRequired,
+    updateActiveDraft: PropTypes.func.isRequired
   }
 
   componentDidMount () {
@@ -16,6 +18,16 @@ export default class Editor extends Component {
         this.rendererWorker = new Worker()
         this.rendererWorker.addEventListener('message', this.markdownReceiver, false)
       })
+  }
+
+  componentWillReceiveProps ({ editorFocused }) {
+    if (editorFocused) {
+      setTimeout(() => this.editor.focus(), 0)
+    }
+
+    if (!editorFocused) {
+      setTimeout(() => this.editor.blur(), 0)
+    }
   }
 
   componentWillUnmount () {
@@ -60,15 +72,32 @@ export default class Editor extends Component {
     this.rendererWorker.postMessage({ raw })
   }
 
+  handleEditorFocus = ({ type }) => {
+    const { editorFocused, switchEditorFocus } = this.props
+
+    switch (type) {
+      case 'focus':
+        if (!editorFocused) switchEditorFocus(true)
+        break
+      case 'blur':
+        if (editorFocused) switchEditorFocus(false)
+        break
+      default:
+        break
+    }
+  }
+
   render () {
     return (
       <div className={ s.root }>
         <textarea
           className={ s.content }
-          onKeyDown={ this.handleKeyDown }
+          onBlur={ this.handleEditorFocus }
           onChange={ this.handleChange }
-          value={ this.props.activeDraft.raw }
+          onFocus={ this.handleEditorFocus }
+          onKeyDown={ this.handleKeyDown }
           ref={ c => { this.editor = c } }
+          value={ this.props.activeDraft.raw }
         />
       </div>
     )

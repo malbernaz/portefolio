@@ -131,11 +131,23 @@ $posts-list-width: 15rem;
 
   display: flex;
   flex: 0 0 4rem;
+  position: absolute;
+  bottom: 0;
+  left: 0;
 
   width: 100%;
 
+  transform: translateY(0);
+  transition: transform .3s $default-bezier;
+  transition-delay: .5s;
+
   @extend %adminBar;
   justify-content: space-around;
+}
+
+.bottomBarHidden {
+  composes: bottomBar;
+  transform: translateY(100%);
 }
 
 .bottomBarBtn {
@@ -161,7 +173,7 @@ $posts-list-width: 15rem;
   position: relative;
 
   width: 100%;
-  height: calc(100% - #{$mobile-nav-height * 2});
+  height: calc(100% - #{$mobile-nav-height});
 }
 
 .panesView {
@@ -196,7 +208,7 @@ $posts-list-width: 15rem;
   height: 100%;
 
   article {
-    padding: 2rem 1rem 4rem;
+    padding: 2rem 1rem #{$mobile-nav-height * 2};
 
     h1:first-child {
       margin-top: 0;

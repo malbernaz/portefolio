@@ -101,6 +101,23 @@ module.exports = env => {
           'sass-loader'
         ],
         exclude: /node_modules/
+      }, {
+        test: /.*\.(gif|png|jpe?g|svg)$/i,
+        loaders: [{
+          loader: 'url-loader',
+          options: { limit: 10000 }
+        }, {
+          loader: 'image-webpack',
+          options: {
+            progressive: true,
+            optimizationLevel: 7,
+            interlaced: false,
+            pngquant: {
+              quality: '65-90',
+              speed: 4
+            }
+          }
+        }]
       }]
     },
     plugins,

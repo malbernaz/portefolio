@@ -2,10 +2,10 @@ import React from 'react'
 import Helmet from 'react-helmet'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
+import config from '../../config'
 import Icon from '../Icon'
 import Wrapper from '../Wrapper/Wrapper'
 
-import config from '../../config'
 import s from './Contact.scss'
 
 const Contact = () =>

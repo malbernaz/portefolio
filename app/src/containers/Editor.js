@@ -18,12 +18,12 @@ const mapStateToProps = state => ({
   iterablePosts: editablePostsSelector(state)
 })
 
-const mapDispatchToProps = d => bindActionCreators({
+const mapDispatchToProps = dispatch => bindActionCreators({
   ...postsActions,
   ...messageActions,
   ...editorActions,
   ...navActions
-}, d)
+}, dispatch)
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class Editor extends Component {
@@ -32,7 +32,9 @@ export default class Editor extends Component {
     deleteDraft: func,
     deletePost: func,
     editor: shape({
+      editorBottomBarIsVisible: bool,
       editorDropdownIsVisible: bool,
+      editorFocused: bool,
       editorNavIsVisible: bool,
       editorSettingsIsVisible: bool,
       view: string
@@ -46,6 +48,7 @@ export default class Editor extends Component {
     publish: func,
     saveDraft: func,
     showMessage: func,
+    switchEditorFocus: func,
     switchView: func,
     toggleEditorDropdown: func,
     toggleEditorNav: func,
@@ -55,6 +58,14 @@ export default class Editor extends Component {
     updateActiveDraft: func,
     updateDraft: func,
     updatePost: func
+  }
+
+  componentDidMount () {
+    window.addEventListener('keydown', this.handleShortcuts, false)
+  }
+
+  componentWillUnmount () {
+    window.removeEventListener('keydown', this.handleShortcuts, false)
   }
 
   // POSTS CRUD
@@ -167,6 +178,53 @@ export default class Editor extends Component {
     createActiveDraft(newActiveDraft)
   }
 
+  handleShortcuts = e => {
+    const { editor: { view }, switchEditorFocus, toggleEditorSettings } = this.props
+
+    switch (e.keyCode) {
+      case 39:
+        if (view === 'code' && e.shiftKey && e.metaKey) {
+          e.preventDefault()
+
+          this.switchEditorView(e, 'preview')
+        }
+
+        break
+      case 37:
+        if (view === 'preview' && e.shiftKey && e.metaKey) {
+          e.preventDefault()
+
+          this.switchEditorView(e, 'code')
+
+          switchEditorFocus(true)
+        }
+
+        break
+      case 70:
+        if (e.shiftKey && e.metaKey) {
+          e.preventDefault()
+
+          if (view === 'preview') {
+            this.switchEditorView(e, 'code')
+          }
+
+          switchEditorFocus(true)
+        }
+
+        break
+      case 79:
+        if (e.shiftKey && e.metaKey) {
+          e.preventDefault()
+
+          toggleEditorSettings()
+        }
+
+        break
+      default:
+        break
+    }
+  }
+
   toggleGlobalNav = e => {
     e.preventDefault()
 
@@ -208,7 +266,9 @@ export default class Editor extends Component {
   render () {
     const {
       editor: {
+        editorBottomBarIsVisible,
         editorDropdownIsVisible,
+        editorFocused,
         editorNavIsVisible,
         editorSettingsIsVisible,
         view
@@ -218,6 +278,7 @@ export default class Editor extends Component {
         drafts,
         posts
       },
+      switchEditorFocus,
       iterablePosts,
       updateActiveDraft
     } = this.props
@@ -225,8 +286,10 @@ export default class Editor extends Component {
     return (
       <EditorView
         activeDraft={ activeDraft }
+        bottomBarIsShown={ editorBottomBarIsVisible }
         drafts={ drafts }
         dropdownIsShown={ editorDropdownIsVisible }
+        editorFocused={ editorFocused }
         editorView={ view }
         handleChange={ this.handleChange }
         handleDelete={ this.handleDelete }
@@ -239,6 +302,7 @@ export default class Editor extends Component {
         navIsShown={ editorNavIsVisible }
         posts={ posts }
         settingIsShown={ editorSettingsIsVisible }
+        switchEditorFocus={ switchEditorFocus }
         switchEditorView={ this.switchEditorView }
         toggleDropdown={ this.toggleDropdown }
         toggleEditorNav={ this.toggleEditorNav }

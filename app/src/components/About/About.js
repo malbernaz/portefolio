@@ -5,7 +5,10 @@ import Helmet from 'react-helmet'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import Wrapper from '../Wrapper/Wrapper'
+
 import s from './About.scss'
+
+import profileImage from '../../static/img/profile.jpg'
 
 const About = () =>
   <Wrapper>
@@ -15,7 +18,7 @@ const About = () =>
         About
       </h2>
       <div className={ s.avatar }>
-        <img src="/img/profile.jpg" alt="avatar" className={ s.img } />
+        <img src={ profileImage } alt="avatar" className={ s.img } />
       </div>
       <p className={ s.blurb }>
         I&apos;m Miguel Albernaz a full stack <b>web developer</b>, from Rio.

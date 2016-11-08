@@ -21,6 +21,16 @@ const configureStore = (client, history, initialState = {}) => {
         window.devToolsExtension() : f => f
     )
   )
+
+  if (module.hot) {
+    module.hot.accept('./reducers/index', () => {
+      // eslint-disable-next-line global-require
+      const nextReducer = require('./reducers').default
+
+      store.replaceReducer(nextReducer)
+    })
+  }
+
   return store
 }
 
