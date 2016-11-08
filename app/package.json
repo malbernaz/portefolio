@@ -85,6 +85,7 @@
     "react-dom": "^15.3.2",
     "react-dropzone": "^3.6.0",
     "react-helmet": "^3.1.0",
+    "react-hot-loader": "3.0.0-beta.6",
     "react-redux": "^4.4.5",
     "react-router": "^2.8.1",
     "react-router-redux": "^4.0.6",
@@ -110,7 +111,6 @@
     "concurrently": "^3.0.0",
     "faucet": "0.0.1",
     "nodemon": "^1.11.0",
-    "react-hot-loader": "3.0.0-beta.6",
     "tape": "^4.6.2",
     "webpack-dev-server": "2.1.0-beta.10"
   }
