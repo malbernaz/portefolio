@@ -16,6 +16,7 @@ services:
 
   mongo:
     build: './mongo'
+    command: /entrypoint.sh --dbpath /data/db
     ports:
       - '27017'
     volumes:
