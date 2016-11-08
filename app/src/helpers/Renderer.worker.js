@@ -1,3 +1,5 @@
+/* eslint-disable no-useless-escape */
+
 import marked, { Renderer } from 'marked'
 import { getLanguage, highlight } from './highlightjs'
 

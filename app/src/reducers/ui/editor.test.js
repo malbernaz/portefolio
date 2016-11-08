@@ -1,6 +1,7 @@
 import test from 'tape'
 
 import {
+  SWITCH_EDITOR_FOCUS,
   SWITCH_VIEW,
   TOGGLE_EDITOR_DROPDOWN,
   TOGGLE_EDITOR_NAV,
@@ -13,6 +14,25 @@ test('ui/editor reducer: returns state by default', t => {
   t.plan(1)
 
   t.deepEqual(reducer(), initialState)
+})
+
+test('ui/editor reducer: SWITCH_EDITOR_FOCUS', t => {
+  t.plan(2)
+
+  const focusAction = { type: SWITCH_EDITOR_FOCUS, editorFocused: true }
+  const blurAction = { type: SWITCH_EDITOR_FOCUS, editorFocused: false }
+
+  t.deepEqual(reducer(initialState, focusAction), {
+    ...initialState,
+    editorBottomBarIsVisible: false,
+    editorFocused: true
+  })
+
+  t.deepEqual(reducer(initialState, blurAction), {
+    ...initialState,
+    editorBottomBarIsVisible: true,
+    editorFocused: false
+  })
 })
 
 test('ui/editor reducer: SWITCH_VIEW', t => {
