@@ -1,5 +1,5 @@
 .appView {
-  display: flex;
+  position: relative;
 
   height: 100vh;
 }
@@ -9,20 +9,15 @@
   z-index: $zi-mobile-nav;
   right: -$nav-width;
 
-  display: flex;
   overflow: hidden;
-  flex-direction: column;
 
   width: calc(100vw - #{$nav-width});
   height: 100%;
 
-  align-items: center;
-  flex-grow: 0;
-
   @media (max-width: $tablet) {
     right: 0;
 
-    width: calc(100vw);
+    width: 100vw;
   }
 }
 

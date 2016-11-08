@@ -17,7 +17,9 @@ const { arrayOf, bool, func, object, shape, string } = PropTypes
 export default class EditorView extends Component {
   static propTypes = {
     activeDraft: shape({ meta: shape({ title: string.isRequired }) }).isRequired,
+    bottomBarIsShown: bool.isRequired,
     dropdownIsShown: bool.isRequired,
+    editorFocused: bool.isRequired,
     editorView: string.isRequired,
     handleChange: func.isRequired,
     handleDelete: func.isRequired,
@@ -29,6 +31,7 @@ export default class EditorView extends Component {
     iterablePosts: arrayOf(object).isRequired,
     navIsShown: bool.isRequired,
     settingIsShown: bool.isRequired,
+    switchEditorFocus: func.isRequired,
     switchEditorView: func.isRequired,
     toggleDropdown: func.isRequired,
     toggleEditorNav: func.isRequired,
@@ -79,7 +82,10 @@ export default class EditorView extends Component {
   render () {
     const {
       activeDraft,
+      bottomBarIsShown,
       dropdownIsShown,
+      editorFocused,
+      editorView,
       handleChange,
       handleDelete,
       handleEditPost,
@@ -90,6 +96,7 @@ export default class EditorView extends Component {
       iterablePosts,
       navIsShown,
       settingIsShown,
+      switchEditorFocus,
       switchEditorView,
       toggleDropdown,
       toggleEditorNav,
@@ -148,6 +155,9 @@ export default class EditorView extends Component {
             <div className={ s.pane }>
               <Editor
                 activeDraft={ activeDraft }
+                editorFocused={ editorFocused }
+                editorView={ editorView }
+                switchEditorFocus={ switchEditorFocus }
                 updateActiveDraft={ updateActiveDraft }
               />
             </div>
@@ -161,7 +171,7 @@ export default class EditorView extends Component {
             </div>
           </div>
         </div>
-        <div className={ s.bottomBar }>
+        <div className={ bottomBarIsShown ? s.bottomBar : s.bottomBarHidden }>
           <a onClick={ toggleEditorNav } className={ s.bottomBarBtn }>
             <Icon name="list" />
             <span>posts</span>
