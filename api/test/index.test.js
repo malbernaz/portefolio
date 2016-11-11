@@ -1,8 +1,8 @@
-const test = require('tape')
+import test from 'tape'
 
-require('./drafts.test')
-require('./posts.test')
-require('./users.test')
+import './drafts.test'
+import './posts.test'
+import './users.test'
 
 test('SUMMARY', t => {
   t.end()

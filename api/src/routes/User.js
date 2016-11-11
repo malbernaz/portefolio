@@ -1,9 +1,9 @@
-const express = require('express')
-const { sign } = require('jsonwebtoken')
-const passport = require('passport')
+import express from 'express'
+import { sign } from 'jsonwebtoken'
+import passport from 'passport'
 
-const { User } = require('../models')
-const config = require('../config/main')
+import { User } from '../models'
+import config from '../config/main'
 
 const Router = new express.Router()
 
@@ -121,4 +121,4 @@ Router.get('/logout', passport.authenticate('jwt', {
   })
 })
 
-module.exports = Router
+export default Router

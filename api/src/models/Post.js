@@ -1,6 +1,6 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 
-const { titleSlugger } = require('../helpers')
+import titleSlugger from '../helpers'
 
 const PostSchema = new mongoose.Schema({
   raw: {
@@ -60,4 +60,4 @@ PostSchema.pre('remove', function (next) {
   return this.model('User').update({ $pull: { posts: this._id } }, next)
 })
 
-module.exports = mongoose.model('Post', PostSchema)
+export default mongoose.model('Post', PostSchema)

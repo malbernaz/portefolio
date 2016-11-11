@@ -1,8 +1,8 @@
-const express = require('express')
-const passport = require('passport')
+import express from 'express'
+import passport from 'passport'
 
-const { Draft } = require('../models')
-const { titleSlugger } = require('../helpers')
+import { Draft } from '../models'
+import titleSlugger from '../helpers'
 
 const Router = new express.Router()
 
@@ -156,4 +156,4 @@ Router.delete('/:_id', passport.authenticate('jwt', {
   })
 })
 
-module.exports = Router
+export default Router

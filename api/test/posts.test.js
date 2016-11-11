@@ -1,5 +1,5 @@
-const test = require('tape')
-const {
+import test from 'tape'
+import {
   createLoginCookie,
   createUser,
   destroyDrafts,
@@ -9,7 +9,7 @@ const {
   populatePosts,
   request,
   fakeObjectId
-} = require('./helpers')
+} from './helpers'
 
 test('BEFORE POSTS TEST', t => {
   destroyPosts()

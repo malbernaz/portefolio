@@ -1,14 +1,15 @@
-const express = require('express')
-const passport = require('passport')
-const mongoose = require('mongoose')
+import express from 'express'
+import passport from 'passport'
+import mongoose from 'mongoose'
 
-const { Post, Draft } = require('../models')
-const { titleSlugger } = require('../helpers')
+import { Post, Draft } from '../models'
+import titleSlugger from '../helpers'
 
 const Router = new express.Router()
 
 const genericErrorMessage =
   'something went wrong. consider sending an email to albernazmiguel@gmail.com'
+
 
 Router.get('/', (req, res) => {
   Post.find().exec()
@@ -230,4 +231,4 @@ Router.put('/unpublish/:_id', passport.authenticate('jwt', {
   })
 })
 
-module.exports = Router
+export default Router

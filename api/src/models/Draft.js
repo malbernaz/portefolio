@@ -1,6 +1,6 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 
-const { titleSlugger } = require('../helpers')
+import titleSlugger from '../helpers'
 
 const DraftSchema = new mongoose.Schema({
   raw: {
@@ -61,4 +61,4 @@ DraftSchema.pre('remove', function (next) {
   return this.model('User').update({ $pull: { drafts: this._id } }, next)
 })
 
-module.exports = mongoose.model('Draft', DraftSchema)
+export default mongoose.model('Draft', DraftSchema)

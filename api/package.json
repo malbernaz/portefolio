@@ -17,6 +17,10 @@
     "passport-jwt": "^2.1.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-core": "^6.18.2",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-stage-0": "^6.16.0",
     "eslint": "^3.7.1",
     "eslint-config-airbnb-base": "^8.0.0",
     "eslint-plugin-import": "^1.16.0",
@@ -26,10 +30,11 @@
     "tape": "^4.6.2"
   },
   "scripts": {
-    "dev": "nodemon -L index.js",
+    "dev": "nodemon index.js --exec babel-node",
+    "build": "babel src -s -D -d dist",
     "lint": "eslint './**/*.js'",
-    "start": "NODE_ENV=production node index.js",
-    "test": "yarn run lint && NODE_ENV=test tape test/index.test.js | faucet"
+    "start": "yarn build && NODE_ENV=production node dist",
+    "test": "yarn lint && NODE_ENV=test tape -r babel-register test/index.test.js | faucet"
   },
   "repository": {
     "type": "git",

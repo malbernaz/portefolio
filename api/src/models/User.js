@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-const bcrypt = require('bcrypt-as-promised')
+import mongoose from 'mongoose'
+import bcrypt from 'bcrypt-as-promised'
 
 const UserSchema = new mongoose.Schema({
   username: {
@@ -28,7 +28,7 @@ const UserSchema = new mongoose.Schema({
   }]
 })
 
-UserSchema.pre('save', function hashPassword(next) {
+UserSchema.pre('save', function hashPassword (next) {
   const user = this
 
   if (this.isModified('password') || this.isNew) {
@@ -44,11 +44,11 @@ UserSchema.pre('save', function hashPassword(next) {
   return next()
 })
 
-UserSchema.methods.comparePassword = function comparePassword(password) {
+UserSchema.methods.comparePassword = function comparePassword (password) {
   const user = this
   return bcrypt.compare(password, this.password)
     .then(() => user)
     .catch(err => Promise.reject(err))
 }
 
-module.exports = mongoose.model('User', UserSchema)
+export default mongoose.model('User', UserSchema)

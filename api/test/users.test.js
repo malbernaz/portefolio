@@ -1,6 +1,6 @@
-const test = require('tape')
-const config = require('../config/main')
-const { request, createLoginCookie, destroyUsers, destroyPosts } = require('./helpers')
+import test from 'tape'
+import config from '../src/config/main'
+import { request, createLoginCookie, destroyUsers, destroyPosts } from './helpers'
 
 const before = test
 
