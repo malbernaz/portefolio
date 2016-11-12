@@ -22,11 +22,11 @@ export default class Editor extends Component {
 
   componentWillReceiveProps ({ editorFocused }) {
     if (editorFocused) {
-      setTimeout(() => this.editor.focus(), 0)
+      this.editor.focus()
     }
 
     if (!editorFocused) {
-      setTimeout(() => this.editor.blur(), 0)
+      this.editor.blur()
     }
   }
 

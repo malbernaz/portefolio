@@ -24,17 +24,17 @@ module.exports = env => {
   return Object.assign(base, {
     context: resolve(__dirname, 'src'),
     entry: './server.js',
+    externals: nodeModules,
+    node: {
+      __dirname: false,
+      __filename: false
+    },
     output: {
       path: resolve(__dirname, 'dist'),
       filename: 'index.js',
       libraryTarget: 'commonjs2'
     },
-    target: 'node',
-    node: {
-      __dirname: false,
-      __filename: false
-    },
-    externals: nodeModules,
-    plugins: base.plugins.concat(plugins)
+    plugins: base.plugins.concat(plugins),
+    target: 'node'
   })
 }

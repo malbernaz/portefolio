@@ -27,7 +27,7 @@ module.exports = env => {
 
   const plugins = [
     new LodashModuleReplacementPlugin(),
-    new ContextReplacementPlugin(/moment\/locale$/, /^\.\/(en)$/),
+    new ContextReplacementPlugin(/^\.\/locale$/, /moment$/),
     new LoaderOptionsPlugin({
       minimize: env === 'prod',
       debug: env !== 'prod',

@@ -30,7 +30,7 @@
     "tape": "^4.6.2"
   },
   "scripts": {
-    "dev": "nodemon index.js --exec babel-node",
+    "dev": "nodemon src --exec babel-node",
     "build": "babel src -s -D -d dist",
     "lint": "eslint './**/*.js'",
     "start": "yarn build && NODE_ENV=production node dist",

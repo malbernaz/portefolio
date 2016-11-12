@@ -1,6 +1,5 @@
 const { optimize: { CommonsChunkPlugin, MinChunkSizePlugin } } = require('webpack')
 const { resolve } = require('path')
-const { writeFileSync } = require('fs')
 const { StatsWriterPlugin } = require('webpack-stats-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 const ShellPlugin = require('webpack-shell-plugin')
@@ -39,17 +38,9 @@ const plugins = [
     filename: 'manifest.json',
     fields: ['assets'],
     transform ({ assets }) {
-      const manifest = JSON.stringify({
+      return JSON.stringify({
         assets: assets.map(a => a.name)
       })
-
-      writeFileSync(
-        resolve(__dirname, 'dist', 'manifest.json'),
-        manifest,
-        { encoding: 'UTF-8' }
-      )
-
-      return manifest
     }
   })
 ]
