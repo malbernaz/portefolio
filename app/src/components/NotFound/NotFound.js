@@ -10,7 +10,7 @@ const NotFound = () =>
     <div className={ s.root }>
       <Helmet title="NOT FOUND" />
       <h2 className={ s.header }>
-        404 Page Not Found
+        Page Not Found
       </h2>
       <h3 className={ s.blurb }>
         you are in unexplored waters

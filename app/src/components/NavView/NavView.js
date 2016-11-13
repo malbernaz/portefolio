@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react'
-import { Link, IndexLink } from 'react-router/es6'
+import { Link, IndexLink } from 'react-router'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import Icon from '../Icon'

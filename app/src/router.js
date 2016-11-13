@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, IndexRoute } from 'react-router/es6'
+import { Route, IndexRoute } from 'react-router'
 
 import { loadAuth } from './actions/auth'
 import { loadPosts, loadPostsAndDrafts } from './actions/posts'
@@ -124,8 +124,7 @@ export default store => {
           System.import('./components/NotFound/NotFound')
             .then(module => callback(null, module.default))
         } }
-        path="*"
-        status="404"
+        path="notfound"
       />
     </Route>
   )
