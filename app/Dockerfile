@@ -24,7 +24,7 @@ USER app
 
 RUN rm -fr node_modules/** && yarn install
 
-RUN yarn run build:prod && yarn test
+RUN yarn build && yarn test
 
 
 CMD ["yarn", "start"]
