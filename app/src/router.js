@@ -124,8 +124,7 @@ export default store => {
           System.import('./components/NotFound/NotFound')
             .then(module => callback(null, module.default))
         } }
-        path="*"
-        status="404"
+        path="notfound"
       />
     </Route>
   )

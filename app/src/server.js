@@ -89,17 +89,17 @@ app.use((req, res) => {
     location: req.url
   }, (err, redirectLocation, renderProps) => {
     if (redirectLocation) {
-      res.redirect(redirectLocation.pathname + redirectLocation.search)
+      return res.redirect(redirectLocation.pathname + redirectLocation.search)
     }
 
     if (err) {
       console.error(err) // eslint-disable-line no-console
 
-      res.status(500).end('Internal server error. Please report to albernazmiguel@gmail.com')
+      return res.status(500).send('Internal server error.')
     }
 
     if (!renderProps) {
-      return res.status(404).end('Not Found')
+      return res.redirect('/notfound')
     }
 
     function renderPage () {
