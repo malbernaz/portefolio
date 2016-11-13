@@ -12,7 +12,7 @@ import spdy from 'spdy'
 
 import { Provider } from 'react-redux'
 import { renderToString } from 'react-dom/server'
-import { RouterContext, match, createMemoryHistory } from 'react-router/es6'
+import { RouterContext, match, createMemoryHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import React from 'react'
 
