@@ -7,8 +7,6 @@ RUN useradd --user-group --create-home --shell /bin/false app && \
 
 ENV HOME=/home/app
 
-ENV NODE_CONFIG_LOGLEVEL=warn
-
 COPY package.json yarn.lock $HOME/server/
 
 RUN chown -R app:app $HOME/

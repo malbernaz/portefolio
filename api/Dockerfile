@@ -7,8 +7,6 @@ RUN useradd --user-group --create-home --shell /bin/false api && \
 
 ENV HOME=/home/api
 
-ENV NODE_CONFIG_LOGLEVEL=warn
-
 COPY package.json yarn.lock $HOME/server/
 
 RUN chown -R api:api $HOME/

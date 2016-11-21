@@ -5,10 +5,9 @@ import clientMiddleware from './middleware/clientMiddleware'
 import rootReducer from './reducers'
 
 const configureStore = (client, history, initialState = {}) => {
-  const reduxRouterMiddleware = routerMiddleware(history)
   const middleware = [
     clientMiddleware(client),
-    reduxRouterMiddleware
+    routerMiddleware(history)
   ]
 
   const store = createStore(

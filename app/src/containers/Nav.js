@@ -8,6 +8,16 @@ import NavView from '../components/NavView/NavView'
 import { logout } from '../actions/auth'
 import { toggleNav } from '../actions/ui/nav'
 
+const mapStateToProps = ({ auth, ui: { nav: { navIsVisible } } }) => ({
+  auth,
+  navIsVisible
+})
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+  logoutAction: logout,
+  toggleNavAction: toggleNav
+}, dispatch)
+
 const Nav = ({ auth, navIsVisible, logoutAction, toggleNavAction }) => {
   const toggle = e => {
     e.preventDefault()
@@ -50,14 +60,4 @@ Nav.propTypes = {
   toggleNavAction: func,
 }
 
-export default connect(
-  ({ auth, ui: { nav: { navIsVisible } } }) => ({
-    auth,
-    navIsVisible
-  }),
-  dispatch => bindActionCreators({
-    logoutAction: logout,
-    toggleNavAction: toggleNav
-  }, dispatch),
-  null, { pure: false }
-)(Nav)
+export default connect(mapStateToProps, mapDispatchToProps, null, { pure: false })(Nav)

@@ -66,7 +66,7 @@ Router.post('/', passport.authenticate('jwt', {
       return new Post({
         raw,
         html,
-        meta: Object.assign(meta, { author: user._id })
+        meta: { ...meta, author: user._id }
       }).save()
     }
 
@@ -75,7 +75,7 @@ Router.post('/', passport.authenticate('jwt', {
       html: html || draft.html,
       updatedAt: new Date(),
       createdAt: draft.createdAt,
-      meta: Object.assign(draft.meta, meta),
+      meta: { ...draft.meta, ...meta },
       _id: new mongoose.Types.ObjectId(_id)
     }).save()
   })
@@ -116,13 +116,14 @@ Router.patch('/:_id', passport.authenticate('jwt', {
       return Promise.reject({ why: 'inexistent' })
     }
 
-    const newData = Object.assign(post, {
+    const newData = {
+      ...post,
       html,
       raw,
       slug: titleSlugger(meta.title),
       updatedAt: new Date(),
-      meta: Object.assign(post.meta, meta)
-    })
+      meta: { ...post.meta, ...meta }
+    }
 
     return post.update({ $set: newData })
   })
@@ -201,7 +202,7 @@ Router.put('/unpublish/:_id', passport.authenticate('jwt', {
       raw: raw || post.raw,
       html: html || post.html,
       updatedAt: new Date(),
-      meta: Object.assign(post.meta, meta),
+      meta: { ...post.meta, ...meta },
       _id: new mongoose.Types.ObjectId(_id)
     })
 

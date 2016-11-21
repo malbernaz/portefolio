@@ -17,7 +17,6 @@ const inputFields = [{
   label: 'password'
 }]
 
-
 @withStyles(s)
 @reduxForm({ form: 'signin', fields: inputFields.map(field => field.name), validate })
 export default class SignIn extends Component {

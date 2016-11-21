@@ -1,7 +1,7 @@
 import React, { cloneElement, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import Helmet from 'react-helmet'
-import TransitionGroup from 'react/lib/ReactCSSTransitionGroup'
+import TransitionGroup from 'react-addons-css-transition-group'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import Nav from './Nav'

@@ -32,9 +32,8 @@ MobileNav.propTypes = {
   toggleNav: PropTypes.func
 }
 
-export default connect(
-  null,
-  dispatch => bindActionCreators({
-    ...navActions
-  }, dispatch)
-)(withStyles(s)(MobileNav))
+const mapDispatchToProps = dispatch => bindActionCreators({
+  ...navActions
+}, dispatch)
+
+export default connect(null, mapDispatchToProps)(withStyles(s)(MobileNav))

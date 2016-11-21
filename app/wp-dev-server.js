@@ -45,7 +45,7 @@ const devServerConfig = extend({}, baseConfig, {
 })
 
 const serverConfig = {
-  clientLogLevel: 'none',
+  clientLogLevel: 'error',
   headers: { 'Access-Control-Allow-Origin': '*' },
   host,
   hot: true,

@@ -257,7 +257,10 @@ function removeDiacritics (str) {
 
   let newStr = str
   for (let i = 0; i < defaultDiacriticsRemovalMap.length; i += 1) {
-    newStr = newStr.replace(defaultDiacriticsRemovalMap[i].letters, defaultDiacriticsRemovalMap[i].base)
+    newStr = newStr.replace(
+      defaultDiacriticsRemovalMap[i].letters,
+      defaultDiacriticsRemovalMap[i].base
+    )
   }
 
   return newStr

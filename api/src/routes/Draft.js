@@ -57,8 +57,9 @@ Router.post('/', passport.authenticate('jwt', {
     new Draft({
       raw,
       html,
-      meta: Object.assign(meta, { author: user._id })
-    }).save())
+      meta: { ...meta, author: user._id }
+    }).save()
+  )
 
   // send ok response
   .then(draft => res.json({
@@ -87,13 +88,14 @@ Router.patch('/:_id', passport.authenticate('jwt', {
       return Promise.reject({ why: 'inexistent' })
     }
 
-    const newData = Object.assign(draft, {
+    const newData = {
+      ...draft,
       html,
       raw,
       slug: titleSlugger(meta.title),
       updatedAt: new Date(),
-      meta: Object.assign(draft.meta, meta)
-    })
+      meta: { ...draft.meta, ...meta }
+    }
 
     return draft.update({ $set: newData })
   })

@@ -38,9 +38,9 @@ Post.propTypes = {
   slug: PropTypes.string
 }
 
-export default connect(
-  ({ posts: { posts } }, { params: { slug } }) => ({
-    posts,
-    slug
-  })
-)(withStyles(s)(Post))
+const mapStateToProps = ({ posts: { posts } }, { params: { slug } }) => ({
+  posts,
+  slug
+})
+
+export default connect(mapStateToProps)(withStyles(s)(Post))

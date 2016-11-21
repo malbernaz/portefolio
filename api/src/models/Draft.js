@@ -46,9 +46,7 @@ const DraftSchema = new mongoose.Schema({
 DraftSchema.pre('save', function (next) {
   const draft = this
 
-  return this.model('User').update({
-    $push: { drafts: this._id }
-  }, () => {
+  return this.model('User').update({ $push: { drafts: this._id } }, () => {
     draft.slug = titleSlugger(draft.meta.title)
 
     draft.meta.tags = draft.meta.tags.filter((tag, i, array) => array.indexOf(tag) === i)

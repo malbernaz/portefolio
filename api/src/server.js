@@ -40,8 +40,8 @@ api.get('/api/postsanddrafts', passport.authenticate('jwt', {
   session: false
 }), ({ user }, res) => {
   const queries = [
-    PostsModel.find({ 'meta.author': user._id }).then(result => ({ posts: result })),
-    DraftsModel.find({ 'meta.author': user._id }).then(result => ({ drafts: result }))
+    PostsModel.find({ 'meta.author': user._id }).exec().then(result => ({ posts: result })),
+    DraftsModel.find({ 'meta.author': user._id }).exec().then(result => ({ drafts: result }))
   ]
 
   return Promise.all(queries)

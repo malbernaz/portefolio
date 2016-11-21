@@ -25,8 +25,8 @@ Posts.propTypes = {
   posts: PropTypes.arrayOf(PropTypes.object)
 }
 
-export default connect(
-  state => ({
-    posts: postsOrderedByCreatedAt(state)
-  })
-)(withStyles(s)(Posts))
+const mapStateToProps = state => ({
+  posts: postsOrderedByCreatedAt(state)
+})
+
+export default connect(mapStateToProps)(withStyles(s)(Posts))

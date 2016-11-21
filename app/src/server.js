@@ -2,7 +2,7 @@ import { createProxyServer } from 'http-proxy'
 import { readFileSync, readlinkSync } from 'fs'
 import { resolve } from 'path'
 import compression from 'compression'
-import crypto from 'crypto'
+import cors from 'cors'
 import express from 'express'
 import favicon from 'express-favicon'
 import http from 'http'
@@ -11,7 +11,7 @@ import serveStatic from 'serve-static'
 import spdy from 'spdy'
 
 import { Provider } from 'react-redux'
-import { renderToString } from 'react-dom/server'
+import { renderToString, renderToStaticMarkup } from 'react-dom/server'
 import { RouterContext, match, createMemoryHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import React from 'react'
@@ -45,13 +45,14 @@ const targetUrl = `http://${config.apiHost}:${config.apiPort}`
 const proxy = createProxyServer({ target: targetUrl, ws: true })
 
 app.enable('trust proxy')
+app.use(cors())
 app.use(compression())
 app.use(serveStatic(resolve(__dirname, 'public')))
 app.use(favicon(resolve(__dirname, 'public', 'img', 'icon.ico')))
 
 if (!__DEV__) {
-  app.use((req, res, next) =>
-    !req.secure ? res.redirect(`https://${req.get('host')}:${req.url}`) : next())
+  app.use((req, res, next) => !req.secure ?
+    res.redirect(`https://${req.get('host')}:${req.url}`) : next())
 }
 
 if (__DEV__) {
@@ -78,7 +79,7 @@ proxy.on('error', (error, req, res) => {
   res.end(JSON.stringify({ error: 'proxy_error', reason: error.message }))
 })
 
-app.use((req, res) => {
+app.get('*', (req, res) => {
   const client = new ApiClient(req)
   const memoryHistory = createMemoryHistory(req.url)
   const store = configureStore(client, memoryHistory)
@@ -105,7 +106,7 @@ app.use((req, res) => {
     function renderPage () {
       const css = []
 
-      const component = (
+      const component = renderToString(
         <Provider store={ store } key="provider">
           <WithStylesContext onInsertCss={ s => css.push(s._getCss()) }>
             <RouterContext { ...renderProps } />
@@ -113,23 +114,11 @@ app.use((req, res) => {
         </Provider>
       )
 
-      const content = renderToString(
-        <Html
-          component={ component }
-          css={ css }
-          store={ store }
-        />
+      const content = renderToStaticMarkup(
+        <Html component={ component } css={ css } store={ store } />
       )
 
-      const hash = crypto
-        .createHash('sha256')
-        .update(content)
-        .digest('hex')
-
-      // eslint-disable-next-line quote-props
-      res.set({ 'Etag': hash, 'Cache-Control': 'public, no-cache' })
-        .status(200)
-        .send(`<!doctype html>${content}`)
+      res.send(`<!doctype html>${content}`)
 
       global.navigator = { userAgent: req.headers['user-agent'] }
     }

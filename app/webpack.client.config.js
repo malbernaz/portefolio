@@ -9,44 +9,43 @@ const wpBaseConfig = require('./webpack.config')
 
 const BUILD_DIR = resolve(__dirname, 'dist', 'public')
 
-const plugins = [
-  new CommonsChunkPlugin({ name: 'vendor', minChunks: Infinity }),
-  new MinChunkSizePlugin({ minChunkSize: 1000 }),
-  new ShellPlugin({ onBuildStart: ['yarn run imagemin'] }),
-  new CopyPlugin([{
-    from: './static/manifest.json'
-  }, {
-    from: './static/runtime-cache-strategy.js'
-  }, {
-    context: resolve(__dirname),
-    from: './node_modules/sw-toolbox/sw-toolbox.js'
-  }]),
-  new SWPrecachePlugin({
-    cacheId: 'portefolio_app',
-    filename: 'sw.js',
-    staticFileGlobs: [
-      `${BUILD_DIR}/**/*.js`,
-      `${BUILD_DIR}/img/**/*`
-    ],
-    navigateFallback: '/',
-    importScripts: [
-      'sw-toolbox.js',
-      'runtime-cache-strategy.js'
-    ]
-  }),
-  new StatsWriterPlugin({
-    filename: 'manifest.json',
-    fields: ['assets'],
-    transform ({ assets }) {
-      return JSON.stringify({
-        assets: assets.map(a => a.name)
-      })
-    }
-  })
-]
-
 module.exports = env => {
   const base = wpBaseConfig(env)
+
+  const plugins = [
+    new CommonsChunkPlugin({ name: 'vendor', minChunks: Infinity }),
+    new MinChunkSizePlugin({ minChunkSize: 1000 }),
+    new ShellPlugin({ onBuildStart: ['yarn run imagemin'] }),
+    new CopyPlugin([{
+      from: './static/manifest.json'
+    }, {
+      from: './static/runtime-cache-strategy.js'
+    }, {
+      context: resolve(__dirname),
+      from: './node_modules/sw-toolbox/sw-toolbox.js'
+    }]),
+    new StatsWriterPlugin({
+      filename: 'assets.js',
+      fields: ['assets'],
+      transform ({ assets }) {
+        return `module.exports = ${JSON.stringify({ assets: assets.map(a => a.name) })}`
+      }
+    })
+  ].concat(env === 'prod' ? [
+    new SWPrecachePlugin({
+      cacheId: 'portefolio_app',
+      filename: 'sw.js',
+      staticFileGlobs: [
+        `${BUILD_DIR}/**/*.js`,
+        `${BUILD_DIR}/img/**/*`
+      ],
+      navigateFallback: '/',
+      importScripts: [
+        'sw-toolbox.js',
+        'runtime-cache-strategy.js'
+      ]
+    })
+  ] : [])
 
   return Object.assign(base, {
     context: resolve(__dirname, 'src'),
