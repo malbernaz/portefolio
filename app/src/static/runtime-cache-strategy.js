@@ -16,6 +16,8 @@
     cache: { name: 'static-vendor-cache', maxEntries: 10 }
   })
 
+  global.toolbox.router.get('/(.*)', global.toolbox.fastest)
+
   global.toolbox.router.any('*/api/user/*', global.toolbox.networkOnly)
 
   global.toolbox.router.get('*/api/posts/*', global.toolbox.fastest)

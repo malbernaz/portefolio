@@ -28,8 +28,8 @@ const Html = ({ component, store, css }) => (
         charSet="UTF-8"
       />
 
-      <script src="/vendor.bundle.js" async />
-      <script src="/main.bundle.js" async />
+      <script src="/vendor.bundle.js" />
+      <script src="/main.bundle.js" />
 
       { process.env.NODE_ENV === 'production' ? [
         <script
