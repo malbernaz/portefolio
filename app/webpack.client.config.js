@@ -50,7 +50,7 @@ module.exports = env => {
   return Object.assign(base, {
     context: resolve(__dirname, 'src'),
     entry: {
-      main: ['./client'],
+      main: './client',
       vendor: ['react', 'react-dom', 'moment']
     },
     output: {
