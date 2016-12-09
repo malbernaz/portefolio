@@ -9,10 +9,7 @@ module.exports = env => {
   const babelLoader = {
     loader: 'babel-loader',
     options: {
-      presets: [['es2015', {
-        loose: true,
-        modules: false
-      }], 'react'],
+      presets: [['es2015', { loose: true, modules: false }], 'react'],
       plugins: [
         'transform-class-properties',
         'transform-object-rest-spread',
