@@ -2,89 +2,60 @@ import React, { PropTypes } from 'react'
 import Helmet from 'react-helmet'
 import serialize from 'serialize-javascript'
 
+const analytics = `
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date
+ga('create','${process.env.GANALYTICS}','auto')
+ga('send','pageview')
+`
+
 const head = Helmet.rewind()
 
-const Html = ({ component, store, css }) => (
-  <html lang="en">
-    <head>
-      { head.title.toComponent() }
-      { head.meta.toComponent() }
-      { head.link.toComponent() }
+const Html = ({ component, store, css, main, vendor, chunks }) => {
+  const initialState = `window.__INITIAL_STATE__=${serialize(store.getState())}`
 
-      <meta
-        name="viewport"
-        content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
-      />
+  return (
+    <html lang="en">
+      <head>
+        { head.title.toComponent() }
+        { head.meta.toComponent() }
+        { head.link.toComponent() }
 
-      <style id="critical-css" dangerouslySetInnerHTML={{ __html: css.join('') }} />
-    </head>
-    <body>
-      <div id="react-view" dangerouslySetInnerHTML={{ __html: component }} />
+        <meta
+          name="viewport"
+          content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
+        />
 
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `window.__INITIAL_STATE__=${serialize(store.getState())}`
-        }}
-        charSet="UTF-8"
-      />
+        <style id="critical-css" dangerouslySetInnerHTML={{ __html: css }} />
+      </head>
+      <body>
+        <div id="react-view" dangerouslySetInnerHTML={{ __html: component }} />
 
-      <script src="/vendor.bundle.js" />
-      <script src="/main.bundle.js" />
+        <script dangerouslySetInnerHTML={{ __html: initialState }} />
+        <script src={ vendor } defer />
+        <script src={ main } defer />
 
-      { process.env.NODE_ENV === 'production' ? [
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('/sw.js', { scope: './' }).then(reg => {
-                  reg.onupdatefound = function () {
-                    const installingWorker = reg.installing
+        { chunks.map(c =>
+          <link rel="preload" as="script" href={ c } key={ c } />
+        ) }
 
-                    installingWorker.onstatechange = function () {
-                      switch (installingWorker.state) {
-                        case 'installed':
-                          if (navigator.serviceWorker.controller) {
-                            console.log('New or updated content is available.')
-                          } else {
-                            console.log('Content is now available offline!')
-                          }
-                          break
-                        case 'redundant':
-                          console.log('The installing service worker became redundant.')
-                          break
-                        default:
-                          break
-                      }
-                    }
-                  }
-                }).catch(e => {
-                  console.error('Error during service worker registration:', e)
-                })
-              }
-            `
-          }}
-        />,
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date
-              ga('create', '${process.env.GANALYTICS}', 'auto')
-              ga('send', 'pageview')
-            `
-          }}
-        />,
-        <script src="https://www.google-analytics.com/analytics.js" async />
-      ] : '' }
-    </body>
-  </html>
-)
+        { process.env.NODE_ENV === 'production' ? [
+          <script dangerouslySetInnerHTML={{ __html: analytics }} />,
+          <script src="https://www.google-analytics.com/analytics.js" async />
+        ] : '' }
+      </body>
+    </html>
+  )
+}
 
-const { shape, func, string, arrayOf } = PropTypes
+const { arrayOf, shape, func, string } = PropTypes
 
 Html.propTypes = {
   component: string,
   store: shape({ getState: func }),
-  css: arrayOf(string)
+  css: string,
+  main: string,
+  vendor: string,
+  chunks: arrayOf(string)
 }
 
 export default Html

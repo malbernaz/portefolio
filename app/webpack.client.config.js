@@ -3,14 +3,16 @@ const { resolve } = require('path')
 const { StatsWriterPlugin } = require('webpack-stats-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 const ShellPlugin = require('webpack-shell-plugin')
-const SWPrecachePlugin = require('sw-precache-webpack-plugin')
 
 const wpBaseConfig = require('./webpack.config')
+const transform = require('./stats-transform')
 
 const BUILD_DIR = resolve(__dirname, 'dist', 'public')
 
 module.exports = env => {
   const base = wpBaseConfig(env)
+
+  const DEV = /dev/.test(env)
 
   const plugins = [
     new CommonsChunkPlugin({ name: 'vendor', minChunks: Infinity }),
@@ -26,26 +28,10 @@ module.exports = env => {
     }]),
     new StatsWriterPlugin({
       filename: 'assets.js',
-      fields: ['assets'],
-      transform ({ assets }) {
-        return `module.exports = ${JSON.stringify({ assets: assets.map(a => a.name) })}`
-      }
+      fields: ['assets', 'assetsByChunkName', 'hash'],
+      transform: transform({ DEV })
     })
-  ].concat(env === 'prod' ? [
-    new SWPrecachePlugin({
-      cacheId: 'portefolio_app',
-      filename: 'sw.js',
-      staticFileGlobs: [
-        `${BUILD_DIR}/**/*.js`,
-        `${BUILD_DIR}/img/**/*`
-      ],
-      navigateFallback: '/',
-      importScripts: [
-        'sw-toolbox.js',
-        'runtime-cache-strategy.js'
-      ]
-    })
-  ] : [])
+  ]
 
   return Object.assign(base, {
     context: resolve(__dirname, 'src'),
@@ -55,7 +41,8 @@ module.exports = env => {
     },
     output: {
       path: BUILD_DIR,
-      filename: '[name].bundle.js',
+      filename: DEV ? '[name].js' : '[name].[hash].js',
+      chunkFilename: DEV ? '[name].[id].js' : '[name].[id].[hash].js',
       publicPath: '/',
     },
     plugins: base.plugins.concat(plugins)

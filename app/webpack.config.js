@@ -25,6 +25,19 @@ module.exports = env => {
     }
   }
 
+  const babelworker = {
+    loader: 'babel-loader',
+    options: {
+      presets: [['es2015', { loose: true, modules: false }]],
+      plugins: [
+        'transform-class-properties',
+        'transform-object-rest-spread',
+        'transform-decorators-legacy',
+        'lodash'
+      ]
+    }
+  }
+
   const plugins = [
     new LodashModuleReplacementPlugin(),
     new ContextReplacementPlugin(/^\.\/locale$/, /moment$/),
@@ -77,12 +90,19 @@ module.exports = env => {
         loader: 'eslint-loader'
       }, {
         test: /\.js$/,
-        exclude: [/node_modules/, /\.worker\.js$/],
+        exclude: [/node_modules/, /\.worker\.js$/, /service-worker\.js$/],
         loaders: [babelLoader]
       }, {
         test: /\.worker\.js$/,
         exclude: /node_modules/,
-        loaders: ['worker-loader', babelLoader]
+        loaders: ['worker-loader', babelworker]
+      }, {
+        test: /service-worker\.js$/,
+        exclude: /node_modules/,
+        loaders: [{
+          loader: 'worker-loader',
+          options: { service: true }
+        }, babelworker],
       }, {
         test: /\.json$/,
         loader: 'json-loader'

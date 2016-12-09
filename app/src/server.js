@@ -20,6 +20,7 @@ import ApiClient from './helpers/ApiClient'
 import config from './config'
 import configureStore from './store'
 import getRouter from './router'
+import assets from './assets' // eslint-disable-line
 import Html from './helpers/Html'
 import WithStylesContext from './helpers/WithStylesContext'
 
@@ -32,14 +33,23 @@ const options = __DEV__ ? {
   cert: readFileSync(resolve(__dirname, 'certs', 'portefoliodev.crt'))
 } : {
   key: readFileSync(
-    resolve(__dirname, 'certs', 'live', 'malbernaz.me', readlinkSync(
-      resolve(__dirname, 'certs', 'live', 'malbernaz.me', 'privkey.pem')))),
+    resolve(__dirname, 'certs', 'live', 'malbernaz.me',
+      readlinkSync(
+        resolve(__dirname, 'certs', 'live', 'malbernaz.me', 'privkey.pem')
+      )
+    )
+  ),
   cert: readFileSync(
-    resolve(__dirname, 'certs', 'live', 'malbernaz.me', readlinkSync(
-      resolve(__dirname, 'certs', 'live', 'malbernaz.me', 'fullchain.pem')))),
+    resolve(__dirname, 'certs', 'live', 'malbernaz.me',
+      readlinkSync(
+        resolve(__dirname, 'certs', 'live', 'malbernaz.me', 'fullchain.pem')
+      )
+    )
+  ),
 }
 
-const server = spdy.createServer(options, app)
+const http2Server = spdy.createServer(options, app)
+const httpServer = http.createServer(app)
 
 const targetUrl = `http://${config.apiHost}:${config.apiPort}`
 const proxy = createProxyServer({ target: targetUrl, ws: true })
@@ -63,7 +73,11 @@ app.use('/api', (req, res) => {
   proxy.web(req, res, { target: `${targetUrl}/api` })
 })
 
-server.on('upgrade', (req, socket, head) => {
+http2Server.on('upgrade', (req, socket, head) => {
+  proxy.ws(req, socket, head)
+})
+
+httpServer.on('upgrade', (req, socket, head) => {
   proxy.ws(req, socket, head)
 })
 
@@ -78,6 +92,10 @@ proxy.on('error', (error, req, res) => {
 
   res.end(JSON.stringify({ error: 'proxy_error', reason: error.message }))
 })
+
+const chunksToPreload = Object.keys(assets)
+  .filter(c => !!assets[c].js && !/(main|vendor|admin)/.test(c))
+  .map(c => assets[c].js)
 
 app.get('*', (req, res) => {
   const client = new ApiClient(req)
@@ -114,9 +132,16 @@ app.get('*', (req, res) => {
         </Provider>
       )
 
-      const content = renderToStaticMarkup(
-        <Html component={ component } css={ css } store={ store } />
-      )
+      const htmlProps = {
+        component,
+        css: css.join(''),
+        store,
+        chunks: chunksToPreload,
+        main: assets.main.js,
+        vendor: assets.vendor.js
+      }
+
+      const content = renderToStaticMarkup(<Html { ...htmlProps } />)
 
       res.send(`<!doctype html>${content}`)
 
@@ -127,13 +152,8 @@ app.get('*', (req, res) => {
   })
 })
 
-http.createServer(app).listen(config.httpPort)
+httpServer.listen(config.httpPort)
 
-server.listen(config.httpsPort, err => {
-  if (err) {
-    console.log(err) // eslint-disable-line no-console
-  }
-
-  // eslint-disable-next-line no-console
-  console.log(`\n==> App listening on port ${config.httpsPort}\n`)
-})
+http2Server.listen(config.httpsPort, err => console.log( // eslint-disable-line no-console
+  err || `\n==> App listening on port ${config.httpsPort}\n`
+))

@@ -1,6 +1,3 @@
-import React from 'react'
-import { Route, IndexRoute } from 'react-router'
-
 import { loadAuth } from './actions/auth'
 import { loadPosts, loadPostsAndDrafts } from './actions/posts'
 
@@ -41,7 +38,7 @@ export default store => {
     const slug = nextState.params.slug
 
     function checkIfExists ({ posts }) {
-      if (!posts.some(p => slug === p.slug)) replace('/pagenotfound')
+      if (!posts.some(p => slug === p.slug)) replace('/notfound')
 
       return callback()
     }
@@ -65,67 +62,69 @@ export default store => {
     return callback()
   }
 
-  return (
-    <Route
-      getComponent={ (nextState, callback) => {
-        System.import('./containers/AppView')
-          .then(module => callback(null, module.default))
-      } }
-      onEnter={ checkAuthentication }
-      path="/"
-    >
-      <IndexRoute
-        getComponent={ (nextState, callback) => {
-          System.import('./components/Home/Home')
-            .then(module => callback(null, module.default))
-        } }
-        onEnter={ getPosts }
-      />
-      <Route
-        getComponent={ (nextState, callback) => {
-          System.import('./components/About/About')
-            .then(module => callback(null, module.default))
-        } }
-        path="about"
-      />
-      <Route
-        getComponent={ (nextState, callback) => {
-          System.import('./components/Contact/Contact')
-            .then(module => callback(null, module.default))
-        } }
-        path="contact"
-      />
-      <Route
-        getComponent={ (nextState, callback) => {
-          System.import('./containers/Post/Post')
-            .then(module => callback(null, module.default))
-        } }
-        onEnter={ postMustExist }
-        path="posts/:slug"
-      />
-      <Route path="admin">
-        <IndexRoute
-          getComponent={ (nextState, callback) => {
-            System.import('./containers/SignIn')
-              .then(module => callback(null, module.default))
-          } }
-        />
-        <Route
-          getComponent={ (nextState, callback) => {
-            System.import('./containers/Editor')
-              .then(module => callback(null, module.default))
-          } }
-          onEnter={ onEditorEnter }
-          path="editor"
-        />
-      </Route>
-      <Route
-        getComponent={ (nextState, callback) => {
-          System.import('./components/NotFound/NotFound')
-            .then(module => callback(null, module.default))
-        } }
-        path="notfound"
-      />
-    </Route>
-  )
+  return {
+    getComponent: (nextState, callback) => {
+      require.ensure([], require => {
+        callback(null, require('./containers/AppView').default)
+      }, 'appview')
+    },
+    onEnter: checkAuthentication,
+    path: '/',
+    indexRoute: {
+      getComponent: (nextState, callback) => {
+        require.ensure([], require => {
+          callback(null, require('./components/Home/Home').default)
+        }, 'home')
+      },
+      onEnter: getPosts
+    },
+    childRoutes: [{
+      getComponent: (nextState, callback) => {
+        require.ensure([], require => {
+          callback(null, require('./components/About/About').default)
+        }, 'about')
+      },
+      path: 'about'
+    }, {
+      getComponent: (nextState, callback) => {
+        require.ensure([], require => {
+          callback(null, require('./components/Contact/Contact').default)
+        }, 'contact')
+      },
+      path: 'contact'
+    }, {
+      getComponen: (nextState, callback) => {
+        require.ensure([], require => {
+          callback(null, require('./containers/Post/Post').default)
+        }, 'post')
+      },
+      onEnter: postMustExist,
+      path: 'posts/:slug'
+    }, {
+      path: 'admin',
+      indexRoute: {
+        getComponent: (nextState, callback) => {
+          require.ensure([], require => {
+            callback(null, require('./containers/SignIn').default)
+          }, 'admin-signin')
+        }
+      },
+      childRoutes: [{
+        getComponent: (nextState, callback) => {
+          require.ensure([], require => {
+            callback(null, require('./containers/Editor').default)
+          }, 'admin-editor')
+        },
+        onEnter: onEditorEnter,
+        path: 'editor'
+      }]
+    }, {
+      getComponent: (nextState, callback) => {
+        require.ensure([], require => {
+          callback(null, require('./components/NotFound/NotFound').default)
+        }, 'notfound')
+      },
+      path: 'notfound'
+    }]
+  }
 }

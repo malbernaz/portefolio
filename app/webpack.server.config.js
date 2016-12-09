@@ -10,12 +10,14 @@ const plugins = [
   new ShellPlugin({ onBuildStart: 'cp -r certs dist' })
 ]
 
-const nodeModules = {}
+const externals = {
+  './assets': 'commonjs ./assets'
+}
 
 readdirSync('node_modules')
   .filter(x => ['.bin'].indexOf(x) === -1)
   .forEach(mod => {
-    nodeModules[mod] = `commonjs ${mod}`
+    externals[mod] = `commonjs ${mod}`
   })
 
 module.exports = env => {
@@ -24,7 +26,7 @@ module.exports = env => {
   return Object.assign(base, {
     context: resolve(__dirname, 'src'),
     entry: './server.js',
-    externals: nodeModules,
+    externals,
     node: {
       __dirname: false,
       __filename: false
