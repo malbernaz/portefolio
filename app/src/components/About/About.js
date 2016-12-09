@@ -8,7 +8,7 @@ import Wrapper from '../Wrapper/Wrapper'
 
 import s from './About.scss'
 
-import profileImage from '../../static/img/profile.jpg'
+import profileImage from '../../static/profile.jpg'
 
 const About = () =>
   <Wrapper>

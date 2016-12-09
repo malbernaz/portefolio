@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react'
-import { Link, IndexLink } from 'react-router'
+import { Link } from 'react-router'
 import withStyles from 'isomorphic-style-loader/lib/withStyles'
 
 import Icon from '../Icon'
@@ -60,14 +60,14 @@ export default class NavView extends Component {
                 <span className={ s.logoDescription }>{ description }</span>
               </div>
               <div className={ s.navMain }>
-                <IndexLink
+                <Link
                   onClick={ toggleOnLinkClick }
                   className={ s.item }
                   activeClassName={ s.itemActive }
-                  to="/"
+                  to="/blog"
                 >
-                  home
-                </IndexLink>
+                  writing
+                </Link>
                 <Link
                   onClick={ toggleOnLinkClick }
                   className={ s.item }
@@ -98,7 +98,7 @@ export default class NavView extends Component {
                     onClick={ logout }
                     className={ s.itemLogout }
                     key="1"
-                    to="/"
+                    to="/blog"
                   >
                     logout
                   </Link>

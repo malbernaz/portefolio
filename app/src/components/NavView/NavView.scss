@@ -15,7 +15,7 @@
   padding: 0;
 
   background: darken($syntax-bg, 2);
-  box-shadow: 0 5px 5px $default-shadow-color;
+  box-shadow: 0 0 5px $default-shadow-color;
 
   will-change: transform;
 
@@ -83,20 +83,13 @@
   padding: 2rem 0;
 
   text-align: center;
-
-  color: $syntax-bg;
-  background: $syntax-accent;
-
+  margin-bottom: 1rem;
   align-items: center;
   justify-content: center;
 }
 
 .logoIcon {
   height: 3rem;
-
-  path {
-    fill: $syntax-bg;
-  }
 }
 
 .logoTitle {

@@ -8,9 +8,8 @@ ga('create','${process.env.GANALYTICS}','auto')
 ga('send','pageview')
 `
 
-const head = Helmet.rewind()
-
 const Html = ({ component, store, css, main, vendor, chunks }) => {
+  const head = Helmet.rewind()
   const initialState = `window.__INITIAL_STATE__=${serialize(store.getState())}`
 
   return (

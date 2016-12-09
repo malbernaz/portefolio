@@ -2,7 +2,6 @@ const { optimize: { CommonsChunkPlugin, MinChunkSizePlugin } } = require('webpac
 const { resolve } = require('path')
 const { StatsWriterPlugin } = require('webpack-stats-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
-const ShellPlugin = require('webpack-shell-plugin')
 
 const wpBaseConfig = require('./webpack.config')
 const transform = require('./stats-transform')
@@ -17,14 +16,10 @@ module.exports = env => {
   const plugins = [
     new CommonsChunkPlugin({ name: 'vendor', minChunks: Infinity }),
     new MinChunkSizePlugin({ minChunkSize: 1000 }),
-    new ShellPlugin({ onBuildStart: ['yarn run imagemin'] }),
     new CopyPlugin([{
-      from: './static/manifest.json'
-    }, {
-      from: './static/runtime-cache-strategy.js'
-    }, {
-      context: resolve(__dirname),
-      from: './node_modules/sw-toolbox/sw-toolbox.js'
+      context: resolve(__dirname, 'src', 'static'),
+      from: '**/*',
+      to: resolve(__dirname, 'dist', 'public')
     }]),
     new StatsWriterPlugin({
       filename: 'assets.js',

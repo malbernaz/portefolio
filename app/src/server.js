@@ -29,8 +29,8 @@ const __DEV__ = process.env.NODE_ENV !== 'production'
 const app = express()
 
 const options = __DEV__ ? {
-  key: readFileSync(resolve(__dirname, 'certs', 'portefoliodev.key')),
-  cert: readFileSync(resolve(__dirname, 'certs', 'portefoliodev.crt'))
+  key: readFileSync(resolve(__dirname, 'portefoliodev.key')),
+  cert: readFileSync(resolve(__dirname, 'portefoliodev.crt'))
 } : {
   key: readFileSync(
     resolve(__dirname, 'certs', 'live', 'malbernaz.me',
@@ -58,7 +58,7 @@ app.enable('trust proxy')
 app.use(cors())
 app.use(compression())
 app.use(serveStatic(resolve(__dirname, 'public')))
-app.use(favicon(resolve(__dirname, 'public', 'img', 'icon.ico')))
+app.use(favicon(resolve(__dirname, 'public', 'favicon.ico')))
 
 if (!__DEV__) {
   app.use((req, res, next) => !req.secure ?
@@ -115,6 +115,10 @@ app.get('*', (req, res) => {
       console.error(err) // eslint-disable-line no-console
 
       return res.status(500).send('Internal server error.')
+    }
+
+    if (req.url === '/') {
+      return res.redirect('/blog')
     }
 
     if (!renderProps) {

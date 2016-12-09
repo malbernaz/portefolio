@@ -5,8 +5,8 @@ export default store => {
   function checkAuthentication (nextState, replace, callback) {
     if (!store.getState().auth.loaded) {
       return store.dispatch(loadAuth())
-        .then(() => callback())
-        .catch(() => callback())
+        .then(() => { callback() })
+        .catch(() => { callback() })
     }
 
     return callback()
@@ -70,14 +70,7 @@ export default store => {
     },
     onEnter: checkAuthentication,
     path: '/',
-    indexRoute: {
-      getComponent: (nextState, callback) => {
-        require.ensure([], require => {
-          callback(null, require('./components/Home/Home').default)
-        }, 'home')
-      },
-      onEnter: getPosts
-    },
+    indexRedirect: { to: 'blog' },
     childRoutes: [{
       getComponent: (nextState, callback) => {
         require.ensure([], require => {
@@ -93,13 +86,24 @@ export default store => {
       },
       path: 'contact'
     }, {
-      getComponen: (nextState, callback) => {
-        require.ensure([], require => {
-          callback(null, require('./containers/Post/Post').default)
-        }, 'post')
+      path: 'blog',
+      indexRoute: {
+        getComponent: (nextState, callback) => {
+          require.ensure([], require => {
+            callback(null, require('./components/Home/Home').default)
+          }, 'home')
+        },
+        onEnter: getPosts
       },
-      onEnter: postMustExist,
-      path: 'posts/:slug'
+      childRoutes: [{
+        getComponent: (nextState, callback) => {
+          require.ensure([], require => {
+            callback(null, require('./containers/Post/Post').default)
+          }, 'post')
+        },
+        onEnter: postMustExist,
+        path: ':slug'
+      }]
     }, {
       path: 'admin',
       indexRoute: {
