@@ -6,7 +6,7 @@ import Wrapper from '../Wrapper/Wrapper'
 
 const Home = () =>
   <Wrapper>
-    <Helmet title="HOME" />
+    <Helmet title="BLOG" />
     <Posts />
   </Wrapper>
 

@@ -27,7 +27,7 @@ export default class Root extends Component {
     return (
       <Provider store={ this.props.store }>
         <WithStylesContext onInsertCss={ insertCss }>
-          <Router { ...this.props.renderProps } />
+          <Router key={ Math.random() } { ...this.props.renderProps } />
         </WithStylesContext>
       </Provider>
     )

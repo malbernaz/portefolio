@@ -1,24 +1,28 @@
-const { IgnorePlugin } = require('webpack')
+/* eslint-disable quote-props */
+
 const { readdirSync } = require('fs')
+const { IgnorePlugin } = require('webpack')
 const { resolve } = require('path')
-const ShellPlugin = require('webpack-shell-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
 
 const wpBaseConfig = require('./webpack.config')
 
 const plugins = [
   new IgnorePlugin(/worker/i),
-  new ShellPlugin({ onBuildStart: 'cp -r certs dist' })
+  new CopyPlugin([{ context: __dirname, from: 'certs', to: 'dist' }])
 ]
 
-const externals = {
-  './assets': 'commonjs ./assets'
-}
-
-readdirSync('node_modules')
+const externals = readdirSync('node_modules')
   .filter(x => ['.bin'].indexOf(x) === -1)
-  .forEach(mod => {
-    externals[mod] = `commonjs ${mod}`
-  })
+  .reduce((acc, mod) => {
+    if (mod === 'react' || mod === 'react-dom') {
+      return Object.assign(acc, { [mod]: 'commonjs preact-compat' })
+    }
+
+    if (/react/.test(mod)) return acc
+
+    return Object.assign(acc, { [mod]: `commonjs ${mod}` })
+  }, { './assets': 'commonjs ./assets' })
 
 module.exports = env => {
   const base = wpBaseConfig(env)
@@ -27,6 +31,14 @@ module.exports = env => {
     context: resolve(__dirname, 'src'),
     entry: './server.js',
     externals,
+    resolve: {
+      modules: [resolve(__dirname, 'src'), resolve(__dirname, 'node_modules')],
+      alias: {
+        'react': 'preact-compat',
+        'react-dom': 'preact-compat',
+        'react-addons-css-transition-group': 'preact-css-transition-group'
+      }
+    },
     node: {
       __dirname: false,
       __filename: false

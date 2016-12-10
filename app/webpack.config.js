@@ -27,9 +27,7 @@ module.exports = env => {
     options: {
       presets: [['es2015', { loose: true, modules: false }]],
       plugins: [
-        'transform-class-properties',
         'transform-object-rest-spread',
-        'transform-decorators-legacy',
         'lodash'
       ]
     }
@@ -71,7 +69,7 @@ module.exports = env => {
       mangle: {
         screw_ie8: true
       },
-      sourceMap: false
+      sourceMap: true
     })
   ] : [])
 
@@ -110,8 +108,7 @@ module.exports = env => {
             loader: 'css-loader',
             options: {
               modules: true,
-              localIdentName: env === 'prod' ?
-                '[hash:base64:7]' : '[name]__[local]-[hash:base64:5]'
+              localIdentName: env === 'prod' ? '[hash:base64:7]' : '[name]__[local]-[hash:base64:5]'
             }
           },
           'postcss-loader',

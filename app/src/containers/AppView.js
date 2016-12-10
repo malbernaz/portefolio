@@ -18,7 +18,7 @@ const mapStateToProps = (state, { location, children }) => ({
 
 const AppView = ({ children, path }) =>
   <div className={ s.appView }>
-    <Helmet { ...config.head } />
+    <Helmet key="helmet" { ...config.head } />
     <Nav />
     <div className={ s.container }>
       <MobileNav />

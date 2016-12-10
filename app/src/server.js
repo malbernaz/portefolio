@@ -29,8 +29,8 @@ const __DEV__ = process.env.NODE_ENV !== 'production'
 const app = express()
 
 const options = __DEV__ ? {
-  key: readFileSync(resolve(__dirname, 'portefoliodev.key')),
-  cert: readFileSync(resolve(__dirname, 'portefoliodev.crt'))
+  key: readFileSync(resolve(__dirname, 'certs', 'portefoliodev.key')),
+  cert: readFileSync(resolve(__dirname, 'certs', 'portefoliodev.crt'))
 } : {
   key: readFileSync(
     resolve(__dirname, 'certs', 'live', 'malbernaz.me',

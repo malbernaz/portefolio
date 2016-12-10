@@ -2,11 +2,7 @@ import React, { PropTypes } from 'react'
 import Helmet from 'react-helmet'
 import serialize from 'serialize-javascript'
 
-const analytics = `
-window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date
-ga('create','${process.env.GANALYTICS}','auto')
-ga('send','pageview')
-`
+const analytics = `window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','${process.env.GANALYTICS}','auto');ga('send','pageview')`
 
 const Html = ({ component, store, css, main, vendor, chunks }) => {
   const head = Helmet.rewind()
@@ -27,7 +23,7 @@ const Html = ({ component, store, css, main, vendor, chunks }) => {
         <style id="critical-css" dangerouslySetInnerHTML={{ __html: css }} />
       </head>
       <body>
-        <div id="react-view" dangerouslySetInnerHTML={{ __html: component }} />
+        <main dangerouslySetInnerHTML={{ __html: component }} />
 
         <script dangerouslySetInnerHTML={{ __html: initialState }} />
         <script src={ vendor } defer />

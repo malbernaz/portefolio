@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom'
 import { match, applyRouterMiddleware, browserHistory } from 'react-router'
 import { useScroll } from 'react-router-scroll'
 import { syncHistoryWithStore } from 'react-router-redux'
-import { AppContainer } from 'react-hot-loader'
 import registerServiceWorker from './sw-register'
 
 import configureStore from './store'
@@ -20,26 +19,20 @@ const client = new ApiClient()
 const store = configureStore(client, browserHistory, initialState)
 const history = syncHistoryWithStore(browserHistory, store)
 
-const mountPoint = document.getElementById('react-view')
+const mnt = document.querySelector('main')
 
-const renderApp = () => {
+function renderApp () {
   const getRouter = require('./router').default // eslint-disable-line
 
   match({
     routes: getRouter(store),
     render: applyRouterMiddleware(useScroll()),
-    history
+    history,
   }, (err, redirect, renderProps) => {
-    ReactDOM.render(
-      <AppContainer>
-        <Root store={ store } renderProps={ renderProps } />
-      </AppContainer>, mountPoint
-    )
+    ReactDOM.render(<Root store={ store } renderProps={ renderProps } />, mnt)
   })
 }
 
 renderApp()
 
-if (module.hot) {
-  module.hot.accept(['./router'], renderApp)
-}
+if (module.hot) module.hot.accept(['./router'], renderApp)
