@@ -35,7 +35,7 @@ function cacheOnly (event) {
   event.respondWith(caches.match(event.request, { ignoreSearch: true }))
 }
 
-function staleWhileRevalidate (event) {
+function staleWhileRevalidate (event, cacheName) {
   const fetchedVersion = fetch(event.request)
   const fetchedCopy = fetchedVersion.then(response => response.clone())
   const cachedVersion = caches.match(event.request)
@@ -48,14 +48,12 @@ function staleWhileRevalidate (event) {
 
   let response
   event.waitUntil(
-    fetchedCopy
-      .then(res => {
-        response = res
-        return caches.open(`dynamic-${VERSION}`)
-      })
-      .then(cache =>
-        cache.put(event.request, response)
-      )
+    fetchedCopy.then(res => {
+      response = res
+      return caches.open(cacheName)
+    }).then(cache =>
+      cache.put(event.request, response)
+    )
   )
 }
 
@@ -76,12 +74,7 @@ self.onactivate = event => event.waitUntil(
 self.onfetch = event => {
   const requestUrl = new URL(event.request.url)
 
-  const { pathname, href, origin } = requestUrl
-
-  // Api Request
-  if (/\/api\/user/.test(href)) {
-    return networkOnly(event)
-  }
+  const { pathname, href } = requestUrl
 
   // Webpack Hot Module Reloading
   if (process.env.NODE_ENV !== 'production') {
@@ -90,27 +83,25 @@ self.onfetch = event => {
     }
   }
 
-  // Local Requests
-  if (location.origin === origin) {
-    // Server Rendered Pages
-    if (STATIC_PAGES.some(s => s === pathname)) {
-      return event.respondWith(
-        caches.match(requestUrl, { ignoreSearch: true })
-          .then(response => response.text())
-          .then(responseText =>
-            new Response(responseText, {
-              headers: { 'Content-Type': 'text/html' }
-            })
-          )
-      )
-    }
+  // Auth Request
+  if (/\/api\/user/.test(href)) {
+    return networkOnly(event)
+  }
 
-    // Static Assets
-    if (STATIC_ASSETS.some(s => new RegExp(s).test(pathname))) {
-      return cacheOnly(event)
-    }
+  // Static Pages request
+  if (STATIC_PAGES.some(s => new RegExp(s).test(pathname))) {
+    return cacheOnly(event)
+  }
+
+  if (['admin', '/admin/editor'].some(p => p === pathname)) {
+    return staleWhileRevalidate(event, `pages-${VERSION}`)
+  }
+
+  // Static Assets request
+  if (STATIC_ASSETS.some(s => new RegExp(s).test(pathname))) {
+    return cacheOnly(event)
   }
 
   // Dynamic Requests
-  return staleWhileRevalidate(event)
+  return staleWhileRevalidate(event, `dynamic-${VERSION}`)
 }

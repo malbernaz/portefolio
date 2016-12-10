@@ -10,14 +10,15 @@ import ApiClient from './helpers/ApiClient'
 
 import Root from './containers/Root'
 
-if (process.env.NODE_ENV === 'production') {
-  registerServiceWorker()
-}
-
 const initialState = window.__INITIAL_STATE__
 const client = new ApiClient()
 const store = configureStore(client, browserHistory, initialState)
 const history = syncHistoryWithStore(browserHistory, store)
+
+registerServiceWorker(store)
+if (process.env.NODE_ENV === 'production') {
+  registerServiceWorker(store)
+}
 
 const mnt = document.querySelector('main')
 

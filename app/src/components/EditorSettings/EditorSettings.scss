@@ -23,8 +23,8 @@
   box-sizing: border-box;
   padding: 2rem 2rem 3rem;
 
-  transition: transform .2s $default-bezier, opacity .2s $default-bezier;
-  transform: translateY(-102%);
+  transition: transform .3s $default-bezier, opacity .3s $default-bezier;
+  transform: translateY(-105%);
 
   background: $syntax-bg-alternate;
   box-shadow: 0 5px 5px $default-shadow-color;

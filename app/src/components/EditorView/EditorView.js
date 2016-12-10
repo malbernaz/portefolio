@@ -40,6 +40,20 @@ export default class EditorView extends Component {
     updateActiveDraft: func.isRequired
   }
 
+  state = {
+    dropdownOptions: this.props.activeDraft.isSaved ? [
+      { label: 'new post', action: this.props.handleNewPost },
+      { label: 'delete', action: this.props.handleDelete, danger: true }
+    ] : [],
+    options: this.props.activeDraft.isPublished ? [
+      { label: 'update', action: this.props.handlePublish },
+      { label: 'unpublish', action: this.props.handleUnpublish, danger: true }
+    ] : [
+      { label: 'publish', action: this.props.handlePublish },
+      { label: 'save draft', action: this.props.handleSaveDraft }
+    ]
+  }
+
   componentDidMount () {
     this.panesView.className = this.props.editorView === 'code' ?
       s.panesView :
@@ -89,7 +103,6 @@ export default class EditorView extends Component {
       handleChange,
       handleDelete,
       handleEditPost,
-      handleNewPost,
       handlePublish,
       handleSaveDraft,
       handleUnpublish,
@@ -104,6 +117,36 @@ export default class EditorView extends Component {
       toggleSettings,
       updateActiveDraft
     } = this.props
+
+    let dropdownOptions = []
+    if (this.props.activeDraft.isPublished) {
+      dropdownOptions = [...dropdownOptions, {
+        label: 'update',
+        action: handlePublish
+      }, {
+        label: 'unpublish',
+        action: handleUnpublish
+      }]
+    } else {
+      dropdownOptions = [...dropdownOptions, {
+        label: 'publish',
+        action: handlePublish
+      }, {
+        label: 'save draft',
+        action: handleSaveDraft
+      }]
+    }
+
+    if (this.props.activeDraft.isSaved) {
+      dropdownOptions = [...dropdownOptions, {
+        label: 'new post',
+        action: this.props.handleNewPost
+      }, {
+        label: 'delete',
+        action: this.props.handleDelete,
+        danger: true
+      }]
+    }
 
     return (
       <section className={ s.root }>
@@ -136,17 +179,7 @@ export default class EditorView extends Component {
           </div>
           <DropdownButton
             isShown={ dropdownIsShown }
-            fixedOptions={ activeDraft.isSaved ? [
-              { label: 'new post', action: handleNewPost },
-              { label: 'delete', action: handleDelete }
-            ] : [] }
-            options={ activeDraft.isPublished ? [
-              { label: 'update', action: handlePublish },
-              { label: 'unpublish', action: handleUnpublish }
-            ] : [
-              { label: 'publish', action: handlePublish },
-              { label: 'save draft', action: handleSaveDraft }
-            ] }
+            options={ dropdownOptions }
             toggleDropdown={ toggleDropdown }
           />
         </div>

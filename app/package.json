@@ -4,11 +4,11 @@
   "description": "frontend for the portefólio blog",
   "main": "index.js",
   "scripts": {
-    "build": "yarn run clean && yarn build:client && yarn build:server",
+    "build": "yarn cleandist && yarn build:client && yarn build:server",
     "build:client": "webpack --config webpack.client.config.js --env prod",
     "build:server": "webpack --config webpack.server.config.js --env prod",
     "watch": "webpack --config webpack.server.config.js --env dev --watch",
-    "clean": "rm -fr dist && mkdir -p dist/public/img",
+    "cleandist": "rimraf dist",
     "dev": "concurrently --raw --kill-others 'yarn nodemon' 'yarn devserver' 'yarn watch'",
     "devserver": "webpack-dev-server --config webpack.client.config.js --env dev",
     "imagemin": "imagemin src/static/img/* --out-dir=dist/public/img",

@@ -11,7 +11,7 @@ import serveStatic from 'serve-static'
 import spdy from 'spdy'
 
 import { Provider } from 'react-redux'
-import { renderToString, renderToStaticMarkup } from 'react-dom/server'
+import { renderToString } from 'react-dom/server'
 import { RouterContext, match, createMemoryHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import React from 'react'
@@ -29,21 +29,17 @@ const __DEV__ = process.env.NODE_ENV !== 'production'
 const app = express()
 
 const options = __DEV__ ? {
-  key: readFileSync(resolve(__dirname, 'certs', 'portefoliodev.key')),
-  cert: readFileSync(resolve(__dirname, 'certs', 'portefoliodev.crt'))
+  key: readFileSync(resolve(__dirname, '../certs/portefoliodev.key')),
+  cert: readFileSync(resolve(__dirname, '../certs/portefoliodev.crt'))
 } : {
   key: readFileSync(
-    resolve(__dirname, 'certs', 'live', 'malbernaz.me',
-      readlinkSync(
-        resolve(__dirname, 'certs', 'live', 'malbernaz.me', 'privkey.pem')
-      )
+    resolve(__dirname, 'certs/live/malbernaz.me',
+      readlinkSync(resolve(__dirname, 'certs/live/malbernaz.me/privkey.pem'))
     )
   ),
   cert: readFileSync(
-    resolve(__dirname, 'certs', 'live', 'malbernaz.me',
-      readlinkSync(
-        resolve(__dirname, 'certs', 'live', 'malbernaz.me', 'fullchain.pem')
-      )
+    resolve(__dirname, 'certs/live/malbernaz.me',
+      readlinkSync(resolve(__dirname, 'certs/live/malbernaz.me/fullchain.pem'))
     )
   ),
 }
@@ -117,7 +113,7 @@ app.get('*', (req, res) => {
       return res.status(500).send('Internal server error.')
     }
 
-    if (req.url === '/') {
+    if (req._parsedUrl.pathname === '/') {
       return res.redirect('/blog')
     }
 
@@ -145,7 +141,7 @@ app.get('*', (req, res) => {
         vendor: assets.vendor.js
       }
 
-      const content = renderToStaticMarkup(<Html { ...htmlProps } />)
+      const content = renderToString(<Html { ...htmlProps } />)
 
       res.send(`<!doctype html>${content}`)
 

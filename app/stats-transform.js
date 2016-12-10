@@ -35,7 +35,7 @@ module.exports = ({ DEV }) => ({ assets, assetsByChunkName, hash }, { compiler }
   // Assets Map File for Service Worker
   const assetsMap = assets
     .map(a => a.name)
-    .filter(a => !/(worker|hot-update)/.test(a))
+    .filter(a => !/(hot-update)/.test(a))
     .map(a => `${publicPath}${a.split('?')[0]}`)
 
   return `self.staticAssets = ${JSON.stringify({ hash, assets: assetsMap })}`

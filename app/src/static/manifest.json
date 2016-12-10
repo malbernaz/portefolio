@@ -12,5 +12,6 @@
   "start_url": "\/blog?homescreen=1",
   "display": "standalone",
   "orientation": "portrait",
-  "theme_color": "#fafafa"
+  "theme_color": "#fafafa",
+  "background_color": "#fafafa"
 }

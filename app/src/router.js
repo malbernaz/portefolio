@@ -3,35 +3,23 @@ import { loadPosts, loadPostsAndDrafts } from './actions/posts'
 
 export default store => {
   function checkAuthentication (nextState, replace, callback) {
-    if (!store.getState().auth.loaded) {
-      return store.dispatch(loadAuth())
-        .then(() => { callback() })
-        .catch(() => { callback() })
-    }
-
-    return callback()
+    return store.dispatch(loadAuth())
+      .then(() => callback())
+      .catch(() => callback())
   }
 
   function onEditorEnter (nextState, replace, callback) {
     function checkAuth ({ user }) {
       if (!user) replace('/admin')
 
-      if (!store.getState().posts.loadedPostsAndDrafts) {
-        return store.dispatch(loadPostsAndDrafts())
-          .then(() => callback())
-          .catch(() => callback())
-      }
-
-      return callback()
+      return store.dispatch(loadPostsAndDrafts())
+        .then(() => callback())
+        .catch(() => callback())
     }
 
-    if (!store.getState().auth.loaded) {
-      return store.dispatch(loadAuth())
-        .then(checkAuth)
-        .catch(checkAuth)
-    }
-
-    return checkAuth(store.getState().auth)
+    return store.dispatch(loadAuth())
+      .then(checkAuth)
+      .catch(checkAuth)
   }
 
   function postMustExist (nextState, replace, callback) {
@@ -53,13 +41,9 @@ export default store => {
   }
 
   function getPosts (nextState, replace, callback) {
-    if (!store.getState().posts.loadedPosts) {
-      return store.dispatch(loadPosts())
-        .then(() => callback())
-        .catch(() => callback())
-    }
-
-    return callback()
+    return store.dispatch(loadPosts())
+      .then(() => callback())
+      .catch(() => callback())
   }
 
   return {

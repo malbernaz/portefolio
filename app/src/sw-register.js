@@ -1,26 +1,20 @@
 /* eslint-disable no-console */
 
 import serviceWorker from './service-worker'
+import { showMessage } from './actions/message'
 
-export default function registerServiceWorker () {
+export default function registerServiceWorker (store) {
   serviceWorker({ scope: '/' }).then(registration => {
     registration.onupdatefound = () => { // eslint-disable-line no-param-reassign
       const installingWorker = registration.installing
 
-      installingWorker.onstatechange = () => {
-        switch (installingWorker.state) {
-          case 'installed':
-            if (navigator.serviceWorker.controller) {
-              console.log('new update has been found')
-            } else {
-              console.log('content is now available offline')
-            }
-            break
-          case 'redundant':
-            console.log('the installing service worker became redundant')
-            break
-          default:
-            break
+      installingWorker.onstatechange = function onSwChange () {
+        if (installingWorker.state === 'installed') {
+          if (navigator.serviceWorker.controller) {
+            store.dispatch(showMessage('new update has been found'))
+          } else {
+            store.dispatch(showMessage('content is now available offline'))
+          }
         }
       }
     }

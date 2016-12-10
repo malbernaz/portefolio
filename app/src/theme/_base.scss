@@ -196,30 +196,37 @@
 
     &-enter {
       opacity: 0;
+      transform: translateY(10px);
 
       @extend .page-transition;
 
       &-active {
-        transition: opacity .3s $default-bezier;
+        transition: opacity .3s $default-bezier, transform .3s $default-bezier;
+        transition-delay: .3s;
 
         opacity: 1;
+        transform: translateY(0);
 
         @extend .page-transition-enter;
+
         will-change: opacity;
       }
     }
 
     &-leave {
       opacity: 1;
+      transform: translateY(0);
 
       @extend .page-transition;
 
       &-active {
-        transition: opacity .3s $default-bezier;
+        transition: opacity .3s $default-bezier, transform .3s $default-bezier;
 
         opacity: 0;
+        transform: translateY(10px);
 
         @extend .page-transition-leave;
+
         will-change: opacity;
       }
     }

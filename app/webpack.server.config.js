@@ -3,14 +3,8 @@
 const { readdirSync } = require('fs')
 const { IgnorePlugin } = require('webpack')
 const { resolve } = require('path')
-const CopyPlugin = require('copy-webpack-plugin')
 
 const wpBaseConfig = require('./webpack.config')
-
-const plugins = [
-  new IgnorePlugin(/worker/i),
-  new CopyPlugin([{ context: __dirname, from: 'certs', to: 'dist' }])
-]
 
 const externals = readdirSync('node_modules')
   .filter(x => ['.bin'].indexOf(x) === -1)
@@ -48,7 +42,9 @@ module.exports = env => {
       filename: 'index.js',
       libraryTarget: 'commonjs2'
     },
-    plugins: base.plugins.concat(plugins),
+    plugins: base.plugins.concat([
+      new IgnorePlugin(/worker/i)
+    ]),
     target: 'node'
   })
 }

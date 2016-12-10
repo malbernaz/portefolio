@@ -26,8 +26,8 @@ const AppView = ({ children, path }) =>
         component="div"
         className={ s.animationContainer }
         transitionName="page-transition"
-        transitionEnterTimeout={ 300 }
-        transitionLeaveTimeout={ 300 }
+        transitionEnterTimeout={ 600 }
+        transitionLeaveTimeout={ 600 }
       >
         { cloneElement(children, { key: path }) }
       </TransitionGroup>
