@@ -88,6 +88,11 @@ self.onfetch = event => {
     return networkOnly(event)
   }
 
+  // Blog Post Pages
+  if (pathname.startsWith('/blog') && pathname !== STATIC_PAGES[0]) {
+    return staleWhileRevalidate(event, `post-pages-${VERSION}`)
+  }
+
   // Static Pages request
   if (STATIC_PAGES.some(s => new RegExp(s).test(pathname))) {
     return cacheOnly(event)
