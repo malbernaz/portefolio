@@ -8,15 +8,9 @@ const wpBaseConfig = require('./webpack.config')
 
 const externals = readdirSync('node_modules')
   .filter(x => ['.bin'].indexOf(x) === -1)
-  .reduce((acc, mod) => {
-    if (mod === 'react' || mod === 'react-dom') {
-      return Object.assign(acc, { [mod]: 'commonjs preact-compat' })
-    }
-
-    if (/react/.test(mod)) return acc
-
-    return Object.assign(acc, { [mod]: `commonjs ${mod}` })
-  }, { './assets': 'commonjs ./assets' })
+  .reduce((acc, mod) => Object.assign(acc, {
+    [mod]: `commonjs ${mod}`
+  }), { './assets': 'commonjs ./assets' })
 
 module.exports = env => {
   const base = wpBaseConfig(env)
@@ -25,14 +19,6 @@ module.exports = env => {
     context: resolve(__dirname, 'src'),
     entry: './server.js',
     externals,
-    resolve: {
-      modules: [resolve(__dirname, 'src'), resolve(__dirname, 'node_modules')],
-      alias: {
-        'react': 'preact-compat',
-        'react-dom': 'preact-compat',
-        'react-addons-css-transition-group': 'preact-css-transition-group'
-      }
-    },
     node: {
       __dirname: false,
       __filename: false

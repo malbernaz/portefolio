@@ -6,7 +6,7 @@ export default {
   description,
   httpsPort: process.env.APPHTTPSPORT || 8080,
   httpPort: process.env.APPHTTPPORT || 3000,
-  apiHost: process.env.APIHOST || '127.0.1',
+  apiHost: process.env.APIHOST || '0.0.0.0',
   apiPort: process.env.APIPORT || 5000,
   github: 'https://github.com/malbernaz',
   twitter: 'https://twitter.com/miguel_albernaz',

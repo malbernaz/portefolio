@@ -41,7 +41,7 @@ const options = __DEV__ ? {
     resolve(__dirname, '../certs/live/malbernaz.me',
       readlinkSync(resolve(__dirname, '../certs/live/malbernaz.me/fullchain.pem'))
     )
-  ),
+  )
 }
 
 const http2Server = spdy.createServer(options, app)
@@ -61,9 +61,7 @@ if (!__DEV__) {
     res.redirect(`https://${req.get('host')}:${req.url}`) : next())
 }
 
-if (__DEV__) {
-  app.use(morgan('dev'))
-}
+app.use(morgan(__DEV__ ? 'dev' : 'combined'))
 
 app.use('/api', (req, res) => {
   proxy.web(req, res, { target: `${targetUrl}/api` })
@@ -152,8 +150,10 @@ app.get('*', (req, res) => {
   })
 })
 
-httpServer.listen(config.httpPort)
+httpServer.listen(config.httpPort, err => console.log( // eslint-disable-line no-console
+  err || `\n==> Http App listening on port ${config.httpPort}\n`
+))
 
 http2Server.listen(config.httpsPort, err => console.log( // eslint-disable-line no-console
-  err || `\n==> App listening on port ${config.httpsPort}\n`
+  err || `\n==> Http2 App listening on port ${config.httpsPort}\n`
 ))

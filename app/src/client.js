@@ -15,7 +15,6 @@ const client = new ApiClient()
 const store = configureStore(client, browserHistory, initialState)
 const history = syncHistoryWithStore(browserHistory, store)
 
-registerServiceWorker(store)
 if (process.env.NODE_ENV === 'production') {
   registerServiceWorker(store)
 }
@@ -30,7 +29,9 @@ function renderApp () {
     render: applyRouterMiddleware(useScroll()),
     history,
   }, (err, redirect, renderProps) => {
-    ReactDOM.render(<Root store={ store } renderProps={ renderProps } />, mnt)
+    const component = <Root store={ store } renderProps={ renderProps } />
+
+    ReactDOM.render(component, mnt)
   })
 }
 

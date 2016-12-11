@@ -44,21 +44,7 @@ module.exports = env => {
     context: resolve(__dirname, 'src'),
     entry: {
       main: './client',
-      vendor: ['preact', 'preact-compat', 'moment', 'redux-form']
-    },
-    resolve: {
-      modules: [resolve(__dirname, 'src'), resolve(__dirname, 'node_modules')],
-      alias: {
-        'react': 'preact-compat',
-        'react-dom': 'preact-compat',
-        'react-addons-css-transition-group': 'preact-css-transition-group',
-        'preact-compat': resolve(__dirname,
-          'node_modules/preact-compat/dist/preact-compat.min.js'),
-        'preact': resolve(__dirname,
-          'node_modules/preact/dist/preact.min.js'),
-        'preact-css-transition-group': resolve(__dirname,
-          'node_modules/preact-css-transition-group/dist/preact-css-transition-group.min.js')
-      }
+      vendor: ['react', 'react-dom', 'moment', 'redux-form']
     },
     output: {
       path: BUILD_DIR,
