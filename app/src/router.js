@@ -53,13 +53,9 @@ export default store => {
   }
 
   function getPosts (nextState, replace, callback) {
-    if (!store.getState().posts.loadedPosts) {
-      return store.dispatch(loadPosts())
-        .then(() => callback())
-        .catch(() => callback())
-    }
-
-    return callback()
+    return store.dispatch(loadPosts())
+      .then(() => callback())
+      .catch(() => callback())
   }
 
   return {

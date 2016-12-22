@@ -4,7 +4,7 @@ importScripts('assets.js')
 
 const VERSION = self.staticAssets.hash
 const STATIC_ASSETS = self.staticAssets.assets
-const STATIC_PAGES = ['/blog', '/about', '/contact', '/notfound']
+const STATIC_PAGES = ['/about', '/contact', '/notfound']
 
 const cachePage = (promise, cache, next) => promise
   .then(res => cache.put(new URL(res.url).pathname, res))
