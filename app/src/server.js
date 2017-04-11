@@ -67,14 +67,6 @@ app.use('/api', (req, res) => {
   proxy.web(req, res, { target: `${targetUrl}/api` })
 })
 
-http2Server.on('upgrade', (req, socket, head) => {
-  proxy.ws(req, socket, head)
-})
-
-httpServer.on('upgrade', (req, socket, head) => {
-  proxy.ws(req, socket, head)
-})
-
 proxy.on('error', (error, req, res) => {
   if (error.code !== 'ECONNRESET') {
     console.error('proxy error:', error) // eslint-disable-line no-console
@@ -87,9 +79,9 @@ proxy.on('error', (error, req, res) => {
   res.end(JSON.stringify({ error: 'proxy_error', reason: error.message }))
 })
 
-const chunksToPreload = Object.keys(assets)
-  .filter(c => !!assets[c].js && !/(main|vendor|admin)/.test(c))
-  .map(c => assets[c].js)
+const chunksToPreload = Object.keys(assets).map(c => assets[c].js)
+
+const linkHeader = chunksToPreload.map(c => `</${ c }>;rel=preload;as=script`).join(',')
 
 app.get('*', (req, res) => {
   const client = new ApiClient(req)
@@ -140,6 +132,8 @@ app.get('*', (req, res) => {
       }
 
       const content = renderToString(<Html { ...htmlProps } />)
+
+      res.append('Link', linkHeader)
 
       res.send(`<!doctype html>${content}`)
 
