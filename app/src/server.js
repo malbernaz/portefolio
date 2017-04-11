@@ -81,7 +81,7 @@ proxy.on('error', (error, req, res) => {
 
 const chunksToPreload = Object.keys(assets).map(c => assets[c].js)
 
-const linkHeader = chunksToPreload.map(c => `</${c}>;rel=preload;as=script`).join(',')
+const linkHeader = chunksToPreload.map(c => `<${c}>;rel=preload;as=script`).join(',')
 
 app.get('*', (req, res) => {
   const client = new ApiClient(req)
